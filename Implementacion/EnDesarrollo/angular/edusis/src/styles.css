@@ -1,1 +1,59 @@
 /* You can add global styles to this file, and also import other style files */
+
+.margin-top-30 {
+  margin-top: 30px;
+}
+
+.margin-top-60 {
+  margin-top: 60px;
+}
+.margin-top-90 {
+  margin-top: 90px;
+}
+
+.margin-bottom-30 {
+  margin-bottom: 30px;
+}
+
+.margin-bottom-16 {
+  margin-bottom: 16px;
+}
+
+.btn-personalizado {
+  background-color: #790d0d !important;
+  color: #f5db77 !important;
+}
+
+.btn-personalizado:hover {
+  background-color: #610a0a !important;
+  color: #c2ab53 !important;
+}
+
+.btn-personalizado-inverso {
+  background-color: #f5db77 !important;
+  color: #790d0d !important;
+}
+
+.btn-personalizado-inverso:hover {
+  background-color: #c2ab53 !important;
+  color: #610a0a !important;
+}
+
+.modal {
+  text-align: center;
+}
+
+@media screen { 
+  .modal:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}

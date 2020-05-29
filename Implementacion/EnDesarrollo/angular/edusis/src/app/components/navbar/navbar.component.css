@@ -1,0 +1,26 @@
+.menuNavegacion {
+  padding: 5px !important;
+  background-color: #790d0d !important;
+  box-shadow: 0 .125rem .25rem rgba(0,0,0,.250)!important;
+}
+
+.navbar-toggler {
+  float:right !important;
+}
+
+.custom-toggler.navbar-toggler {
+  border-color: #790d0d !important;
+}
+
+.custom-toggler .navbar-toggler-icon {
+  background-image: url("/assets/img/menuBarras.svg") !important;
+}
+
+.nav-link {
+  text-align: center;
+  color: #f5db77 !important;
+}
+
+.nav-link:hover {
+  color: #c2ab53 !important;
+}
