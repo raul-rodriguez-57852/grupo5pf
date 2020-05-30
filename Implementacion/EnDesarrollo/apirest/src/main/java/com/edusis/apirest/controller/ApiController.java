@@ -6,8 +6,11 @@
 package com.edusis.apirest.controller;
 
 import com.edusis.apirest.domain.Emoji;
+import com.edusis.apirest.domain.Profesor;
 import com.edusis.apirest.service.EmojiService;
+import com.edusis.apirest.service.ProfesorService;
 import com.edusis.apirest.service.dto.EmojiDto;
+import com.edusis.apirest.service.dto.ProfesorDto;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +38,9 @@ public class ApiController {
     @Autowired
     private EmojiService emojiService;
     
+    @Autowired
+    private ProfesorService profesorService;
+    
     @PostMapping("guardarEmoji")
     public ResponseEntity<Long> guardarEmoji(@RequestBody EmojiDto emojiDto) {
         Emoji emoji = emojiDto.getId() != null ? emojiService.get(emojiDto.getId()) : new Emoji();
@@ -61,6 +67,37 @@ public class ApiController {
             emojiService.delete(emoji);
         }*/
         emojiService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping("guardarProfesor")
+    public ResponseEntity<Long> guardarProfesor(@RequestBody ProfesorDto profesorDto) {
+        Profesor profesor = profesorDto.getId() != null ? profesorService.get(profesorDto.getId()) : new Profesor();
+        profesor.setNombre(profesorDto.getNombre());
+        profesor.setApellido(profesorDto.getApellido());
+        profesor.setDocumento(profesorDto.getDocumento());
+        profesor.setFechaNacimiento(profesorDto.getFechaNacimiento());
+        profesorService.save(profesor);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @GetMapping("profesores")
+    public List<Profesor> getProfesores() {
+        return profesorService.getAll(); 
+    }
+    
+    @GetMapping("profesor")
+    public Profesor getProfesor(@RequestParam Long id) {
+        return profesorService.get(id);
+    }
+    
+    @DeleteMapping("eliminarProfesor")
+    public ResponseEntity<Long> eliminarProfesor(@RequestParam Long id) {
+        /*Profesor profesor = profesorService.get(id);
+        if (profesor != null) {
+            profesorService.delete(profesor);
+        }*/
+        profesorService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
