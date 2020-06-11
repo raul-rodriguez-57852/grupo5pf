@@ -7,10 +7,13 @@ package com.edusis.apirest.controller;
 
 import com.edusis.apirest.domain.Emoji;
 import com.edusis.apirest.domain.Profesor;
+import com.edusis.apirest.domain.Tutor;
 import com.edusis.apirest.service.EmojiService;
 import com.edusis.apirest.service.ProfesorService;
+import com.edusis.apirest.service.TutorService;
 import com.edusis.apirest.service.dto.EmojiDto;
 import com.edusis.apirest.service.dto.ProfesorDto;
+import com.edusis.apirest.service.dto.TutorDto;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,6 +43,9 @@ public class ApiController {
     
     @Autowired
     private ProfesorService profesorService;
+    
+    @Autowired
+    private TutorService tutorService;
     
     @PostMapping("guardarEmoji")
     public ResponseEntity<Long> guardarEmoji(@RequestBody EmojiDto emojiDto) {
@@ -90,6 +96,37 @@ public class ApiController {
     @DeleteMapping("eliminarProfesor")
     public ResponseEntity<Long> eliminarProfesor(@RequestParam Long id) {
         profesorService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping("guardarTutor")
+    public ResponseEntity<Long> guardarTutor(@RequestBody TutorDto tutorDto) {
+        Tutor tutor = tutorDto.getId() != null ? tutorService.get(tutorDto.getId()) : new Tutor();
+        tutor.setNombre(tutorDto.getNombre());
+        tutor.setApellido(tutorDto.getApellido());
+        tutor.setDocumento(tutorDto.getDocumento());
+        tutor.setFechaNacimiento(tutorDto.getFechaNacimiento());
+        tutorService.save(tutor);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @GetMapping("tutores")
+    public List<Tutor> getTutores() {
+        return tutorService.getAll(); 
+    }
+    
+    @GetMapping("tutor")
+    public Tutor getTutor(@RequestParam Long id) {
+        return tutorService.get(id);
+    }
+    
+    @DeleteMapping("eliminarTutor")
+    public ResponseEntity<Long> eliminarTutor(@RequestParam Long id) {
+        /*Tutor tutor = tutorService.get(id);
+        if (tutor != null) {
+            tutorService.delete(tutor);
+        }*/
+        tutorService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
