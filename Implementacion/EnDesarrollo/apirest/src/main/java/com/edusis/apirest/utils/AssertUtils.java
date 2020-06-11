@@ -9,7 +9,7 @@ import java.util.Collection;
 import org.springframework.util.CollectionUtils;
 
 /**
- * Utilidades paraasegurar que un valor cumpla ciertas condiciones
+ * Utilidades para asegurar que un valor cumpla ciertas condiciones
  * @author Naim Saadi
  */
 public class AssertUtils {

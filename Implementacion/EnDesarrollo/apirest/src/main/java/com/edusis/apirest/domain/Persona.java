@@ -32,7 +32,6 @@ public abstract class Persona extends GenericEntity {
     public static final String DTYPE_ALUMNO = "ALUMNO";
     public static final String DTYPE_TUTOR = "TUTOR";
     
-    
     @NotNull
     private String nombre;
     
@@ -83,5 +82,4 @@ public abstract class Persona extends GenericEntity {
         AssertUtils.notNull(apellido, "El apellido no puede ser nulo");
     }
     
-
 }

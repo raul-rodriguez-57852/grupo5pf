@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Emoji } from '../models/emoji';
+import { Profesor } from '../models/profesor';
 
 @Injectable({
   providedIn: 'root'
@@ -29,4 +30,7 @@ export class DataApiService {
     return this.http.post(this.urlBase + 'guardarEmoji', emoji).toPromise();
   }
 
+  guardarProfesor(profesor: Profesor): Promise<any> {
+    return this.http.post(this.urlBase + 'guardarProfesor', profesor).toPromise();
+  }
 }

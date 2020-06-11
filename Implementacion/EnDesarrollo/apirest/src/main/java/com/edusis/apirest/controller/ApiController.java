@@ -62,10 +62,6 @@ public class ApiController {
     
     @DeleteMapping("eliminarEmoji")
     public ResponseEntity<Long> eliminarEmoji(@RequestParam Long id) {
-        /*Emoji emoji = emojiService.get(id);
-        if (emoji != null) {
-            emojiService.delete(emoji);
-        }*/
         emojiService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -93,10 +89,6 @@ public class ApiController {
     
     @DeleteMapping("eliminarProfesor")
     public ResponseEntity<Long> eliminarProfesor(@RequestParam Long id) {
-        /*Profesor profesor = profesorService.get(id);
-        if (profesor != null) {
-            profesorService.delete(profesor);
-        }*/
         profesorService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
