@@ -5,8 +5,10 @@
  */
 package com.edusis.apirest.controller;
 
+import com.edusis.apirest.domain.Documento;
 import com.edusis.apirest.domain.Emoji;
 import com.edusis.apirest.domain.Profesor;
+import com.edusis.apirest.domain.TipoDocumento;
 import com.edusis.apirest.domain.Tutor;
 import com.edusis.apirest.service.EmojiService;
 import com.edusis.apirest.service.ProfesorService;
@@ -14,6 +16,7 @@ import com.edusis.apirest.service.TutorService;
 import com.edusis.apirest.service.dto.EmojiDto;
 import com.edusis.apirest.service.dto.ProfesorDto;
 import com.edusis.apirest.service.dto.TutorDto;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -77,7 +80,7 @@ public class ApiController {
         Profesor profesor = profesorDto.getId() != null ? profesorService.get(profesorDto.getId()) : new Profesor();
         profesor.setNombre(profesorDto.getNombre());
         profesor.setApellido(profesorDto.getApellido());
-        profesor.setDocumento(profesorDto.getDocumento());
+        profesor.setDocumento(new Documento(profesorDto.getTipoDocmuento(), profesorDto.getDocumento()));
         profesor.setFechaNacimiento(profesorDto.getFechaNacimiento());
         profesorService.save(profesor);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -104,7 +107,7 @@ public class ApiController {
         Tutor tutor = tutorDto.getId() != null ? tutorService.get(tutorDto.getId()) : new Tutor();
         tutor.setNombre(tutorDto.getNombre());
         tutor.setApellido(tutorDto.getApellido());
-        tutor.setDocumento(tutorDto.getDocumento());
+        tutor.setDocumento(new Documento(tutorDto.getTipoDocumento(), tutorDto.getDocumento()));
         tutor.setFechaNacimiento(tutorDto.getFechaNacimiento());
         tutorService.save(tutor);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -130,4 +133,13 @@ public class ApiController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
+    @GetMapping("tiposDoc")
+    public List<String> getTiposDoc() {
+        TipoDocumento[] valores = TipoDocumento.values();
+        List<String> lista = new ArrayList<String>();
+        for (TipoDocumento valor : valores) {
+            lista.add(valor.toString());
+        }
+        return lista;
+    }
 }

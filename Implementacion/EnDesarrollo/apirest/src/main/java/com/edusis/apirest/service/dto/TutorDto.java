@@ -5,6 +5,8 @@
  */
 package com.edusis.apirest.service.dto;
 
+import com.edusis.apirest.domain.Documento;
+import com.edusis.apirest.domain.TipoDocumento;
 import java.util.Calendar;
 
 /**
@@ -16,6 +18,7 @@ public class TutorDto {
     private Long id;
     private String nombre;
     private String apellido;
+    private TipoDocumento tipoDocumento;
     private String documento;
     private Calendar fechaNacimiento;
 
@@ -43,6 +46,17 @@ public class TutorDto {
         this.apellido = apellido;
     }
 
+    public TipoDocumento getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(TipoDocumento tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
+   
+
+    
     public String getDocumento() {
         return documento;
     }
@@ -51,7 +65,7 @@ public class TutorDto {
         this.documento = documento;
     }
 
-
+    
     public Calendar getFechaNacimiento() {
         return fechaNacimiento;
     }

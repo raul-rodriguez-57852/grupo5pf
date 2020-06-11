@@ -10,10 +10,13 @@ import com.edusis.apirest.generic.GenericEntity;
 import com.edusis.apirest.utils.AssertUtils;
 import com.sun.istack.NotNull;
 import java.util.Calendar;
+import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -38,7 +41,9 @@ public abstract class Persona extends GenericEntity {
     @NotNull
     private String apellido;
     
-    private String documento;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "documento_id")
+    private Documento documento;
     
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar fechaNacimiento;
@@ -61,13 +66,15 @@ public abstract class Persona extends GenericEntity {
         this.apellido = apellido;
     }
 
-    public String getDocumento() {
+    public Documento getDocumento() {
         return documento;
     }
 
-    public void setDocumento(String documento) {
+    public void setDocumento(Documento documento) {
         this.documento = documento;
     }
+
+    
 
     public Calendar getFechaNacimiento() {
         return fechaNacimiento;
