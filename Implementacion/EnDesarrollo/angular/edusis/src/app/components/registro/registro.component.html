@@ -1,39 +1,116 @@
 <section id="registro" class="margin-top-90">
   <div class="container">
-    <form name="formRegistro" #formRegistro="ngForm" (ngSubmit)="save(formRegistro)">
+    <p class="aclaracionCenter" *ngIf="esCuentaTutor">
+      <a (click)="cambiarTipoCuenta()">O creá una cuenta de profesor</a>
+    </p>
+    <p class="aclaracionCenter" *ngIf="!esCuentaTutor">
+      <a (click)="cambiarTipoCuenta()">O creá una cuenta de tutor</a>
+    </p>
+    <form
+      name="formRegistro"
+      #formRegistro="ngForm"
+      (ngSubmit)="save(formRegistro)"
+    >
       <div class="form-group">
         <label for="nombre">Nombre</label>
-        <input [(ngModel)]="profesor.nombre" type="text" name="nombre" class="form-control" placeholder="Nombre" required autocomplete="off">
+        <input
+          [ngModel]="esCuentaTutor ? tutor.nombre : profesor.nombre"
+          (ngModelChange)="
+            esCuentaTutor ? (tutor.nombre = $event) : (profesor.nombre = $event)
+          "
+          type="text"
+          name="nombre"
+          class="form-control"
+          placeholder="Nombre"
+          required
+          autocomplete="off"
+        />
       </div>
       <div class="form-group">
         <label for="apellido">Apellido</label>
-        <input [(ngModel)]="profesor.apellido" type="text" name="iconoURL" class="form-control" placeholder="Apellido" required autocomplete="off">
+        <input
+          [ngModel]="esCuentaTutor ? tutor.apellido : profesor.apellido"
+          (ngModelChange)="
+            esCuentaTutor
+              ? (tutor.apellido = $event)
+              : (profesor.apellido = $event)
+          "
+          type="text"
+          name="iconoURL"
+          class="form-control"
+          placeholder="Apellido"
+          required
+          autocomplete="off"
+        />
       </div>
       <div class="form-group">
         <label for="documento">Documento</label>
-        <input [(ngModel)]="profesor.documento" type="tel" name="documento" class="form-control" placeholder="Documento" required autocomplete="off">
+        <input
+          [(ngModel)]="profesor.documento"
+          type="tel"
+          name="documento"
+          class="form-control"
+          placeholder="Documento"
+          required
+          autocomplete="off"
+        />
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" name="email" class="form-control" placeholder="Email" required autocomplete="off">
+        <input
+          type="email"
+          name="email"
+          class="form-control"
+          placeholder="Email"
+          required
+          autocomplete="off"
+        />
       </div>
       <div class="form-group">
         <label for="password">Email</label>
-        <input type="password" name="password" class="form-control" placeholder="Contraseña" required autocomplete="off">
+        <input
+          type="password"
+          name="password"
+          class="form-control"
+          placeholder="Contraseña"
+          required
+          autocomplete="off"
+        />
       </div>
-      <button type="submit" class="btn btn-lg btn-block btn-personalizado">Registrarme</button>
+      <button type="submit" class="btn btn-lg btn-block btn-personalizado">
+        Registrarme
+      </button>
     </form>
   </div>
 </section>
 
 <!-- Modal -->
-<button id="open-modal" [hidden]="true" data-toggle="modal" data-target="#informacion">Open Modal</button>
-<div class="modal fade" id="informacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<button
+  id="open-modal"
+  [hidden]="true"
+  data-toggle="modal"
+  data-target="#informacion"
+>
+  Open Modal
+</button>
+<div
+  class="modal fade"
+  id="informacion"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Edusis</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -41,7 +118,14 @@
         {{ mensaje }}
       </div>
       <div class="modal-footer">
-        <button type="button" data-dismiss="modal" (click)="recargar()" class="btn btn-personalizado">Aceptar</button>
+        <button
+          type="button"
+          data-dismiss="modal"
+          (click)="recargar()"
+          class="btn btn-personalizado"
+        >
+          Aceptar
+        </button>
       </div>
     </div>
   </div>
