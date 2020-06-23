@@ -19,7 +19,7 @@ public class ProfesorDto {
     private String nombre;
     private String apellido;
     private String documento;
-    private TipoDocumento tipoDocmuento;
+    private TipoDocumento tipoDocumento;
     private Calendar fechaNacimiento;
 
     public Long getId() {
@@ -54,15 +54,13 @@ public class ProfesorDto {
         this.documento = documento;
     }
 
-    public TipoDocumento getTipoDocmuento() {
-        return tipoDocmuento;
+    public TipoDocumento getTipoDocumento() {
+        return tipoDocumento;
     }
 
-    public void setTipoDocmuento(TipoDocumento tipoDocmuento) {
-        this.tipoDocmuento = tipoDocmuento;
+    public void setTipoDocumento(TipoDocumento tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
     }
-
-   
 
 
     public Calendar getFechaNacimiento() {

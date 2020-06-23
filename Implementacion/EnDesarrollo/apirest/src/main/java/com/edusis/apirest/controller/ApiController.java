@@ -80,7 +80,7 @@ public class ApiController {
         Profesor profesor = profesorDto.getId() != null ? profesorService.get(profesorDto.getId()) : new Profesor();
         profesor.setNombre(profesorDto.getNombre());
         profesor.setApellido(profesorDto.getApellido());
-        profesor.setDocumento(new Documento(profesorDto.getTipoDocmuento(), profesorDto.getDocumento()));
+        profesor.setDocumento(new Documento(profesorDto.getTipoDocumento(), profesorDto.getDocumento()));
         profesor.setFechaNacimiento(profesorDto.getFechaNacimiento());
         profesorService.save(profesor);
         return new ResponseEntity<>(HttpStatus.OK);

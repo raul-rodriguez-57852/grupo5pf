@@ -43,4 +43,8 @@ export class DataApiService {
   guardarTutor(tutor: Tutor): Promise<any> {
     return this.http.post(this.urlBase + 'guardarTutor', tutor).toPromise();
   }
+
+  getTiposDoc(): Promise<any> {
+    return this.http.get(this.urlBase + 'tiposDoc').toPromise();
+  }
 }

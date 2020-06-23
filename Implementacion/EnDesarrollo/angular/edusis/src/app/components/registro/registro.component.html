@@ -44,7 +44,46 @@
         />
       </div>
       <div class="form-group">
-        <label for="documento">Documento</label>
+        <label>Documento</label>
+        <div class="row">
+          <div class="col-4">
+            <select
+              class="form-control"
+              [ngModel]="
+                esCuentaTutor ? tutor.tipoDocumento : profesor.tipoDocumento
+              "
+              (ngModelChange)="
+                esCuentaTutor
+                  ? (tutor.tipoDocumento = $event)
+                  : (profesor.tipoDocumento = $event)
+              "
+              name="tipoDoc"
+              placeholder="Tipo"
+            >
+              <option [ngValue]="null" hidden>Tipo</option>
+              <option *ngFor="let tipo of tiposDoc" [ngValue]="tipo">{{
+                tipo
+              }}</option>
+            </select>
+          </div>
+          <div class="col-8">
+            <input
+              [ngModel]="esCuentaTutor ? tutor.documento : profesor.documento"
+              (ngModelChange)="
+                esCuentaTutor
+                  ? (tutor.documento = $event)
+                  : (profesor.documento = $event)
+              "
+              type="tel"
+              name="documento"
+              class="form-control"
+              placeholder="Documento"
+              required
+              autocomplete="off"
+            />
+          </div>
+        </div>
+        <!-- <label for="documento">Documento</label>
         <input
           [(ngModel)]="profesor.documento"
           type="tel"
@@ -53,7 +92,7 @@
           placeholder="Documento"
           required
           autocomplete="off"
-        />
+        /> -->
       </div>
       <div class="form-group">
         <label for="email">Email</label>
