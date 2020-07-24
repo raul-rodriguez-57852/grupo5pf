@@ -51,8 +51,8 @@ export class RegistroComponent implements OnInit {
       this.dataApiService
         .guardarTutor(this.tutor)
         .then((respuesta) => {
-          this.mensaje = 'Profesor guardado con éxito.';
-          this.recargar();
+          this.mensaje = 'Cuenta creada con éxito.';
+          document.getElementById('open-modal').click();
         })
         .catch((respuesta) => {
           this.mensaje = 'Error al guardar.';
@@ -79,8 +79,8 @@ export class RegistroComponent implements OnInit {
       this.dataApiService
         .guardarProfesor(this.profesor)
         .then((respuesta) => {
-          this.mensaje = 'Profesor guardado con éxito.';
-          this.recargar();
+          this.mensaje = 'Cuenta creada con éxito.';
+          document.getElementById('open-modal').click();
         })
         .catch((respuesta) => {
           this.mensaje = 'Error al guardar.';

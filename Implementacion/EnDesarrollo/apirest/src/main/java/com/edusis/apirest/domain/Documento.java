@@ -51,8 +51,6 @@ public class Documento extends GenericEntity {
         this.numero = numero;
     }
     
-    
-         
-    
+    public Documento() {}
     
 }

@@ -5,19 +5,24 @@
  */
 package com.edusis.apirest.controller;
 
+import com.edusis.apirest.domain.Alumno;
 import com.edusis.apirest.domain.Documento;
 import com.edusis.apirest.domain.Emoji;
+import com.edusis.apirest.domain.PasswordEmoji;
 import com.edusis.apirest.domain.Profesor;
 import com.edusis.apirest.domain.TipoDocumento;
 import com.edusis.apirest.domain.Tutor;
+import com.edusis.apirest.service.AlumnoService;
 import com.edusis.apirest.service.EmojiService;
 import com.edusis.apirest.service.ProfesorService;
 import com.edusis.apirest.service.TutorService;
+import com.edusis.apirest.service.dto.AlumnoDto;
 import com.edusis.apirest.service.dto.EmojiDto;
 import com.edusis.apirest.service.dto.ProfesorDto;
 import com.edusis.apirest.service.dto.TutorDto;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +54,9 @@ public class ApiController {
     
     @Autowired
     private TutorService tutorService;
+
+    @Autowired
+    private AlumnoService alumnoService;
     
     @PostMapping("guardarEmoji")
     public ResponseEntity<Long> guardarEmoji(@RequestBody EmojiDto emojiDto) {
@@ -142,4 +150,50 @@ public class ApiController {
         }
         return lista;
     }
+    
+    @PostMapping("guardarAlumno")
+    public ResponseEntity<Long> guardarAlumno(@RequestBody AlumnoDto alumnoDto) {
+        Alumno alumno = alumnoDto.getId() != null ? alumnoService.get(alumnoDto.getId()) : new Alumno();
+        alumno.setNombre(alumnoDto.getNombre());
+        alumno.setApellido(alumnoDto.getApellido());
+        alumno.setDocumento(new Documento(alumnoDto.getTipoDocumento(), alumnoDto.getDocumento()));
+        alumno.setFechaNacimiento(alumnoDto.getFechaNacimiento());
+        alumno.setAvatarUrl(alumnoDto.getAvatarUrl());
+        if (alumnoDto.getPasswordEmoji() != null) {
+            PasswordEmoji pwd = new PasswordEmoji();
+            Emoji emoji1 = emojiService.get(alumnoDto.getPasswordEmoji().getEmoji1Id());
+            Emoji emoji2 = emojiService.get(alumnoDto.getPasswordEmoji().getEmoji2Id());
+            Emoji emoji3 = emojiService.get(alumnoDto.getPasswordEmoji().getEmoji3Id());
+            pwd.setEmoji1(emoji1);
+            pwd.setEmoji2(emoji2);
+            pwd.setEmoji3(emoji3);
+            alumno.setPasswordEmoji(pwd);
+        }
+        alumnoService.save(alumno);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @GetMapping("alumnos")
+    public List<Alumno> getAlumnos() {
+        return alumnoService.getAll();
+    }
+    
+    @GetMapping("alumno")
+    public Alumno getAlumno(@RequestParam Long id) {
+        return alumnoService.get(id);
+    }
+    
+    @PostMapping("ingresoAlumno")
+    public ResponseEntity<Long> ingresoAlumno(@RequestParam Long id, @RequestParam Long emoji1Id, @RequestParam Long emoji2Id, @RequestParam Long emoji3Id) {
+        Alumno alumno = alumnoService.get(id);
+        if (emoji1Id != null && emoji2Id != null && emoji3Id != null) {
+            if (Objects.equals(alumno.getPasswordEmoji().getEmoji1().getId(), emoji1Id) &&
+                Objects.equals(alumno.getPasswordEmoji().getEmoji2().getId(), emoji2Id) &&
+                Objects.equals(alumno.getPasswordEmoji().getEmoji3().getId(), emoji3Id)) {
+                return new ResponseEntity<>(HttpStatus.OK);                
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+    
 }

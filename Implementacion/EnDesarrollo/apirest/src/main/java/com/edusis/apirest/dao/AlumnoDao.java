@@ -4,15 +4,15 @@
  * and open the template in the editor.
  */
 
-package com.edusis.apirest.service;
+package com.edusis.apirest.dao;
 
-import com.edusis.apirest.domain.Profesor;
+import com.edusis.apirest.domain.Alumno;
 
 /**
  *
- * @author Naim Saadi
+ * @author Facundo Raviolo
  */
 
-public interface ProfesorService extends PersonaService<Profesor> {
+public interface AlumnoDao extends PersonaDao<Alumno> {
 
 }

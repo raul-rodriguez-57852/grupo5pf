@@ -1,0 +1,76 @@
+<section id="editar-alumno" class="margin-top-90">
+  <div class="container">
+    <form name="formAlumno" #formAlumno="ngForm" (ngSubmit)="save(formAlumno)">
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input [(ngModel)]="alumno.nombre" type="text" name="nombre" class="form-control" placeholder="Nombre" required autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="apellido">Apellido</label>
+        <input [(ngModel)]="alumno.apellido" type="text" name="iconoURL" class="form-control" placeholder="Apellido" required autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="documento">Documento</label>
+        <div class="row">
+          <div class="col-4">
+            <select [(ngModel)]="alumno.tipoDocumento" class="form-control" name="tipoDoc" placeholder="Tipo">
+              <option [ngValue]="null" hidden>Tipo</option>
+              <option *ngFor="let tipo of tiposDoc" [ngValue]="tipo">{{ tipo }}</option>
+            </select>
+          </div>
+          <div class="col-8">
+            <input [(ngModel)]="alumno.documento" type="tel" name="documento" class="form-control" placeholder="Documento" required autocomplete="off">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Contraseña</label>
+        <div class="input-password">
+          <img *ngFor="let emoji of emojisSeleccionados" src="{{ emoji.iconoURL }}" style="margin-left: 3px; margin-right: 3px;" class="imagen-emoji">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="container">
+          <div class="row">
+            <div class="col-3 no-padding d-flex justify-content-center" style="margin-bottom: 15px;" *ngFor="let emoji of emojis">
+              <button type="button" (click)="addEmoji(emoji)" class="btn btn-lg btn-info"><img src="{{ emoji.iconoURL }}" class="imagen-emoji"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Avatar</label>
+        <div class="container">
+          <div class="row">
+            <div class="col-3 no-padding d-flex justify-content-center" style="margin-bottom: 15px;" *ngFor="let avatar of avatares">
+              <img src="{{ avatar.url }}" class="imagen-avatar">
+              <input class="form-check-input" type="radio" id="avatar-sel" name="avatar-sel" (click)="seleccionar(avatar)">
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-lg btn-block btn-personalizado margin-bottom-30">Registrarme</button>
+    </form>
+  </div>
+</section>
+
+<!-- Modal -->
+<button id="open-modal" [hidden]="true" data-toggle="modal" data-target="#informacion">Open Modal</button>
+<div class="modal fade" id="informacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edusis</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ mensaje }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" (click)="recargar()" class="btn btn-personalizado">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>

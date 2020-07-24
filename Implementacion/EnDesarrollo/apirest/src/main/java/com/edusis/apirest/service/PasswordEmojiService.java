@@ -6,13 +6,14 @@
 
 package com.edusis.apirest.service;
 
-import com.edusis.apirest.domain.Profesor;
+import com.edusis.apirest.domain.PasswordEmoji;
+import com.edusis.apirest.generic.GenericService;
 
 /**
  *
- * @author Naim Saadi
+ * @author Facundo Raviolo
  */
 
-public interface ProfesorService extends PersonaService<Profesor> {
+public interface PasswordEmojiService extends GenericService<PasswordEmoji, Long> {
 
 }

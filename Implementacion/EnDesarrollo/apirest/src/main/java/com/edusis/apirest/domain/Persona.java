@@ -74,8 +74,6 @@ public abstract class Persona extends GenericEntity {
         this.documento = documento;
     }
 
-    
-
     public Calendar getFechaNacimiento() {
         return fechaNacimiento;
     }

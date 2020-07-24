@@ -1,5 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 
+@font-face {
+  font-family: LemonYellow;
+  src: url("assets/fonts/LemonYellow.otf") format("opentype");
+}
+
+.centrado {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-padding {
+  padding: 0px !important;
+}
+
 .margin-top-30 {
   margin-top: 30px;
 }
@@ -20,23 +35,23 @@
 }
 
 .btn-personalizado {
-  background-color: #790d0d !important;
+  background-color: #53ACAB !important;
   color: #f5db77 !important;
 }
 
 .btn-personalizado:hover {
-  background-color: #610a0a !important;
+  background-color: #3d8a89 !important;
   color: #c2ab53 !important;
 }
 
 .btn-personalizado-inverso {
   background-color: #f5db77 !important;
-  color: #790d0d !important;
+  color: #53ACAB !important;
 }
 
 .btn-personalizado-inverso:hover {
   background-color: #c2ab53 !important;
-  color: #610a0a !important;
+  color: #3d8a89 !important;
 }
 
 .modal {

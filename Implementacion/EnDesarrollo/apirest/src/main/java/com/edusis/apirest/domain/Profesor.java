@@ -16,7 +16,5 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue(value=Persona.DTYPE_PROFESOR)
 public class Profesor extends Persona {
-    
-    
 
 }

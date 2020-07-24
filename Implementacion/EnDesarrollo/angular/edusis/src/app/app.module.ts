@@ -10,6 +10,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { EditarEmojiComponent } from './components/editar-emoji/editar-emoji.component';
 import { EmojisComponent } from './components/emojis/emojis.component';
+import { EditarAlumnoComponent } from './components/editar-alumno/editar-alumno.component';
+import { PerfilesComponent } from './components/perfiles/perfiles.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { EmojisComponent } from './components/emojis/emojis.component';
     RegistroComponent,
     NavbarComponent,
     EditarEmojiComponent,
-    EmojisComponent
+    EmojisComponent,
+    EditarAlumnoComponent,
+    PerfilesComponent
   ],
   imports: [
     BrowserModule,
