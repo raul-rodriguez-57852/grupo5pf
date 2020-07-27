@@ -6,8 +6,12 @@
 
 package com.edusis.apirest.domain;
 
+import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 /**
  *
@@ -17,4 +21,36 @@ import javax.persistence.Entity;
 @DiscriminatorValue(value=Persona.DTYPE_PROFESOR)
 public class Profesor extends Persona {
 
+    @ManyToMany
+    @JoinTable(name="cursos",joinColumns = @JoinColumn(name= "profesor_id"),
+            inverseJoinColumns = @JoinColumn(name = "curso_id"))
+    private List<Curso> cursos;
+    
+    @ManyToMany
+    @JoinTable(name="cursos",joinColumns = @JoinColumn(name= "profesor_id"),
+            inverseJoinColumns = @JoinColumn(name = "curso_id"))
+    private List<Asignatura> asignaturas;
+
+    public List<Curso> getCursos() {
+        return cursos;
+    }
+
+    public void setCursos(List<Curso> cursos) {
+        this.cursos = cursos;
+    }
+
+    public List<Asignatura> getAsignaturas() {
+        return asignaturas;
+    }
+
+    public void setAsignaturas(List<Asignatura> asignaturas) {
+        this.asignaturas = asignaturas;
+    }
+
+    
+    
+    /**
+     * Falta atributo Cuenta
+     * Falta atributo Actividades
+     */
 }

@@ -6,9 +6,13 @@
 package com.edusis.apirest.domain;
 
 import com.sun.istack.NotNull;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -25,7 +29,19 @@ public class Alumno extends Persona {
     
     private String avatarUrl;
     
+    @ManyToMany
+    @JoinTable(name="cursos",joinColumns = @JoinColumn(name= "alumno_id"),
+            inverseJoinColumns = @JoinColumn(name = "curso_id"))
+    private List<Curso> cursos;
+    
+    public List<Curso> getCursos() {
+        return cursos;
+    }
+
     // GETTERS && SETTERS
+    public void setCursos(List<Curso> cursos) {
+        this.cursos = cursos;
+    }
 
     public PasswordEmoji getPasswordEmoji() {
         return passwordEmoji;
