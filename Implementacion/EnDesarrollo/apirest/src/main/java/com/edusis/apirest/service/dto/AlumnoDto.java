@@ -7,6 +7,7 @@ package com.edusis.apirest.service.dto;
 
 import com.edusis.apirest.domain.Curso;
 import com.edusis.apirest.domain.TipoDocumento;
+import com.edusis.apirest.domain.Tutor;
 import java.util.Calendar;
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class AlumnoDto {
     private PasswordEmojiDto passwordEmoji;
     private String avatarUrl;
     private List<Curso> cursos;
+    private Tutor tutor;
 
     public List<Curso> getCursos() {
         return cursos;
@@ -33,8 +35,7 @@ public class AlumnoDto {
     public void setCursos(List<Curso> cursos) {
         this.cursos = cursos;
     }
-
-    
+  
     public Long getId() {
         return id;
     }
@@ -97,6 +98,14 @@ public class AlumnoDto {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public Tutor getTutor() {
+        return tutor;
+    }
+
+    public void setTutor(Tutor tutor) {
+        this.tutor = tutor;
     }
 
 }

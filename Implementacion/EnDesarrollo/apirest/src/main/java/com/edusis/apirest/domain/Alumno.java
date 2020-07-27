@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 /**
@@ -22,6 +23,9 @@ import javax.persistence.OneToOne;
 @Entity
 @DiscriminatorValue(value=Persona.DTYPE_ALUMNO)
 public class Alumno extends Persona {
+
+    @ManyToOne
+    private Tutor tutor;
     
     @NotNull
     @OneToOne(mappedBy = "alumno", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -34,11 +38,13 @@ public class Alumno extends Persona {
             inverseJoinColumns = @JoinColumn(name = "curso_id"))
     private List<Curso> cursos;
     
+    
+    /////// GETTERS && SETTERS ///////
+    
     public List<Curso> getCursos() {
         return cursos;
     }
 
-    // GETTERS && SETTERS
     public void setCursos(List<Curso> cursos) {
         this.cursos = cursos;
     }
@@ -58,6 +64,14 @@ public class Alumno extends Persona {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public Tutor getTutor() {
+        return tutor;
+    }
+
+    public void setTutor(Tutor tutor) {
+        this.tutor = tutor;
     }
     
 }

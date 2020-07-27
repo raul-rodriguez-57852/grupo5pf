@@ -6,6 +6,7 @@
 
 package com.edusis.apirest.generic;
 
+import com.querydsl.core.types.Predicate;
 import java.util.List;
 
 /**
@@ -21,4 +22,5 @@ public interface GenericDao<T,K> {
     public T findById(K id);
     public void deleteById(K id);
     public List<T> findAll();
+    public List<T> findAll(Predicate pdct);
 }

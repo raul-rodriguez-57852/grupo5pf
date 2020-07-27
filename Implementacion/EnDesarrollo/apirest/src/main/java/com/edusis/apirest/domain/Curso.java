@@ -6,6 +6,7 @@
 package com.edusis.apirest.domain;
 
 import com.edusis.apirest.generic.GenericEntity;
+import com.edusis.apirest.utils.AssertUtils;
 import com.sun.istack.NotNull;
 import java.util.List;
 import javax.persistence.Entity;
@@ -50,14 +51,18 @@ public class Curso extends GenericEntity{
     public List<Asignatura> getAsignaturas() {
         return asignaturas;
     }
+    
+    public void validar(){
+        AssertUtils.notNull(nombre, "El nombre no puede ser nulo");
+        AssertUtils.notNull(creador, "El creador no puede ser nulo");
+    }
+    
+    
+    ///////// GETTERS AND SETTERS //////////
 
     public void setAsignaturas(List<Asignatura> asignaturas) {
         this.asignaturas = asignaturas;
     }
-
-    
-    
-  
     
     public String getNombre() {
         return nombre;

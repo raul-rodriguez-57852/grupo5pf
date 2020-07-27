@@ -6,12 +6,14 @@
 
 package com.edusis.apirest.generic;
 
+import com.querydsl.core.types.Predicate;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -46,6 +48,15 @@ public abstract class GenericDaoImpl<T, K extends Serializable> implements Gener
     public List<T> findAll() {      
         CriteriaQuery query = currentSession().getCriteriaBuilder().createQuery(daoType);
         query.from(daoType);
+        List<T> resultados = currentSession().createQuery(query).getResultList();
+        return resultados;
+    }
+    
+    @Override
+    public List<T> findAll(Predicate pdct) {      
+        CriteriaQuery query = currentSession().getCriteriaBuilder().createQuery(daoType);
+        query.from(daoType);
+        query.where((Expression) pdct);
         List<T> resultados = currentSession().createQuery(query).getResultList();
         return resultados;
     }

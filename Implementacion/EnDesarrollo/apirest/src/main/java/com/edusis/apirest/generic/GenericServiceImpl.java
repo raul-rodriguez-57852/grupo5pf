@@ -6,6 +6,7 @@
 
 package com.edusis.apirest.generic;
 
+import com.querydsl.core.types.Predicate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,12 @@ public abstract class GenericServiceImpl<T, K> implements GenericService<T, K> {
     @Transactional(propagation = Propagation.REQUIRED)
     public List<T> getAll() {
         return dao.findAll();
+    }
+    
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public List<T> getAll(Predicate pdct) {
+        return dao.findAll(pdct);
     }
 
     @Override

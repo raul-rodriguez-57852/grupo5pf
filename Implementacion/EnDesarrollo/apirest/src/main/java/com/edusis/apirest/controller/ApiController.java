@@ -6,6 +6,8 @@
 package com.edusis.apirest.controller;
 
 import com.edusis.apirest.domain.Alumno;
+import com.edusis.apirest.domain.Asignatura;
+import com.edusis.apirest.domain.Curso;
 import com.edusis.apirest.domain.Documento;
 import com.edusis.apirest.domain.Emoji;
 import com.edusis.apirest.domain.PasswordEmoji;
@@ -13,13 +15,18 @@ import com.edusis.apirest.domain.Profesor;
 import com.edusis.apirest.domain.TipoDocumento;
 import com.edusis.apirest.domain.Tutor;
 import com.edusis.apirest.service.AlumnoService;
+import com.edusis.apirest.service.AsignaturaService;
+import com.edusis.apirest.service.CursoService;
 import com.edusis.apirest.service.EmojiService;
 import com.edusis.apirest.service.ProfesorService;
 import com.edusis.apirest.service.TutorService;
 import com.edusis.apirest.service.dto.AlumnoDto;
+import com.edusis.apirest.service.dto.AsignaturaDto;
+import com.edusis.apirest.service.dto.CursoDto;
 import com.edusis.apirest.service.dto.EmojiDto;
 import com.edusis.apirest.service.dto.ProfesorDto;
 import com.edusis.apirest.service.dto.TutorDto;
+import com.edusis.apirest.specs.AsignaturaSpecs;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -57,6 +64,12 @@ public class ApiController {
 
     @Autowired
     private AlumnoService alumnoService;
+    
+    @Autowired
+    private CursoService cursoService;
+    
+    @Autowired
+    private AsignaturaService asignaturaService;
     
     @PostMapping("guardarEmoji")
     public ResponseEntity<Long> guardarEmoji(@RequestBody EmojiDto emojiDto) {
@@ -169,6 +182,20 @@ public class ApiController {
             pwd.setEmoji3(emoji3);
             alumno.setPasswordEmoji(pwd);
         }
+        Tutor tutor = alumnoDto.getTutor();
+        alumno.setTutor(tutor);
+        if(tutor.getAlumnos() != null){
+            if(!tutor.getAlumnos().contains(alumno)){
+                tutor.getAlumnos().add(alumno);
+                tutorService.save(tutor);
+            }
+        } else{
+            ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
+            alumnos.add(alumno);
+            tutor.setAlumnos(alumnos);
+            tutorService.save(tutor);
+        }
+        
         alumnoService.save(alumno);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -194,6 +221,85 @@ public class ApiController {
             }
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+    
+    @PostMapping("guardarCurso")
+    public ResponseEntity<Long> guardarCurso(@RequestBody CursoDto cursoDto) {
+        Curso curso = cursoDto.getId() != null ? cursoService.get(cursoDto.getId()) : new Curso();
+        curso.setNombre(cursoDto.getNombre());
+        curso.setAvatar(cursoDto.getAvatar());
+        curso.setCreador(cursoDto.getCreador());
+        curso.validar();
+        cursoService.save(curso);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping("guardarAsignatura")
+    public ResponseEntity<Long> guardarAsignatura(@RequestBody AsignaturaDto asignaturaDto) {
+        Asignatura asignatura = asignaturaDto.getId() != null ? asignaturaService.get(asignaturaDto.getId()) : new Asignatura();
+        asignatura.setNombre(asignaturaDto.getNombre());
+        asignatura.setAvatar(asignaturaDto.getAvatar());
+        asignatura.setCreador(asignaturaDto.getCreador());
+        Curso curso = asignaturaDto.getCurso();
+        asignatura.setCurso(curso);
+        if(curso.getAsignaturas() != null){
+            if(!curso.getAsignaturas().contains(asignatura)){
+                curso.getAsignaturas().add(asignatura);
+                cursoService.save(curso);
+            }
+        } else{
+            ArrayList<Asignatura> asignaturas = new ArrayList<Asignatura>();
+            asignaturas.add(asignatura);
+            curso.setAsignaturas(asignaturas);
+            cursoService.save(curso);
+        }
+        asignatura.validar();
+        asignaturaService.save(asignatura);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @DeleteMapping("eliminarAsignatura")
+    public ResponseEntity<Long> eliminarAsignatura(@RequestParam Long id) {
+        asignaturaService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @GetMapping("asignaturas")
+    public List<Asignatura> getAsignaturas(@RequestParam CursoDto cursoDto) {
+        Curso curso = cursoService.get(cursoDto.getId());
+        return asignaturaService.getAll(AsignaturaSpecs.byCurso(curso));
+    }
+    
+    @PostMapping("agregarAlumnoACurso")
+    public ResponseEntity<Long> agregarAlumnoACurso(@RequestParam Long idAlumno, @RequestParam Long idCurso){
+        Alumno alumno = alumnoService.get(idAlumno);
+        Curso curso = cursoService.get(idCurso);
+        if(curso == null || alumno == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if(curso.getAlumnos() != null){
+            if(!curso.getAlumnos().contains(alumno)){
+                curso.getAlumnos().add(alumno);
+                cursoService.save(curso);
+            }
+        } else{
+            ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
+            alumnos.add(alumno);
+            curso.setAlumnos(alumnos);
+            cursoService.save(curso);
+        }
+        if(alumno.getCursos()!= null){
+            if(!alumno.getCursos().contains(curso)){
+                alumno.getCursos().add(curso);
+                alumnoService.save(alumno);
+            }
+        } else{
+            ArrayList<Curso> cursos = new ArrayList<Curso>();
+            cursos.add(curso);
+            alumno.setCursos(cursos);
+            alumnoService.save(alumno);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     
 }

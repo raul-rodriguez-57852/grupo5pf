@@ -6,8 +6,10 @@
 
 package com.edusis.apirest.domain;
 
+import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -16,5 +18,20 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue(value=Persona.DTYPE_TUTOR)
 public class Tutor extends Persona {
+    
+    @OneToMany(mappedBy = "tutor")
+    private List<Alumno> alumnos;
+    
+    /////// GETTERS AND SETTERS ///////
+
+    public List<Alumno> getAlumnos() {
+        return alumnos;
+    }
+
+    public void setAlumnos(List<Alumno> alumnos) {
+        this.alumnos = alumnos;
+    }
+    
+    
 
 }

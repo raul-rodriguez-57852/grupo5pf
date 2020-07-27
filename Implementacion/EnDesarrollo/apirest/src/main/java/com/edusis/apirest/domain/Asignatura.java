@@ -6,6 +6,7 @@
 package com.edusis.apirest.domain;
 
 import com.edusis.apirest.generic.GenericEntity;
+import com.edusis.apirest.utils.AssertUtils;
 import com.sun.istack.NotNull;
 import java.util.List;
 import javax.persistence.Entity;
@@ -39,6 +40,13 @@ public class Asignatura extends GenericEntity {
     
     @ManyToMany(mappedBy="asignaturas")
     private List<Profesor> profesores;
+    
+    
+    public void validar(){
+        AssertUtils.notNull(nombre, "El nombre no puede ser nulo");
+        AssertUtils.notNull(creador, "El creador no puede ser nulo");
+        AssertUtils.notNull(curso, "El curso no puede ser nulo");
+    }
 
 
     public Profesor getCreador() {
