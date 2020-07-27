@@ -5,9 +5,12 @@
  */
 package com.edusis.apirest.service.dto;
 
+import com.edusis.apirest.domain.Asignatura;
+import com.edusis.apirest.domain.Curso;
 import com.edusis.apirest.domain.Documento;
 import com.edusis.apirest.domain.TipoDocumento;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  *
@@ -21,7 +24,26 @@ public class ProfesorDto {
     private String documento;
     private TipoDocumento tipoDocumento;
     private Calendar fechaNacimiento;
+    private List<Curso> cursos;
+    private List<Asignatura> asignaturas;
 
+    public List<Curso> getCursos() {
+        return cursos;
+    }
+
+    public void setCursos(List<Curso> cursos) {
+        this.cursos = cursos;
+    }
+
+    public List<Asignatura> getAsignaturas() {
+        return asignaturas;
+    }
+
+    public void setAsignaturas(List<Asignatura> asignaturas) {
+        this.asignaturas = asignaturas;
+    }
+
+    
     public Long getId() {
         return id;
     }

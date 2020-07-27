@@ -5,8 +5,10 @@
  */
 package com.edusis.apirest.service.dto;
 
+import com.edusis.apirest.domain.Curso;
 import com.edusis.apirest.domain.TipoDocumento;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  *
@@ -22,7 +24,17 @@ public class AlumnoDto {
     private Calendar fechaNacimiento;
     private PasswordEmojiDto passwordEmoji;
     private String avatarUrl;
+    private List<Curso> cursos;
 
+    public List<Curso> getCursos() {
+        return cursos;
+    }
+
+    public void setCursos(List<Curso> cursos) {
+        this.cursos = cursos;
+    }
+
+    
     public Long getId() {
         return id;
     }
