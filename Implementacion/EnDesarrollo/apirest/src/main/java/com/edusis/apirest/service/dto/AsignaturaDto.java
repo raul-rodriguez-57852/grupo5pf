@@ -17,9 +17,9 @@ public class AsignaturaDto {
     
     private Long id;
     private String nombre;
-    private Curso curso;
-    private String avatar;
-    private Profesor creador;
+    private Long cursoId;
+    private String iconoURL;
+    private Long creadorId;
     private List<Profesor> profesores;
 
     public Long getId() {
@@ -38,28 +38,28 @@ public class AsignaturaDto {
         this.nombre = nombre;
     }
 
-    public Curso getCurso() {
-        return curso;
+    public Long getCursoId() {
+        return cursoId;
     }
 
-    public void setCurso(Curso curso) {
-        this.curso = curso;
+    public void setCursoId(Long cursoId) {
+        this.cursoId = cursoId;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public Long getCreadorId() {
+        return creadorId;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setCreadorId(Long creadorId) {
+        this.creadorId = creadorId;
     }
 
-    public Profesor getCreador() {
-        return creador;
+    public String getIconoURL() {
+        return iconoURL;
     }
 
-    public void setCreador(Profesor creador) {
-        this.creador = creador;
+    public void setIconoURL(String iconoURL) {
+        this.iconoURL = iconoURL;
     }
 
     public List<Profesor> getProfesores() {

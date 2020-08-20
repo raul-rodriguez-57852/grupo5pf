@@ -19,4 +19,8 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['registro']);
   }
 
+  irAInicioSesion() {
+    this.router.navigate(['inicio-sesion']);
+  }
+
 }

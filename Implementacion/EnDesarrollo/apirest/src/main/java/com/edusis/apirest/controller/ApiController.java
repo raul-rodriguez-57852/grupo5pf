@@ -11,6 +11,7 @@ import com.edusis.apirest.domain.Curso;
 import com.edusis.apirest.domain.Documento;
 import com.edusis.apirest.domain.Emoji;
 import com.edusis.apirest.domain.PasswordEmoji;
+import com.edusis.apirest.domain.Persona;
 import com.edusis.apirest.domain.Profesor;
 import com.edusis.apirest.domain.TipoDocumento;
 import com.edusis.apirest.domain.Tutor;
@@ -18,6 +19,7 @@ import com.edusis.apirest.service.AlumnoService;
 import com.edusis.apirest.service.AsignaturaService;
 import com.edusis.apirest.service.CursoService;
 import com.edusis.apirest.service.EmojiService;
+import com.edusis.apirest.service.PersonaService;
 import com.edusis.apirest.service.ProfesorService;
 import com.edusis.apirest.service.TutorService;
 import com.edusis.apirest.service.dto.AlumnoDto;
@@ -58,7 +60,7 @@ public class ApiController {
     
     @Autowired
     private ProfesorService profesorService;
-    
+
     @Autowired
     private TutorService tutorService;
 
@@ -88,6 +90,16 @@ public class ApiController {
     @GetMapping("emoji")
     public Emoji getEmoji(@RequestParam Long id) {
         return emojiService.get(id);
+    }
+       
+    @GetMapping("curso")
+    public Curso getCurso(@RequestParam Long id) {
+        return cursoService.get(id);
+    }
+    
+    @GetMapping("asignatura")
+    public Asignatura getAsignatura(@RequestParam Long id) {
+        return asignaturaService.get(id);
     }
     
     @DeleteMapping("eliminarEmoji")
@@ -227,8 +239,8 @@ public class ApiController {
     public ResponseEntity<Long> guardarCurso(@RequestBody CursoDto cursoDto) {
         Curso curso = cursoDto.getId() != null ? cursoService.get(cursoDto.getId()) : new Curso();
         curso.setNombre(cursoDto.getNombre());
-        curso.setAvatar(cursoDto.getAvatar());
-        curso.setCreador(cursoDto.getCreador());
+        curso.setIconoURL(cursoDto.getIconoURL());
+        curso.setCreador(profesorService.get(cursoDto.getCreadorId()));
         curso.validar();
         cursoService.save(curso);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -238,9 +250,9 @@ public class ApiController {
     public ResponseEntity<Long> guardarAsignatura(@RequestBody AsignaturaDto asignaturaDto) {
         Asignatura asignatura = asignaturaDto.getId() != null ? asignaturaService.get(asignaturaDto.getId()) : new Asignatura();
         asignatura.setNombre(asignaturaDto.getNombre());
-        asignatura.setAvatar(asignaturaDto.getAvatar());
-        asignatura.setCreador(asignaturaDto.getCreador());
-        Curso curso = asignaturaDto.getCurso();
+        asignatura.setIconoURL(asignaturaDto.getIconoURL());
+        asignatura.setCreador(profesorService.get(asignaturaDto.getCreadorId()));
+        Curso curso = cursoService.get(asignaturaDto.getCursoId());
         asignatura.setCurso(curso);
         if(curso.getAsignaturas() != null){
             if(!curso.getAsignaturas().contains(asignatura)){
@@ -265,9 +277,15 @@ public class ApiController {
     }
     
     @GetMapping("asignaturas")
-    public List<Asignatura> getAsignaturas(@RequestParam CursoDto cursoDto) {
-        Curso curso = cursoService.get(cursoDto.getId());
-        return asignaturaService.getAll(AsignaturaSpecs.byCurso(curso));
+    public List<Asignatura> getAsignaturas(@RequestParam Long cursoId) {
+        Curso curso = cursoService.get(cursoId);
+        // return asignaturaService.getAll(AsignaturaSpecs.byCurso(curso));
+        return asignaturaService.getAll();
+    }
+    
+    @GetMapping("cursos")
+    public List<Curso> getCursos() {
+        return cursoService.getAll(); 
     }
     
     @PostMapping("agregarAlumnoACurso")
@@ -300,6 +318,21 @@ public class ApiController {
             alumnoService.save(alumno);
         }
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @GetMapping("inicioSesionFake")
+    public Persona inicioSesionFake(@RequestParam String documento) {
+        List<Persona> personas = new ArrayList<Persona>();
+        List<Profesor> profesores = profesorService.getAll();
+        List<Tutor> tutores = tutorService.getAll();
+        personas.addAll(profesores);
+        personas.addAll(tutores);
+        for (Persona persona : personas) {
+            if (persona.getDocumento().getNumero().equals(documento)) {
+                return persona;
+            }
+        }
+        throw new Error();
     }
     
 }

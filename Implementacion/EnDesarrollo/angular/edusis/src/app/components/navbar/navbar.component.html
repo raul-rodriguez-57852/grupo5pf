@@ -1,6 +1,6 @@
 <nav id="menuNavegacion" class="menuNavegacion navbar fixed-top navbar-expand-sm navbar-light bg-light">
 <!--   <a routerLink="/"><img data-toggle="collapse" data-target=".navbar-collapse.show" src="assets/img/logo.png" width="50" height="50" alt="FUT Champions"></a>
- -->  <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+ -->  <button class="navbar-toggler custom-toggler" (click)="recargar()" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarText">
@@ -8,14 +8,19 @@
       <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" >
         <a class="nav-link" routerLink="/"><i class="fa fa-home"></i> Home</a>
       </li>
+<!--
       <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" >
         <a class="nav-link" routerLink="/emojis"><i class="fa fa-smile-o"></i> Emojis</a>
       </li>
       <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" >
         <a class="nav-link" routerLink="/editar-alumno"><i class="fa fa-pencil"></i> Nuevo alumno</a>
       </li>
-      <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" >
+    -->
+      <li *ngIf="tutorLog" class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" >
         <a class="nav-link" routerLink="/perfiles"><i class="fa fa-users"></i> Perfiles</a>
+      </li>
+      <li *ngIf="profeLog" class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" >
+        <a class="nav-link" routerLink="/cursos"><i class="fa fa-graduation-cap"></i> Cursos</a>
       </li>
     </ul>
   </div>

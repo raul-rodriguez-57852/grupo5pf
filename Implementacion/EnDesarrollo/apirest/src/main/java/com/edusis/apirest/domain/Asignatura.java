@@ -33,9 +33,10 @@ public class Asignatura extends GenericEntity {
     @NotNull
     private String nombre;
     
-    private String avatar;
+    private String iconoURL;
     
     @NotNull
+    @ManyToOne
     private Profesor creador;
     
     @ManyToMany(mappedBy="asignaturas")
@@ -78,12 +79,12 @@ public class Asignatura extends GenericEntity {
         this.nombre = nombre;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public String getIconoURL() {
+        return iconoURL;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setIconoURL(String iconoURL) {
+        this.iconoURL = iconoURL;
     }
 
     public List<Profesor> getProfesores() {

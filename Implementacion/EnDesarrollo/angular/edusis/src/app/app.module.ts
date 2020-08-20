@@ -12,6 +12,11 @@ import { EditarEmojiComponent } from './components/editar-emoji/editar-emoji.com
 import { EmojisComponent } from './components/emojis/emojis.component';
 import { EditarAlumnoComponent } from './components/editar-alumno/editar-alumno.component';
 import { PerfilesComponent } from './components/perfiles/perfiles.component';
+import { InicioSesionComponent } from './components/inicio-sesion/inicio-sesion.component';
+import { CursosComponent } from './components/cursos/cursos.component';
+import { CursoComponent } from './components/curso/curso.component';
+import { EditarCursoComponent } from './components/editar-curso/editar-curso.component';
+import { EditarAsignaturaComponent } from './components/editar-asignatura/editar-asignatura.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +27,12 @@ import { PerfilesComponent } from './components/perfiles/perfiles.component';
     EditarEmojiComponent,
     EmojisComponent,
     EditarAlumnoComponent,
-    PerfilesComponent
+    PerfilesComponent,
+    InicioSesionComponent,
+    CursosComponent,
+    CursoComponent,
+    EditarCursoComponent,
+    EditarAsignaturaComponent
   ],
   imports: [
     BrowserModule,

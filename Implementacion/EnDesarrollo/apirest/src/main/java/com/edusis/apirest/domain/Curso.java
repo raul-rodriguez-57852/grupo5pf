@@ -7,6 +7,7 @@ package com.edusis.apirest.domain;
 
 import com.edusis.apirest.generic.GenericEntity;
 import com.edusis.apirest.utils.AssertUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import java.util.List;
 import javax.persistence.Entity;
@@ -33,18 +34,20 @@ public class Curso extends GenericEntity{
     @NotNull
     private String nombre;
     
-    
-    private String avatar;
+    private String iconoURL;
     
     @NotNull
+    @ManyToOne
     private Profesor creador;
     
     @ManyToMany(mappedBy = "cursos")
     private List<Profesor> profesores;
     
+    @JsonIgnore
     @OneToMany(mappedBy="curso")
     private List<Asignatura> asignaturas;
     
+    @JsonIgnore
     @ManyToMany(mappedBy = "cursos")
     private List<Alumno> alumnos;
 
@@ -72,12 +75,12 @@ public class Curso extends GenericEntity{
         this.nombre = nombre;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public String getIconoURL() {
+        return iconoURL;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setIconoURL(String iconoURL) {
+        this.iconoURL = iconoURL;
     }
 
     public Profesor getCreador() {

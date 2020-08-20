@@ -5,12 +5,15 @@ import { Profesor } from '../models/profesor';
 import { Tutor } from '../models/tutor';
 import { Alumno } from '../models/alumno';
 import { PasswordEmoji } from '../models/password-emoji';
+import { Curso } from '../models/curso';
+import { Asignatura } from '../models/asignatura';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataApiService {
-    urlBase: string;
+  urlBase: string;
+  usuario = null;
 
   constructor(private http: HttpClient) {
     this.urlBase = 'http://localhost:8090/api/';
@@ -20,9 +23,25 @@ export class DataApiService {
     return this.http.get(this.urlBase + 'emojis').toPromise();
   }
 
+  getAsignaturas(cursoId: number): Promise<any> {
+    return this.http.get(this.urlBase + 'asignaturas', { params: { cursoId: cursoId.toString() }}).toPromise();
+  }
+
   getEmoji(id: string): Promise<any> {
     return this.http
       .get(this.urlBase + 'emoji', { params: { id } })
+      .toPromise();
+  }
+
+  getCurso(id: string): Promise<any> {
+    return this.http
+      .get(this.urlBase + 'curso', { params: { id } })
+      .toPromise();
+  }
+
+  getAsignatura(id: string): Promise<any> {
+    return this.http
+      .get(this.urlBase + 'asignatura', { params: { id } })
       .toPromise();
   }
 
@@ -66,4 +85,21 @@ export class DataApiService {
     postData.append('emoji3Id' , password.emoji3Id.toString());
     return this.http.post(this.urlBase + 'ingresoAlumno', postData).toPromise();
   }
+
+  inicioSesionFake(documento: string): Promise<any> {
+    return this.http.get(this.urlBase + 'inicioSesionFake', { params: { documento }}).toPromise();
+  }
+
+  getCursos(): Promise<any> {
+    return this.http.get(this.urlBase + 'cursos').toPromise();
+  }
+
+  guardarCurso(curso: Curso): Promise<any> {
+    return this.http.post(this.urlBase + 'guardarCurso', curso).toPromise();
+  }
+
+  guardarAsignatura(asignatura: Asignatura): Promise<any> {
+    return this.http.post(this.urlBase + 'guardarAsignatura', asignatura).toPromise();
+  }
+
 }
