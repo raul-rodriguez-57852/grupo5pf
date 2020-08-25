@@ -1,0 +1,91 @@
+<section id="editar-tarea" class="margin-top-90">
+  <div class="container">
+    <form name="formTarea" #formTarea="ngForm" (ngSubmit)="save(formTarea)">
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input
+          [(ngModel)]="tarea.nombre"
+          type="text"
+          name="nombre"
+          class="form-control"
+          placeholder="Nombre"
+          required
+          autocomplete="off"
+        />
+      </div>
+      <div class="form-group">
+        <label for="asignatura">Asignatura</label>
+        <select
+          [(ngModel)]="tarea.asignaturaId"
+          class="form-control"
+          name="asignatura"
+          placeholder="Asignatura"
+        >
+          <option
+            *ngFor="let asignatura of asignaturas"
+            [ngValue]="asignatura.id"
+            >{{ asignatura.nombre }}</option
+          >
+        </select>
+      </div>
+      <button type="submit" class="btn btn-lg btn-block btn-personalizado">
+        Guardar
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- Modal -->
+<button
+  id="open-modal"
+  [hidden]="true"
+  data-toggle="modal"
+  data-target="#informacion"
+>
+  Open Modal
+</button>
+<div
+  class="modal fade"
+  id="informacion"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edusis</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ mensaje }}
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          data-dismiss="modal"
+          (click)="recargar()"
+          class="btn btn-personalizado"
+        >
+          Aceptar
+        </button>
+        <button
+          type="button"
+          data-dismiss="modal"
+          (click)="agregarDetalle()"
+          class="btn btn-personalizado"
+        >
+          Agregar Descripcion
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

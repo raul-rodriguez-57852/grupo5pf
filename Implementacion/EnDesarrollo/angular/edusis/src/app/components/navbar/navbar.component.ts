@@ -4,17 +4,15 @@ import { DataApiService } from '../../services/data-api.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-
   profeLog = false;
   tutorLog = false;
 
-  constructor(private dataApiService: DataApiService) { }
+  constructor(private dataApiService: DataApiService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   recargar() {
     console.log('AHORA ENTRÓ');
@@ -29,5 +27,4 @@ export class NavbarComponent implements OnInit {
       }
     }
   }
-
 }

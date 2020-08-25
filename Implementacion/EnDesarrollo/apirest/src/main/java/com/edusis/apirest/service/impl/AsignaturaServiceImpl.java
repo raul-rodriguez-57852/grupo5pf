@@ -23,15 +23,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class AsignaturaServiceImpl extends GenericServiceImpl<Asignatura, Long> implements AsignaturaService {
     
+    @Autowired
     private AsignaturaDao asignaturaDao;
     
-    public AsignaturaServiceImpl() {
-    }
-    
-    @Autowired
-    public AsignaturaServiceImpl(@Qualifier("asignaturaDaoImpl") GenericDao<Asignatura, Long> dao) {
-        super(dao);
-        this.asignaturaDao = (AsignaturaDao) dao;
-    }
+//    public AsignaturaServiceImpl() {
+//    }
+//    
+//    @Autowired
+//    public AsignaturaServiceImpl(@Qualifier("asignaturaDaoImpl") GenericDao<Asignatura, Long> dao) {
+//        super(dao);
+//        this.asignaturaDao = (AsignaturaDao) dao;
+//    }
     
 }

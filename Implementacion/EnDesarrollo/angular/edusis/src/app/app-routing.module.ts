@@ -11,7 +11,8 @@ import { CursosComponent } from './components/cursos/cursos.component';
 import { EditarCursoComponent } from './components/editar-curso/editar-curso.component';
 import { CursoComponent } from './components/curso/curso.component';
 import { EditarAsignaturaComponent } from './components/editar-asignatura/editar-asignatura.component';
-
+import { EditarTareaComponent } from './components/editar-tarea/editar-tarea.component';
+import { EditarDetalleMultimediaComponent } from './components/editar-detalle-multimedia/editar-detalle-multimedia.component';
 
 const routes: Routes = [
   // TODO: DEFINIR AUTH
@@ -25,11 +26,16 @@ const routes: Routes = [
   { path: 'editar-emoji', component: EditarEmojiComponent },
   { path: 'emojis', component: EmojisComponent },
   { path: 'editar-alumno', component: EditarAlumnoComponent },
-  { path: 'perfiles', component: PerfilesComponent }
+  { path: 'editar-tarea', component: EditarTareaComponent },
+  {
+    path: 'editar-detalle-multimedia',
+    component: EditarDetalleMultimediaComponent,
+  },
+  { path: 'perfiles', component: PerfilesComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -279,8 +279,8 @@ public class ApiController {
     @GetMapping("asignaturas")
     public List<Asignatura> getAsignaturas(@RequestParam Long cursoId) {
         Curso curso = cursoService.get(cursoId);
-        // return asignaturaService.getAll(AsignaturaSpecs.byCurso(curso));
-        return asignaturaService.getAll();
+        return asignaturaService.getAll(AsignaturaSpecs.byCurso(curso));
+//        return asignaturaService.getAll();
     }
     
     @GetMapping("cursos")
@@ -328,6 +328,9 @@ public class ApiController {
         personas.addAll(profesores);
         personas.addAll(tutores);
         for (Persona persona : personas) {
+            if(persona.getDocumento() == null || persona.getDocumento().getNumero() == null){
+                continue;
+            }
             if (persona.getDocumento().getNumero().equals(documento)) {
                 return persona;
             }

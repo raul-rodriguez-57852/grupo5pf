@@ -23,15 +23,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmojiServiceImpl extends GenericServiceImpl<Emoji, Long> implements EmojiService {
     
+    @Autowired
     private EmojiDao emojiDao;
     
-    public EmojiServiceImpl() {
-    }
-    
-    @Autowired
-    public EmojiServiceImpl(@Qualifier("emojiDaoImpl") GenericDao<Emoji, Long> dao) {
-        super(dao);
-        this.emojiDao = (EmojiDao) dao;
-    }
+//    public EmojiServiceImpl() {
+//    }
+//    
+//    @Autowired
+//    public EmojiServiceImpl(@Qualifier("emojiDaoImpl") GenericDao<Emoji, Long> dao) {
+//        super(dao);
+//        this.emojiDao = (EmojiDao) dao;
+//    }
     
 }

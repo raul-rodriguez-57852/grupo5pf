@@ -43,7 +43,7 @@ public abstract class GenericServiceImpl<T, K> implements GenericService<T, K> {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public List<T> getAll(Predicate pdct) {
-        return dao.findAll(pdct);
+        return (List<T>) dao.findAll(pdct);
     }
 
     @Override
@@ -55,7 +55,7 @@ public abstract class GenericServiceImpl<T, K> implements GenericService<T, K> {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)    
     public T get(K id) {
-        return dao.findById(id);
+        return dao.getOne(id);
     }
 
     @Override

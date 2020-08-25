@@ -23,15 +23,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class CursoServiceImpl extends GenericServiceImpl<Curso, Long> implements CursoService {
     
+    @Autowired
     private CursoDao cursoDao;
     
-    public CursoServiceImpl() {
-    }
-    
-    @Autowired
-    public CursoServiceImpl(@Qualifier("cursoDaoImpl") GenericDao<Curso, Long> dao) {
-        super(dao);
-        this.cursoDao = (CursoDao) dao;
-    }
-    
+//    public CursoServiceImpl() {
+//    }
+//    
+//    @Autowired
+//    public CursoServiceImpl(@Qualifier("cursoDaoImpl") GenericDao<Curso, Long> dao) {
+//        super(dao);
+//        this.cursoDao = (CursoDao) dao;
+//    }
+//    
 }

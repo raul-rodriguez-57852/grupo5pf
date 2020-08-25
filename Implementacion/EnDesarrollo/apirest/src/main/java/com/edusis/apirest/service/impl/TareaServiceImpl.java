@@ -6,11 +6,11 @@
 
 package com.edusis.apirest.service.impl;
 
-import com.edusis.apirest.dao.ProfesorDao;
-import com.edusis.apirest.domain.Profesor;
+import com.edusis.apirest.dao.TareaDao;
+import com.edusis.apirest.domain.Tarea;
 import com.edusis.apirest.generic.GenericDao;
 import com.edusis.apirest.generic.GenericServiceImpl;
-import com.edusis.apirest.service.ProfesorService;
+import com.edusis.apirest.service.TareaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -21,18 +21,18 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class ProfesorServiceImpl extends GenericServiceImpl<Profesor, Long> implements ProfesorService {
+public class TareaServiceImpl extends GenericServiceImpl<Tarea, Long> implements TareaService {
     
     @Autowired
-    private ProfesorDao profesorDao;
+    private TareaDao tareaDao;
     
-//    public ProfesorServiceImpl() {
+//    public TareaServiceImpl() {
 //    }
 //    
 //    @Autowired
-//    public ProfesorServiceImpl(@Qualifier("profesorDaoImpl") GenericDao<Profesor, Long> dao) {
+//    public TareaServiceImpl(@Qualifier("tareaDaoImpl") GenericDao<Tarea, Long> dao) {
 //        super(dao);
-//        this.profesorDao = (ProfesorDao) dao;
+//        this.tareaDao = (TareaDao) dao;
 //    }
     
 }

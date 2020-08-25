@@ -7,6 +7,7 @@ package com.edusis.apirest.domain;
 
 import com.edusis.apirest.generic.GenericEntity;
 import com.edusis.apirest.utils.AssertUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import java.util.List;
 import javax.persistence.Entity;
@@ -42,6 +43,10 @@ public class Asignatura extends GenericEntity {
     @ManyToMany(mappedBy="asignaturas")
     private List<Profesor> profesores;
     
+    @JsonIgnore
+    @OneToMany(mappedBy = "asignatura")
+    private List<Tarea> tareas;
+    
     
     public void validar(){
         AssertUtils.notNull(nombre, "El nombre no puede ser nulo");
@@ -54,11 +59,6 @@ public class Asignatura extends GenericEntity {
         return creador;
     }
 
-    /**
-     * Falta Atributo Tareas
-     *
-     * @return 
-     */
     public void setCreador(Profesor creador) {
         this.creador = creador;
     }
@@ -94,12 +94,15 @@ public class Asignatura extends GenericEntity {
     public void setProfesores(List<Profesor> profesores) {
         this.profesores = profesores;
     }
+
+    public List<Tarea> getTareas() {
+        return tareas;
+    }
+
+    public void setTareas(List<Tarea> tareas) {
+        this.tareas = tareas;
+    }
+       
     
-    /**
-     * Falta Atributo Tareas.
-     */
-    
-    
-    
-    
+        
 }

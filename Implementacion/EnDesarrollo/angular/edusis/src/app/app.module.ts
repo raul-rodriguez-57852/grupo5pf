@@ -17,6 +17,8 @@ import { CursosComponent } from './components/cursos/cursos.component';
 import { CursoComponent } from './components/curso/curso.component';
 import { EditarCursoComponent } from './components/editar-curso/editar-curso.component';
 import { EditarAsignaturaComponent } from './components/editar-asignatura/editar-asignatura.component';
+import { EditarTareaComponent } from './components/editar-tarea/editar-tarea.component';
+import { EditarDetalleMultimediaComponent } from './components/editar-detalle-multimedia/editar-detalle-multimedia.component';
 
 @NgModule({
   declarations: [
@@ -32,15 +34,12 @@ import { EditarAsignaturaComponent } from './components/editar-asignatura/editar
     CursosComponent,
     CursoComponent,
     EditarCursoComponent,
-    EditarAsignaturaComponent
+    EditarAsignaturaComponent,
+    EditarTareaComponent,
+    EditarDetalleMultimediaComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-  ],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

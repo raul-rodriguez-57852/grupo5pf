@@ -13,6 +13,7 @@ import { Asignatura } from '../models/asignatura';
 })
 export class DataApiService {
   urlBase: string;
+  urlTarea: string;
   usuario = null;
 
   constructor(private http: HttpClient) {
@@ -24,7 +25,11 @@ export class DataApiService {
   }
 
   getAsignaturas(cursoId: number): Promise<any> {
-    return this.http.get(this.urlBase + 'asignaturas', { params: { cursoId: cursoId.toString() }}).toPromise();
+    return this.http
+      .get(this.urlBase + 'asignaturas', {
+        params: { cursoId: cursoId.toString() },
+      })
+      .toPromise();
   }
 
   getEmoji(id: string): Promise<any> {
@@ -79,15 +84,17 @@ export class DataApiService {
 
   ingresoAlumno(id: string, password: PasswordEmoji): Promise<any> {
     const postData = new FormData();
-    postData.append('id' , id);
-    postData.append('emoji1Id' , password.emoji1Id.toString());
-    postData.append('emoji2Id' , password.emoji2Id.toString());
-    postData.append('emoji3Id' , password.emoji3Id.toString());
+    postData.append('id', id);
+    postData.append('emoji1Id', password.emoji1Id.toString());
+    postData.append('emoji2Id', password.emoji2Id.toString());
+    postData.append('emoji3Id', password.emoji3Id.toString());
     return this.http.post(this.urlBase + 'ingresoAlumno', postData).toPromise();
   }
 
   inicioSesionFake(documento: string): Promise<any> {
-    return this.http.get(this.urlBase + 'inicioSesionFake', { params: { documento }}).toPromise();
+    return this.http
+      .get(this.urlBase + 'inicioSesionFake', { params: { documento } })
+      .toPromise();
   }
 
   getCursos(): Promise<any> {
@@ -99,7 +106,8 @@ export class DataApiService {
   }
 
   guardarAsignatura(asignatura: Asignatura): Promise<any> {
-    return this.http.post(this.urlBase + 'guardarAsignatura', asignatura).toPromise();
+    return this.http
+      .post(this.urlBase + 'guardarAsignatura', asignatura)
+      .toPromise();
   }
-
 }
