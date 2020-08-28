@@ -21,7 +21,7 @@ public class AsignaturaDto {
     private String iconoURL;
     private Long creadorId;
     private List<Profesor> profesores;
-
+    
     public Long getId() {
         return id;
     }

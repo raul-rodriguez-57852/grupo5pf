@@ -50,6 +50,8 @@ public class Curso extends GenericEntity{
     @JsonIgnore
     @ManyToMany(mappedBy = "cursos")
     private List<Alumno> alumnos;
+    
+    private String codigo;
 
     public List<Asignatura> getAsignaturas() {
         return asignaturas;
@@ -63,6 +65,17 @@ public class Curso extends GenericEntity{
     
     ///////// GETTERS AND SETTERS //////////
 
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    
+    
+    
     public void setAsignaturas(List<Asignatura> asignaturas) {
         this.asignaturas = asignaturas;
     }

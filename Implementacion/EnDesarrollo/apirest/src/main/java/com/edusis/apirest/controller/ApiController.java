@@ -29,9 +29,14 @@ import com.edusis.apirest.service.dto.EmojiDto;
 import com.edusis.apirest.service.dto.ProfesorDto;
 import com.edusis.apirest.service.dto.TutorDto;
 import com.edusis.apirest.specs.AsignaturaSpecs;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -241,8 +246,82 @@ public class ApiController {
         curso.setNombre(cursoDto.getNombre());
         curso.setIconoURL(cursoDto.getIconoURL());
         curso.setCreador(profesorService.get(cursoDto.getCreadorId()));
+        curso.setCodigo(null);
         curso.validar();
         cursoService.save(curso);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping("generarCodigoCurso")
+    public ResponseEntity<Long> generarCodigoCurso(@RequestBody CursoDto cursoDto) throws NoSuchAlgorithmException{
+        Curso curso = cursoService.get(cursoDto.getId());
+        if(curso.getCodigo() != null){
+            //Ya tiene codigo asignado
+        }
+        else{
+            try{
+                String identificador = cursoDto.getId().toString() + cursoDto.getNombre();
+                MessageDigest md5 = MessageDigest.getInstance("MD5");
+                byte[] byteMessage = identificador.getBytes("UTF-8");
+                byte[] digested = md5.digest(byteMessage);
+                String codigo = Arrays.toString(digested);
+                //listo todos los cursos
+                List<Curso> listado_cursos = (ArrayList<Curso>) cursoService.getAll();
+                //Listro los codigos de todos los cursos
+                //checkeo que no sea null la lista, si es null asigno codigo directamente
+                if(listado_cursos.isEmpty()){
+                //No hay cursos por ahora
+                curso.setCodigo(codigo);
+                }
+                else{
+                    List<String> listado_codigos = listado_cursos.stream().map(x -> x.getCodigo()).collect(Collectors.toList());
+                    //Este es el codigo que quiero insertar en el nuevo curso
+                    Random r = new Random();
+                    boolean contiene = true;
+                    boolean changes_made_to_codigo = false;
+                    while (contiene)
+                    {
+                        for(String cod_existente : listado_codigos)
+                        {
+                        //Recorro cada codigo del listado de codigos obtenido arriba
+                            if(cod_existente.equals(codigo))
+                            {
+                                //Existe un codigo existente, entonces lo cambio al nuevo
+                                StringBuilder my_codigo = new StringBuilder(codigo);
+                                char c = (char) (r.nextInt(26) + 'a');
+                                //modifico en la posicion 3 por la letra aleatoria de la variable c
+                                my_codigo.setCharAt(3, c);
+                                //Ahora el codigo que quiero agregar esta cambiado
+                                codigo = my_codigo.toString();
+                                changes_made_to_codigo = true;
+                            }
+                        }
+                        //Si yo hice cambios en mi codigo, tengo que validar que este nuevo codigo que obtuve, tampoco este dentro de la lista
+                        if(!changes_made_to_codigo)
+                        {
+                            //Recorri todo el listado de codigos, y no hice ningun cambio, osea que no se encontro el mismo codigo
+                            //corto el ciclo.
+                            contiene = false;
+                        }
+                        else
+                        {
+                            //Si realize cambios, entonces debo seguir iterando para chequear el codigo cambiado
+                            //apago el flag de cambios para que no sea ciclico
+                            changes_made_to_codigo = false;
+                        }
+                    }
+                    //Asigno el codgio al curso.
+                    curso.setCodigo(codigo);
+                }  
+           }
+            catch (java.io.UnsupportedEncodingException e)
+            {
+                System.err.println("Erro, MD5 no es un algoritmo de encriptacion correcto para MessageDigest (ApiContrller) trying setCodigo");
+            }
+            catch (NoSuchAlgorithmException er){
+                System.err.println("Erro, MD5 no es un algoritmo de encriptacion correcto para MessageDigest");
+            }
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
     

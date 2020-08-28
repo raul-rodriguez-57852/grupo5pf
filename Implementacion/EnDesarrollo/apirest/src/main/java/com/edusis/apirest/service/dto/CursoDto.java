@@ -23,6 +23,15 @@ public class CursoDto {
     private List<Profesor> profesores;
     private List<Asignatura> asignaturas;
     private List<Alumno> alumnos;
+    private String codigo;
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
 
     public Long getId() {
         return id;
