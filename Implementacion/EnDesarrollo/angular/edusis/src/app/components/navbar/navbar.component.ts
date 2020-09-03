@@ -17,7 +17,7 @@ export class NavbarComponent implements OnInit {
   recargar() {
     console.log('AHORA ENTRÓ');
     if (this.dataApiService.usuario != null) {
-      if (this.dataApiService.usuario.nombre === 'Profesor') {
+      if (this.dataApiService.usuario.nombre === 'Manuel') {
         this.profeLog = true;
         this.tutorLog = false;
       }

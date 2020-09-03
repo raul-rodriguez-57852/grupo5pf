@@ -10,8 +10,11 @@ import { DataApiService } from '../../services/data-api.service';
 export class CursosComponent implements OnInit {
 
   cursos = [];
+  curso = null;
+
   id: number;
   mensaje: string;
+
 
   constructor(
     private router: Router,
@@ -20,6 +23,7 @@ export class CursosComponent implements OnInit {
 
   ngOnInit() {
     this.getAll();
+  
   }
 
   getAll() {
@@ -43,6 +47,47 @@ export class CursosComponent implements OnInit {
     this.router.navigate(['editar-curso']);
   }
 
+  generarCodigoCurso(id: number){
+    console.log('ID = ', id);
+    
+    this.dataApiService.getCurso(id.toString()).then(
+      (curso) => {
+        this.curso = curso;
+        console.log('curso.id = ',this.curso.id);
+        /*
+        console.log('curso.id = ',this.curso.id);
+        console.log('curso.nombre = ',this.curso.nombre);
+        console.log('curso.codigo = ',this.curso.codigo);
+        console.log('curso.iconoUrL = ',this.curso.iconoURL);
+        console.log('curso.creador = ',this.curso.creador);
+        */
+        if(this.curso.codigo === null){
+          console.log('Codigo Null');
+          this.curso = this.dataApiService.generarCodigoCurso(curso).then(
+            (respuesta) => {
+              this.curso = curso
+            }
+          )
+
+         
+        }
+        
+        
+      }
+    );
+    //this.mensaje = "Codigo de invitacion al curso!";
+    
+    //document.getElementById('open-modal-codigo-curso').click();
+    
+    this.dataApiService.getCurso(id.toString()).then(
+      (curso) => {
+        this.curso = curso;
+        console.log('CODIGO DE INVITACION! = ',this.curso.codigo);
+      }
+    )
+
+  }
+
   eliminar() {
     /*this.dataApiService.elimi(this.id.toString()).then(
       (respuesta) => {
@@ -63,4 +108,7 @@ export class CursosComponent implements OnInit {
   recargar() {
     // window.location.reload();
   }
+
+
+
 }

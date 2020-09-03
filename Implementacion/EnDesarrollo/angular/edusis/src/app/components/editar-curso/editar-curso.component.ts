@@ -11,8 +11,9 @@ import { NgForm } from '@angular/forms';
 })
 export class EditarCursoComponent implements OnInit {
 
-  curso: Curso = { id: null, nombre: null, iconoURL: null, creadorId: null };
+  curso: Curso = { id: null, nombre: null, iconoURL: null, creadorId: null,codigo: null };
   mensaje: string = null;
+  tienecodigo = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,10 +27,23 @@ export class EditarCursoComponent implements OnInit {
         (emoji) => {
           this.curso.nombre = emoji.nombre;
           this.curso.iconoURL = emoji.iconoURL;
+          this.curso.codigo = emoji.codigo;
         }
       );
     }
+    if(this.curso.codigo == null){
+      this.tienecodigo = false
+      var x = document.getElementById('divCodigoGeneracion');
+      //Aca deberia ocultarlo
+    }
+    else{
+      this.tienecodigo = true;
+      var x = document.getElementById('botondecodigo');
+      (<HTMLButtonElement>x).value = "Copiar";
+    }
   }
+
+  
 
   save(formCurso: NgForm) {
     this.curso.creadorId = this.dataApiService.usuario.id;
@@ -50,5 +64,31 @@ export class EditarCursoComponent implements OnInit {
   recargar() {
     // window.location.reload();
   }
+  generarCodigoCurso()
+  {
+      if(this.curso.codigo === null){
+          console.log('Codigo Null');
+          this.dataApiService.generarCodigoCurso(this.curso).then(
+            (respuesta) => {
+              this.mensaje = 'Codigo generado con éxito.';
+              document.getElementById('open-modal').click();
+              
+            }
+          );
+        }
+        
+        this.dataApiService.getCurso(this.curso.id.toString()).then(
+          (emoji) => {
+            this.curso.nombre = emoji.nombre;
+            this.curso.iconoURL = emoji.iconoURL;
+            this.curso.codigo = emoji.codigo;
+          }
+          
+        );
+        (<HTMLInputElement>document.getElementById('contenedor-codigo')).value = this.curso.codigo;  
+      
+      
+  }
+    
 
 }

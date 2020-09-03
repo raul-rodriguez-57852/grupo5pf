@@ -8,6 +8,7 @@ package com.edusis.apirest.domain;
 import com.edusis.apirest.generic.GenericEntity;
 import com.edusis.apirest.utils.AssertUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
 import java.util.List;
 import javax.persistence.Entity;
@@ -40,22 +41,22 @@ public class Curso extends GenericEntity{
     @ManyToOne
     private Profesor creador;
     
+    @JsonIgnoreProperties(value = {"Curso", "hibernateLazyInitializer"})
     @ManyToMany(mappedBy = "cursos")
     private List<Profesor> profesores;
     
-    @JsonIgnore
+    @JsonIgnoreProperties(value = {"Curso", "hibernateLazyInitializer"})
     @OneToMany(mappedBy="curso")
     private List<Asignatura> asignaturas;
     
-    @JsonIgnore
+    @JsonIgnoreProperties(value = {"Curso", "hibernateLazyInitializer"})
     @ManyToMany(mappedBy = "cursos")
     private List<Alumno> alumnos;
     
+    @JsonIgnoreProperties(value = {"Curso", "hibernateLazyInitializer"})
     private String codigo;
 
-    public List<Asignatura> getAsignaturas() {
-        return asignaturas;
-    }
+    
     
     public void validar(){
         AssertUtils.notNull(nombre, "El nombre no puede ser nulo");
@@ -73,7 +74,9 @@ public class Curso extends GenericEntity{
         this.codigo = codigo;
     }
 
-    
+    public List<Asignatura> getAsignaturas() {
+        return asignaturas;
+    }
     
     
     public void setAsignaturas(List<Asignatura> asignaturas) {

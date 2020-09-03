@@ -15,12 +15,11 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
   }
 
-  irARegistro() {
-    this.router.navigate(['registro']);
+  irARegistro(id) {
+    this.router.navigate(['registro'], {state: {id: id}});
   }
 
-  irAInicioSesion() {
-    this.router.navigate(['inicio-sesion']);
+  irAInicioSesion(id) {
+    this.router.navigate(['inicio-sesion'], {state: {id: id}});
   }
-
 }

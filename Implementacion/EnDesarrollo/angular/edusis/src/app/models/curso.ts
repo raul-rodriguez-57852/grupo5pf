@@ -3,4 +3,5 @@ export class Curso {
   nombre: string;
   iconoURL: string;
   creadorId: number;
+  codigo: string;
 }

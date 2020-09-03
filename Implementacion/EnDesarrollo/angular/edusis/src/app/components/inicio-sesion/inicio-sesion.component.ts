@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { DataApiService } from '../../services/data-api.service';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -13,7 +14,27 @@ export class InicioSesionComponent implements OnInit {
   mensaje: string = null;
   documento: string = null;
 
-  constructor(private dataApiService: DataApiService) {}
+  constructor(private dataApiService: DataApiService,private router: Router)
+   {
+      var id: any;
+    
+      if(this.router.getCurrentNavigation().extras.state.id != 3)
+      {
+        if (this.router.getCurrentNavigation().extras.state.id == 1)
+        {
+          this.esCuentaTutor = false;
+        }
+        else
+        {
+          this.esCuentaTutor = true;
+    
+        }
+        console.log(this.router.getCurrentNavigation().extras.state.id); 
+      }
+      else{
+        this.router.navigate(['home']);
+      }
+  }
 
   ngOnInit() {}
 
@@ -41,7 +62,7 @@ export class InicioSesionComponent implements OnInit {
     this.ngOnInit();
   }
 
-  recargar() {
-    //  window.location.reload();
+  recargar(id) {
+    this.router.navigate(['inicio-sesion'], {state: {id: id}});
   }
 }

@@ -15,6 +15,7 @@ export class CursoComponent implements OnInit {
   tareas = [];
   id: number;
   mensaje: string;
+  codigo: string;
 
   constructor(
     private route: ActivatedRoute,

@@ -98,6 +98,7 @@ export class DataApiService {
   }
 
   getCursos(): Promise<any> {
+    console.log('Entro en getCursos() en apicontroller')
     return this.http.get(this.urlBase + 'cursos').toPromise();
   }
 
@@ -109,5 +110,10 @@ export class DataApiService {
     return this.http
       .post(this.urlBase + 'guardarAsignatura', asignatura)
       .toPromise();
+  }
+
+  generarCodigoCurso(curso: Curso): Promise<any> {
+    return this.http
+    .post(this.urlBase + 'generarCodigoCurso',curso).toPromise();
   }
 }

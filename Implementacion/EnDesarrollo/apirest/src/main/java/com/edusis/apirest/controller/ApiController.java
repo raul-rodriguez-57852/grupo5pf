@@ -264,17 +264,24 @@ public class ApiController {
                 MessageDigest md5 = MessageDigest.getInstance("MD5");
                 byte[] byteMessage = identificador.getBytes("UTF-8");
                 byte[] digested = md5.digest(byteMessage);
-                String codigo = Arrays.toString(digested);
+                StringBuffer codigobuilder = new StringBuffer();
+                for (byte bytes : digested) 
+                {
+                    codigobuilder.append(String.format("%02x", bytes & 0xff));
+                }
+                 String codigo = codigobuilder.toString();
                 //listo todos los cursos
                 List<Curso> listado_cursos = (ArrayList<Curso>) cursoService.getAll();
                 //Listro los codigos de todos los cursos
                 //checkeo que no sea null la lista, si es null asigno codigo directamente
-                if(listado_cursos.isEmpty()){
-                //No hay cursos por ahora
+                if(listado_cursos.size() == 1){
+                //No hay cursos por ahora solo este
                 curso.setCodigo(codigo);
+                
                 }
                 else{
                     List<String> listado_codigos = listado_cursos.stream().map(x -> x.getCodigo()).collect(Collectors.toList());
+                    
                     //Este es el codigo que quiero insertar en el nuevo curso
                     Random r = new Random();
                     boolean contiene = true;
@@ -284,7 +291,7 @@ public class ApiController {
                         for(String cod_existente : listado_codigos)
                         {
                         //Recorro cada codigo del listado de codigos obtenido arriba
-                            if(cod_existente.equals(codigo))
+                            if(codigo.equals(cod_existente))
                             {
                                 //Existe un codigo existente, entonces lo cambio al nuevo
                                 StringBuilder my_codigo = new StringBuilder(codigo);
@@ -312,7 +319,9 @@ public class ApiController {
                     }
                     //Asigno el codgio al curso.
                     curso.setCodigo(codigo);
+                    
                 }  
+                cursoService.save(curso);
            }
             catch (java.io.UnsupportedEncodingException e)
             {
@@ -323,6 +332,29 @@ public class ApiController {
             }
         }
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping("buscarCursoPorCodigo")
+    public Long buscarCursoPorCodigo(@RequestBody String codigo){
+        //Consigo todos los cursos
+        List<Curso> listado_cursos = (ArrayList<Curso>) cursoService.getAll();
+        if(listado_cursos.size() == 0){
+            //No hay cursos creados por ahora, por ende devuelvo -1
+            return Long.valueOf(-1);
+        }
+        else{
+            for (int i = 0; i < listado_cursos.size(); i++)
+                {
+                if(listado_cursos.get(i).getCodigo().equals(codigo))
+                    {
+                //Encontre el curso con ese codigo.
+                //devuelvo su id
+                    return listado_cursos.get(i).getId();
+                    }
+                }
+            //no encontre ningun curso con dicho codigo. devuelvo -1
+            return Long.valueOf(-1);
+            }
     }
     
     @PostMapping("guardarAsignatura")
@@ -364,6 +396,7 @@ public class ApiController {
     
     @GetMapping("cursos")
     public List<Curso> getCursos() {
+        System.out.print("Entro metodo GetCurso");
         return cursoService.getAll(); 
     }
     
@@ -376,10 +409,12 @@ public class ApiController {
         }
         if(curso.getAlumnos() != null){
             if(!curso.getAlumnos().contains(alumno)){
+                //el alumno no esta en el curso, lo agrego
                 curso.getAlumnos().add(alumno);
                 cursoService.save(curso);
             }
         } else{
+            //no hay alumnos en el curso
             ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
             alumnos.add(alumno);
             curso.setAlumnos(alumnos);
@@ -416,5 +451,7 @@ public class ApiController {
         }
         throw new Error();
     }
+    
+    
     
 }

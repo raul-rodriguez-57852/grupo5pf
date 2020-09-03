@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Profesor } from '../../models/profesor';
 import { Tutor } from '../../models/tutor';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { DataApiService } from '../../services/data-api.service';
 
 @Component({
@@ -16,8 +17,22 @@ export class RegistroComponent implements OnInit {
   esCuentaTutor = true;
   tiposDoc = [];
 
-  constructor(private dataApiService: DataApiService) {}
-
+  constructor(private dataApiService: DataApiService, private router: Router) {
+    var id: any;
+    
+    if(this.router.getCurrentNavigation().extras.state.id != 3)
+    {
+      if (this.router.getCurrentNavigation().extras.state.id == 1)
+      {
+        this.esCuentaTutor = false;
+      }
+      else
+      {
+        this.esCuentaTutor = true;
+      }
+      console.log(this.router.getCurrentNavigation().extras.state.id); 
+    }
+  }
   ngOnInit() {
     this.getTiposDoc();
   }
@@ -98,7 +113,7 @@ export class RegistroComponent implements OnInit {
     this.ngOnInit();
   }
 
-  recargar() {
-    window.location.reload();
+  recargar(id) {
+    this.router.navigate(['registro'], {state: {id: id}});
   }
 }
