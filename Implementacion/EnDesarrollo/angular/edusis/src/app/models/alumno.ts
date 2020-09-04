@@ -7,4 +7,5 @@ export class Alumno {
   fechaNacimiento: Date;
   avatarUrl: string;
   passwordEmoji: PasswordEmoji;
+  tutorId: number;
 }

@@ -26,7 +26,7 @@ public class AlumnoDto {
     private PasswordEmojiDto passwordEmoji;
     private String avatarUrl;
     private List<Curso> cursos;
-    private Tutor tutor;
+    private Long tutorId;
 
     public List<Curso> getCursos() {
         return cursos;
@@ -100,12 +100,12 @@ public class AlumnoDto {
         this.avatarUrl = avatarUrl;
     }
 
-    public Tutor getTutor() {
-        return tutor;
+    public Long getTutorId() {
+        return tutorId;
     }
 
-    public void setTutor(Tutor tutor) {
-        this.tutor = tutor;
+    public void setTutorId(Long tutor) {
+        this.tutorId = tutor;
     }
 
 }

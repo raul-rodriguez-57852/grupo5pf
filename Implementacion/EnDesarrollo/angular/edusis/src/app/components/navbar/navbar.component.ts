@@ -7,14 +7,16 @@ import { DataApiService } from '../../services/data-api.service';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  profeLog = false;
-  tutorLog = false;
+  profeLog = true;
+  tutorLog = true;
 
   constructor(private dataApiService: DataApiService) {}
 
   ngOnInit() {}
 
   recargar() {
+
+    /*
     console.log('AHORA ENTRÓ');
     if (this.dataApiService.usuario != null) {
       if (this.dataApiService.usuario.nombre === 'Manuel') {
@@ -25,6 +27,8 @@ export class NavbarComponent implements OnInit {
         this.tutorLog = true;
         this.profeLog = false;
       }
+
     }
+    */
   }
 }

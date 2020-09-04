@@ -1,6 +1,11 @@
 <section id="perfiles" class="margin-top-90">
   <div class="container" *ngIf="perfilSeleccionado == null">
     <div class="texto-principal">¿Quién va a aprender hoy?</div>
+    <section id="emojis" class="margin-top-90">
+      <div class="container">
+        <button (click)="nuevoalumno()" class="btn btn-lg btn-block btn-personalizado">Nuevo Perfil</button>
+      </div>
+    </section>
     <div class="row" *ngFor="let perfil of perfiles">
       <div class="col-sm-12 d-flex justify-content-center" style="margin-bottom: 10px;" >
         <img class="imagen-avatar" (click)="seleccionarPerfil(perfil)" src="{{ perfil.avatarUrl }}">

@@ -9,15 +9,20 @@
         <label for="iconoURL">Icono URL</label>
         <input [(ngModel)]="curso.iconoURL" type="text" name="iconoURL" class="form-control" placeholder="Icono URL" required autocomplete="off" value="curso.iconoURL">
       </div>
-      <div id="divCodigoGeneracion" class="form-group">
+      <div id="divCodigoGeneracion" *ngIf="mostrarcodigo" class="form-group">
         <label for="iconoURL">Generar Codigo Invitacion</label>
         <div class="row">
           <div class="col-8">
             <input id="contenedor-codigo" readonly [(ngModel)]="curso.codigo" type="text" name="Codigo" class="form-control" required autocomplete="off" value="tienecodigo? curso.codigo : Codigo sin generar">
           </div>
-          <div class="col" id="botondecodigo"> 
+          <div class="col" id="botondecodigo" *ngIf="!tienecodigo"> 
             <button type="button" (click)="generarCodigoCurso()" style="height: 38px; max-width: auto;" class="btn btn-secondary btn-sm">Generar</button>
           </div>
+          <div class="col" id="botondecodigo" *ngIf="tienecodigo"> 
+            <button type="button" (click)="copiarTexto(curso)" style="height: 38px; max-width: auto;" class="btn btn-secondary btn-sm">Copiar</button>
+          </div>
+         
+          
       </div>
     </div>
       <button type="submit" class="btn btn-lg btn-block btn-personalizado">Guardar</button>

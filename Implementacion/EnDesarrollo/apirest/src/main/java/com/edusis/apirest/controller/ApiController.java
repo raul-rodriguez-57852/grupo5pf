@@ -199,18 +199,20 @@ public class ApiController {
             pwd.setEmoji3(emoji3);
             alumno.setPasswordEmoji(pwd);
         }
-        Tutor tutor = alumnoDto.getTutor();
-        alumno.setTutor(tutor);
-        if(tutor.getAlumnos() != null){
-            if(!tutor.getAlumnos().contains(alumno)){
-                tutor.getAlumnos().add(alumno);
-                tutorService.save(tutor);
+        Long tutor = alumnoDto.getTutorId();
+        alumno.setTutor(tutorService.get(alumnoDto.getTutorId()));
+        if(tutorService.get(tutor).getAlumnos() != null){
+            //El tutor ya posee alumnos asignados.
+            if(!tutorService.get(tutor).getAlumnos().contains(alumno)){
+                tutorService.get(tutor).getAlumnos().add(alumno);
+                tutorService.save(tutorService.get(tutor));
             }
         } else{
+            //El tutor no posee ningun alumno asignado
             ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
             alumnos.add(alumno);
-            tutor.setAlumnos(alumnos);
-            tutorService.save(tutor);
+            tutorService.get(tutor).setAlumnos(alumnos);
+            tutorService.save(tutorService.get(tutor));
         }
         
         alumnoService.save(alumno);
@@ -270,6 +272,8 @@ public class ApiController {
                     codigobuilder.append(String.format("%02x", bytes & 0xff));
                 }
                  String codigo = codigobuilder.toString();
+                 int largo = codigo.length();
+                 codigo = codigo.substring(0, Math.min(largo , 8));
                 //listo todos los cursos
                 List<Curso> listado_cursos = (ArrayList<Curso>) cursoService.getAll();
                 //Listro los codigos de todos los cursos

@@ -3,6 +3,7 @@ import { Alumno } from '../../models/alumno';
 import { DataApiService } from '../../services/data-api.service';
 import { NgForm } from '@angular/forms';
 import { PasswordEmoji } from '../../models/password-emoji';
+import { Tutor } from 'src/app/models/tutor';
 
 @Component({
   selector: 'app-editar-alumno',
@@ -50,6 +51,10 @@ export class EditarAlumnoComponent implements OnInit {
   }
 
   save(formAlumno: NgForm) {
+    var idtutor = this.dataApiService.usuario.id;
+    //this.alumno.tutor = this.dataApiService.getTutor(idtutor.toString());
+    this.alumno.tutorId = idtutor;
+    console.log('Tutor: ', this.alumno.tutorId);
     const pwd = new PasswordEmoji();
     pwd.emoji1Id = Number(this.emojisSeleccionados[0].id);
     pwd.emoji2Id = Number(this.emojisSeleccionados[1].id);

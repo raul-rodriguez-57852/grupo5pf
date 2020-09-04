@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { DataApiService } from '../../services/data-api.service';
 import { PasswordEmoji } from '../../models/password-emoji';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-perfiles',
@@ -17,7 +18,8 @@ export class PerfilesComponent implements OnInit {
 
   constructor(
     private dataApiService: DataApiService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -68,6 +70,10 @@ export class PerfilesComponent implements OnInit {
         }
       );
     }
+  }
+
+  nuevoalumno(){
+    this.router.navigate(['editar-alumno']);
   }
 
   recargar() {

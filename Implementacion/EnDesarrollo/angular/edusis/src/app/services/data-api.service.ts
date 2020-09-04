@@ -44,6 +44,12 @@ export class DataApiService {
       .toPromise();
   }
 
+  getTutor(id: string): Promise<any> {
+    return this.http
+    .get(this.urlBase + 'tutor', {params: { id } })
+    .toPromise();
+  }
+
   getAsignatura(id: string): Promise<any> {
     return this.http
       .get(this.urlBase + 'asignatura', { params: { id } })
