@@ -1,0 +1,42 @@
+
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>  
+    <img class="wave" src="/assets/img/wave.png">
+	<div class="container">
+		<div class="login-content" style="justify-content: center;">
+			<form action="index.html">
+				<img  style="max-width: 300px;max-height: 120px; padding-bottom: 20px;" src="/assets/img/Ludikon-logo.png">
+           		<div id="div-dni" class="input-div one">
+           		   <div class="i">
+           		   		<i class="fa fa-user"></i>
+           		   </div>
+           		   <div class="div">
+           		   		<h5>Numero de Documento</h5>
+           		   		<input id="InputDocumento" (blur)="removeFocus()" (click)="addFocus('div-dni')" type="text" class="input focus" autocomplete="off">
+           		   </div>
+           		</div>
+           		<div id="div-password" class="input-div pass">
+           		   <div class="i"> 
+           		    	<i class="fa fa-lock"></i>
+           		   </div>
+           		   <div class="div">
+           		    	<h5>Password</h5>
+           		    	<input id="inputPassword" (blur)="removeFocus()" (click)="addFocus('div-password')" type="password" class="input">
+            	   </div>
+            	</div>
+            	<a href="#">Olvidaste tu contraseña?</a>
+                <input type="submit" class="btn" value="Login">
+                <div class="form-group m-b-0">
+                    <div class="col-sm-12 text-center" style="color: #999;
+                    font-size: 0.9rem;">
+                        ¿No tenes cuenta? <a href="pages-register2.html" class="text-primary m-l-5"><b>Registrate</b></a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+</body>

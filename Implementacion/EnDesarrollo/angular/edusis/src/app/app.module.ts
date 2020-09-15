@@ -19,6 +19,8 @@ import { EditarCursoComponent } from './components/editar-curso/editar-curso.com
 import { EditarAsignaturaComponent } from './components/editar-asignatura/editar-asignatura.component';
 import { EditarTareaComponent } from './components/editar-tarea/editar-tarea.component';
 import { EditarDetalleMultimediaComponent } from './components/editar-detalle-multimedia/editar-detalle-multimedia.component';
+import { HomeAlumnoComponent } from './components/home-alumno/home-alumno.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import { EditarDetalleMultimediaComponent } from './components/editar-detalle-mu
     EditarAsignaturaComponent,
     EditarTareaComponent,
     EditarDetalleMultimediaComponent,
+    HomeAlumnoComponent,
+    LoginComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
   providers: [],

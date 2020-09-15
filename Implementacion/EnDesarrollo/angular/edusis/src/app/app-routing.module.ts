@@ -13,6 +13,8 @@ import { CursoComponent } from './components/curso/curso.component';
 import { EditarAsignaturaComponent } from './components/editar-asignatura/editar-asignatura.component';
 import { EditarTareaComponent } from './components/editar-tarea/editar-tarea.component';
 import { EditarDetalleMultimediaComponent } from './components/editar-detalle-multimedia/editar-detalle-multimedia.component';
+import { HomeAlumnoComponent } from './components/home-alumno/home-alumno.component';
+import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
   // TODO: DEFINIR AUTH
@@ -27,11 +29,10 @@ const routes: Routes = [
   { path: 'emojis', component: EmojisComponent },
   { path: 'editar-alumno', component: EditarAlumnoComponent },
   { path: 'editar-tarea', component: EditarTareaComponent },
-  {
-    path: 'editar-detalle-multimedia',
-    component: EditarDetalleMultimediaComponent,
-  },
+  {path: 'editar-detalle-multimedia', component: EditarDetalleMultimediaComponent},
   { path: 'perfiles', component: PerfilesComponent },
+  { path: 'home-alumno', component: HomeAlumnoComponent},
+  {path: 'login', component: LoginComponent}
 ];
 
 @NgModule({

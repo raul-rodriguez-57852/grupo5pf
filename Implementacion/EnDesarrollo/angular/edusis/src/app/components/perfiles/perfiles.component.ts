@@ -36,6 +36,7 @@ export class PerfilesComponent implements OnInit {
   }
 
   getAlumnos() {
+    console.log('GetAlumnos');
     this.dataApiService.getAlumnos().then((respuesta) => {
       this.perfiles = respuesta;
       console.log(respuesta);
@@ -55,13 +56,17 @@ export class PerfilesComponent implements OnInit {
   ingresoAlumno() {
     if (this.emojisSeleccionados.length === 3) {
       const pwd = new PasswordEmoji();
+      var thisId = this.perfilSeleccionado.id.toString();
+      
       pwd.emoji1Id = Number(this.emojisSeleccionados[0].id);
       pwd.emoji2Id = Number(this.emojisSeleccionados[1].id);
       pwd.emoji3Id = Number(this.emojisSeleccionados[2].id);
       this.dataApiService.ingresoAlumno(this.perfilSeleccionado.id.toString(), pwd).then(
         (respuesta) => {
           this.mensaje = 'Iniciaste sesión correctamente';
-          document.getElementById('open-modal').click();
+          
+          this.router.navigate(['home-alumno'], {state: {id: thisId}});
+          
         }
       ).catch(
         (respuesta) => {

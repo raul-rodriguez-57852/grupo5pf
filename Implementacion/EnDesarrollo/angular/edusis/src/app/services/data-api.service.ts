@@ -20,39 +20,15 @@ export class DataApiService {
     this.urlBase = 'http://localhost:8090/api/';
   }
 
+//#######     EMOJI      #########  
+
   getEmojis(): Promise<any> {
     return this.http.get(this.urlBase + 'emojis').toPromise();
-  }
-
-  getAsignaturas(cursoId: number): Promise<any> {
-    return this.http
-      .get(this.urlBase + 'asignaturas', {
-        params: { cursoId: cursoId.toString() },
-      })
-      .toPromise();
   }
 
   getEmoji(id: string): Promise<any> {
     return this.http
       .get(this.urlBase + 'emoji', { params: { id } })
-      .toPromise();
-  }
-
-  getCurso(id: string): Promise<any> {
-    return this.http
-      .get(this.urlBase + 'curso', { params: { id } })
-      .toPromise();
-  }
-
-  getTutor(id: string): Promise<any> {
-    return this.http
-    .get(this.urlBase + 'tutor', {params: { id } })
-    .toPromise();
-  }
-
-  getAsignatura(id: string): Promise<any> {
-    return this.http
-      .get(this.urlBase + 'asignatura', { params: { id } })
       .toPromise();
   }
 
@@ -66,26 +42,42 @@ export class DataApiService {
     return this.http.post(this.urlBase + 'guardarEmoji', emoji).toPromise();
   }
 
+  //#######     PROFESOR      #########  
+
   guardarProfesor(profesor: Profesor): Promise<any> {
     return this.http
       .post(this.urlBase + 'guardarProfesor', profesor)
       .toPromise();
   }
 
+  //#######     TUTOR      #########  
+  getTutor(id: string): Promise<any> {
+    return this.http
+    .get(this.urlBase + 'tutor', {params: { id } })
+    .toPromise();
+  }
+
   guardarTutor(tutor: Tutor): Promise<any> {
     return this.http.post(this.urlBase + 'guardarTutor', tutor).toPromise();
   }
+
+  //#######     DOCUMENTO      #########  
 
   getTiposDoc(): Promise<any> {
     return this.http.get(this.urlBase + 'tiposDoc').toPromise();
   }
 
+//#######     ALUMNO      #########  
   guardarAlumno(alumno: Alumno): Promise<any> {
     return this.http.post(this.urlBase + 'guardarAlumno', alumno).toPromise();
   }
 
   getAlumnos(): Promise<any> {
     return this.http.get(this.urlBase + 'alumnos').toPromise();
+  }
+
+  getAlumno(id: string):Promise<any>{
+    return this.http.get(this.urlBase + 'alumno', { params: { id } }).toPromise();
   }
 
   ingresoAlumno(id: string, password: PasswordEmoji): Promise<any> {
@@ -97,9 +89,23 @@ export class DataApiService {
     return this.http.post(this.urlBase + 'ingresoAlumno', postData).toPromise();
   }
 
+  getCursosDeAlumno(idAlumno: string): Promise<any>{
+    return this.http.get(this.urlBase + 'getCursosDeAlumno', {params: { idAlumno } }).toPromise();
+  }
+
+    //#######     SESSION      ######### 
+
   inicioSesionFake(documento: string): Promise<any> {
     return this.http
       .get(this.urlBase + 'inicioSesionFake', { params: { documento } })
+      .toPromise();
+  }
+
+
+  //#######     CURSO      #########  
+  getCurso(id: string): Promise<any> {
+    return this.http
+      .get(this.urlBase + 'curso', { params: { id } })
       .toPromise();
   }
 
@@ -112,14 +118,41 @@ export class DataApiService {
     return this.http.post(this.urlBase + 'guardarCurso', curso).toPromise();
   }
 
+  generarCodigoCurso(curso: Curso): Promise<any> {
+    return this.http
+    .post(this.urlBase + 'generarCodigoCurso',curso).toPromise();
+  }
+
+  buscarCursoPorCodigo(codigo: string): Promise<any> {
+    return this.http.get(this.urlBase + 'buscarCursoPorCodigo', {params: { codigo }}).toPromise();
+  }
+
+  agregarAlumnoACurso(idAlumno: string, idCurso: string): Promise<any> {
+    const postData = new FormData();
+    postData.append('idAlumno', idAlumno);
+    postData.append('idCurso', idCurso)
+    return this.http.post(this.urlBase + 'agregarAlumnoACurso', postData).toPromise();
+  }
+
+  //#######     ASIGNATURA      ######### 
   guardarAsignatura(asignatura: Asignatura): Promise<any> {
     return this.http
       .post(this.urlBase + 'guardarAsignatura', asignatura)
       .toPromise();
   }
 
-  generarCodigoCurso(curso: Curso): Promise<any> {
+  getAsignatura(id: string): Promise<any> {
     return this.http
-    .post(this.urlBase + 'generarCodigoCurso',curso).toPromise();
+      .get(this.urlBase + 'asignatura', { params: { id } })
+      .toPromise();
   }
+
+  getAsignaturas(cursoId: number): Promise<any> {
+    return this.http
+      .get(this.urlBase + 'asignaturas', {
+        params: { cursoId: cursoId.toString() },
+      })
+      .toPromise();
+  }
+
 }

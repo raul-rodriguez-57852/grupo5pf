@@ -6,6 +6,7 @@
 
 package com.edusis.apirest.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ import javax.persistence.OneToMany;
 @DiscriminatorValue(value=Persona.DTYPE_TUTOR)
 public class Tutor extends Persona {
     
+    @JsonIgnore
     @OneToMany(mappedBy = "tutor")
     private List<Alumno> alumnos;
     

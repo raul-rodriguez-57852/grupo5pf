@@ -5,6 +5,7 @@
  */
 package com.edusis.apirest.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -24,6 +25,8 @@ import javax.persistence.OneToOne;
 @DiscriminatorValue(value=Persona.DTYPE_ALUMNO)
 public class Alumno extends Persona {
 
+    
+    @JsonIgnore
     @ManyToOne
     private Tutor tutor;
     
@@ -34,6 +37,7 @@ public class Alumno extends Persona {
     private String avatarUrl;
     
     @ManyToMany
+    @JsonIgnore
     @JoinTable(name="cursos",joinColumns = @JoinColumn(name= "alumno_id"),
             inverseJoinColumns = @JoinColumn(name = "curso_id"))
     private List<Curso> cursos;

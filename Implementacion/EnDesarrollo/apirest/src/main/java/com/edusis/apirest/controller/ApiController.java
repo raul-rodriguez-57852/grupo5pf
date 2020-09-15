@@ -57,7 +57,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
-@RequestMapping("/api")
+@RequestMapping("/api") 
 public class ApiController {
     
     @Autowired
@@ -200,19 +200,21 @@ public class ApiController {
             alumno.setPasswordEmoji(pwd);
         }
         Long tutor = alumnoDto.getTutorId();
-        alumno.setTutor(tutorService.get(alumnoDto.getTutorId()));
-        if(tutorService.get(tutor).getAlumnos() != null){
+        Tutor esteTutor = tutorService.get(tutor);
+        alumno.setTutor(esteTutor);
+        
+        if(esteTutor.getAlumnos().size() != 0){
             //El tutor ya posee alumnos asignados.
-            if(!tutorService.get(tutor).getAlumnos().contains(alumno)){
-                tutorService.get(tutor).getAlumnos().add(alumno);
-                tutorService.save(tutorService.get(tutor));
+            if(!esteTutor.getAlumnos().contains(alumno)){
+                esteTutor.getAlumnos().add(alumno);
+                tutorService.save(esteTutor);
             }
         } else{
             //El tutor no posee ningun alumno asignado
             ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
             alumnos.add(alumno);
-            tutorService.get(tutor).setAlumnos(alumnos);
-            tutorService.save(tutorService.get(tutor));
+            esteTutor.setAlumnos(alumnos);
+            tutorService.save(esteTutor);
         }
         
         alumnoService.save(alumno);
@@ -338,11 +340,15 @@ public class ApiController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
-    @PostMapping("buscarCursoPorCodigo")
-    public Long buscarCursoPorCodigo(@RequestBody String codigo){
+    @GetMapping("buscarCursoPorCodigo")
+    public Long buscarCursoPorCodigo(@RequestParam String codigo){
+        //param: codigo --> Codigo del curso a buscar
+        //return value "-1" --> Curso no encontrado o error en la busqueda
+        //return value int != -1 --> es el id del curso a inscribirme
+        
         //Consigo todos los cursos
         List<Curso> listado_cursos = (ArrayList<Curso>) cursoService.getAll();
-        if(listado_cursos.size() == 0){
+        if(listado_cursos.isEmpty()){
             //No hay cursos creados por ahora, por ende devuelvo -1
             return Long.valueOf(-1);
         }
@@ -400,8 +406,24 @@ public class ApiController {
     
     @GetMapping("cursos")
     public List<Curso> getCursos() {
-        System.out.print("Entro metodo GetCurso");
         return cursoService.getAll(); 
+    }
+    
+    @GetMapping("getCursosDeAlumno")
+    public List<Curso> getCursosDeAlumno(@RequestParam Long idAlumno){
+        Alumno alumno = alumnoService.get(idAlumno);
+        if(alumno == null){
+            throw new Error();
+        }
+        
+        if(alumno.getCursos().isEmpty())
+        {
+        //No hay cursos para mostrar!
+        return null;
+        }
+        else{
+            return alumno.getCursos();
+        }
     }
     
     @PostMapping("agregarAlumnoACurso")
@@ -411,7 +433,7 @@ public class ApiController {
         if(curso == null || alumno == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if(curso.getAlumnos() != null){
+        if(!curso.getAlumnos().isEmpty()){
             if(!curso.getAlumnos().contains(alumno)){
                 //el alumno no esta en el curso, lo agrego
                 curso.getAlumnos().add(alumno);
@@ -424,7 +446,7 @@ public class ApiController {
             curso.setAlumnos(alumnos);
             cursoService.save(curso);
         }
-        if(alumno.getCursos()!= null){
+        if(!alumno.getCursos().isEmpty()){
             if(!alumno.getCursos().contains(curso)){
                 alumno.getCursos().add(curso);
                 alumnoService.save(alumno);

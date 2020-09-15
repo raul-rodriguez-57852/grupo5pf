@@ -83,9 +83,13 @@ export class EditarCursoComponent implements OnInit {
             (respuesta) => {
               this.mensaje = 'Codigo generado con éxito.';
               document.getElementById('open-modal').click();
-              
             }
-          );
+          ).catch(
+            (respuesta) =>{
+              this.mensaje = "Error al generar el codigo!";
+              document.getElementById('open-modal').click();
+            }
+          )
         }
         
         this.dataApiService.getCurso(this.curso.id.toString()).then(
@@ -95,61 +99,66 @@ export class EditarCursoComponent implements OnInit {
             this.curso.codigo = emoji.codigo;
           }
           
+        ).catch(
+          (respuesta) => {
+            this.mensaje = "Error al buscar el curso!";
+            document.getElementById('open-modal').click();
+          }
         );
         (<HTMLInputElement>document.getElementById('contenedor-codigo')).value = this.curso.codigo;  
   }
     
   copiarTexto(estecurso: Curso){
-      //the text that is to be copied to the clipboard
+      //El texto que va a ser copiado al portapapeles
       var theText = estecurso.codigo.toString();
 
-      //create our hidden div element
+      //creo un div vacio
       var hiddenCopy = document.createElement('div');
-      //set the innerHTML of the div
+      //seteo el innerHTML del div
       hiddenCopy.innerHTML = theText;
-      //set the position to be absolute and off the screen
+      //seteo la position para que sea absolute & afuera de la pantalla
       hiddenCopy.style.position = 'absolute';
       hiddenCopy.style.left = '-9999px';
 
-      //check and see if the user had a text selection range
+      //checko si el usuario tiene algun rango ya previo de seleccion
       var currentRange;
       if(document.getSelection().rangeCount > 0)
       {
-          //the user has a text selection range, store it
+          //lo tiene, entonces lo guardo
           currentRange = document.getSelection().getRangeAt(0);
-          //remove the current selection
+          //elimino la seleccion que tiene 
           window.getSelection().removeRange(currentRange);
       }
       else
       {
-          //they didn't have anything selected
+          //No habia nada seleccionado
          currentRange = false;
       }
 
-    //append the div to the body
+    //agrego el div al body
     document.body.appendChild(hiddenCopy);
-    //create a selection range
+    //creo un nuevo rango de seleccion
     var CopyRange = document.createRange();
-    //set the copy range to be the hidden div
+    //seteo el rango al div
     CopyRange.selectNode(hiddenCopy);
-    //add the copy range
+    //agrego el copyRange
     window.getSelection().addRange(CopyRange);
 
-    //since not all browsers support this, use a try block
+    //uso try porque no todos lo navegadores lo soportan
     try
     {
-          //copy the text
+          //copio el texto
           document.execCommand('copy');
     }
     catch(err)
     {
         window.alert("Your Browser Doesn't support this! Error : " + err);
     }
-    //remove the selection range (Chrome throws a warning if we don't.)
+    //elimino el rango de seleccion
     window.getSelection().removeRange(CopyRange);
-    //remove the hidden div
+    //elimino el  hidden div
     document.body.removeChild(hiddenCopy);
-    //return the old selection range
+    //devuelvo el rango de seleccion viejo
     if(currentRange)
     {
           window.getSelection().addRange(currentRange);
