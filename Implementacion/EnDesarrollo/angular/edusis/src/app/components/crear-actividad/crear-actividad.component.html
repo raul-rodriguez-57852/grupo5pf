@@ -1,0 +1,51 @@
+<section id="cursos" class="margin-top-90">
+  <div class="container">
+    <button *ngIf="!plantillaPreguntaRespuestas" type="button" (click)="crearPreguntasRespuestas()" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Preguntas y Respuestas</button>
+    <ul *ngIf="!plantillaPreguntaRespuestas" class="list-group list-group-flush margin-bottom-16">
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <strong>Actividades</strong>
+      </li>
+      <li *ngFor="let actividad of actividades" class="list-group-item d-flex justify-content-between align-items-center">
+        <div (click)="vistaPrevia(actividad.id)">{{ actividad.nombre }}</div>
+        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+          <button type="button" (click)="vistaPrevia(actividad.id)" class="btn btn-info">Vista previa</button>
+        </div>
+      </li>
+    </ul>
+    <form *ngIf="plantillaPreguntaRespuestas && paso === 1" name="formActividad" #formActividad="ngForm" (ngSubmit)="next(formActividad)">
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input [(ngModel)]="nombre" type="text" name="nombre" class="form-control" placeholder="Nombre" required autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="segundos">Segundos</label>
+        <input [(ngModel)]="segundos" type="tel" name="segundos" class="form-control" placeholder="Segundos" required autocomplete="off">
+      </div>
+      <button type="submit" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Siguiente</button>
+    </form>
+    <form *ngIf="plantillaPreguntaRespuestas && paso === 2" name="formActividad2" #formActividad2="ngForm" (ngSubmit)="save(formActividad2)">
+      <div class="form-group">
+        <label for="pregunta">Pregunta</label>
+        <input [(ngModel)]="pregunta.pregunta" type="text" name="pregunta" class="form-control" placeholder="Pregunta" required autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="respuestaCorrecta">Respuesta correcta</label>
+        <input [(ngModel)]="pregunta.respuestaCorrecta" type="text" name="respuestaCorrecta" class="form-control" placeholder="Respuesta correcta" required autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="respuestaIncorrectaA">Respuesta incorrecta</label>
+        <input [(ngModel)]="pregunta.respuestaIncorrectaA" type="text" name="respuestaIncorrectaA" class="form-control" placeholder="Respuesta incorrecta" required autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="respuestaIncorrectaB">Respuesta incorrecta</label>
+        <input [(ngModel)]="pregunta.respuestaIncorrectaB" type="text" name="respuestaIncorrectaB" class="form-control" placeholder="Respuesta incorrecta" required autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="respuestaIncorrectaC">Respuesta incorrecta</label>
+        <input [(ngModel)]="pregunta.respuestaIncorrectaC" type="text" name="respuestaIncorrectaC" class="form-control" placeholder="Respuesta incorrecta" required autocomplete="off">
+      </div>
+      <button type="button" (click)="agregarOtra()" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Agregar otra pregunta</button>
+      <button type="submit" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Finalizar</button>
+    </form>
+  </div>
+</section>

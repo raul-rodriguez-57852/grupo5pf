@@ -11,7 +11,6 @@ export class NavbarComponent implements OnInit {
   tutorLog = true;
 
   constructor(private dataApiService: DataApiService) {}
-
   ngOnInit() {}
 
   recargar() {

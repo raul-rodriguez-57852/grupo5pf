@@ -1,6 +1,6 @@
 .menuNavegacion {
   padding: 5px !important;
-  background-color: #53ACAB !important;
+  background-color: #2b4c7c !important;
   box-shadow: 0 .125rem .25rem rgba(0,0,0,.250)!important;
 }
 
@@ -9,7 +9,7 @@
 }
 
 .custom-toggler.navbar-toggler {
-  border-color: #53ACAB !important;
+  border-color: #2b4c7c !important;
 }
 
 .custom-toggler .navbar-toggler-icon {

@@ -15,6 +15,9 @@ import { EditarTareaComponent } from './components/editar-tarea/editar-tarea.com
 import { EditarDetalleMultimediaComponent } from './components/editar-detalle-multimedia/editar-detalle-multimedia.component';
 import { HomeAlumnoComponent } from './components/home-alumno/home-alumno.component';
 import { LoginComponent } from './components/login/login.component';
+import { CrearActividadComponent } from './components/crear-actividad/crear-actividad.component';
+import { VistaPreviaActividadComponent } from './components/vista-previa-actividad/vista-previa-actividad.component';
+
 
 const routes: Routes = [
   // TODO: DEFINIR AUTH
@@ -24,6 +27,8 @@ const routes: Routes = [
   { path: 'editar-curso', component: EditarCursoComponent },
   { path: 'curso', component: CursoComponent },
   { path: 'editar-asignatura', component: EditarAsignaturaComponent },
+  { path: 'crear-actividad', component: CrearActividadComponent },
+  { path: 'vista-previa-actividad', component: VistaPreviaActividadComponent },
   { path: 'inicio-sesion', component: InicioSesionComponent },
   { path: 'editar-emoji', component: EditarEmojiComponent },
   { path: 'emojis', component: EmojisComponent },

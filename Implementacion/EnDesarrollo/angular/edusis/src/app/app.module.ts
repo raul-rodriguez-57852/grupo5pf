@@ -21,6 +21,8 @@ import { EditarTareaComponent } from './components/editar-tarea/editar-tarea.com
 import { EditarDetalleMultimediaComponent } from './components/editar-detalle-multimedia/editar-detalle-multimedia.component';
 import { HomeAlumnoComponent } from './components/home-alumno/home-alumno.component';
 import { LoginComponent } from './components/login/login.component';
+import { CrearActividadComponent } from './components/crear-actividad/crear-actividad.component';
+import { VistaPreviaActividadComponent } from './components/vista-previa-actividad/vista-previa-actividad.component';
 
 @NgModule({
   declarations: [
@@ -41,8 +43,15 @@ import { LoginComponent } from './components/login/login.component';
     EditarDetalleMultimediaComponent,
     HomeAlumnoComponent,
     LoginComponent,
+    CrearActividadComponent,
+    VistaPreviaActividadComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
