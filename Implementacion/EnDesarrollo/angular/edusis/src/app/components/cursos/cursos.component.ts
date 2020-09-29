@@ -11,6 +11,7 @@ export class CursosComponent implements OnInit {
 
   cursos = [];
   curso = null;
+  id_profesor = null;
 
   id: number;
   mensaje: string;
@@ -21,15 +22,33 @@ export class CursosComponent implements OnInit {
     private dataApiService: DataApiService
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    //Busco en cookies, para ver si estsa el usuario loggeado, si esta, agarro sus datos, 
+    //Si no esta, lo mando a loggearse.
+    var session_id = this.dataApiService.getCookie("SessionCookie");
+    //ya tengo el id de la session, vamos a ver si es valido!
+    
+    await this.dataApiService.validarSession(session_id).then(
+      (respuesta) => {
+        this.id_profesor = respuesta;
+      }
+      );
+      if(this.id_profesor == null)
+      {
+        this.router.navigate(['login']);
+      }
+
     this.getAll();
   
   }
 
   getAll() {
-    this.dataApiService.getCursos().then(
+    console.log("ID PROFESOR: ",this.id_profesor)
+    //this.dataApiService.getCursosByProfesor(this.id_profesor).then(
+      this.dataApiService.getCursos().then(
       (cursos) => {
         this.cursos = cursos;
+        console.log(cursos);
         //console.log(this.cursos[0].codigo);
       }
     );
@@ -52,14 +71,7 @@ export class CursosComponent implements OnInit {
     this.dataApiService.getCurso(id.toString()).then(
       (curso) => {
         this.curso = curso;
-        //console.log('curso.id = ',this.curso.id);
-        /*
-        console.log('curso.id = ',this.curso.id);
-        console.log('curso.nombre = ',this.curso.nombre);
-        console.log('curso.codigo = ',this.curso.codigo);
-        console.log('curso.iconoUrL = ',this.curso.iconoURL);
-        console.log('curso.creador = ',this.curso.creador);
-        */
+        
         if(this.curso.codigo === null){
           //console.log('Codigo Null');
           this.curso = this.dataApiService.generarCodigoCurso(curso).then(
@@ -78,11 +90,7 @@ export class CursosComponent implements OnInit {
         console.log('CODIGO DE INVITACION! = ',this.curso.codigo);
         this.copiarTexto(this.curso.codigo.toString());
         }
-        
     );
-    
-    
-        
   }
 
   copiarTexto(texto: string){

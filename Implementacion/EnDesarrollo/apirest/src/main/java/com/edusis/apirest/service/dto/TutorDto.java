@@ -24,7 +24,18 @@ public class TutorDto {
     private String documento;
     private Calendar fechaNacimiento;
     private List<Alumno> alumnos;
+    private String password;
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    
+    
     public Long getId() {
         return id;
     }

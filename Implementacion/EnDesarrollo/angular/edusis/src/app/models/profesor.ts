@@ -4,4 +4,5 @@ export class Profesor {
   documento: string;
   tipoDocumento: string;
   fechaNacimiento: Date;
+  password: String;
 }

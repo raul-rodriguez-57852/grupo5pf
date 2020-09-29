@@ -1,4 +1,5 @@
 
+<html>
 <head>
 	<link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,15 +25,15 @@
            		   </div>
            		   <div class="div">
            		    	<h5>Password</h5>
-           		    	<input id="inputPassword" (blur)="removeFocus()" (click)="addFocus('div-password')" type="password" class="input">
+						   <input id="inputPassword" (blur)="removeFocus()" (click)="addFocus('div-password')" type="password" class="input">
             	   </div>
             	</div>
             	<a href="#">Olvidaste tu contraseña?</a>
-                <input type="submit" class="btn" value="Login">
+                <input type="submit" (click)="login()" class="btn" value="Login">
                 <div class="form-group m-b-0">
                     <div class="col-sm-12 text-center" style="color: #999;
                     font-size: 0.9rem;">
-                        ¿No tenes cuenta? <a href="pages-register2.html" class="text-primary m-l-5"><b>Registrate</b></a>
+                        ¿No tenes cuenta? <a routerLink="/" class="text-primary m-l-5"><b >Registrate</b></a>
                     </div>
                 </div>
             </form>
@@ -40,3 +41,51 @@
     </div>
     
 </body>
+
+<!-- Modal -->
+<button
+  id="open-modal"
+  [hidden]="true"
+  data-toggle="modal"
+  data-target="#informacion"
+>
+  Open Modal
+</button>
+<div
+  class="modal fade"
+  id="informacion"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edusis</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ mensaje }}
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          data-dismiss="modal"
+          class="btn btn-personalizado"
+        >
+          Aceptar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</html>

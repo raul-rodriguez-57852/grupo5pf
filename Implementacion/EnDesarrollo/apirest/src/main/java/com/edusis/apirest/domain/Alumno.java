@@ -38,8 +38,8 @@ public class Alumno extends Persona {
     
     @ManyToMany
     @JsonIgnore
-    @JoinTable(name="cursos",joinColumns = @JoinColumn(name= "alumno_id"),
-            inverseJoinColumns = @JoinColumn(name = "curso_id"))
+    @JoinTable(name="cursos_alumnos",joinColumns = @JoinColumn(name= "curso_id"),
+            inverseJoinColumns = @JoinColumn(name = "alumno_id"))
     private List<Curso> cursos;
     
     

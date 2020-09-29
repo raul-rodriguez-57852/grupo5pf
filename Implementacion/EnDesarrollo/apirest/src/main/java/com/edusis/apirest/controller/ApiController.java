@@ -13,14 +13,15 @@ import com.edusis.apirest.domain.Emoji;
 import com.edusis.apirest.domain.PasswordEmoji;
 import com.edusis.apirest.domain.Persona;
 import com.edusis.apirest.domain.Profesor;
+import com.edusis.apirest.domain.Sesion;
 import com.edusis.apirest.domain.TipoDocumento;
 import com.edusis.apirest.domain.Tutor;
 import com.edusis.apirest.service.AlumnoService;
 import com.edusis.apirest.service.AsignaturaService;
 import com.edusis.apirest.service.CursoService;
 import com.edusis.apirest.service.EmojiService;
-import com.edusis.apirest.service.PersonaService;
 import com.edusis.apirest.service.ProfesorService;
+import com.edusis.apirest.service.SesionService;
 import com.edusis.apirest.service.TutorService;
 import com.edusis.apirest.service.dto.AlumnoDto;
 import com.edusis.apirest.service.dto.AsignaturaDto;
@@ -31,12 +32,15 @@ import com.edusis.apirest.service.dto.TutorDto;
 import com.edusis.apirest.specs.AsignaturaSpecs;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,6 +82,9 @@ public class ApiController {
     @Autowired
     private AsignaturaService asignaturaService;
     
+    @Autowired
+    private SesionService sesionService;
+    
     @PostMapping("guardarEmoji")
     public ResponseEntity<Long> guardarEmoji(@RequestBody EmojiDto emojiDto) {
         Emoji emoji = emojiDto.getId() != null ? emojiService.get(emojiDto.getId()) : new Emoji();
@@ -102,6 +109,12 @@ public class ApiController {
         return cursoService.get(id);
     }
     
+    @GetMapping("getCursosByProfesor")
+    public List<Curso> getCursosByProfesor(@RequestParam Long id) {
+        Profesor profe = (Profesor)Hibernate.unproxy(profesorService.get(id));
+        return profe.getCursos();
+    }
+    
     @GetMapping("asignatura")
     public Asignatura getAsignatura(@RequestParam Long id) {
         return asignaturaService.get(id);
@@ -120,6 +133,8 @@ public class ApiController {
         profesor.setApellido(profesorDto.getApellido());
         profesor.setDocumento(new Documento(profesorDto.getTipoDocumento(), profesorDto.getDocumento()));
         profesor.setFechaNacimiento(profesorDto.getFechaNacimiento());
+        //obtengo la password del profesor, la cifro, y la almaceno en la base.
+        profesor.setPassword(cifrarClave(profesorDto.getPassword()));
         profesorService.save(profesor);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -129,7 +144,7 @@ public class ApiController {
         return profesorService.getAll(); 
     }
     
-    @GetMapping("profesor")
+    @GetMapping("getProfesor")
     public Profesor getProfesor(@RequestParam Long id) {
         return profesorService.get(id);
     }
@@ -147,6 +162,8 @@ public class ApiController {
         tutor.setApellido(tutorDto.getApellido());
         tutor.setDocumento(new Documento(tutorDto.getTipoDocumento(), tutorDto.getDocumento()));
         tutor.setFechaNacimiento(tutorDto.getFechaNacimiento());
+        //Seteamos la password del tutor, nunca la password estara almacenada en crudo, siempre cifrada.
+        tutor.setPassword(cifrarClave(tutorDto.getPassword()));
         tutorService.save(tutor);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -274,6 +291,7 @@ public class ApiController {
                     codigobuilder.append(String.format("%02x", bytes & 0xff));
                 }
                  String codigo = codigobuilder.toString();
+                 codigo = codigo.toUpperCase();
                  int largo = codigo.length();
                  codigo = codigo.substring(0, Math.min(largo , 8));
                 //listo todos los cursos
@@ -478,6 +496,152 @@ public class ApiController {
         throw new Error();
     }
     
+    @PostMapping("inicioSesion")
+    public String inicioSesion(@RequestParam String documento, @RequestParam String password){
+        //Recibo dni y contraseña, tengo que checkear que sean correctos, una vez validado, tengo que crear una session y devolver el id de las session al usuario
+        List<Persona> personas = new ArrayList<Persona>();
+        List<Profesor> profesores = profesorService.getAll();
+        List<Tutor> tutores = tutorService.getAll();
+        personas.addAll(profesores);
+        personas.addAll(tutores);
+        //Ya tengo todos mis usuarios
+        for(Persona persona: personas){
+            if(persona.getDocumento() == null || persona.getDocumento().getNumero() == null){
+                continue;
+            }
+            if (persona.getDocumento().getNumero().equals(documento)){
+                
+                //No lo hago todo junto por si queremos diferneciar en documento encontrado y no encontrado
+                //documento encontrado, valido si la contraseña tambien coincide.
+                //en la base, esta la contraseña cifrada, por ende tengo que cifrar la password del front y comprarla con la del server
+                if(persona.getPassword().equals(cifrarClave(password))){
+                    //la contraseña tambien coincide.
+                    //tengo que crear la session.
+                    Sesion sesion = new Sesion();
+                    Documento doc = new Documento();
+                    doc = persona.getDocumento();
+                    sesion.setDocumento(doc);
+                    //Genero el session_id, que el hash que voy a usar para validar
+                    SecureRandom random = new SecureRandom();
+                    byte[] contenedor = new byte[16];
+                    random.nextBytes(contenedor);
+                    
+                    StringBuffer codigobuilder = new StringBuffer();
+                    for (byte bytes : contenedor) 
+                    {
+                        codigobuilder.append(String.format("%02x", bytes & 0xff));
+                    }
+                    String codigo = codigobuilder.toString();
+                    codigo = codigo.toUpperCase();
+                    sesion.setSession_id(codigo);
+                    sesionService.save(sesion);
+                    //devuelvo el session id al usuario para que vaya en la coockie
+                    return codigo;
+                 }
+                else{
+                    //Contraseña incorrecta
+                    return "wrong_password";
+                }
+            }
+        }
+        return "user_not_found";
+    }
+    
+    
+    // --------- # # Funciones AUXILIARES # # --------- //
+    @GetMapping("validarSesion")
+    public Long validarSesion(@RequestParam String session_id){
+        // Tengo que comparar la sesion que recibo con alguna de la base, si coincide, entonces devuelvo el usuario.
+        //Voy a obtener todas las sesiones activas de la base.
+        List<Sesion> listado_sesiones = (ArrayList<Sesion>) sesionService.getAll();
+        
+        //obtengo una lista con solo los codigos de mis sesiones en la base.
+        //List<String> listado_sesiones_ids = listado_sesiones.stream().map(x -> x.getSession_id()).collect(Collectors.toList());
+        
+        if(!listado_sesiones.isEmpty()){
+            //recorro las sesiones
+            for (int i = 0; i < listado_sesiones.size(); i++) {
+                //Checkeo si son iguales las id de session
+                if(listado_sesiones.get(i).getSession_id().equals(session_id)){
+                    //encontre la session con el mismo id, por ende devuelvo el id del usuario correspondiente.
+                    String doc = listado_sesiones.get(i).getDocumento().getNumero();
+                    Long user_id = getPersonaByDocumento(doc);
+                    return user_id;
+                }  
+            }
+        }
+        else{
+            //no hay sesiones en la base
+            throw new Error();
+        }
+      return null;          
+    }
+    
+    @GetMapping("isProfesor")
+    public Boolean isProfesor(Long id){
+        //Return True si es profesor, o Falso si es tutor.}
+        List<Persona> personas = new ArrayList<Persona>();
+        List<Profesor> profesores = profesorService.getAll();
+        List<Tutor> tutores = tutorService.getAll();
+        personas.addAll(profesores);
+        personas.addAll(tutores);
+        for (Persona persona : personas) 
+        {
+            if(persona.getId().equals(id))
+            {
+                if(persona instanceof Profesor){
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public Long getPersonaByDocumento(String documento){
+        List<Persona> personas = new ArrayList<Persona>();
+        List<Profesor> profesores = profesorService.getAll();
+        List<Tutor> tutores = tutorService.getAll();
+        personas.addAll(profesores);
+        personas.addAll(tutores);
+        for (Persona persona : personas) {
+            if(persona.getDocumento() == null || persona.getDocumento().getNumero() == null){
+                continue;
+            }
+            if (persona.getDocumento().getNumero().equals(documento)) {
+                return persona.getId();
+            }
+        }
+        throw new Error();
+    }
+    
+    public String cifrarClave(String identificador){
+        
+        try{
+                MessageDigest md5 = MessageDigest.getInstance("MD5");
+                byte[] byteMessage = identificador.getBytes("UTF-8");
+                byte[] digested = md5.digest(byteMessage);
+                StringBuffer codigobuilder = new StringBuffer();
+                for (byte bytes : digested) 
+                {
+                    codigobuilder.append(String.format("%02x", bytes & 0xff));
+                }
+                 String codigo = codigobuilder.toString();
+                 codigo = codigo.toUpperCase();
+                 return codigo;
+        }
+        catch (java.io.UnsupportedEncodingException e)
+            {
+                System.err.println("Erro, MD5 no es un algoritmo de encriptacion correcto para MessageDigest (ApiContrller) trying setCodigo");
+            }
+        catch (NoSuchAlgorithmException er){
+                System.err.println("Erro, MD5 no es un algoritmo de encriptacion correcto para MessageDigest");
+            }
+        return "";
+    }
     
     
 }

@@ -22,13 +22,13 @@ import javax.persistence.ManyToMany;
 public class Profesor extends Persona {
 
     @ManyToMany
-    @JoinTable(name="cursos",joinColumns = @JoinColumn(name= "profesor_id"),
+    @JoinTable(name="cursos_profesores",joinColumns = @JoinColumn(name= "profesor_id"),
             inverseJoinColumns = @JoinColumn(name = "curso_id"))
     private List<Curso> cursos;
     
     @ManyToMany
-    @JoinTable(name="cursos",joinColumns = @JoinColumn(name= "profesor_id"),
-            inverseJoinColumns = @JoinColumn(name = "curso_id"))
+    @JoinTable(name="asignaturas",joinColumns = @JoinColumn(name= "profesor_id"),
+            inverseJoinColumns = @JoinColumn(name = "asignatura_id"))
     private List<Asignatura> asignaturas;
 
     public List<Curso> getCursos() {

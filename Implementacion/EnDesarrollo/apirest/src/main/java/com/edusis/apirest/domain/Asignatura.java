@@ -12,6 +12,7 @@ import com.sun.istack.NotNull;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -40,7 +41,9 @@ public class Asignatura extends GenericEntity {
     @ManyToOne
     private Profesor creador;
     
-    @ManyToMany(mappedBy="asignaturas")
+    @ManyToMany
+    @JoinTable(name="asignaturas",joinColumns = @JoinColumn(name= "asignatura_id"),
+            inverseJoinColumns = @JoinColumn(name = "profesor_id"))
     private List<Profesor> profesores;
     
     @JsonIgnore

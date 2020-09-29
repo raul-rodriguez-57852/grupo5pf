@@ -41,6 +41,8 @@ public abstract class Persona extends GenericEntity {
     @NotNull
     private String apellido;
     
+    private String password;
+    
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "documento_id")
     private Documento documento;
@@ -50,6 +52,14 @@ public abstract class Persona extends GenericEntity {
     
     // GETTERS && SETTERS 
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
     public String getNombre() {
         return nombre;
     }

@@ -91,6 +91,7 @@ export class RegistroComponent implements OnInit {
           break;
         }
       }
+      console.log("PASSWORD DOCENTE: ",this.profesor.password);
       this.dataApiService
         .guardarProfesor(this.profesor)
         .then((respuesta) => {

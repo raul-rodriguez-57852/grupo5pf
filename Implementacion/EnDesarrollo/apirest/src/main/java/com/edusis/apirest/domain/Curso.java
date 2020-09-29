@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.CascadeType;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import static org.hibernate.engine.internal.Cascade.cascade;
 
@@ -42,7 +43,9 @@ public class Curso extends GenericEntity{
     private Profesor creador;
     
     @JsonIgnoreProperties(value = {"Curso", "hibernateLazyInitializer"})
-    @ManyToMany(mappedBy = "cursos")
+    @ManyToMany
+    @JoinTable(name="cursos_profesores",joinColumns = @JoinColumn(name= "curso_id"),
+            inverseJoinColumns = @JoinColumn(name = "profesor_id"))
     private List<Profesor> profesores;
     
     @JsonIgnoreProperties(value = {"Curso", "hibernateLazyInitializer"})
@@ -50,7 +53,9 @@ public class Curso extends GenericEntity{
     private List<Asignatura> asignaturas;
     
     @JsonIgnoreProperties(value = {"Curso", "hibernateLazyInitializer"})
-    @ManyToMany(mappedBy = "cursos")
+    @ManyToMany
+    @JoinTable(name="cursos_alumnos",joinColumns = @JoinColumn(name= "curso_id"),
+            inverseJoinColumns = @JoinColumn(name = "alumno_id"))
     private List<Alumno> alumnos;
     
     @JsonIgnoreProperties(value = {"Curso", "hibernateLazyInitializer"})

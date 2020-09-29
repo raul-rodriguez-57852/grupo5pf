@@ -7,6 +7,7 @@ import { Alumno } from '../models/alumno';
 import { PasswordEmoji } from '../models/password-emoji';
 import { Curso } from '../models/curso';
 import { Asignatura } from '../models/asignatura';
+import { TlsOptions } from 'tls';
 
 @Injectable({
   providedIn: 'root',
@@ -48,6 +49,10 @@ export class DataApiService {
     return this.http
       .post(this.urlBase + 'guardarProfesor', profesor)
       .toPromise();
+  }
+
+  getProfesor(id: string): Promise<any> {
+    return this.http.get(this.urlBase + 'getProfesor', {params: { id }}).toPromise();
   }
 
   //#######     TUTOR      #########  
@@ -95,6 +100,28 @@ export class DataApiService {
 
     //#######     SESSION      ######### 
 
+  inicioSesion(documento: string, password:string):Promise<any>{
+    const postData = new FormData();
+    postData.append('documento', documento.toString());
+    postData.append('password', password.toString());
+    return this.http.post(this.urlBase + 'inicioSesion', postData,{responseType: 'text'}).toPromise();
+  }
+
+  validarSession(session_id: string):Promise<any>{
+    return this.http.get(this.urlBase + 'validarSesion', {params: { session_id } } ).toPromise();
+  }
+
+  eliminarSesion(session_id: string, name: string):Promise<any>{
+    //elimino la coockie en la parte del cliente.
+    this.deleteCookie(name);
+    //hago la baja en el servidor.
+    return this.http.delete(this.urlBase + 'eliminarSesion', {params: { session_id }}).toPromise();
+  }
+
+  isProfesor(id: string): Promise<any> {
+    return this.http.get(this.urlBase + 'isProfesor', {params: { id }}).toPromise();
+  }
+
   inicioSesionFake(documento: string): Promise<any> {
     return this.http
       .get(this.urlBase + 'inicioSesionFake', { params: { documento } })
@@ -112,6 +139,10 @@ export class DataApiService {
   getCursos(): Promise<any> {
     console.log('Entro en getCursos() en apicontroller')
     return this.http.get(this.urlBase + 'cursos').toPromise();
+  }
+
+  getCursosByProfesor(id: string): Promise<any> {
+    return this.http.get(this.urlBase + 'getCursosByProfesor', {params: { id }}).toPromise();
   }
 
   guardarCurso(curso: Curso): Promise<any> {
@@ -153,6 +184,42 @@ export class DataApiService {
         params: { cursoId: cursoId.toString() },
       })
       .toPromise();
+  }
+
+//#######     COOKIES      ######### 
+   setCookie(name: String, val: String) {
+    const date = new Date();
+    const value = val;
+
+    //Asigno una expiracion de 7 dias.
+    date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000));
+
+    //Seteo la cookie.
+    document.cookie = name+"=" + value + "; expires=" + date.toUTCString() + "; path=/";
+  
+  }
+
+  getCookie(name: String, ){
+    const value = "; " + document.cookie;
+    const parts = value.split("; " + name + "=");
+
+    if(parts.length == 2){
+      return parts.pop().split(";").shift();
+    }
+  }
+
+
+  deleteCookie(name: String){
+  //Elimina la cookie del cliente.
+    const date = new Date();
+
+    //Seteo una fecha de expiracion menor a fecha actual.
+    date.setTime(date.getTime() + (-1 * 24 * 60 * 60 * 1000));
+
+    //Seteo la coockie.
+
+    document.cookie = name+"=; expires= "+ date.toUTCString() + "; path=/"; 
+
   }
 
 }

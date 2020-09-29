@@ -26,6 +26,17 @@ public class ProfesorDto {
     private Calendar fechaNacimiento;
     private List<Curso> cursos;
     private List<Asignatura> asignaturas;
+    private String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    
 
     public List<Curso> getCursos() {
         return cursos;

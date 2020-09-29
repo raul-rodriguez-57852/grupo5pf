@@ -108,6 +108,12 @@
       <div class="form-group">
         <label for="password">Contraseña</label>
         <input
+        [ngModel]="esCuentaTutor ? tutor.password : profesor.password"
+        (ngModelChange)="
+            esCuentaTutor
+              ? (tutor.password = $event)
+              : (profesor.password = $event)
+          "
           type="password"
           name="password"
           class="form-control"

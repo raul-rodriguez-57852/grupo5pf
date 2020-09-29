@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Curso } from '../../models/curso';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataApiService } from '../../services/data-api.service';
 import { NgForm } from '@angular/forms';
 
@@ -15,10 +15,11 @@ export class EditarCursoComponent implements OnInit {
   mensaje: string = null;
   tienecodigo = false;
   mostrarcodigo = false;
-  
+  id_profesor = null;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private dataApiService: DataApiService
   ) { }
 
@@ -56,8 +57,23 @@ export class EditarCursoComponent implements OnInit {
 
   
 
-  save(formCurso: NgForm) {
-    this.curso.creadorId = this.dataApiService.usuario.id;
+  async save(formCurso: NgForm) {
+    //Busco en cookies, para ver si estsa el usuario loggeado, si esta, agarro sus datos, 
+    //Si no esta, lo mando a loggearse.
+    var session_id = this.dataApiService.getCookie("SessionCookie");
+    //ya tengo el id de la session, vamos a ver si es valido!
+    
+    await this.dataApiService.validarSession(session_id).then(
+      (respuesta) => {
+        this.id_profesor = respuesta;
+      }
+      );
+      if(this.id_profesor == null)
+      {
+        this.router.navigate(['login']);
+      }
+    this.curso.creadorId = this.id_profesor;
+    console.log("CREADOR ID: ",this.curso.creadorId);
     this.dataApiService.guardarCurso(this.curso).then(
       (respuesta) => {
         this.mensaje = 'Curso guardado con éxito.';
