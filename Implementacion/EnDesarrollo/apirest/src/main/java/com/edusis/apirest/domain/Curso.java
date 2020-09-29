@@ -45,7 +45,8 @@ public class Curso extends GenericEntity{
     @ManyToMany(mappedBy = "cursos")
     private List<Profesor> profesores;
     
-    @JsonIgnoreProperties(value = {"Curso", "hibernateLazyInitializer"})
+//    @JsonIgnoreProperties(value = {"Curso", "hibernateLazyInitializer"})
+    @JsonIgnore
     @OneToMany(mappedBy="curso")
     private List<Asignatura> asignaturas;
     

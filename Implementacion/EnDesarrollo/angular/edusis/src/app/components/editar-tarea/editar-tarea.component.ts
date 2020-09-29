@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Tarea } from 'src/app/models/tarea';
-import { DataApiService } from 'src/app/services/data-api.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DataTareaService } from 'src/app/services/data-tarea.service';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit } from "@angular/core";
+import { Tarea } from "src/app/models/tarea";
+import { DataApiService } from "src/app/services/data-api.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { DataTareaService } from "src/app/services/data-tarea.service";
+import { NgForm } from "@angular/forms";
 
 @Component({
-  selector: 'app-editar-tarea',
-  templateUrl: './editar-tarea.component.html',
-  styleUrls: ['./editar-tarea.component.css'],
+  selector: "app-editar-tarea",
+  templateUrl: "./editar-tarea.component.html",
+  styleUrls: ["./editar-tarea.component.css"],
 })
 export class EditarTareaComponent implements OnInit {
   tarea: Tarea = {
@@ -32,12 +32,12 @@ export class EditarTareaComponent implements OnInit {
   ngOnInit() {
     // tslint:disable-next-line: max-line-length
     this.cursoId =
-      this.route.snapshot.paramMap.get('cursoId') != null
-        ? Number(this.route.snapshot.paramMap.get('cursoId'))
+      this.route.snapshot.paramMap.get("cursoId") != null
+        ? Number(this.route.snapshot.paramMap.get("cursoId"))
         : null;
     this.tarea.id =
-      this.route.snapshot.paramMap.get('id') != null
-        ? Number(this.route.snapshot.paramMap.get('id'))
+      this.route.snapshot.paramMap.get("id") != null
+        ? Number(this.route.snapshot.paramMap.get("id"))
         : null;
     if (this.tarea.id != null) {
       this.dataTareaService.getTarea(this.tarea.id.toString()).then((tarea) => {
@@ -62,19 +62,20 @@ export class EditarTareaComponent implements OnInit {
     this.dataTareaService
       .guardarTarea(this.tarea)
       .then((respuesta) => {
-        this.mensaje = 'Tarea guardada con éxito.';
-        document.getElementById('open-modal').click();
+        this.tarea.id = respuesta;
+        this.mensaje = "Tarea guardada con éxito.";
+        document.getElementById("open-modal").click();
         //        this.recargar();
       })
       .catch((respuesta) => {
-        this.mensaje = 'Error al guardar.';
-        document.getElementById('open-modal').click();
+        this.mensaje = "Error al guardar.";
+        document.getElementById("open-modal").click();
       });
   }
 
   agregarDetalle() {
     this.router.navigate([
-      'editar-detalle-multimedia',
+      "editar-detalle-multimedia",
       { tareaId: this.tarea.id },
     ]);
   }

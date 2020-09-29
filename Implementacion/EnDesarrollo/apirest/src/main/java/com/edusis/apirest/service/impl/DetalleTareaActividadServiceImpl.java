@@ -6,25 +6,23 @@
 
 package com.edusis.apirest.service.impl;
 
-import com.edusis.apirest.dao.PreguntaDao;
-import com.edusis.apirest.domain.Pregunta;
-import com.edusis.apirest.generic.GenericDao;
+import com.edusis.apirest.dao.DetalleTareaActividadDao;
+import com.edusis.apirest.domain.DetalleTareaActividad;
 import com.edusis.apirest.generic.GenericServiceImpl;
-import com.edusis.apirest.service.PreguntaService;
+import com.edusis.apirest.service.DetalleTareaActividadService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
  *
- * @author Facundo Raviolo
+ * @author Naim Saadi
  */
 
 @Service
-public class PreguntaServiceImpl extends GenericServiceImpl<Pregunta, Long> implements PreguntaService {
+public class DetalleTareaActividadServiceImpl extends GenericServiceImpl<DetalleTareaActividad, Long> implements DetalleTareaActividadService {
     
     @Autowired
-    private PreguntaDao preguntaDao;
- 
+    private DetalleTareaActividadDao detalleTareaActividadDao;
+   
     
 }

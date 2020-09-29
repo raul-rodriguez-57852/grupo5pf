@@ -23,6 +23,7 @@ import { HomeAlumnoComponent } from './components/home-alumno/home-alumno.compon
 import { LoginComponent } from './components/login/login.component';
 import { CrearActividadComponent } from './components/crear-actividad/crear-actividad.component';
 import { VistaPreviaActividadComponent } from './components/vista-previa-actividad/vista-previa-actividad.component';
+import { EditarDetalleActividadComponent } from './components/editar-detalle-actividad/editar-detalle-actividad.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { VistaPreviaActividadComponent } from './components/vista-previa-activid
     HomeAlumnoComponent,
     LoginComponent,
     CrearActividadComponent,
-    VistaPreviaActividadComponent
+    VistaPreviaActividadComponent,
+    EditarDetalleActividadComponent
   ],
   imports: [
     BrowserModule,

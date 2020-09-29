@@ -6,25 +6,24 @@
 
 package com.edusis.apirest.service.impl;
 
-import com.edusis.apirest.dao.PreguntaDao;
-import com.edusis.apirest.domain.Pregunta;
-import com.edusis.apirest.generic.GenericDao;
+import com.edusis.apirest.dao.PlantillaDao;
+import com.edusis.apirest.domain.Plantilla;
 import com.edusis.apirest.generic.GenericServiceImpl;
-import com.edusis.apirest.service.PreguntaService;
+import com.edusis.apirest.service.PlantillaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**
  *
- * @author Facundo Raviolo
+ * @author Naim Saadi
  */
 
 @Service
-public class PreguntaServiceImpl extends GenericServiceImpl<Pregunta, Long> implements PreguntaService {
+public class PlantillaServiceImpl extends GenericServiceImpl<Plantilla, Long> implements PlantillaService {
     
     @Autowired
-    private PreguntaDao preguntaDao;
- 
+    private PlantillaDao plantillaDao;
+    
+   
     
 }

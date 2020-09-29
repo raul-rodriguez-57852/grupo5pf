@@ -23,15 +23,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class RespuestaServiceImpl extends GenericServiceImpl<Respuesta, Long> implements RespuestaService {
     
+    @Autowired
     private RespuestaDao respuestaDao;
     
-    public RespuestaServiceImpl() {
-    }
-    
-    @Autowired
-    public RespuestaServiceImpl(@Qualifier("respuestaDaoImpl") GenericDao<Respuesta, Long> dao) {
-        super(dao);
-        this.respuestaDao = (RespuestaDao) dao;
-    }
     
 }
