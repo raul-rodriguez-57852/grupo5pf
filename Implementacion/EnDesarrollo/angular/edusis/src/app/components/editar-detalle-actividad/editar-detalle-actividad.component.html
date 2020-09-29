@@ -1,0 +1,111 @@
+<section id="actividades" class="margin-top-90">
+  <div class="container">
+    <button
+      type="button"
+      (click)="nuevaActividad()"
+      class="btn btn-personalizado-inverso btn-lg btn-block margin-bottom-16"
+    >
+      Nueva Actividad
+    </button>
+    <ul class="list-group list-group-flush margin-bottom-16">
+      <li
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <strong>Actividades</strong>
+        <strong>Opciones</strong>
+      </li>
+      <li
+        *ngFor="let actividad of actividadesSelected"
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <div (click)="vistaPrevia(actividad.id)">{{ actividad.nombre }}</div>
+        <div
+          class="btn-group btn-group-sm"
+          role="group"
+          aria-label="Basic example"
+        >
+          <button
+            type="button"
+            (click)="vistaPrevia(actividad.id)"
+            class="btn btn-info"
+          >
+            Vista previa
+          </button>
+          <button
+            type="button"
+            (click)="eliminar(actividad)"
+            class="btn btn-danger"
+          >
+            <i class="fa fa-trash"></i>
+          </button>
+        </div>
+      </li>
+    </ul>
+    <select
+      class="form-control btn-personalizado"
+      [ngModel]="selectedActividad"
+      (ngModelChange)="onChangeObj($event)"
+      name="actividades"
+      placeholder="Actividad"
+    >
+      <option [ngValue]="null" hidden>Seleccione</option>
+      <option *ngFor="let act of actividades" [ngValue]="act">
+        {{ act.nombre }}
+      </option>
+    </select>
+
+    <button
+      type="button"
+      (click)="guardarDetalles()"
+      class="btn btn-personalizado btn-lg btn-block margin-top-30"
+    >
+      Guardar
+    </button>
+  </div>
+
+  <!-- Modal -->
+  <button
+    id="open-modal"
+    [hidden]="true"
+    data-toggle="modal"
+    data-target="#informacion"
+  >
+    Open Modal
+  </button>
+  <div
+    class="modal fade"
+    id="informacion"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edusis</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{ mensaje }}
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            data-dismiss="modal"
+            class="btn btn-personalizado"
+          >
+            Aceptar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

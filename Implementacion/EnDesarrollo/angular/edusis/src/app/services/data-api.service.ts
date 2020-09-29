@@ -7,7 +7,7 @@ import { Alumno } from '../models/alumno';
 import { PasswordEmoji } from '../models/password-emoji';
 import { Curso } from '../models/curso';
 import { Asignatura } from '../models/asignatura';
-import { TlsOptions } from 'tls';
+import { PlantillaPreguntas } from '../models/plantilla-preguntas';
 
 @Injectable({
   providedIn: 'root',
@@ -222,4 +222,17 @@ export class DataApiService {
 
   }
 
+  getActividades(): Promise<any> {
+    return this.http.get(this.urlBase + 'actividades').toPromise();
+  }
+
+  getActividad(id: string): Promise<any> {
+    return this.http
+      .get(this.urlBase + 'actividad', { params: { id } })
+      .toPromise();
+  }
+
+  crearActividadPreguntas(plantilla: PlantillaPreguntas): Promise<any> {
+    return this.http.post(this.urlBase + 'crearActividadPreguntas', plantilla).toPromise();
+  }
 }

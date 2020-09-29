@@ -17,9 +17,10 @@ import java.util.List;
  */
 
 public interface GenericService<T, K> {
-    public void save(T entity) ;
+    public T save(T entity) ;
     public void delete(T entity);
     public T get(K id);
+    public T findOne(Predicate pdct);
     public void deleteById(K id);
     public List<T> getAll();
     public List<T> getAll(Predicate pdct);

@@ -57,6 +57,12 @@ public abstract class GenericServiceImpl<T, K> implements GenericService<T, K> {
     public T get(K id) {
         return dao.getOne(id);
     }
+    
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)    
+    public T findOne(Predicate pdct) {
+        return (T) dao.findOne(pdct).orElse(null);
+    }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -66,8 +72,8 @@ public abstract class GenericServiceImpl<T, K> implements GenericService<T, K> {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void save(T entity) {
-        dao.save(entity);
+    public T save(T entity) {
+        return dao.save(entity);
     }
     
 }

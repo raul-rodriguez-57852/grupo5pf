@@ -5,6 +5,11 @@
   src: url("assets/fonts/LemonYellow.otf") format("opentype");
 }
 
+@font-face {
+  font-family: SpaceKids;
+  src: url("assets/fonts/Space kids.otf") format("opentype");
+}
+
 .centrado {
   display: flex;
   align-items: center;
@@ -35,12 +40,12 @@
 }
 
 .btn-personalizado {
-  background-color: #53ACAB !important;
+  background-color: #1971B9 !important;
   color: #f5db77 !important;
 }
 
 .btn-personalizado:hover {
-  background-color: #3d8a89 !important;
+  background-color: #1765a5 !important;
   color: #c2ab53 !important;
 }
 

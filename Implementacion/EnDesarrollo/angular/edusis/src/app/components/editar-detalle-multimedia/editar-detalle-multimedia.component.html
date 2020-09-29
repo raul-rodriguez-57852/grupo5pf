@@ -7,15 +7,14 @@
     >
       <div class="form-group">
         <label for="descripcion">Descripcion</label>
-        <input
+        <textarea
           [(ngModel)]="detalle.descripcion"
-          type="text"
           name="nombre"
           class="form-control"
           placeholder="Descripcion"
           required
-          autocomplete="off"
-        />
+          rows="3"
+        ></textarea>
       </div>
       <button type="submit" class="btn btn-lg btn-block btn-personalizado">
         Guardar
@@ -65,6 +64,14 @@
           class="btn btn-personalizado"
         >
           Aceptar
+        </button>
+        <button
+          type="button"
+          data-dismiss="modal"
+          (click)="agregarActividades()"
+          class="btn btn-personalizado"
+        >
+          Agregar Actividades
         </button>
       </div>
     </div>

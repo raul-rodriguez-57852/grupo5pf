@@ -12,14 +12,19 @@ import com.edusis.apirest.domain.Documento;
 import com.edusis.apirest.domain.Emoji;
 import com.edusis.apirest.domain.PasswordEmoji;
 import com.edusis.apirest.domain.Persona;
+import com.edusis.apirest.domain.PlantillaPreguntas;
+import com.edusis.apirest.domain.Pregunta;
 import com.edusis.apirest.domain.Profesor;
 import com.edusis.apirest.domain.Sesion;
+import com.edusis.apirest.domain.Respuesta;
 import com.edusis.apirest.domain.TipoDocumento;
 import com.edusis.apirest.domain.Tutor;
 import com.edusis.apirest.service.AlumnoService;
 import com.edusis.apirest.service.AsignaturaService;
 import com.edusis.apirest.service.CursoService;
 import com.edusis.apirest.service.EmojiService;
+import com.edusis.apirest.service.PersonaService;
+import com.edusis.apirest.service.PlantillaPreguntasService;
 import com.edusis.apirest.service.ProfesorService;
 import com.edusis.apirest.service.SesionService;
 import com.edusis.apirest.service.TutorService;
@@ -27,6 +32,8 @@ import com.edusis.apirest.service.dto.AlumnoDto;
 import com.edusis.apirest.service.dto.AsignaturaDto;
 import com.edusis.apirest.service.dto.CursoDto;
 import com.edusis.apirest.service.dto.EmojiDto;
+import com.edusis.apirest.service.dto.PlantillaPreguntasDto;
+import com.edusis.apirest.service.dto.PreguntaDto;
 import com.edusis.apirest.service.dto.ProfesorDto;
 import com.edusis.apirest.service.dto.TutorDto;
 import com.edusis.apirest.specs.AsignaturaSpecs;
@@ -84,6 +91,7 @@ public class ApiController {
     
     @Autowired
     private SesionService sesionService;
+    private PlantillaPreguntasService plantillaPreguntasService;
     
     @PostMapping("guardarEmoji")
     public ResponseEntity<Long> guardarEmoji(@RequestBody EmojiDto emojiDto) {
@@ -618,7 +626,8 @@ public class ApiController {
         throw new Error();
     }
     
-    public String cifrarClave(String identificador){
+    public String cifrarClave(String identificador)
+    {
         
         try{
                 MessageDigest md5 = MessageDigest.getInstance("MD5");
@@ -632,7 +641,7 @@ public class ApiController {
                  String codigo = codigobuilder.toString();
                  codigo = codigo.toUpperCase();
                  return codigo;
-        }
+            }
         catch (java.io.UnsupportedEncodingException e)
             {
                 System.err.println("Erro, MD5 no es un algoritmo de encriptacion correcto para MessageDigest (ApiContrller) trying setCodigo");
@@ -642,6 +651,51 @@ public class ApiController {
             }
         return "";
     }
+
+        
+    @GetMapping("actividades")
+    public List<PlantillaPreguntas> getActividades() {
+        return plantillaPreguntasService.getAll();
+    }
     
+    @GetMapping("actividad")
+    public PlantillaPreguntas getActividad(@RequestParam Long id) {
+        return plantillaPreguntasService.get(id);
+    }
     
+    @PostMapping("crearActividadPreguntas")
+    public ResponseEntity<Long> crearActividadPreguntas(@RequestBody PlantillaPreguntasDto plantillaPreguntasDto) {
+        PlantillaPreguntas plantilla = new PlantillaPreguntas();
+        plantilla.setNombre(plantillaPreguntasDto.getNombre());
+        plantilla.setSegundos(plantillaPreguntasDto.getSegundos());
+        for (PreguntaDto preg : plantillaPreguntasDto.getPreguntasDto()) {
+            Pregunta pregunta = new Pregunta();
+            pregunta.setPregunta(preg.getPregunta());
+            
+            Respuesta correcta = new Respuesta();
+            correcta.setCorrecta(true);
+            correcta.setRespuesta(preg.getRespuestaCorrecta());
+            pregunta.addRespuesta(correcta);
+            
+            Respuesta incorrectaA = new Respuesta();
+            incorrectaA.setCorrecta(false);
+            incorrectaA.setRespuesta(preg.getRespuestaIncorrectaA());
+            pregunta.addRespuesta(incorrectaA);
+            
+            Respuesta incorrectaB = new Respuesta();
+            incorrectaB.setCorrecta(false);
+            incorrectaB.setRespuesta(preg.getRespuestaIncorrectaB());
+            pregunta.addRespuesta(incorrectaB);
+            
+            Respuesta incorrectaC = new Respuesta();
+            incorrectaC.setCorrecta(false);
+            incorrectaC.setRespuesta(preg.getRespuestaIncorrectaC());
+            pregunta.addRespuesta(incorrectaC);
+            
+            plantilla.addPregunta(pregunta);
+        }
+        
+        plantillaPreguntasService.save(plantilla);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
