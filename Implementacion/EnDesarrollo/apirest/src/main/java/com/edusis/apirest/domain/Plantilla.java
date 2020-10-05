@@ -24,6 +24,9 @@ import javax.persistence.Table;
 @DiscriminatorColumn(name = "dtype")
 public class Plantilla extends GenericEntity {
 
+    public static final String DTYPE_PREGUNTAS = "PREGUNTAS";
+    public static final String DTYPE_PASAPALABRA = "PASAPALABRA";
+
     @NotNull
     private String nombre;
 

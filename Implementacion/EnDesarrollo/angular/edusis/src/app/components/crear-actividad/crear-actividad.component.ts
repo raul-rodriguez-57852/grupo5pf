@@ -36,6 +36,10 @@ export class CrearActividadComponent implements OnInit {
     this.plantilla = new PlantillaPreguntas();
   }
 
+  crearPasapalabra() {
+    this.router.navigate(['crear-actividad-pasapalabra']);
+  }
+
   next(formActividad: NgForm) {
     this.paso = 2;
     this.plantilla.nombre = this.nombre;
@@ -58,8 +62,15 @@ export class CrearActividadComponent implements OnInit {
     console.log('DESPUÉS', this.plantilla);
   }
 
-  vistaPrevia(id: number) {
-    this.router.navigate(['vista-previa-actividad', { id }]);
+  vistaPrevia(actividad: any) {
+    if (actividad.tipo === 'Preguntas') {
+      const id = actividad.id;
+      this.router.navigate(['vista-previa-actividad', { id }]);
+    }
+    if (actividad.tipo === 'Pasapalabra') {
+      const id = actividad.id;
+      this.router.navigate(['vista-previa-pasapalabra', { id }]);
+    }
   }
 
 }

@@ -25,7 +25,6 @@ export class PerfilesComponent implements OnInit {
   ngOnInit() {
     this.getAlumnos();
     this.getEmojis();
-    this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = '#53ACAB';
   }
 
   getEmojis() {

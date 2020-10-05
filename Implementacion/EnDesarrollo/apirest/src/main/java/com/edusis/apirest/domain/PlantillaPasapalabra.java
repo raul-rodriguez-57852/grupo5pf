@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.edusis.apirest.domain;
 
 import com.sun.istack.NotNull;
@@ -18,15 +17,16 @@ import javax.persistence.OneToMany;
  *
  * @author Facundo Raviolo
  */
+
 @Entity
-@DiscriminatorValue(value=Plantilla.DTYPE_PREGUNTAS)
-public class PlantillaPreguntas extends Plantilla {
+@DiscriminatorValue(value=Plantilla.DTYPE_PASAPALABRA)
+public class PlantillaPasapalabra extends Plantilla {
     
     @NotNull
     private Integer segundos;
-    
-    @OneToMany(mappedBy = "plantillaPreguntas", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Pregunta> preguntas;
+
+    @OneToMany(mappedBy = "plantillaPasapalabra", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PreguntaPasapalabra> preguntas;
 
     public Integer getSegundos() {
         return segundos;
@@ -36,20 +36,20 @@ public class PlantillaPreguntas extends Plantilla {
         this.segundos = segundos;
     }
 
-    public List<Pregunta> getPreguntas() {
+    public List<PreguntaPasapalabra> getPreguntas() {
         return preguntas;
     }
 
-    public void setPreguntas(List<Pregunta> preguntas) {
+    public void setPreguntas(List<PreguntaPasapalabra> preguntas) {
         this.preguntas = preguntas;
     }
     
-    public void addPregunta(Pregunta pregunta) {
+    public void addPregunta(PreguntaPasapalabra pregunta) {
         if (preguntas == null) {
-            preguntas = new ArrayList<Pregunta>();
+            preguntas = new ArrayList<PreguntaPasapalabra>();
         }
-        pregunta.setPlantillaPreguntas(this);
+        pregunta.setPlantillaPasapalabra(this);
         preguntas.add(pregunta);
     }
-    
+
 }

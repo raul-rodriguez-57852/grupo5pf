@@ -8,6 +8,7 @@ import { PasswordEmoji } from '../models/password-emoji';
 import { Curso } from '../models/curso';
 import { Asignatura } from '../models/asignatura';
 import { PlantillaPreguntas } from '../models/plantilla-preguntas';
+import { PlantillaPasapalabra } from '../models/plantilla-pasapalabra';
 
 @Injectable({
   providedIn: 'root',
@@ -235,4 +236,9 @@ export class DataApiService {
   crearActividadPreguntas(plantilla: PlantillaPreguntas): Promise<any> {
     return this.http.post(this.urlBase + 'crearActividadPreguntas', plantilla).toPromise();
   }
+
+  crearActividadPasapalabra(plantilla: PlantillaPasapalabra): Promise<any> {
+    return this.http.post(this.urlBase + 'crearActividadPasapalabra', plantilla).toPromise();
+  }
+
 }

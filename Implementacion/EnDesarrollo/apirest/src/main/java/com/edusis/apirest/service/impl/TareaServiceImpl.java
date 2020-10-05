@@ -8,11 +8,9 @@ package com.edusis.apirest.service.impl;
 
 import com.edusis.apirest.dao.TareaDao;
 import com.edusis.apirest.domain.Tarea;
-import com.edusis.apirest.generic.GenericDao;
 import com.edusis.apirest.generic.GenericServiceImpl;
 import com.edusis.apirest.service.TareaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 /**

@@ -1,0 +1,31 @@
+<section id="cursos" class="margin-top-90">
+  <div class="container">
+    <form *ngIf="paso === 1" name="formActividad" #formActividad="ngForm" (ngSubmit)="next(formActividad)">
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input [(ngModel)]="nombre" type="text" name="nombre" class="form-control" placeholder="Nombre" required autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="segundos">Segundos</label>
+        <input [(ngModel)]="segundos" type="tel" name="segundos" class="form-control" placeholder="Segundos" required autocomplete="off">
+      </div>
+      <button type="submit" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Siguiente</button>
+    </form>
+    <div *ngIf="paso === 2" name="formActividad2">
+      <div *ngFor="let pregunta of preguntas" class="margin-bottom-30">
+        <div class="form-group">
+          <label for="pregunta">Letra {{ pregunta.letra }}</label>
+          <input [(ngModel)]="pregunta.pregunta" type="text" name="pregunta" class="form-control" placeholder="Pregunta" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <input [(ngModel)]="pregunta.respuestaCorrecta" type="text" name="respuestaCorrecta" class="form-control" placeholder="Respuesta correcta" required autocomplete="off">
+        </div>
+        <div class="form-check">
+          <input [(ngModel)]="pregunta.empiezaCon" name="empiezaCon" type="checkbox" class="form-check-input">
+          <label class="form-check-label" for="empiezaCon">Empieza con</label>
+        </div>  
+      </div> 
+      <button type="button" (click)="save()" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Finalizar</button>
+    </div>
+  </div>
+</section>

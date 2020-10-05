@@ -12,8 +12,11 @@ import com.edusis.apirest.domain.Documento;
 import com.edusis.apirest.domain.Emoji;
 import com.edusis.apirest.domain.PasswordEmoji;
 import com.edusis.apirest.domain.Persona;
+import com.edusis.apirest.domain.Plantilla;
+import com.edusis.apirest.domain.PlantillaPasapalabra;
 import com.edusis.apirest.domain.PlantillaPreguntas;
 import com.edusis.apirest.domain.Pregunta;
+import com.edusis.apirest.domain.PreguntaPasapalabra;
 import com.edusis.apirest.domain.Profesor;
 import com.edusis.apirest.domain.Sesion;
 import com.edusis.apirest.domain.Respuesta;
@@ -23,8 +26,9 @@ import com.edusis.apirest.service.AlumnoService;
 import com.edusis.apirest.service.AsignaturaService;
 import com.edusis.apirest.service.CursoService;
 import com.edusis.apirest.service.EmojiService;
-import com.edusis.apirest.service.PersonaService;
+import com.edusis.apirest.service.PlantillaPasapalabraService;
 import com.edusis.apirest.service.PlantillaPreguntasService;
+import com.edusis.apirest.service.PlantillaService;
 import com.edusis.apirest.service.ProfesorService;
 import com.edusis.apirest.service.SesionService;
 import com.edusis.apirest.service.TutorService;
@@ -32,16 +36,20 @@ import com.edusis.apirest.service.dto.AlumnoDto;
 import com.edusis.apirest.service.dto.AsignaturaDto;
 import com.edusis.apirest.service.dto.CursoDto;
 import com.edusis.apirest.service.dto.EmojiDto;
+import com.edusis.apirest.service.dto.PlantillaPasapalabraDto;
 import com.edusis.apirest.service.dto.PlantillaPreguntasDto;
 import com.edusis.apirest.service.dto.PreguntaDto;
+import com.edusis.apirest.service.dto.PreguntaPasapalabraDto;
 import com.edusis.apirest.service.dto.ProfesorDto;
 import com.edusis.apirest.service.dto.TutorDto;
 import com.edusis.apirest.specs.AsignaturaSpecs;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -92,6 +100,13 @@ public class ApiController {
     @Autowired
     private SesionService sesionService;
     private PlantillaPreguntasService plantillaPreguntasService;
+    
+    @Autowired
+    private PlantillaPasapalabraService plantillaPasapalabraService;
+
+    @Autowired
+    private PlantillaService plantillaService;
+
     
     @PostMapping("guardarEmoji")
     public ResponseEntity<Long> guardarEmoji(@RequestBody EmojiDto emojiDto) {
@@ -654,13 +669,32 @@ public class ApiController {
 
         
     @GetMapping("actividades")
-    public List<PlantillaPreguntas> getActividades() {
-        return plantillaPreguntasService.getAll();
+    public String getActividades() {
+        JsonArray plantillasJson = new JsonArray();
+        List<Plantilla> plantillas = plantillaService.getAll();
+        for (Plantilla plantilla : plantillas) {
+            if (plantilla instanceof PlantillaPreguntas) {
+                JsonObject p = new JsonObject();
+                p.addProperty("nombre", plantilla.getNombre());
+                p.addProperty("id", plantilla.getId());
+                p.addProperty("tipo", "Preguntas");
+                plantillasJson.add(p);
+            }
+            if (plantilla instanceof PlantillaPasapalabra) {
+                JsonObject p = new JsonObject();
+                p.addProperty("nombre", plantilla.getNombre());
+                p.addProperty("id", plantilla.getId());
+                p.addProperty("tipo", "Pasapalabra");
+                plantillasJson.add(p);
+            }
+        }
+        return plantillasJson.toString();
     }
     
     @GetMapping("actividad")
-    public PlantillaPreguntas getActividad(@RequestParam Long id) {
-        return plantillaPreguntasService.get(id);
+    public Plantilla getActividad(@RequestParam Long id) {
+        Plantilla plantilla = (Plantilla) Hibernate.unproxy(plantillaService.get(id));
+        return plantilla;
     }
     
     @PostMapping("crearActividadPreguntas")
@@ -698,4 +732,23 @@ public class ApiController {
         plantillaPreguntasService.save(plantilla);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    
+    @PostMapping("crearActividadPasapalabra")
+    public ResponseEntity<Long> crearActividadPasapalabra(@RequestBody PlantillaPasapalabraDto plantillaPasapalabraDto) {
+        PlantillaPasapalabra plantilla = new PlantillaPasapalabra();
+        plantilla.setNombre(plantillaPasapalabraDto.getNombre());
+        plantilla.setSegundos(plantillaPasapalabraDto.getSegundos());
+        for (PreguntaPasapalabraDto preg : plantillaPasapalabraDto.getPreguntasPasapalabraDto()) {
+            PreguntaPasapalabra pregunta = new PreguntaPasapalabra();
+            pregunta.setLetra(preg.getLetra());
+            pregunta.setPregunta(preg.getPregunta());
+            pregunta.setEmpiezaCon(preg.getEmpiezaCon());
+            pregunta.setRespuestaCorrecta(preg.getRespuestaCorrecta());            
+            plantilla.addPregunta(pregunta);
+        }
+        
+        plantillaPasapalabraService.save(plantilla);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

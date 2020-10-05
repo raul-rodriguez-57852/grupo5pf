@@ -1,13 +1,13 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { DetalleActividad } from "src/app/models/detalleActividad";
-import { DataApiService } from "src/app/services/data-api.service";
-import { DataTareaService } from "src/app/services/data-tarea.service";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DetalleActividad } from 'src/app/models/detalleActividad';
+import { DataApiService } from 'src/app/services/data-api.service';
+import { DataTareaService } from 'src/app/services/data-tarea.service';
 
 @Component({
-  selector: "app-editar-detalle-actividad",
-  templateUrl: "./editar-detalle-actividad.component.html",
-  styleUrls: ["./editar-detalle-actividad.component.css"],
+  selector: 'app-editar-detalle-actividad',
+  templateUrl: './editar-detalle-actividad.component.html',
+  styleUrls: ['./editar-detalle-actividad.component.css'],
 })
 export class EditarDetalleActividadComponent implements OnInit {
   idTareaRoute = null;
@@ -25,8 +25,8 @@ export class EditarDetalleActividadComponent implements OnInit {
 
   ngOnInit(): void {
     this.idTareaRoute =
-      this.route.snapshot.paramMap.get("tareaId") != null
-        ? Number(this.route.snapshot.paramMap.get("tareaId"))
+      this.route.snapshot.paramMap.get('tareaId') != null
+        ? Number(this.route.snapshot.paramMap.get('tareaId'))
         : null;
     this.getAll();
     this.checkRepetidos();
@@ -56,7 +56,7 @@ export class EditarDetalleActividadComponent implements OnInit {
   }
 
   vistaPrevia(id: number) {
-    this.router.navigate(["vista-previa-actividad", { id }]);
+    this.router.navigate(['vista-previa-actividad', { id }]);
   }
 
   eliminar(actividad: DetalleActividad) {
@@ -90,13 +90,13 @@ export class EditarDetalleActividadComponent implements OnInit {
     this.dataTareaService
       .guardarDetallesActividad(detalles)
       .then((respuesta) => {
-        this.mensaje = "Detalles guardados con éxito.";
-        document.getElementById("open-modal").click();
+        this.mensaje = 'Detalles guardados con éxito.';
+        document.getElementById('open-modal').click();
         //        this.recargar();
       })
       .catch((respuesta) => {
-        this.mensaje = "Error al guardar.";
-        document.getElementById("open-modal").click();
+        this.mensaje = 'Error al guardar.';
+        document.getElementById('open-modal').click();
       });
   }
 

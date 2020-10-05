@@ -24,6 +24,8 @@ import { LoginComponent } from './components/login/login.component';
 import { CrearActividadComponent } from './components/crear-actividad/crear-actividad.component';
 import { VistaPreviaActividadComponent } from './components/vista-previa-actividad/vista-previa-actividad.component';
 import { EditarDetalleActividadComponent } from './components/editar-detalle-actividad/editar-detalle-actividad.component';
+import { VistaPreviaPasapalabraComponent } from './components/vista-previa-pasapalabra/vista-previa-pasapalabra.component';
+import { CrearActividadPasapalabraComponent } from './components/crear-actividad-pasapalabra/crear-actividad-pasapalabra.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { EditarDetalleActividadComponent } from './components/editar-detalle-act
     LoginComponent,
     CrearActividadComponent,
     VistaPreviaActividadComponent,
-    EditarDetalleActividadComponent
+    EditarDetalleActividadComponent,
+    VistaPreviaPasapalabraComponent,
+    CrearActividadPasapalabraComponent
   ],
   imports: [
     BrowserModule,

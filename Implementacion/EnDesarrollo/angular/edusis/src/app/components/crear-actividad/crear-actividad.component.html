@@ -1,6 +1,7 @@
 <section id="cursos" class="margin-top-90">
   <div class="container">
     <button *ngIf="!plantillaPreguntaRespuestas" type="button" (click)="crearPreguntasRespuestas()" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Preguntas y Respuestas</button>
+    <button *ngIf="!plantillaPreguntaRespuestas" type="button" (click)="crearPasapalabra()" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Pasapalabra</button>
     <ul *ngIf="!plantillaPreguntaRespuestas" class="list-group list-group-flush margin-bottom-16">
       <li class="list-group-item d-flex justify-content-between align-items-center">
         <strong>Actividades</strong>
@@ -8,7 +9,7 @@
       <li *ngFor="let actividad of actividades" class="list-group-item d-flex justify-content-between align-items-center">
         <div (click)="vistaPrevia(actividad.id)">{{ actividad.nombre }}</div>
         <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-          <button type="button" (click)="vistaPrevia(actividad.id)" class="btn btn-info">Vista previa</button>
+          <button type="button" (click)="vistaPrevia(actividad)" class="btn btn-info">Vista previa</button>
         </div>
       </li>
     </ul>

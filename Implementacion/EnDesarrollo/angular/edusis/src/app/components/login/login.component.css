@@ -1,43 +1,9 @@
-
-
-
-*{
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
-}
-
-body{
-    font-family: 'Poppins', sans-serif;
-    overflow: hidden;
-    height: 100%;
-    min-width: 100%;
-	min-height: 100%;
-}
-
-html{
-    height: 100%;
-    min-width: 100%;
-	min-height: 100%;
-
-}
-
 .wave{
 	position: absolute;
 	bottom: 0;
 	left: 0;
 	height: 100%;
 	z-index: -1;
-}
-
-.container{
-    
-    height: 60vh;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap :7rem;
-	padding-left: 0px;
-	
 }
 
 .img{
@@ -117,7 +83,7 @@ form{
 	bottom: -2px;
 	width: 0%;
 	height: 2px;
-	background-color: #38d39f;
+	background-color: #2b4c7c;
 	transition: .4s;
 }
 
@@ -139,7 +105,7 @@ form{
 }
 
 .input-div.focus > .i > i{
-	color: #38d39f;
+	color: #2b4c7c;
 }
 
 .input-div > div > input{
@@ -171,7 +137,7 @@ a{
 }
 
 a:hover{
-	color: #38d39f;
+	color: #2b4c7c;
 }
 
 .btn{
@@ -181,7 +147,6 @@ a:hover{
 	border-radius: 25px;
 	outline: none;
 	border: none;
-	background-image: linear-gradient(to right, #32be8f, #38d39f, #32be8f);
 	background-size: 200%;
 	font-size: 1.2rem;
 	color: #fff;
