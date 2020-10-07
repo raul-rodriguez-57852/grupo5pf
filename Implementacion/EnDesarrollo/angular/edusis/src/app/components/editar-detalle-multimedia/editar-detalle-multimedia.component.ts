@@ -15,9 +15,11 @@ export class EditarDetalleMultimediaComponent implements OnInit {
     id: null,
     descripcion: null,
     idTarea: null,
+    linkYoutube: null,
   };
   mensaje: string = null;
   idTareaRoute = null;
+  videoId: string = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -27,6 +29,11 @@ export class EditarDetalleMultimediaComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    const tag = document.createElement("script");
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
+
     this.idTareaRoute =
       this.route.snapshot.paramMap.get("tareaId") != null
         ? Number(this.route.snapshot.paramMap.get("tareaId"))
@@ -59,10 +66,28 @@ export class EditarDetalleMultimediaComponent implements OnInit {
       });
   }
 
+  vistaPrevia() {
+    if (this.detalle.linkYoutube === null) {
+      this.mensaje = "Ingrese el link que desea visualizar.";
+      document.getElementById("open-modal").click();
+      return;
+    }
+    this.videoId = this.getVideoId(this.detalle.linkYoutube);
+  }
+
   agregarActividades() {
     this.router.navigate([
       "editar-detalle-actividad",
       { tareaId: this.detalle.idTarea },
     ]);
+  }
+
+  getVideoId(link: string): string {
+    var video_id = link.split("v=")[1];
+    var ampersandPosition = video_id.indexOf("&");
+    if (ampersandPosition != -1) {
+      video_id = video_id.substring(0, ampersandPosition);
+    }
+    return video_id;
   }
 }

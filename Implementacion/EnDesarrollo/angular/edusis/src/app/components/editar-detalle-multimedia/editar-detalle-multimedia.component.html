@@ -2,7 +2,7 @@
   <div class="container">
     <form
       name="formDetalleMultimedia"
-      #formTarea="ngForm"
+      #formDetalleMultimedia="ngForm"
       (ngSubmit)="save(formDetalleMultimedia)"
     >
       <div class="form-group">
@@ -15,6 +15,30 @@
           required
           rows="3"
         ></textarea>
+        <label for="linkYoutube">Link Youtube</label>
+        <div class="input-group">
+          <input
+            [(ngModel)]="detalle.linkYoutube"
+            name="linkYoutube"
+            class="form-control"
+            placeholder="linkYoutube"
+          />
+          <div class="input-group-append">
+            <button type="button" (click)="vistaPrevia()" class="btn btn-info">
+              Vista previa
+            </button>
+          </div>
+        </div>
+
+        <!--         <div ng-show="videoId != null"> -->
+        <youtube-player
+          [videoId]="videoId"
+          suggestedQuality="default"
+          [height]="250"
+          [width]="500"
+        >
+        </youtube-player>
+        <!--         </div> -->
       </div>
       <button type="submit" class="btn btn-lg btn-block btn-personalizado">
         Guardar
@@ -60,7 +84,6 @@
         <button
           type="button"
           data-dismiss="modal"
-          (click)="recargar()"
           class="btn btn-personalizado"
         >
           Aceptar

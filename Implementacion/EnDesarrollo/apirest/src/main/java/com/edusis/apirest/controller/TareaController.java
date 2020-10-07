@@ -123,6 +123,7 @@ public class TareaController {
     public ResponseEntity<Long> guardarDetalleMultimedia(@RequestBody DetalleTareaMultimediaDto detalleTareaMultimediaDto) {
         DetalleTareaMultimedia detalle = detalleTareaMultimediaDto.getId() != null ? detalleTareaMultimediaService.get(detalleTareaMultimediaDto.getId()) : new DetalleTareaMultimedia();
         detalle.setDescripcion(detalleTareaMultimediaDto.getDescripcion());
+        detalle.setLinkYoutube(detalleTareaMultimediaDto.getLinkYoutube());
         Tarea tarea = tareaService.get(detalleTareaMultimediaDto.getIdTarea());
         tarea.addLinea(detalle);
         tarea.validar();

@@ -19,6 +19,8 @@ public class DetalleTareaMultimedia extends DetalleTarea {
     
     private String descripcion;
     
+    private String linkYoutube;
+    
     // Resta agregar video y imagen
 
     public String getDescripcion() {
@@ -27,6 +29,14 @@ public class DetalleTareaMultimedia extends DetalleTarea {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getLinkYoutube() {
+        return linkYoutube;
+    }
+
+    public void setLinkYoutube(String linkYoutube) {
+        this.linkYoutube = linkYoutube;
     }
     
     

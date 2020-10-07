@@ -24,8 +24,9 @@
           <option
             *ngFor="let asignatura of asignaturas"
             [ngValue]="asignatura.id"
-            >{{ asignatura.nombre }}</option
           >
+            {{ asignatura.nombre }}
+          </option>
         </select>
       </div>
       <button type="submit" class="btn btn-lg btn-block btn-personalizado">
@@ -72,7 +73,6 @@
         <button
           type="button"
           data-dismiss="modal"
-          (click)="recargar()"
           class="btn btn-personalizado"
         >
           Aceptar

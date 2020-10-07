@@ -59,7 +59,9 @@ export class EditarTareaComponent implements OnInit {
 
   save(formTarea: NgForm) {
     //this.tarea.creadorId = this.dataApiService.usuario.id;
-    this.tarea.creadorId = 23;
+    /////////////////////////////////////// ACA OBTENER ID DEL USUARIO LOGUEADO  //////////////////////////////////////
+    this.tarea.creadorId = 12;
+    /////////////////////////////////////// ACA OBTENER ID DEL USUARIO LOGUEADO  //////////////////////////////////////
     this.dataTareaService
       .guardarTarea(this.tarea)
       .then((respuesta) => {

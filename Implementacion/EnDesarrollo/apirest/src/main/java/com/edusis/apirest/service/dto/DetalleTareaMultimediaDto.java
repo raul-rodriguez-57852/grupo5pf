@@ -13,6 +13,7 @@ public class DetalleTareaMultimediaDto {
     
     private Long id;
     private String descripcion;
+    private String linkYoutube;
     private Long idTarea;
 
     public Long getId() {
@@ -37,6 +38,14 @@ public class DetalleTareaMultimediaDto {
 
     public void setIdTarea(Long idTarea) {
         this.idTarea = idTarea;
+    }
+
+    public String getLinkYoutube() {
+        return linkYoutube;
+    }
+
+    public void setLinkYoutube(String linkYoutube) {
+        this.linkYoutube = linkYoutube;
     }
     
     

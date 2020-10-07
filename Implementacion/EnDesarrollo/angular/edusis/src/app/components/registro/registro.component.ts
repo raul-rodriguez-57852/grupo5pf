@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Profesor } from '../../models/profesor';
-import { Tutor } from '../../models/tutor';
-import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
-import { DataApiService } from '../../services/data-api.service';
+import { Component, OnInit } from "@angular/core";
+import { Profesor } from "../../models/profesor";
+import { Tutor } from "../../models/tutor";
+import { NgForm } from "@angular/forms";
+import { Router } from "@angular/router";
+import { DataApiService } from "../../services/data-api.service";
 
 @Component({
-  selector: 'app-registro',
-  templateUrl: './registro.component.html',
-  styleUrls: ['./registro.component.css'],
+  selector: "app-registro",
+  templateUrl: "./registro.component.html",
+  styleUrls: ["./registro.component.css"],
 })
 export class RegistroComponent implements OnInit {
   profesor: Profesor = new Profesor();
@@ -19,8 +19,8 @@ export class RegistroComponent implements OnInit {
 
   constructor(private dataApiService: DataApiService, private router: Router) {
     var id: any;
-    
-    if(this.router.getCurrentNavigation().extras.state.id != 3)
+
+    /*    if(this.router.getCurrentNavigation().extras.state.id != 3)
     {
       if (this.router.getCurrentNavigation().extras.state.id == 1)
       {
@@ -31,7 +31,7 @@ export class RegistroComponent implements OnInit {
         this.esCuentaTutor = true;
       }
       console.log(this.router.getCurrentNavigation().extras.state.id); 
-    }
+    } */
   }
   ngOnInit() {
     this.getTiposDoc();
@@ -47,16 +47,16 @@ export class RegistroComponent implements OnInit {
   save(formRegistro: NgForm) {
     if (this.esCuentaTutor) {
       switch (this.tutor.tipoDocumento) {
-        case 'Libreta Civica': {
-          this.tutor.tipoDocumento = 'LC';
+        case "Libreta Civica": {
+          this.tutor.tipoDocumento = "LC";
           break;
         }
-        case 'Cedula de Identidad': {
-          this.tutor.tipoDocumento = 'CI';
+        case "Cedula de Identidad": {
+          this.tutor.tipoDocumento = "CI";
           break;
         }
-        case 'Libreta de Enrolamiento': {
-          this.tutor.tipoDocumento = 'LE';
+        case "Libreta de Enrolamiento": {
+          this.tutor.tipoDocumento = "LE";
           break;
         }
         default: {
@@ -66,41 +66,41 @@ export class RegistroComponent implements OnInit {
       this.dataApiService
         .guardarTutor(this.tutor)
         .then((respuesta) => {
-          this.mensaje = 'Cuenta creada con éxito.';
-          document.getElementById('open-modal').click();
+          this.mensaje = "Cuenta creada con éxito.";
+          document.getElementById("open-modal").click();
         })
         .catch((respuesta) => {
-          this.mensaje = 'Error al guardar.';
-          document.getElementById('open-modal').click();
+          this.mensaje = "Error al guardar.";
+          document.getElementById("open-modal").click();
         });
     } else {
       switch (this.profesor.tipoDocumento) {
-        case 'Libreta Civica': {
-          this.profesor.tipoDocumento = 'LC';
+        case "Libreta Civica": {
+          this.profesor.tipoDocumento = "LC";
           break;
         }
-        case 'Cedula de Identidad': {
-          this.profesor.tipoDocumento = 'CI';
+        case "Cedula de Identidad": {
+          this.profesor.tipoDocumento = "CI";
           break;
         }
-        case 'Libreta de Enrolamiento': {
-          this.profesor.tipoDocumento = 'LE';
+        case "Libreta de Enrolamiento": {
+          this.profesor.tipoDocumento = "LE";
           break;
         }
         default: {
           break;
         }
       }
-      console.log("PASSWORD DOCENTE: ",this.profesor.password);
+      console.log("PASSWORD DOCENTE: ", this.profesor.password);
       this.dataApiService
         .guardarProfesor(this.profesor)
         .then((respuesta) => {
-          this.mensaje = 'Cuenta creada con éxito.';
-          document.getElementById('open-modal').click();
+          this.mensaje = "Cuenta creada con éxito.";
+          document.getElementById("open-modal").click();
         })
         .catch((respuesta) => {
-          this.mensaje = 'Error al guardar.';
-          document.getElementById('open-modal').click();
+          this.mensaje = "Error al guardar.";
+          document.getElementById("open-modal").click();
         });
     }
   }
@@ -115,6 +115,6 @@ export class RegistroComponent implements OnInit {
   }
 
   recargar(id) {
-    this.router.navigate(['registro'], {state: {id: id}});
+    this.router.navigate(["registro"], { state: { id: id } });
   }
 }
