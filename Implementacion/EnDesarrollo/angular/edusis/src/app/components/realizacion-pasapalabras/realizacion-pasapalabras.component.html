@@ -1,0 +1,68 @@
+<section id="pasapalabra" class="margin-top-90">
+  <div class="circle-container">
+    <ul class="circle">
+      <li class="item" id="A">A</li>
+      <li class="item" id="B">B</li>
+      <li class="item" id="C">C</li>
+      <li class="item" id="D">D</li>
+      <li class="item" id="E">E</li>
+      <li class="item" id="F">F</li>
+      <li class="item" id="G">G</li>
+      <li class="item" id="H">H</li>
+      <li class="item" id="I">I</li>
+      <li class="item" id="J">J</li>
+      <li class="item" id="L">L</li>
+      <li class="item" id="M">M</li>
+      <li class="item" id="N">N</li>
+      <li class="item" id="Ñ">Ñ</li>
+      <li class="item" id="O">O</li>
+      <li class="item" id="P">P</li>
+      <li class="item" id="Q">Q</li>
+      <li class="item" id="R">R</li>
+      <li class="item" id="S">S</li>
+      <li class="item" id="T">T</li>
+      <li class="item" id="U">U</li>
+      <li class="item" id="V">V</li>
+      <li class="item" id="X">X</li>
+      <li class="item" id="Y">Y</li>
+      <li class="item" id="Z">Z</li>
+    </ul>
+  </div>
+  <div class="container" *ngIf="preguntaActual">
+    <div class="margin-bottom-16">
+      <div class="pregunta margin-bottom-16">{{ preguntaActual.pregunta }}</div>
+      <input
+        [(ngModel)]="respuestaActual"
+        (keydown.enter)="aceptar()"
+        type="tel"
+        name="respuestaActual"
+        class="form-control"
+        placeholder="Respuesta"
+        required
+        autocomplete="off"
+      />
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-6 no-padding" style="padding-right: 5px !important">
+          <button
+            type="button"
+            (click)="aceptar()"
+            class="btn btn-personalizado btn-lg btn-block margin-bottom-16"
+          >
+            Aceptar
+          </button>
+        </div>
+        <div class="col-6 no-padding" style="padding-left: 5px !important">
+          <button
+            type="button"
+            (click)="pasapalabra()"
+            class="btn btn-personalizado btn-lg btn-block margin-bottom-16"
+          >
+            Pasapalabra
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,105 @@
+<section id="detalle-multimedia" class="margin-top-90" [hidden]="!isMultimedia">
+  <div class="container">
+    <div class="form-group">
+      <h2>Descripcion</h2>
+      <p>{{ detalleMultimedia.descripcion }}</p>
+      <div ng-show="videoId != null">
+        <h3>Vea el siguiente video</h3>
+
+        <youtube-player
+          [videoId]="videoId"
+          suggestedQuality="default"
+          [height]="250"
+          [width]="500"
+        >
+        </youtube-player>
+      </div>
+    </div>
+  </div>
+
+  <button
+    type="button"
+    class="btn btn-primary btn-lg"
+    [routerLink]="'/home-alumno'"
+  >
+    Volver
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary btn-lg pull-right"
+    (click)="continuarActividades()"
+    [disabled]="actividades.length == 0"
+  >
+    Continuar a actividades
+  </button>
+</section>
+
+<!-- Modal -->
+<button
+  id="open-modal"
+  [hidden]="true"
+  data-toggle="modal"
+  data-target="#informacion"
+>
+  Open Modal
+</button>
+<div
+  class="modal fade"
+  id="informacion"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ludikon</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ mensaje }}
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          data-dismiss="modal"
+          class="btn btn-personalizado"
+        >
+          Aceptar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section
+  id="realizacion-preguntas"
+  class="margin-top-90"
+  [hidden]="!isPreguntas"
+>
+  <app-realizacion-preguntas
+    #realizacionPreguntas
+    [id]="actividadId"
+    (finalizado)="onFinalizado($event)"
+  >
+    ></app-realizacion-preguntas
+  >
+</section>
+
+<section
+  id="realizacion-pasapalabras"
+  class="margin-top-90"
+  [hidden]="!isPasaPalabra"
+>
+  <app-realizacion-pasapalabras #realizacionPreguntas [id]="actividadId">
+    ></app-realizacion-pasapalabras
+  >
+</section>

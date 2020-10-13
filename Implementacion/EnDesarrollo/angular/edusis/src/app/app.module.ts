@@ -27,6 +27,10 @@ import { EditarDetalleActividadComponent } from "./components/editar-detalle-act
 import { VistaPreviaPasapalabraComponent } from "./components/vista-previa-pasapalabra/vista-previa-pasapalabra.component";
 import { CrearActividadPasapalabraComponent } from "./components/crear-actividad-pasapalabra/crear-actividad-pasapalabra.component";
 import { YouTubePlayerModule } from "@angular/youtube-player";
+import { CursoAlumnoComponent } from './components/curso-alumno/curso-alumno.component';
+import { RealizacionTareaComponent } from './components/realizacion-tarea/realizacion-tarea.component';
+import { RealizacionPreguntasComponent } from './components/realizacion-preguntas/realizacion-preguntas.component';
+import { RealizacionPasapalabrasComponent } from './components/realizacion-pasapalabras/realizacion-pasapalabras.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +56,10 @@ import { YouTubePlayerModule } from "@angular/youtube-player";
     EditarDetalleActividadComponent,
     VistaPreviaPasapalabraComponent,
     CrearActividadPasapalabraComponent,
+    CursoAlumnoComponent,
+    RealizacionTareaComponent,
+    RealizacionPreguntasComponent,
+    RealizacionPasapalabrasComponent,
   ],
   imports: [
     BrowserModule,

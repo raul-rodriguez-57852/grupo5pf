@@ -68,6 +68,15 @@ export class DataTareaService {
       .toPromise();
   }
 
+  getActividadTipo(actividadId: number): Promise<any> {
+    return this.http
+      .get(this.urlBase + "actividadTipo", {
+        params: { actividadId: actividadId.toString() },
+        responseType: "text",
+      })
+      .toPromise();
+  }
+
   getDetalleActividadCreador(tareaId: number): Promise<any> {
     return this.http
       .get(this.urlBase + "detalleActividadCreador", {

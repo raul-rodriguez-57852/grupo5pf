@@ -1,0 +1,35 @@
+.pregunta {
+  font-size: x-large;
+  background-color: #1971b9;
+  color: white;
+  height: 150px;
+  width: 100%;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.reloj {
+  height: 45px;
+  width: 45px;
+}
+
+.respuesta {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.textoCorrecto {
+  color: green;
+  font-size: xx-large;
+  font-family: "SpaceKids";
+  margin-bottom: 10px;
+}
+
+.textoIncorrecto {
+  color: red;
+  font-size: xx-large;
+  font-family: "SpaceKids";
+  margin-bottom: 10px;
+}

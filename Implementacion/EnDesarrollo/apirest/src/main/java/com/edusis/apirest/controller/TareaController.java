@@ -11,6 +11,8 @@ import com.edusis.apirest.domain.DetalleTarea;
 import com.edusis.apirest.domain.DetalleTareaActividad;
 import com.edusis.apirest.domain.DetalleTareaMultimedia;
 import com.edusis.apirest.domain.Plantilla;
+import com.edusis.apirest.domain.PlantillaPasapalabra;
+import com.edusis.apirest.domain.PlantillaPreguntas;
 import com.edusis.apirest.domain.Profesor;
 import com.edusis.apirest.domain.Tarea;
 import com.edusis.apirest.service.AsignaturaService;
@@ -29,10 +31,13 @@ import com.edusis.apirest.specs.DetalleTareaActividadSpecs;
 import com.edusis.apirest.specs.DetalleTareaMultimediaSpecs;
 import com.edusis.apirest.specs.TareaSpecs;
 import com.edusis.apirest.utils.AssertUtils;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -188,6 +193,21 @@ public class TareaController {
         Tarea tarea = tareaService.get(tareaId);
         Profesor profesor = tarea.getCreador();
         return detalleTareaActividadService.getAll(DetalleTareaActividadSpecs.byCreador(profesor));
+    }
+    
+    @GetMapping("actividadTipo")
+    public String getActividadTipo(@RequestParam Long actividadId) {
+        Plantilla plantilla = plantillaService.get(actividadId);
+        plantilla = (Plantilla) Hibernate.unproxy(plantilla);
+        if (plantilla instanceof PlantillaPreguntas) {
+            return "Preguntas";
+        }
+
+        if (plantilla instanceof PlantillaPasapalabra) {
+            return "Pasapalabras";
+        }
+        return null;
+
     }
     
     
