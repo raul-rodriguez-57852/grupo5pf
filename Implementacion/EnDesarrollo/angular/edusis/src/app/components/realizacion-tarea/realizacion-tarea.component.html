@@ -3,14 +3,13 @@
     <div class="form-group">
       <h2>Descripcion</h2>
       <p>{{ detalleMultimedia.descripcion }}</p>
-      <div ng-show="videoId != null">
+      <div *ngIf="videoId != null">
         <h3>Vea el siguiente video</h3>
 
         <youtube-player
           [videoId]="videoId"
           suggestedQuality="default"
-          [height]="250"
-          [width]="500"
+          width="100%"
         >
         </youtube-player>
       </div>
@@ -99,7 +98,8 @@
   class="margin-top-90"
   [hidden]="!isPasaPalabra"
 >
-  <app-realizacion-pasapalabras #realizacionPreguntas [id]="actividadId">
+  <app-realizacion-pasapalabras #realizacionPasapalabras [id]="actividadId" (finalizado)="onFinalizado($event)"
+  >
     ></app-realizacion-pasapalabras
   >
 </section>

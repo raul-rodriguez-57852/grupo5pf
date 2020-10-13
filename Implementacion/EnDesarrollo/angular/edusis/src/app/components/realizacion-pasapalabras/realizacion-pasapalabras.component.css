@@ -128,6 +128,9 @@
 .circle .item--success {
   background-image: radial-gradient(circle, #9ee379, #4caf50);
 }
+.circle .item--actual {
+  background-image: radial-gradient(circle, #00aed9, #1176c9); 
+}
 .circle .item--failure {
   background-image: radial-gradient(circle, #b9121b, #8e001c);
 }

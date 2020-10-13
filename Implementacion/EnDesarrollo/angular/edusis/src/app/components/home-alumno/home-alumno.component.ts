@@ -123,8 +123,8 @@ export class HomeAlumnoComponent implements OnInit {
     }
 
     irACurso(id: number) {
-        this.router.navigate(['curso', { id }]);
-      }
+      this.router.navigate(['curso-alumno', { id }]);
+    }
 
 
     confirmarRegistro(){

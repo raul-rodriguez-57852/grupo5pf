@@ -2,7 +2,7 @@
   <div class="container">
    <div *ngIf="preguntaActual && !revision && !final">
       <div class="text-right">
-        <h1 style="color: #53acab" *ngIf="timeLeft > 5">{{ timeLeft }} <i class="fa fa-clock-o"></i></h1>
+        <h1 style="color: #1971B9" *ngIf="timeLeft > 5">{{ timeLeft }} <i class="fa fa-clock-o"></i></h1>
         <h1 style="color: red" *ngIf="timeLeft <= 5">{{ timeLeft }} <i class="fa fa-clock-o"></i></h1>
       </div>
       <div class="pregunta margin-bottom-30">{{ preguntaActual.pregunta }}</div>
