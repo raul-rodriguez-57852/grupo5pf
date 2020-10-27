@@ -26,7 +26,7 @@ public class DetalleTareaActividad extends DetalleTarea {
 
     @ManyToOne
     private Profesor creador;
-
+    
     public Plantilla getPlantilla() {
         return plantilla;
     }
@@ -42,5 +42,5 @@ public class DetalleTareaActividad extends DetalleTarea {
     public void setCreador(Profesor creador) {
         this.creador = creador;
     }
-    
-}
+
+    }

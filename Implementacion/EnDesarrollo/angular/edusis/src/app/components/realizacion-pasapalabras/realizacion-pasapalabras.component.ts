@@ -8,7 +8,7 @@ import { DataApiService } from "src/app/services/data-api.service";
   styleUrls: ["./realizacion-pasapalabras.component.css"],
 })
 export class RealizacionPasapalabrasComponent {
-  @Output() finalizado: EventEmitter<string> = new EventEmitter<string>();
+  @Output() finalizado: EventEmitter<number> = new EventEmitter<number>();
 
   id = null;
   segundos = null;
@@ -108,7 +108,7 @@ export class RealizacionPasapalabrasComponent {
 
   finalizar() {
     this.final = false;
-    this.finalizado.emit("Finalizada");
+    this.finalizado.emit(this.respuestasCorrectas.length);
   }
 
 }

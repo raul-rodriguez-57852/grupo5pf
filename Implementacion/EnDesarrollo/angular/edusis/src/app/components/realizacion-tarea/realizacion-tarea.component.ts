@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { DetalleMultimedia } from "src/app/models/detalleMultimedia";
+import { Realizacion } from 'src/app/models/realizacion';
+import { RealizacionDetalle } from 'src/app/models/realizacion-detalle';
 import { DataApiService } from "src/app/services/data-api.service";
 import { DataTareaService } from "src/app/services/data-tarea.service";
 import { RealizacionPasapalabrasComponent } from "../realizacion-pasapalabras/realizacion-pasapalabras.component";
@@ -23,11 +25,14 @@ export class RealizacionTareaComponent implements OnInit {
   videoId: string = null;
 
   actividades = [];
+  actividadActual = null;
   actividadId: number = null;
   actividadTipo: string = null;
   isMultimedia = true;
   isPreguntas = false;
   isPasaPalabra = false;
+
+  detalles: RealizacionDetalle[] = [];
 
   @ViewChild("realizacionPreguntas", { static: false })
   realizacionPreguntas: RealizacionPreguntasComponent;
@@ -89,8 +94,8 @@ export class RealizacionTareaComponent implements OnInit {
   continuarActividades() {
     if (this.actividades.length > 0) {
       this.actividades.reverse;
-      var actividadActual = this.actividades.pop();
-      this.actividadId = actividadActual.id;
+      this.actividadActual = this.actividades.pop();
+      this.actividadId = this.actividadActual.id;
       this.goToActividad();
     }
   }
@@ -117,17 +122,40 @@ export class RealizacionTareaComponent implements OnInit {
     });
   }
 
-  onFinalizado(mensaje: string): void {
+  onFinalizado(puntaje: number): void {
+    let detalle = new RealizacionDetalle();
+    detalle.idPlantilla = this.actividadId;
+    detalle.puntajeObtenido = puntaje;
+    this.detalles.push(detalle);
     if (this.actividades.length > 0) {
-      var actividadActual = this.actividades.pop();
-      this.actividadId = actividadActual.id;
+      this.actividadActual = this.actividades.pop();
+      this.actividadId = this.actividadActual.id;
       this.goToActividad();
     } else {
       this.isMultimedia = true;
       this.isPreguntas = false;
       this.isPasaPalabra = false;
-      this.mensaje = "¡La tarea ha sido completada!";
-      document.getElementById("open-modal").click();
+
+      /// Persistimos la realizacion
+
+      let realizacion = new Realizacion();
+      realizacion.idTarea = this.tareaId;
+      ////  realizacion.idAlumno = Number.parseInt(this.dataApiService.getCookie("SessionCookie")); ////
+      //////////////////////////////// HARDCODEADO POR AHORA /////////////////////////////////////
+      realizacion.idAlumno = 16;
+      /////////////////////////////////////////////////////
+      realizacion.detalles = this.detalles;
+
+      this.dataTareaService
+      .guardarRealizacionTarea(realizacion)
+      .then((respuesta) => {
+        this.mensaje = "¡La tarea ha sido completada!";
+      })
+      .catch((respuesta) => {
+        this.mensaje = "Error al guardar.";
+        document.getElementById("open-modal").click();
+      });
+
     }
   }
 }

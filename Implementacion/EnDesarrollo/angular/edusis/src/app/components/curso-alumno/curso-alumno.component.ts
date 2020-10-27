@@ -14,6 +14,7 @@ export class CursoAlumnoComponent implements OnInit {
   asignaturas = [];
   tareas = [];
   mensaje: string;
+  tareasPuntaje = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,6 +36,7 @@ export class CursoAlumnoComponent implements OnInit {
     this.dataApiService.getCurso(this.cursoId).then((res) => {
       this.nombre = res.nombre;
     });
+    
   }
 
   getAll() {
@@ -45,6 +47,16 @@ export class CursoAlumnoComponent implements OnInit {
     this.dataTareaService.getTareas(this.cursoId).then((tareas) => {
       this.tareas = tareas;
       console.log(this.tareas);
+    });
+    this.dataTareaService.getRealizaciones(this.cursoId, 16).then((realizaciones) => {
+      realizaciones.forEach(element => {
+        if(element.puntaje != null){
+          element.puntaje = parseInt(element.puntaje);
+        }
+
+      });
+      this.tareasPuntaje = realizaciones;
+      console.log(this.tareasPuntaje);
     });
   }
 

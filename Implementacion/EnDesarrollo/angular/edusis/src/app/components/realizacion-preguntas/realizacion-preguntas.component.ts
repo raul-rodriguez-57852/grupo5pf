@@ -9,7 +9,7 @@ import { DataApiService } from "src/app/services/data-api.service";
 })
 export class RealizacionPreguntasComponent {
   @Input() id = null;
-  @Output() finalizado: EventEmitter<string> = new EventEmitter<string>();
+  @Output() finalizado: EventEmitter<number> = new EventEmitter<number>();
 
   segundos = null;
   timeLeft: number = null;
@@ -123,6 +123,6 @@ export class RealizacionPreguntasComponent {
   finalizar() {
     this.revision = false;
     this.final = false;
-    this.finalizado.emit("Finalizada");
+    this.finalizado.emit(this.respuestasCorrectas);
   }
 }

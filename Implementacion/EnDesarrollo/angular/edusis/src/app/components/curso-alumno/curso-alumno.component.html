@@ -3,13 +3,16 @@
     <label>CURSO: {{ nombre }}</label>
     <div class="row row-cols-1 row-cols-md-2">
       <!--       <ul class="list-unstyled"> -->
-      <li *ngFor="let tarea of tareas" style="list-style-type: none">
+      <li *ngFor="let tarea of tareasPuntaje" style="list-style-type: none">
         <div class="col mb-4">
-          <div class="card border-info mb-3" style="max-width: 18rem">
-            <div class="card-header">{{ tarea.asignatura.nombre }}</div>
-            <div class="card-body text-info">
+          <div [ngClass]="(tarea.puntaje == null)?'card border-info mb-3':'card border-success mb-3'" style="max-width: 18rem">
+            <div class="card-header">{{ tarea.asignatura }}</div>
+            
+              <div [ngClass]="(tarea.puntaje == null)?'card-body text-info':'card-body text-success'">
               <h5 class="card-title">{{ tarea.nombre }}</h5>
-              <!-- <p class="card-text">Clikea para realizar la tarea</p> -->
+              <div class="progress" [hidden]="tarea.puntaje == null">
+                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{tarea.puntaje}}%" [attr.aria-valuenow]="tarea.puntaje" aria-valuemin="0" aria-valuemax="100">{{ tarea.puntaje }}%</div>
+              </div>
               <a
                 role="button"
                 (click)="irATarea(tarea.id)"

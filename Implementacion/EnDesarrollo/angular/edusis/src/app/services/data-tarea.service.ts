@@ -10,6 +10,7 @@ import { Asignatura } from "../models/asignatura";
 import { Tarea } from "../models/tarea";
 import { DetalleMultimedia } from "../models/detalleMultimedia";
 import { DetalleActividad } from "../models/detalleActividad";
+import { Realizacion } from '../models/realizacion';
 
 @Injectable({
   providedIn: "root",
@@ -36,6 +37,14 @@ export class DataTareaService {
     return this.http
       .get(this.urlBase + "tareas", {
         params: { cursoId: cursoId.toString() },
+      })
+      .toPromise();
+  }
+
+  getRealizaciones(cursoId: number, alumnoId: number): Promise<any> {
+    return this.http
+      .get(this.urlBase + "realizaciones", {
+        params: { cursoId: cursoId.toString(), alumnoId: alumnoId.toString() },
       })
       .toPromise();
   }
@@ -82,6 +91,12 @@ export class DataTareaService {
       .get(this.urlBase + "detalleActividadCreador", {
         params: { tareaId: tareaId.toString() },
       })
+      .toPromise();
+  }
+
+  guardarRealizacionTarea(realizacion: Realizacion): Promise<any> {
+    return this.http
+      .post(this.urlBase + "guardarRealizacionTarea", realizacion)
       .toPromise();
   }
 }

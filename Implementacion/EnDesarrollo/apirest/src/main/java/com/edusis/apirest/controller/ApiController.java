@@ -99,6 +99,8 @@ public class ApiController {
     
     @Autowired
     private SesionService sesionService;
+    
+    @Autowired
     private PlantillaPreguntasService plantillaPreguntasService;
     
     @Autowired
@@ -701,7 +703,7 @@ public class ApiController {
     public ResponseEntity<Long> crearActividadPreguntas(@RequestBody PlantillaPreguntasDto plantillaPreguntasDto) {
         PlantillaPreguntas plantilla = new PlantillaPreguntas();
         plantilla.setNombre(plantillaPreguntasDto.getNombre());
-        plantilla.setSegundos(plantillaPreguntasDto.getSegundos());
+        plantilla.setSegundos(plantillaPreguntasDto.getSegundos()); 
         for (PreguntaDto preg : plantillaPreguntasDto.getPreguntasDto()) {
             Pregunta pregunta = new Pregunta();
             pregunta.setPregunta(preg.getPregunta());
@@ -728,7 +730,7 @@ public class ApiController {
             
             plantilla.addPregunta(pregunta);
         }
-        
+        plantilla.setPuntajeMaximo(plantillaPreguntasDto.getPreguntasDto().size());
         plantillaPreguntasService.save(plantilla);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -746,7 +748,7 @@ public class ApiController {
             pregunta.setRespuestaCorrecta(preg.getRespuestaCorrecta());            
             plantilla.addPregunta(pregunta);
         }
-        
+        plantilla.setPuntajeMaximo(plantillaPasapalabraDto.getPreguntasPasapalabraDto().size());
         plantillaPasapalabraService.save(plantilla);
         return new ResponseEntity<>(HttpStatus.OK);
     }

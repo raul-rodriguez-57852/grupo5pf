@@ -5,6 +5,7 @@
  */
 package com.edusis.apirest.controller;
 
+import com.edusis.apirest.domain.Alumno;
 import com.edusis.apirest.domain.Asignatura;
 import com.edusis.apirest.domain.Curso;
 import com.edusis.apirest.domain.DetalleTarea;
@@ -14,28 +15,38 @@ import com.edusis.apirest.domain.Plantilla;
 import com.edusis.apirest.domain.PlantillaPasapalabra;
 import com.edusis.apirest.domain.PlantillaPreguntas;
 import com.edusis.apirest.domain.Profesor;
+import com.edusis.apirest.domain.RealizacionTarea;
+import com.edusis.apirest.domain.RealizacionTareaDetalle;
 import com.edusis.apirest.domain.Tarea;
+import com.edusis.apirest.service.AlumnoService;
 import com.edusis.apirest.service.AsignaturaService;
 import com.edusis.apirest.service.CursoService;
 import com.edusis.apirest.service.DetalleTareaActividadService;
 import com.edusis.apirest.service.DetalleTareaMultimediaService;
 import com.edusis.apirest.service.PlantillaService;
 import com.edusis.apirest.service.ProfesorService;
+import com.edusis.apirest.service.RealizacionTareaService;
 import com.edusis.apirest.service.TareaService;
 import com.edusis.apirest.service.dto.AsignaturaDto;
 import com.edusis.apirest.service.dto.DetalleTareaActividadDto;
 import com.edusis.apirest.service.dto.DetalleTareaMultimediaDto;
+import com.edusis.apirest.service.dto.RealizacionDetalleDto;
+import com.edusis.apirest.service.dto.RealizacionTareaDto;
 import com.edusis.apirest.service.dto.TareaDto;
 import com.edusis.apirest.specs.AsignaturaSpecs;
 import com.edusis.apirest.specs.DetalleTareaActividadSpecs;
 import com.edusis.apirest.specs.DetalleTareaMultimediaSpecs;
+import com.edusis.apirest.specs.RealizacionTareaSpecs;
 import com.edusis.apirest.specs.TareaSpecs;
 import com.edusis.apirest.utils.AssertUtils;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,24 +73,22 @@ public class TareaController {
     
     @Autowired
     private CursoService cursoService;
-    
     @Autowired
     private TareaService tareaService;
-    
     @Autowired
-    private ProfesorService profesorService;
-    
+    private ProfesorService profesorService; 
     @Autowired
-    private AsignaturaService asignaturaService;
-    
+    private AsignaturaService asignaturaService;  
     @Autowired
-    private DetalleTareaMultimediaService detalleTareaMultimediaService;
-    
+    private DetalleTareaMultimediaService detalleTareaMultimediaService; 
     @Autowired
     private DetalleTareaActividadService detalleTareaActividadService;
-    
     @Autowired
     private PlantillaService plantillaService;
+    @Autowired
+    private AlumnoService alumnoService;
+    @Autowired
+    private RealizacionTareaService realizacionTareaService;
     
     @PostMapping("guardarTarea")
     public Long guardarTarea(@RequestBody TareaDto tareaDto) {
@@ -122,6 +131,37 @@ public class TareaController {
         Curso curso = cursoService.get(cursoId);
         List<Asignatura> asignaturas =  asignaturaService.getAll(AsignaturaSpecs.byCurso(curso));
         return tareaService.getAll(TareaSpecs.byAsignaturas(asignaturas));
+    }
+    
+    @GetMapping("realizaciones")
+    public String getRealizaciones(@RequestParam Long cursoId, @RequestParam Long alumnoId) {
+        Curso curso = cursoService.get(cursoId);
+        Alumno alumno = alumnoService.get(alumnoId);
+        List<Asignatura> asignaturas =  asignaturaService.getAll(AsignaturaSpecs.byCurso(curso));
+        List<Tarea> tareas = tareaService.getAll(TareaSpecs.byAsignaturas(asignaturas));
+        List<RealizacionTarea> realizaciones = realizacionTareaService.getAll(RealizacionTareaSpecs.byTareasAndAlumno(tareas, alumno));
+        JsonArray realizacionesJson = new JsonArray();
+        HashMap<Tarea, List<RealizacionTarea>> mapa = new HashMap();
+        for (Tarea tarea : tareas) {
+            List<RealizacionTarea> realizacionesList = new ArrayList<RealizacionTarea>();
+            for (RealizacionTarea realizacion : realizaciones) {
+                if(tarea.equals(realizacion.getTarea())){
+                    realizacionesList.add(realizacion);
+//                    realizaciones.remove(realizacion);
+                }
+            }
+            realizacionesList.sort((o1, o2) -> o1.getPuntajeObtenido().compareTo(o2.getPuntajeObtenido()));
+            JsonObject p = new JsonObject();
+            p.addProperty("id", tarea.getId());
+            p.addProperty("nombre", tarea.getNombre());
+            p.addProperty("asignatura", tarea.getAsignatura().getNombre());
+            Double puntaje = realizacionesList.isEmpty() ? null: realizacionesList.get(0).getPuntajeObtenido();
+            p.addProperty("puntaje", puntaje);
+            realizacionesJson.add(p);
+//            mapa.put(tarea, realizacionesList);
+        }
+        return realizacionesJson.toString();
+        
     }
     
     @PostMapping("guardarDetalleMultimedia")
@@ -221,5 +261,29 @@ public class TareaController {
         return tipos;
     }
     
+    
+    @PostMapping("guardarRealizacionTarea")
+    public ResponseEntity<Long> guardarRealizacionTarea(@RequestBody RealizacionTareaDto dto) {
+        //// queda ver el tema de fechas
+        RealizacionTarea realizacion = new RealizacionTarea();
+        Tarea tarea = tareaService.get(dto.getIdTarea());
+        Alumno alumno = alumnoService.get(dto.getIdAlumno());
+        realizacion.setTarea(tarea);
+        realizacion.setAlumno(alumno);
+        for (RealizacionDetalleDto detalleDto : dto.getDetalles()) {
+            RealizacionTareaDetalle detalle = new RealizacionTareaDetalle();
+            Plantilla plantilla = (Plantilla) Hibernate.unproxy(plantillaService.get(detalleDto.getIdPlantilla()));
+            
+            detalle.setPlantilla(plantilla);
+            detalle.setPuntajeObtenido(detalleDto.getPuntajeObtenido());
+            detalle.calcularPorcentaje();
+            
+            
+            realizacion.addDetalle(detalle);
+        }
+        realizacion.calcularPorcentaje();
+        realizacionTareaService.save(realizacion);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
     
 }

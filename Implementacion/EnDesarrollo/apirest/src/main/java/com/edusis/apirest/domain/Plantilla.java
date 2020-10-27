@@ -29,6 +29,8 @@ public class Plantilla extends GenericEntity {
 
     @NotNull
     private String nombre;
+    
+    private Integer puntajeMaximo;
 
     public String getNombre() {
         return nombre;
@@ -36,6 +38,14 @@ public class Plantilla extends GenericEntity {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Integer getPuntajeMaximo() {
+        return puntajeMaximo;
+    }
+
+    public void setPuntajeMaximo(Integer puntajeMaximo) {
+        this.puntajeMaximo = puntajeMaximo;
     }
 
 }

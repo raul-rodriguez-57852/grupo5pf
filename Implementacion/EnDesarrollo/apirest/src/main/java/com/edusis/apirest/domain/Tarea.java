@@ -46,6 +46,9 @@ public class Tarea extends GenericEntity {
     @OneToMany(mappedBy = "tarea", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<DetalleTarea> lineas;
+    
+    @OneToMany(mappedBy = "tarea")
+    private List<RealizacionTarea> realizaciones;
 
     public void inicializarColeccion() {
         lineas = new ArrayList<DetalleTarea>();
