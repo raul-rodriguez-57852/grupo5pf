@@ -1,10 +1,11 @@
 .pregunta {
-  margin-top: 50px;
-  font-size: large;
+  padding: 15px;
+  font-size: medium;
   background-color: #1971B9;
   color: white;
   height: 100px;
-  width: 100%;
+  width: 70%;
+  margin-left: 15%;
   border-radius: 10px;
   display: flex;
   align-items: center;

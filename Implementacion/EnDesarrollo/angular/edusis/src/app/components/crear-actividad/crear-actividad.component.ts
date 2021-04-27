@@ -53,6 +53,7 @@ export class CrearActividadComponent implements OnInit {
     this.dataApiService.crearActividadPreguntas(this.plantilla).then(res => {
       console.log(res);
     });
+    window.location.reload();
   }
 
   agregarOtra() {

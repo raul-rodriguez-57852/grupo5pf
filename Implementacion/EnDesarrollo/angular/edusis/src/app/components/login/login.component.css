@@ -33,7 +33,7 @@ form{
 
 .login-content h2{
 	margin: 15px 0;
-	color: #333;
+	color: #fff;
 	text-transform: uppercase;
 	font-size: 2.9rem;
 }
@@ -44,7 +44,7 @@ form{
     grid-template-columns: 7% 93%;
     margin: 25px 0;
     padding: 5px 0;
-    border-bottom: 2px solid #d9d9d9;
+    border-bottom: 2px solid #fff;
 }
 
 .login-content .input-div.one{
@@ -52,7 +52,7 @@ form{
 }
 
 .i{
-	color: #d9d9d9;
+	color: #fff;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -72,7 +72,7 @@ form{
 	left: 10px;
 	top: 50%;
 	transform: translateY(-50%);
-	color: #999;
+	color: #fff;
 	font-size: 18px;
 	transition: .3s;
 }
@@ -83,7 +83,7 @@ form{
 	bottom: -2px;
 	width: 0%;
 	height: 2px;
-	background-color: #2b4c7c;
+	background-color: #478fca;
 	transition: .4s;
 }
 
@@ -101,11 +101,12 @@ form{
 
 .input-div.focus > div > h5{
 	top: -5px;
-	font-size: 15px;
+  font-size: 15px;
+  color: #478fca;
 }
 
 .input-div.focus > .i > i{
-	color: #2b4c7c;
+	color: #478fca;
 }
 
 .input-div > div > input{
@@ -119,7 +120,7 @@ form{
 	background: none;
 	padding: 0.5rem 0.7rem;
 	font-size: 1.2rem;
-	color: #555;
+	color: #fff;
 	font-family: 'poppins', sans-serif;
 }
 
@@ -131,13 +132,13 @@ a{
 	display: block;
 	text-align: center;
 	text-decoration: none;
-	color: #999;
+	color: #fff;
 	font-size: 0.9rem;
 	transition: .3s;
 }
 
 a:hover{
-	color: #2b4c7c;
+	color: #fff;
 }
 
 .btn{
@@ -198,4 +199,11 @@ a:hover{
 	.login-content{
 		justify-content: center;
 	}
+}
+
+.fondo {
+  z-index: -1;
+  background-color: #13334c;
+  height: 100%;
+  width: 100%;
 }

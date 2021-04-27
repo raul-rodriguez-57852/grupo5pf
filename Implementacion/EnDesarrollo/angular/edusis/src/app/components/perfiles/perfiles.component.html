@@ -1,26 +1,29 @@
-<section id="perfiles" class="margin-top-90">
-  <div class="container" *ngIf="perfilSeleccionado == null">
+<section id="perfiles">
+  <div class="fondo position-fixed">
+  </div>
+  <div class="container" style="padding-top: 90px;" *ngIf="perfilSeleccionado == null">
     <div class="texto-principal">¿Quién va a aprender hoy?</div>
 <!--     <section id="emojis" class="margin-top-90">
       <div class="container">
         <button (click)="nuevoalumno()" class="btn btn-lg btn-block btn-personalizado">Nuevo Perfil</button>
       </div>
     </section>
- -->    <div class="row" *ngFor="let perfil of perfiles">
-      <div class="col-sm-12 d-flex justify-content-center" style="margin-bottom: 10px;" >
-        <img class="imagen-avatar" (click)="seleccionarPerfil(perfil)" src="{{ perfil.avatarUrl }}">
-      </div>
-      <div class="col-sm-12 d-flex justify-content-center" style="margin-bottom: 20px;" >
-        <div class="nombre">{{ perfil.nombre }}</div>
+-->    
+    <div class="row" style="padding-left: 15px; padding-right: 15px;">
+      <div *ngFor="let perfil of perfiles" class="col-6" style="margin-bottom: 10px;" >
+        <div>
+          <img class="imagen-avatar-perfiles" (click)="seleccionarPerfil(perfil)" src="{{ perfil.avatarUrl }}">
+        </div>
+        <div class="nombre" style="padding-top: 10px;">{{ perfil.nombre }}</div>
       </div>
     </div>
   </div>
-  <div class="container" *ngIf="perfilSeleccionado != null">
+  <div class="container" style="padding-top: 90px;" *ngIf="perfilSeleccionado != null">
     <div class="row">
       <div class="col-sm-12 d-flex justify-content-center" style="margin-bottom: 10px;" >
         <img class="imagen-avatar" src="{{ perfilSeleccionado.avatarUrl }}">
       </div>
-      <div class="col-sm-12 d-flex justify-content-center" style="margin-bottom: 20px;" >
+      <div class="col-sm-12 d-flex justify-content-center" >
         <div class="nombre">{{ perfilSeleccionado.nombre }}</div>
       </div>
     </div>
@@ -38,7 +41,7 @@
         </div>
       </div>
     </div>
-    <button (click)="ingresoAlumno()" class="btn btn-lg btn-block btn-personalizado">Ingresar</button>
+    <button (click)="ingresoAlumno()" class="btn btn-lg btn-block btn-personalizado-inverso">Ingresar</button>
   </div>
 </section>
 
@@ -48,7 +51,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Edusis</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Ludikon</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

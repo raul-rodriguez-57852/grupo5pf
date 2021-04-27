@@ -15,11 +15,11 @@
           <div class="col-8">
             <input id="contenedor-codigo" readonly [(ngModel)]="curso.codigo" type="text" name="Codigo" class="form-control" required autocomplete="off" value="tienecodigo? curso.codigo : Codigo sin generar">
           </div>
-          <div class="col" id="botondecodigo" *ngIf="!tienecodigo"> 
-            <button type="button" (click)="generarCodigoCurso()" style="height: 38px; max-width: auto;" class="btn btn-secondary btn-sm">Generar</button>
+          <div class="col" style="padding-left: 0px;" id="botondecodigo" *ngIf="!tienecodigo"> 
+            <button type="button" (click)="generarCodigoCurso()" style="height: 38px; max-width: auto;" class="btn btn-personalizado-txtblanco btn-sm btn-block">Generar</button>
           </div>
-          <div class="col" id="botondecodigo" *ngIf="tienecodigo"> 
-            <button type="button" (click)="copiarTexto(curso)" style="height: 38px; max-width: auto;" class="btn btn-secondary btn-sm">Copiar</button>
+          <div class="col" style="padding-left: 0px;" id="botondecodigo" *ngIf="tienecodigo"> 
+            <button type="button" (click)="copiarTexto(curso)" style="height: 38px; max-width: auto;" class="btn btn-personalizado-txtblanco btn-sm btn-block">Copiar</button>
           </div>
          
           
@@ -36,7 +36,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Edusis</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Ludikon</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

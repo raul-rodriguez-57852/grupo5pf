@@ -2,78 +2,40 @@
   <div class="container">
     <div *ngIf="preguntaActual && !revision && !final">
       <div class="text-right">
-        <h1 style="color: #53acab" *ngIf="timeLeft > 5">
+        <h1 style="color: #13334c" *ngIf="timeLeft > 5">
           {{ timeLeft }} <i class="fa fa-clock-o"></i>
         </h1>
         <h1 style="color: red" *ngIf="timeLeft <= 5">
           {{ timeLeft }} <i class="fa fa-clock-o"></i>
         </h1>
       </div>
-      <div class="pregunta margin-bottom-30">{{ preguntaActual.pregunta }}</div>
+      <div class="pregunta margin-bottom-30"><p>{{ preguntaActual.pregunta }}</p></div>
       <div
         class="respuesta"
         *ngFor="let respuesta of preguntaActual.respuestas"
       >
-        <button
-          type="button"
-          (click)="opcion(respuesta)"
-          class="btn btn-lg btn-block btn-personalizado"
-        >
-          {{ respuesta.respuesta }}
-        </button>
-      </div>
+      <button type="button" (click)="opcion(respuesta)" class="btn btn-block btn-personalizado">{{ respuesta.respuesta }}</button>
+    </div>
     </div>
     <div *ngIf="revision">
       <div class="text-right">
-        <h1 style="color: #53acab" *ngIf="timeLeft > 5">
+        <h1 style="color: #13334c" *ngIf="timeLeft > 5">
           {{ timeLeft }} <i class="fa fa-clock-o"></i>
         </h1>
         <h1 style="color: red" *ngIf="timeLeft <= 5">
           {{ timeLeft }} <i class="fa fa-clock-o"></i>
         </h1>
       </div>
-      <div class="pregunta margin-bottom-30">{{ preguntaActual.pregunta }}</div>
+      <div class="pregunta margin-bottom-30"><p>{{ preguntaActual.pregunta }}</p></div>
       <div
         class="respuesta"
         *ngFor="let respuesta of preguntaActual.respuestas"
       >
-        <button
-          type="button"
-          *ngIf="respuesta.id === opcionCorrecta.id"
-          class="btn btn-lg btn-block btn-success"
-        >
-          {{ respuesta.respuesta }}
-        </button>
-        <button
-          type="button"
-          *ngIf="
-            opcionElegida &&
-            respuesta.id === opcionElegida.id &&
-            respuesta.id !== opcionCorrecta.id
-          "
-          class="btn btn-lg btn-block btn-danger"
-        >
-          {{ respuesta.respuesta }}
-        </button>
-        <button
-          type="button"
-          *ngIf="
-            opcionElegida &&
-            respuesta.id !== opcionCorrecta.id &&
-            respuesta.id !== opcionElegida.id
-          "
-          class="btn btn-lg btn-block btn-light"
-        >
-          {{ respuesta.respuesta }}
-        </button>
-        <button
-          type="button"
-          *ngIf="!opcionElegida && respuesta.id !== opcionCorrecta.id"
-          class="btn btn-lg btn-block btn-light"
-        >
-          {{ respuesta.respuesta }}
-        </button>
-      </div>
+      <button type="button" *ngIf="respuesta.id === opcionCorrecta.id" class="btn btn-block btn-success">{{ respuesta.respuesta }}</button>
+      <button type="button" *ngIf="opcionElegida && respuesta.id === opcionElegida.id && respuesta.id !== opcionCorrecta.id" class="btn btn-block btn-danger">{{ respuesta.respuesta }}</button>
+      <button type="button" *ngIf="opcionElegida && respuesta.id !== opcionCorrecta.id && respuesta.id !== opcionElegida.id" class="btn btn-block btn-light">{{ respuesta.respuesta }}</button>
+      <button type="button" *ngIf="!opcionElegida && respuesta.id !== opcionCorrecta.id" class="btn btn-block btn-light">{{ respuesta.respuesta }}</button>
+    </div>
       <div *ngIf="correcto" class="text-center textoCorrecto">
         <i class="fa fa-smile-o"></i>
       </div>
@@ -90,8 +52,8 @@
     </div>
     <div *ngIf="final">
       <div class="text-center">
-        <h3 style="color: #53acab">Respuestas correctas:</h3>
-        <h3 style="color: #53acab">
+        <h3 style="color: #13334c">Respuestas correctas:</h3>
+        <h3 style="color: #13334c">
           {{ respuestasCorrectas }} / {{ cantidadPreguntas }}
         </h3>
       </div>

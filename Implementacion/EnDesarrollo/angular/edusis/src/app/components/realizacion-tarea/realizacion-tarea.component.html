@@ -1,7 +1,11 @@
-<section id="detalle-multimedia" class="margin-top-90" [hidden]="!isMultimedia">
+<section id="detalle-multimedia" class="margin-top-60" [hidden]="!isMultimedia">
+  <div class="contenedorImagenCard margin-bottom-16">
+    <img class="imagenCard" *ngIf="tarea && tarea.asignatura.iconoURL !== null" src="{{ tarea.asignatura.iconoURL }}" alt="Card image cap">
+    <div class="centered" *ngIf="tarea">{{ tarea.asignatura.nombre }}</div>  
+  </div>
   <div class="container">
     <div class="form-group">
-      <h2>Descripcion</h2>
+      <h4 *ngIf="tarea">{{ tarea.nombre }}</h4>
       <p>{{ detalleMultimedia.descripcion }}</p>
       <div *ngIf="videoId != null">
         <h3>Vea el siguiente video</h3>
@@ -14,23 +18,24 @@
         </youtube-player>
       </div>
     </div>
+    <button
+      type="button"
+      class="btn btn-personalizado btn-lg btn-block"
+      (click)="continuarActividades()"
+      [disabled]="actividades.length == 0"
+    >
+      Realizar las actividades
+    </button>
+    <button
+    type="button"
+    class="btn btn-personalizado btn-block btn-lg"
+    (click)="volver()"
+    >
+      Volver
+    </button>
+
   </div>
 
-  <button
-    type="button"
-    class="btn btn-primary btn-lg"
-    [routerLink]="'/home-alumno'"
-  >
-    Volver
-  </button>
-  <button
-    type="button"
-    class="btn btn-primary btn-lg pull-right"
-    (click)="continuarActividades()"
-    [disabled]="actividades.length == 0"
-  >
-    Continuar a actividades
-  </button>
 </section>
 
 <!-- Modal -->

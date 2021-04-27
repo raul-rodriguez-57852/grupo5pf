@@ -10,6 +10,7 @@ import { DataTareaService } from "src/app/services/data-tarea.service";
 })
 export class CursoAlumnoComponent implements OnInit {
   nombre = null;
+  urlImagen = null;
   cursoId = null;
   asignaturas = [];
   tareas = [];
@@ -35,6 +36,7 @@ export class CursoAlumnoComponent implements OnInit {
   get() {
     this.dataApiService.getCurso(this.cursoId).then((res) => {
       this.nombre = res.nombre;
+      this.urlImagen = res.iconoURL;
     });
     
   }
@@ -43,24 +45,36 @@ export class CursoAlumnoComponent implements OnInit {
     this.dataApiService.getAsignaturas(this.cursoId).then((asignaturas) => {
       this.asignaturas = asignaturas;
       console.log(this.asignaturas);
+      this.dataTareaService.getTareas(this.cursoId).then((tareas) => {
+        this.tareas = tareas;
+        console.log(this.tareas);
+        this.dataTareaService.getRealizaciones(this.cursoId, 3).then((realizaciones) => {
+          realizaciones.forEach(element => {
+            if(element.puntaje != null){
+              element.puntaje = parseInt(element.puntaje);
+            }
+    
+          });
+          this.tareasPuntaje = realizaciones;
+          console.log(this.tareasPuntaje);
+          this.imagenAAsignatura();
+        });    
+      });  
     });
-    this.dataTareaService.getTareas(this.cursoId).then((tareas) => {
-      this.tareas = tareas;
-      console.log(this.tareas);
-    });
-    this.dataTareaService.getRealizaciones(this.cursoId, 16).then((realizaciones) => {
-      realizaciones.forEach(element => {
-        if(element.puntaje != null){
-          element.puntaje = parseInt(element.puntaje);
-        }
+  }
 
+  // método provisorio luego cambiar
+  imagenAAsignatura() {
+    this.tareasPuntaje.forEach(tar => {
+      this.asignaturas.forEach(asi => {
+        if (tar.asignatura === asi.nombre) {
+          tar.iconoURL = asi.iconoURL;
+        }
       });
-      this.tareasPuntaje = realizaciones;
-      console.log(this.tareasPuntaje);
     });
   }
 
   irATarea(id: number) {
-    this.router.navigate(["realizacion-tarea", { id }]);
+    this.router.navigate(["realizacion-tarea", { id: id, cursoId: this.cursoId }]);
   }
 }

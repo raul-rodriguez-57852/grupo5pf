@@ -2,8 +2,14 @@
   <div class="container">
     <div *ngIf="!final">
       <div class="text-center" style="height: 0px;">
-        <h1 style="color: #1971B9; padding-top: 135px;" *ngIf="timeLeft > 5">{{ timeLeft }} <i class="fa fa-clock-o"></i></h1>
-        <h1 style="color: red; padding-top: 135px;" *ngIf="timeLeft <= 5">{{ timeLeft }} <i class="fa fa-clock-o"></i></h1>
+        <h1 style="color: #13334c; padding-top: 55px;" *ngIf="timeLeft > 5">{{ timeLeft }} <i class="fa fa-clock-o"></i></h1>
+        <h1 style="color: red; padding-top: 55px;" *ngIf="timeLeft <= 5">{{ timeLeft }} <i class="fa fa-clock-o"></i></h1>
+        <div *ngIf="preguntaActual">
+          <div class="margin-bottom-16">
+            <div class="pregunta margin-bottom-16" *ngIf="preguntaActual.empiezaCon">Empieza con {{ preguntaActual.letra }}: {{ preguntaActual.pregunta }}</div>
+            <div class="pregunta margin-bottom-16" *ngIf="!preguntaActual.empiezaCon">Contiene {{ preguntaActual.letra }}: {{ preguntaActual.pregunta }}</div>
+          </div>  
+        </div>
       </div>
       <div class="circle-container">
         <ul class="circle">
@@ -35,18 +41,16 @@
           </ul>  
       </div>
       <div class="container" *ngIf="preguntaActual">
-        <div class="margin-bottom-16">
-          <div class="pregunta margin-bottom-16" *ngIf="preguntaActual.empiezaCon">Empieza con {{ preguntaActual.letra }}: {{ preguntaActual.pregunta }}</div>
-          <div class="pregunta margin-bottom-16" *ngIf="!preguntaActual.empiezaCon">Contiene {{ preguntaActual.letra }}: {{ preguntaActual.pregunta }}</div>
-          <input [(ngModel)]="respuestaActual" (keydown.enter)="aceptar()" type="tel" name="respuestaActual" class="form-control" placeholder="Respuesta" required autocomplete="off">  
-        </div>    
+        <div class="margin-bottom-16 margin-top-30">
+          <input [(ngModel)]="respuestaActual" (keydown.enter)="aceptar()" type="text" name="respuestaActual" class="form-control" placeholder="Respuesta" required autocomplete="off">  
+        </div>
         <div class="container">
           <div class="row">
             <div class="col-6 no-padding" style="padding-right: 5px !important;">
                 <button type="button" (click)="aceptar()" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Aceptar</button>
             </div>
             <div class="col-6 no-padding" style="padding-left: 5px !important;">
-              <button type="button" (click)="pasapalabra()" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Pasapalabra</button>
+              <button type="button" (click)="pasapalabra()" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Paso</button>
             </div>
           </div>
         </div>
@@ -54,8 +58,8 @@
     </div>
     <div *ngIf="final">
       <div class="text-center">
-        <h3 style="color: #53acab">Respuestas correctas:</h3>
-        <h3 style="color: #53acab">{{ respuestasCorrectas.length }} / {{ cantidadPreguntas }}</h3>
+        <h3 style="color: #13334c">Respuestas correctas:</h3>
+        <h3 style="color: #13334c">{{ respuestasCorrectas.length }} / {{ cantidadPreguntas }}</h3>
       </div>
       <button
       type="button"

@@ -1,13 +1,25 @@
 .pregunta {
-  font-size: x-large;
-  background-color: #1971b9;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: large;
+  background-color: #1971B9;
   color: white;
-  height: 150px;
+  height: 110px;
+  line-height: 110px;
   width: 100%;
   border-radius: 10px;
-  display: flex;
-  align-items: center;
   text-align: center;
+}
+
+.pregunta p {
+  line-height: 1.5;
+  display: inline-block;
+  vertical-align: middle !important;
+  margin-bottom: 0px !important;
+}
+
+.btn {
+  border-radius: 10px;
 }
 
 .reloj {

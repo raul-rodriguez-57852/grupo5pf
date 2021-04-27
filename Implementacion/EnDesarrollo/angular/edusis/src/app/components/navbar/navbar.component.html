@@ -1,5 +1,5 @@
 <nav id="menuNavegacion" class="menuNavegacion navbar fixed-top navbar-expand-sm navbar-light bg-light">
-  <a routerLink="/"><img data-toggle="collapse" data-target=".navbar-collapse.show" src="assets/img/logo.png" width="50" height="50" alt="Ludikon"></a>
+  <a routerLink="/"><img data-toggle="collapse" data-target=".navbar-collapse.show" src="assets/img/logo-x2.png" width="50" height="50" alt="Ludikon"></a>
   <button class="navbar-toggler custom-toggler" (click)="recargar()" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
   </button>
@@ -28,6 +28,9 @@
       </li>
       <li *ngIf="esProfesor" class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" >
         <a class="nav-link" routerLink="/crear-actividad"><i class="fa fa-sticky-note"></i> Actividades</a>
+      </li>
+      <li *ngIf="esProfesor || esTutor" class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" >
+        <a class="nav-link" (click)="cerrarSesion()"><i class="fa fa-sign-out"></i> Cerrar sesión</a>
       </li>
     </ul>
   </div>

@@ -31,6 +31,7 @@ import { CursoAlumnoComponent } from './components/curso-alumno/curso-alumno.com
 import { RealizacionTareaComponent } from './components/realizacion-tarea/realizacion-tarea.component';
 import { RealizacionPreguntasComponent } from './components/realizacion-preguntas/realizacion-preguntas.component';
 import { RealizacionPasapalabrasComponent } from './components/realizacion-pasapalabras/realizacion-pasapalabras.component';
+import { HomeProfesorComponent } from './components/home-profesor/home-profesor.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { RealizacionPasapalabrasComponent } from './components/realizacion-pasap
     RealizacionTareaComponent,
     RealizacionPreguntasComponent,
     RealizacionPasapalabrasComponent,
+    HomeProfesorComponent,
   ],
   imports: [
     BrowserModule,

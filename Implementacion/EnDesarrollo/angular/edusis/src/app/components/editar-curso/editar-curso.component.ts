@@ -89,8 +89,9 @@ export class EditarCursoComponent implements OnInit {
   }
 
   recargar() {
-    // window.location.reload();
+    this.router.navigate(['cursos']);
   }
+  
   generarCodigoCurso()
   {
       if(this.curso.codigo === null){

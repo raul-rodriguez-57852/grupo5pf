@@ -150,7 +150,7 @@ public class TareaController {
 //                    realizaciones.remove(realizacion);
                 }
             }
-            realizacionesList.sort((o1, o2) -> o1.getPuntajeObtenido().compareTo(o2.getPuntajeObtenido()));
+            realizacionesList.sort((o2, o1) -> o1.getPuntajeObtenido().compareTo(o2.getPuntajeObtenido()));
             JsonObject p = new JsonObject();
             p.addProperty("id", tarea.getId());
             p.addProperty("nombre", tarea.getNombre());

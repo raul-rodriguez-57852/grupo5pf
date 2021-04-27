@@ -27,6 +27,11 @@
 .margin-top-60 {
   margin-top: 60px;
 }
+
+.margin-top-75 {
+  margin-top: 75px;
+}
+
 .margin-top-90 {
   margin-top: 90px;
 }
@@ -40,23 +45,34 @@
 }
 
 .btn-personalizado {
-  background-color: #1971B9 !important;
+  background-color: #13334c  !important;
   color: #f5db77 !important;
 }
 
 .btn-personalizado:hover {
-  background-color: #1765a5 !important;
+  background-color: #204d70 !important;
   color: #c2ab53 !important;
 }
 
+.btn-personalizado-txtblanco {
+  background-color: #13334c  !important;
+  color: #ffffff !important;
+}
+
+.btn-personalizado-txtblanco:hover {
+  background-color: #204d70 !important;
+  color: #ffffff !important;
+}
+
+
 .btn-personalizado-inverso {
   background-color: #f5db77 !important;
-  color: #53ACAB !important;
+  color: #13334c !important;
 }
 
 .btn-personalizado-inverso:hover {
   background-color: #c2ab53 !important;
-  color: #3d8a89 !important;
+  color: #13334c !important;
 }
 
 .modal {

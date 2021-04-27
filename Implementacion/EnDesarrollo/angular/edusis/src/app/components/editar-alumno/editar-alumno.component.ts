@@ -51,7 +51,8 @@ export class EditarAlumnoComponent implements OnInit {
   }
 
   save(formAlumno: NgForm) {
-    var idtutor = this.dataApiService.usuario.id;
+    // HARDCODEADO MODIFICAR
+    var idtutor = 2;
     //this.alumno.tutor = this.dataApiService.getTutor(idtutor.toString());
     this.alumno.tutorId = idtutor;
     console.log('Tutor: ', this.alumno.tutorId);

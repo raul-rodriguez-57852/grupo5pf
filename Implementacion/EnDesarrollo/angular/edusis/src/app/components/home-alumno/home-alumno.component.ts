@@ -25,6 +25,10 @@ export class HomeAlumnoComponent implements OnInit {
 
     constructor( private dataApiService: DataApiService,private elementRef: ElementRef,private router: Router,private route: ActivatedRoute)
     {
+      // Las siguientes tres lineas son para que recargue, sino al ser la misma pagina no recarga
+        this.router.routeReuseStrategy.shouldReuseRoute = function() {
+          return false;
+        };
         var id: any;
         this.alumnoID = this.router.getCurrentNavigation().extras.state.id != null ?  this.router.getCurrentNavigation().extras.state.id : null;
     }
@@ -106,7 +110,7 @@ export class HomeAlumnoComponent implements OnInit {
             });
         }
         this.esregistro = true;
-        this.mensaje = "¡Curso Encontrado! \nNombre del curso: " + this.curso.nombre + '\n¿Desea inscribirse al curso?';
+        this.mensaje = "¡Curso Encontrado! \nNombre del curso: " + this.curso.nombre + '\n¿Desea unirse al curso?';
         document.getElementById('open-modal').click();
 
     }
@@ -133,18 +137,23 @@ export class HomeAlumnoComponent implements OnInit {
             console.log('Entro en el if de check_codigo != -1 /n llamando a agregarAlumnoACurso');
             this.dataApiService.agregarAlumnoACurso(this.alumnoID.toString(), this.curso.id.toString()).then(
                 (respuesta) => {
-                    this.mensaje = "¡Registro a curso realizado excitosamente!";
+                  this.recargar();
+                    this.mensaje = "Te has unido correctamente al curso.";
                     this.esregistro = false;
                     document.getElementById('open-modal').click();
                 }
             )
             .catch(() =>{
     
-                this.mensaje = "Se produjo un error intentando registrarse al curso";
+                this.mensaje = "Se produjo un error intentando registrarse al curso.";
                 this.esregistro = false;
                 document.getElementById('open-modal').click();
             });    
         }
     }
 
+    recargar() {
+      console.log('ENTRÓ');
+      this.router.navigate(['home-alumno'], {state: {id: this.alumnoID}});
+    }
 }

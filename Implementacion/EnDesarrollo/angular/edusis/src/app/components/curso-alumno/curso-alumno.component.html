@@ -1,32 +1,27 @@
-<section id="curso" class="margin-top-90">
+<section id="curso" class="margin-top-60">
+  <div class="foto-principal margin-bottom-16">
+    <img class="imagenCard" src="{{ urlImagen }}" alt="Card image cap">
+    <div class="centered">{{ nombre }}</div>  
+  </div>
   <div class="container">
-    <label>CURSO: {{ nombre }}</label>
-    <div class="row row-cols-1 row-cols-md-2">
-      <!--       <ul class="list-unstyled"> -->
-      <li *ngFor="let tarea of tareasPuntaje" style="list-style-type: none">
-        <div class="col mb-4">
-          <div [ngClass]="(tarea.puntaje == null)?'card border-info mb-3':'card border-success mb-3'" style="max-width: 18rem">
-            <div class="card-header">{{ tarea.asignatura }}</div>
-            
-              <div [ngClass]="(tarea.puntaje == null)?'card-body text-info':'card-body text-success'">
-              <h5 class="card-title">{{ tarea.nombre }}</h5>
-              <div class="progress" [hidden]="tarea.puntaje == null">
-                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{tarea.puntaje}}%" [attr.aria-valuenow]="tarea.puntaje" aria-valuemin="0" aria-valuemax="100">{{ tarea.puntaje }}%</div>
-              </div>
-              <a
-                role="button"
-                (click)="irATarea(tarea.id)"
-                class="black-text d-flex justify-content-end"
-              >
-                <h6>Iniciar tarea</h6>
-              </a>
+      <div *ngFor="let tarea of tareasPuntaje">
+        <div class="card mb-3" (click)="irATarea(tarea.id)">
+          <div class="contenedorImagenCard" *ngIf="tarea.iconoURL !== undefined">
+            <img class="card-img-top imagenCard"  src="{{ tarea.iconoURL }}" alt="Card image cap">
+            <div class="centered">{{ tarea.asignatura }}</div>  
+          </div>              
+          <div [ngClass]="(tarea.puntaje == null)?'card-body':'card-body realizada'">
+            <h5 class="card-title">{{ tarea.nombre }}</h5>
+            <div class="progress margin-bottom-16" [hidden]="tarea.puntaje == null">
+              <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{tarea.puntaje}}%" [attr.aria-valuenow]="tarea.puntaje" aria-valuemin="0" aria-valuemax="100">{{ tarea.puntaje }}%</div>
             </div>
+            <button type="button" *ngIf="!tarea.puntaje" class="btn btn-personalizado-txtblanco">Iniciar tarea</button>
+            <button type="button" *ngIf="tarea.puntaje" class="btn btn-personalizado-txtblanco">Reintentar tarea</button>  
           </div>
         </div>
-      </li>
+      </div>
       <!--       </ul> -->
     </div>
-  </div>
 </section>
 
 <!-- Modal -->
@@ -49,7 +44,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Edusis</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Ludikon</h5>
         <button
           type="button"
           class="close"

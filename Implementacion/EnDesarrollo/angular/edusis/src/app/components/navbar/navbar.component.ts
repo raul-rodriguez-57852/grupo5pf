@@ -23,6 +23,12 @@ export class NavbarComponent implements OnInit {
 
   }
 
+  cerrarSesion() {
+    console.log('CERRANDO');
+    this.dataApiService.deleteCookie('SessionCookie');
+    this.router.navigate(['']);
+  }
+  
   async recargar() {
     //Busco en cookies, para ver si estsa el usuario loggeado, si esta, agarro sus datos, 
     //Si no esta, lo mando a loggearse.

@@ -8,10 +8,21 @@
     box-shadow: 0px 10px 28px -13px rgba(0,0,0,0.8);
   }
 
-  .nombre {
-    font-family: 'LemonYellow';
-    text-align: center;
-    font-size: xx-large;
-    margin-bottom: 20px;
-    color: #f5db77;
-  }
+.nombre {
+  font-family: 'LemonYellow';
+  text-align: center;
+  font-size: xx-large;
+  margin-bottom: 20px;
+  color: #f5db77;
+}
+
+.texto {
+  color: white;
+}
+
+.fondo {
+  z-index: -1;
+  background-color: #13334c;
+  height: 100%;
+  width: 100%;
+}

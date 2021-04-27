@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Asignatura } from '../../models/asignatura';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataApiService } from '../../services/data-api.service';
 import { NgForm } from '@angular/forms';
 
@@ -15,6 +15,7 @@ export class EditarAsignaturaComponent implements OnInit {
   mensaje: string = null;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private dataApiService: DataApiService
   ) { }
@@ -35,7 +36,7 @@ export class EditarAsignaturaComponent implements OnInit {
 
   save(formAsignatura: NgForm) {
     //this.asignatura.creadorId = this.dataApiService.usuario.id;
-    this.asignatura.creadorId = 23;
+    this.asignatura.creadorId = 1;
     this.dataApiService.guardarAsignatura(this.asignatura).then(
       (respuesta) => {
         this.mensaje = 'Asignatura guardada con éxito.';
@@ -51,7 +52,7 @@ export class EditarAsignaturaComponent implements OnInit {
   }
 
   recargar() {
-    // window.location.reload();
+    this.router.navigate(['curso', { id: this.asignatura.cursoId }]);
   }
 
 }

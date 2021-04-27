@@ -59,8 +59,13 @@ export class EditarTareaComponent implements OnInit {
 
   save(formTarea: NgForm) {
     //this.tarea.creadorId = this.dataApiService.usuario.id;
+    if (this.tarea.asignaturaId == null) {
+      this.mensaje = "Error al guardar. Debe seleccionar una asignatura.";
+      document.getElementById("open-modal").click();
+      return;
+    }
     /////////////////////////////////////// ACA OBTENER ID DEL USUARIO LOGUEADO  //////////////////////////////////////
-    this.tarea.creadorId = 12;
+    this.tarea.creadorId = 1;
     /////////////////////////////////////// ACA OBTENER ID DEL USUARIO LOGUEADO  //////////////////////////////////////
     this.dataTareaService
       .guardarTarea(this.tarea)

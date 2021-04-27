@@ -19,7 +19,7 @@ export class DataApiService {
   usuario = null;
 
   constructor(private http: HttpClient) {
-    this.urlBase = 'http://localhost:8090/api/';
+    this.urlBase = 'http://192.168.0.217:8090/api/';
   }
 
 //#######     EMOJI      #########  
@@ -200,7 +200,7 @@ export class DataApiService {
   
   }
 
-  getCookie(name: String, ){
+  getCookie(name: String){
     const value = "; " + document.cookie;
     const parts = value.split("; " + name + "=");
 

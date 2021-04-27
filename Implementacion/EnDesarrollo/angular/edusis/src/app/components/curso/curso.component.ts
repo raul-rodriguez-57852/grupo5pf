@@ -10,6 +10,7 @@ import { DataTareaService } from 'src/app/services/data-tarea.service';
 })
 export class CursoComponent implements OnInit {
   nombre = null;
+  urlImagen = null;
   cursoId = null;
   asignaturas = [];
   tareas = [];
@@ -36,6 +37,7 @@ export class CursoComponent implements OnInit {
   get() {
     this.dataApiService.getCurso(this.cursoId).then((res) => {
       this.nombre = res.nombre;
+      this.urlImagen = res.iconoURL;
     });
   }
 

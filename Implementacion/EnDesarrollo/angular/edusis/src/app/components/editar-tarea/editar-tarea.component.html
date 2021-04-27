@@ -21,6 +21,7 @@
           name="asignatura"
           placeholder="Asignatura"
         >
+        <option [ngValue]="null">Seleccionar una asignatura...</option>
           <option
             *ngFor="let asignatura of asignaturas"
             [ngValue]="asignatura.id"
@@ -56,7 +57,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Edusis</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Ludikon</h5>
         <button
           type="button"
           class="close"
@@ -83,7 +84,7 @@
           (click)="agregarDetalle()"
           class="btn btn-personalizado"
         >
-          Agregar Descripcion
+          Agregar Descripción
         </button>
       </div>
     </div>

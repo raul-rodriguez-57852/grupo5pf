@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit{
     
                 if(esProfe){
                     console.log("Es PROFE: ",esProfe)
-                    this.router.navigate(['cursos']);
+                    this.router.navigate(['home-profesor']);
                 }
                 else{
                     this.router.navigate(['perfiles']);
@@ -130,7 +130,7 @@ export class LoginComponent implements OnInit{
 
             if(esProfe){
                 console.log("Es PROFE: ",esProfe)
-                this.router.navigate(['cursos']);
+                this.router.navigate(['home-profesor']);
             }
             else{
                 this.router.navigate(['perfiles']);

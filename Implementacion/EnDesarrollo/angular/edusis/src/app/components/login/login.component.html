@@ -1,6 +1,10 @@
-<section id="login" class="margin-top-90">
-  <img class="wave" src="/assets/img/wave.png" />
-  <div class="container">
+<section id="login">
+<!--   <img class="wave" src="/assets/img/wave.png" />
+ -->  
+  <div class="fondo position-fixed">
+  </div>
+
+  <div class="container" style="padding-top: 90px;">
     <div class="login-content" style="justify-content: center">
       <form action="index.html">
         <img
@@ -12,7 +16,7 @@
             <i class="fa fa-user"></i>
           </div>
           <div class="div">
-            <h5>Numero de Documento</h5>
+            <h5>Número de Documento</h5>
             <input
               id="InputDocumento"
               (blur)="removeFocus()"
@@ -28,7 +32,7 @@
             <i class="fa fa-lock"></i>
           </div>
           <div class="div">
-            <h5>Password</h5>
+            <h5>Contraseña</h5>
             <input
               id="inputPassword"
               (blur)="removeFocus()"
@@ -38,19 +42,19 @@
             />
           </div>
         </div>
-        <a href="#">Olvidaste tu contraseña?</a>
+        <a href="#">¿Olvidaste tu contraseña?</a>
         <input
           type="submit"
           (click)="login()"
-          class="btn btn-personalizado"
+          class="btn btn-personalizado-inverso"
           value="Iniciar Sesión"
         />
         <div class="form-group m-b-0">
           <div
             class="col-sm-12 text-center"
-            style="color: #999; font-size: 0.9rem"
+            style="color: #fff; font-size: 0.9rem"
           >
-            ¿No tenes cuenta?
+            ¿No tenés cuenta?
             <a routerLink="/registro" class="text-primary m-l-5"
               ><b>Registrate</b></a
             >
@@ -80,7 +84,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Edusis</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Ludikon</h5>
         <button
           type="button"
           class="close"

@@ -14,7 +14,10 @@ import { RealizacionPreguntasComponent } from "../realizacion-preguntas/realizac
   styleUrls: ["./realizacion-tarea.component.css"],
 })
 export class RealizacionTareaComponent implements OnInit {
+
+  tarea = null;
   tareaId: number = null;
+  cursoId: number = null;
   detalleMultimedia: DetalleMultimedia = {
     id: null,
     descripcion: null,
@@ -57,11 +60,19 @@ export class RealizacionTareaComponent implements OnInit {
       this.route.snapshot.paramMap.get("id") != null
         ? Number(this.route.snapshot.paramMap.get("id"))
         : null;
-
+    this.cursoId =
+      this.route.snapshot.paramMap.get("cursoId") != null
+        ? Number(this.route.snapshot.paramMap.get("cursoId"))
+        : null;
+  
     this.get();
   }
 
   get() {
+    this.dataTareaService.getTarea(this.tareaId.toString()).then((res) => {
+      this.tarea = res;
+    });
+
     this.dataTareaService
       .getDetalleMultimediaTarea(this.tareaId)
       .then((res) => {
@@ -79,7 +90,9 @@ export class RealizacionTareaComponent implements OnInit {
   }
 
   getYoutube() {
-    this.videoId = this.getVideoId(this.detalleMultimedia.linkYoutube);
+    if (this.detalleMultimedia.linkYoutube !== null) {
+      this.videoId = this.getVideoId(this.detalleMultimedia.linkYoutube);
+    }
   }
 
   getVideoId(link: string): string {
@@ -142,7 +155,7 @@ export class RealizacionTareaComponent implements OnInit {
       realizacion.idTarea = this.tareaId;
       ////  realizacion.idAlumno = Number.parseInt(this.dataApiService.getCookie("SessionCookie")); ////
       //////////////////////////////// HARDCODEADO POR AHORA /////////////////////////////////////
-      realizacion.idAlumno = 16;
+      realizacion.idAlumno = 3;
       /////////////////////////////////////////////////////
       realizacion.detalles = this.detalles;
 
@@ -157,5 +170,9 @@ export class RealizacionTareaComponent implements OnInit {
       });
 
     }
+  }
+
+  volver() {
+    this.router.navigate(["curso-alumno", { id: this.cursoId }]);
   }
 }
