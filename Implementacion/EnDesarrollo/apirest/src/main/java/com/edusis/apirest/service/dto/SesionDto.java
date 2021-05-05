@@ -5,6 +5,8 @@
  */
 package com.edusis.apirest.service.dto;
 
+import java.util.Calendar;
+
 /**
  *
  * @author Manu Frana
@@ -14,7 +16,7 @@ public class SesionDto {
     private Long Id;
     private String session_id;
     private String documento;
-    private String expiracion;
+    private Calendar expiracion;
     private String ultimo_acceso;
 
     public Long getId() {
@@ -41,11 +43,11 @@ public class SesionDto {
         this.documento = documento;
     }
 
-    public String getExpiracion() {
+    public Calendar getExpiracion() {
         return expiracion;
     }
 
-    public void setExpiracion(String expiracion) {
+    public void setExpiracion(Calendar expiracion) {
         this.expiracion = expiracion;
     }
 

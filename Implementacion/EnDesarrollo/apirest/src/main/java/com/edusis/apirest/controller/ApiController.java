@@ -50,6 +50,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -559,6 +560,9 @@ public class ApiController {
                     String codigo = codigobuilder.toString();
                     codigo = codigo.toUpperCase();
                     sesion.setSession_id(codigo);
+                    Calendar fecha = Calendar.getInstance();
+                    fecha.add(Calendar.DAY_OF_YEAR, 1);
+                    sesion.setExpiracion(fecha);
                     sesionService.save(sesion);
                     //devuelvo el session id al usuario para que vaya en la coockie
                     return codigo;
@@ -570,6 +574,30 @@ public class ApiController {
             }
         }
         return "user_not_found";
+    }
+    
+    @PostMapping("eliminarSesion")
+    public ResponseEntity<Long> eliminarSesion(@RequestBody String sessionId){
+        //Busco el id de esa sesion para borarla.
+        List<Sesion> listadoSesiones = (ArrayList<Sesion>) sesionService.getAll();
+        
+        if(listadoSesiones.isEmpty()){
+             //no hay sesiones en la base
+            throw new Error();
+        }
+        else{
+            //recorro las sesiones
+            System.out.println(sessionId);
+            for(int i = 0; i < listadoSesiones.size(); i++){
+                if(listadoSesiones.get(i).getSession_id().equals(sessionId)){
+                    //Encontre la sesion.
+                    sesionService.deleteById(listadoSesiones.get(i).getId());
+                    return new ResponseEntity<>(HttpStatus.OK);
+                }
+            }
+        }
+        
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     
     
