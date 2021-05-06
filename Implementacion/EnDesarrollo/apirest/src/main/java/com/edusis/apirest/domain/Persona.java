@@ -50,7 +50,19 @@ public abstract class Persona extends GenericEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar fechaNacimiento;
     
-    // GETTERS && SETTERS 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar ultimoAcceso;
+    
+     // GETTERS && SETTERS 
+
+    public Calendar getUltimoAcceso() {
+        return ultimoAcceso;
+    }
+
+    public void setUltimoAcceso(Calendar ultimoAcceso) {
+        this.ultimoAcceso = ultimoAcceso;
+    }
+
 
     public String getPassword() {
         return password;

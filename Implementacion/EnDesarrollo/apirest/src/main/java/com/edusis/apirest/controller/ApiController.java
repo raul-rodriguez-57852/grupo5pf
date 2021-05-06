@@ -26,6 +26,7 @@ import com.edusis.apirest.service.AlumnoService;
 import com.edusis.apirest.service.AsignaturaService;
 import com.edusis.apirest.service.CursoService;
 import com.edusis.apirest.service.EmojiService;
+import com.edusis.apirest.service.PersonaService;
 import com.edusis.apirest.service.PlantillaPasapalabraService;
 import com.edusis.apirest.service.PlantillaPreguntasService;
 import com.edusis.apirest.service.PlantillaService;
@@ -109,6 +110,7 @@ public class ApiController {
 
     @Autowired
     private PlantillaService plantillaService;
+    
 
     
     @PostMapping("guardarEmoji")
@@ -281,6 +283,11 @@ public class ApiController {
             if (Objects.equals(alumno.getPasswordEmoji().getEmoji1().getId(), emoji1Id) &&
                 Objects.equals(alumno.getPasswordEmoji().getEmoji2().getId(), emoji2Id) &&
                 Objects.equals(alumno.getPasswordEmoji().getEmoji3().getId(), emoji3Id)) {
+                //Seteamos el ultimo acceso en el alumno.
+                Calendar ultimo_acceso = Calendar.getInstance();
+                alumno.setUltimoAcceso(ultimo_acceso);
+                alumnoService.save(alumno);
+                
                 return new ResponseEntity<>(HttpStatus.OK);                
             }
         }
@@ -504,26 +511,9 @@ public class ApiController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
-    @GetMapping("inicioSesionFake")
-    public Persona inicioSesionFake(@RequestParam String documento) {
-        List<Persona> personas = new ArrayList<Persona>();
-        List<Profesor> profesores = profesorService.getAll();
-        List<Tutor> tutores = tutorService.getAll();
-        personas.addAll(profesores);
-        personas.addAll(tutores);
-        for (Persona persona : personas) {
-            if(persona.getDocumento() == null || persona.getDocumento().getNumero() == null){
-                continue;
-            }
-            if (persona.getDocumento().getNumero().equals(documento)) {
-                return persona;
-            }
-        }
-        throw new Error();
-    }
     
     @PostMapping("inicioSesion")
-    public String inicioSesion(@RequestParam String documento, @RequestParam String password){
+    public String inicioSesion(@RequestParam String documento, @RequestParam String password) {
         //Recibo dni y contraseña, tengo que checkear que sean correctos, una vez validado, tengo que crear una session y devolver el id de las session al usuario
         List<Persona> personas = new ArrayList<Persona>();
         List<Profesor> profesores = profesorService.getAll();
@@ -531,16 +521,16 @@ public class ApiController {
         personas.addAll(profesores);
         personas.addAll(tutores);
         //Ya tengo todos mis usuarios
-        for(Persona persona: personas){
-            if(persona.getDocumento() == null || persona.getDocumento().getNumero() == null){
+        for (Persona persona : personas) {
+            if (persona.getDocumento() == null || persona.getDocumento().getNumero() == null) {
                 continue;
             }
-            if (persona.getDocumento().getNumero().equals(documento)){
-                
+            if (persona.getDocumento().getNumero().equals(documento)) {
+
                 //No lo hago todo junto por si queremos diferneciar en documento encontrado y no encontrado
                 //documento encontrado, valido si la contraseña tambien coincide.
                 //en la base, esta la contraseña cifrada, por ende tengo que cifrar la password del front y comprarla con la del server
-                if(persona.getPassword().equals(cifrarClave(password))){
+                if (persona.getPassword().equals(cifrarClave(password))) {
                     //la contraseña tambien coincide.
                     //tengo que crear la session.
                     Sesion sesion = new Sesion();
@@ -553,8 +543,7 @@ public class ApiController {
                     random.nextBytes(contenedor);
                     
                     StringBuffer codigobuilder = new StringBuffer();
-                    for (byte bytes : contenedor) 
-                    {
+                    for (byte bytes : contenedor) {
                         codigobuilder.append(String.format("%02x", bytes & 0xff));
                     }
                     String codigo = codigobuilder.toString();
@@ -566,8 +555,7 @@ public class ApiController {
                     sesionService.save(sesion);
                     //devuelvo el session id al usuario para que vaya en la coockie
                     return codigo;
-                 }
-                else{
+                } else {
                     //Contraseña incorrecta
                     return "wrong_password";
                 }
@@ -577,19 +565,18 @@ public class ApiController {
     }
     
     @PostMapping("eliminarSesion")
-    public ResponseEntity<Long> eliminarSesion(@RequestBody String sessionId){
+    public ResponseEntity<Long> eliminarSesion(@RequestBody String sessionId) {
         //Busco el id de esa sesion para borarla.
         List<Sesion> listadoSesiones = (ArrayList<Sesion>) sesionService.getAll();
         
-        if(listadoSesiones.isEmpty()){
-             //no hay sesiones en la base
+        if (listadoSesiones.isEmpty()) {
+            //no hay sesiones en la base
             throw new Error();
-        }
-        else{
+        } else {
             //recorro las sesiones
             System.out.println(sessionId);
-            for(int i = 0; i < listadoSesiones.size(); i++){
-                if(listadoSesiones.get(i).getSession_id().equals(sessionId)){
+            for (int i = 0; i < listadoSesiones.size(); i++) {
+                if (listadoSesiones.get(i).getSession_id().equals(sessionId)) {
                     //Encontre la sesion.
                     sesionService.deleteById(listadoSesiones.get(i).getId());
                     return new ResponseEntity<>(HttpStatus.OK);
