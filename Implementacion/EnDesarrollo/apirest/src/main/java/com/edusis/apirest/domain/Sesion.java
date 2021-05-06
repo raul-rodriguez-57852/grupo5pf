@@ -7,11 +7,14 @@ package com.edusis.apirest.domain;
 
 import com.edusis.apirest.generic.GenericEntity;
 import com.sun.istack.NotNull;
+import java.util.Calendar;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -29,8 +32,8 @@ public class Sesion extends GenericEntity{
     @NotNull
     private Documento documento;
     //Resuo el createad at que se ereda del generic entity para ver cuando se creo la session
-    
-    private String expiracion;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar expiracion;
     
     private String ultimo_acceso;
 
@@ -50,11 +53,11 @@ public class Sesion extends GenericEntity{
         this.documento = documento;
     }
 
-    public String getExpiracion() {
+    public Calendar getExpiracion() {
         return expiracion;
     }
 
-    public void setExpiracion(String expiracion) {
+    public void setExpiracion(Calendar expiracion) {
         this.expiracion = expiracion;
     }
 
