@@ -184,6 +184,7 @@ public class TareaController {
     @GetMapping("detalleMultimediaTarea")
     public DetalleTareaMultimedia getDetalleMultimediaTarea (@RequestParam Long tareaId) {
         Tarea tarea = tareaService.get(tareaId);
+        tarea = Hibernate.unproxy(tarea, Tarea.class);
         return detalleTareaMultimediaService.findOne(DetalleTareaMultimediaSpecs.byTarea(tarea));
     }
     

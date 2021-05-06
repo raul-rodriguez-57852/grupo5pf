@@ -68,19 +68,36 @@ export class HomeAlumnoComponent implements OnInit {
 
     
     async regsitroCurso(){
+        this.esregistro = false;
         //Checkeamos que halla ingresado un codigo de curso
         this.codigoCurso = (<HTMLInputElement>document.getElementById('InputCodigoCurso')).value.toString();
         if(this.codigoCurso != ''){
             //operamos
             console.log('Codigo ingresado = ',this.codigoCurso);
             await this.dataApiService.buscarCursoPorCodigo(this.codigoCurso).then(
-                (respuesta) => {
+                async (respuesta) => {
                     this.chek_codigo = respuesta;
                     if(this.chek_codigo != -1){
                         console.log('CURSO ENCONTRADO! \nID CURSO: ',this.chek_codigo);
+                          //Traigo el curso para mostrarle los datos y que confirme el registro.
+                        console.log('This.check.codigo = ',this.chek_codigo);
+                        await this.dataApiService.getCurso(this.chek_codigo.toString()).then(
+                            (respuesta) => {
+                                this.curso = respuesta;
+                                this.esregistro = true;
+                                this.mensaje = "¡Curso Encontrado! \nNombre del curso: " + this.curso.nombre + '\n¿Desea unirse al curso?';
+                                document.getElementById('open-modal').click();            
+                            }
+                        )
+                        .catch(() =>{
+                            this.mensaje = "Error al buscar el curso!";
+                            document.getElementById('open-modal').click();
+
+                        });
                     }
                     else{
                         this.mensaje = "Lo siento, curso no encontrado!"
+                        document.getElementById('open-modal').click();
                     }
                 }
             )
@@ -93,25 +110,6 @@ export class HomeAlumnoComponent implements OnInit {
             this.mensaje = "Debes ingresar un codigo de invitacion a curso!"
             document.getElementById('open-modal').click();
         }
-
-        
-        if(this.chek_codigo != -1){
-            //Traigo el curso para mostrarle los datos y que confirme el registro.
-            console.log('This.check.codigo = ',this.chek_codigo);
-            await this.dataApiService.getCurso(this.chek_codigo.toString()).then(
-                (respuesta) => {
-                    this.curso = respuesta;
-                }
-            )
-            .catch(() =>{
-                this.mensaje = "Error al buscar el curso!";
-                document.getElementById('open-modal').click();
-
-            });
-        }
-        this.esregistro = true;
-        this.mensaje = "¡Curso Encontrado! \nNombre del curso: " + this.curso.nombre + '\n¿Desea unirse al curso?';
-        document.getElementById('open-modal').click();
 
     }
 
@@ -144,7 +142,6 @@ export class HomeAlumnoComponent implements OnInit {
                 }
             )
             .catch(() =>{
-    
                 this.mensaje = "Se produjo un error intentando registrarse al curso.";
                 this.esregistro = false;
                 document.getElementById('open-modal').click();
