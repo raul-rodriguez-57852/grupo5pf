@@ -27,10 +27,11 @@ public class Sesion extends GenericEntity{
     @NotNull
     private String session_id;
     
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne
     @JoinColumn(name = "documento_id")
     @NotNull
     private Documento documento;
+    
     //Resuo el createad at que se ereda del generic entity para ver cuando se creo la session
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar expiracion;

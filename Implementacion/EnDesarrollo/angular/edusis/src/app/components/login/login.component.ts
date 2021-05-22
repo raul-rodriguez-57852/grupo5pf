@@ -2,9 +2,11 @@ import { Component, OnInit, ElementRef, SystemJsNgModuleLoader } from '@angular/
 import { DataApiService } from '../../services/data-api.service';
 import { Router, UrlHandlingStrategy, ActivatedRoute } from '@angular/router';
 import { CompileStylesheetMetadata } from '@angular/compiler';
-import { element } from 'protractor';
+import { element, Session } from 'protractor';
 import { read } from 'fs';
 import { Variable } from '@angular/compiler/src/render3/r3_ast';
+
+
 
 @Component({
   selector: 'app-login',
@@ -15,7 +17,8 @@ import { Variable } from '@angular/compiler/src/render3/r3_ast';
 export class LoginComponent implements OnInit{
 
     mensaje: String;  
-    retrived_id: string;  
+    retrived_id: string;
+      
     constructor( private dataApiService: DataApiService,private elementRef: ElementRef,private router: Router,private route: ActivatedRoute)
     {
         
@@ -25,7 +28,6 @@ export class LoginComponent implements OnInit{
     async ngOnInit(){
         this.retrived_id = this.dataApiService.getCookie("SessionCookie");
         if(this.retrived_id != null){
-
             var user_found
             //console.log("Veamos si la cookie es valida o no!");
             await this.dataApiService.validarSession(this.retrived_id).then(
@@ -33,22 +35,16 @@ export class LoginComponent implements OnInit{
                      user_found = respuesta;
                 }
             );
-            
+            var userType = this.retrived_id.slice(this.retrived_id.length - 1);
             if(user_found != null){
-                //console.log("USUARIO ENCONTRADO: ", user_found);
-                var esProfe
-                await this.dataApiService.isProfesor(user_found).then(
-                    (respuesta) =>{
-                        esProfe = respuesta;
-                    }
-                );
-    
-                if(esProfe){
-                    console.log("Es PROFE: ",esProfe)
-                    this.router.navigate(['home-profesor']);
+                this.dataApiService.setUser(user_found,userType);
+                if (userType == '0' ){
+                    // es tutor.
+                    this.router.navigate(['perfiles']);
                 }
                 else{
-                    this.router.navigate(['perfiles']);
+                    //es Profesor
+                    this.router.navigate(['home-profesor']);
                 }
                 
             }
@@ -73,7 +69,6 @@ export class LoginComponent implements OnInit{
     }
 
     async login(){
-        console.log('Log in!');
         var documento = (<HTMLInputElement>document.getElementById('InputDocumento')).value;
         var clave = (<HTMLInputElement>document.getElementById('inputPassword')).value;
         if(documento == ""){
@@ -96,14 +91,13 @@ export class LoginComponent implements OnInit{
                     session_id = respuesta;
                 }
             );
-
+            
+            //el session_id tiene concatenado un valor mas que indica el tipo de usuario. 0 si es tutor e 1 si es profesor.
+            var userType = session_id.slice(session_id.length - 1);
             if(session_id != 'wrong_password' && session_id != 'user_not_found'){
-                console.log("USUARIO ENCONTRADO! SESSION-ID: ",session_id)
                 this.dataApiService.setCookie("SessionCookie",session_id);
                 //retrieve coockie.
                   this.retrived_id = this.dataApiService.getCookie("SessionCookie");
-                
-                
             }
             else{
                 console.log(session_id);
@@ -120,22 +114,16 @@ export class LoginComponent implements OnInit{
         );
         
         if(user_found != null){
-            //console.log("USUARIO ENCONTRADO: ", user_found);
-            var esProfe
-            await this.dataApiService.isProfesor(user_found).then(
-                (respuesta) =>{
-                    esProfe = respuesta;
-                }
-            );
-
-            if(esProfe){
-                console.log("Es PROFE: ",esProfe)
-                this.router.navigate(['home-profesor']);
-            }
-            else{
+            
+            this.dataApiService.setUser(user_found, userType);
+            if (userType == '0' ){
+                // es tutor.
                 this.router.navigate(['perfiles']);
             }
-
+            else{
+                //es Profesor
+                this.router.navigate(['home-profesor']);
+            }
 
         }
         

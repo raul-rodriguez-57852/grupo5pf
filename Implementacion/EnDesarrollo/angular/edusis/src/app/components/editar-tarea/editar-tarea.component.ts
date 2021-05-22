@@ -65,7 +65,7 @@ export class EditarTareaComponent implements OnInit {
       return;
     }
     /////////////////////////////////////// ACA OBTENER ID DEL USUARIO LOGUEADO  //////////////////////////////////////
-    this.tarea.creadorId = 1;
+    this.tarea.creadorId = this.dataApiService.getUsuario();
     /////////////////////////////////////// ACA OBTENER ID DEL USUARIO LOGUEADO  //////////////////////////////////////
     this.dataTareaService
       .guardarTarea(this.tarea)

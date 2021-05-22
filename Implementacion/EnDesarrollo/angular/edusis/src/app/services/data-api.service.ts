@@ -16,11 +16,28 @@ import { PlantillaPasapalabra } from '../models/plantilla-pasapalabra';
 export class DataApiService {
   urlBase: string;
   urlTarea: string;
-  usuario = null;
+  private usuario = null;
+  private userType = null;
 
   constructor(private http: HttpClient) {
-    this.urlBase = 'http://192.168.0.217:8090/api/';
+    this.urlBase = 'http://192.168.0.100:8090/api/';
   }
+
+
+//#######     USUARIO LOGGEADO ######
+public getUsuario(){
+  return this.usuario;
+}
+
+public getUserType(){
+  return this.userType;
+}
+
+public setUser(id: String, type: String){
+  this.usuario = id;
+  this.userType = type;
+}
+
 
 //#######     EMOJI      #########  
 
@@ -73,6 +90,10 @@ export class DataApiService {
     return this.http.get(this.urlBase + 'tiposDoc').toPromise();
   }
 
+  alumnosByTutor(idTutor: string): Promise<any> {
+    return this.http.get(this.urlBase + 'alumnosByTutor', { params: { idTutor } }).toPromise();
+  }
+
 //#######     ALUMNO      #########  
   guardarAlumno(alumno: Alumno): Promise<any> {
     return this.http.post(this.urlBase + 'guardarAlumno', alumno).toPromise();
@@ -98,38 +119,9 @@ export class DataApiService {
   getCursosDeAlumno(idAlumno: string): Promise<any>{
     return this.http.get(this.urlBase + 'getCursosDeAlumno', {params: { idAlumno } }).toPromise();
   }
+  
 
-    //#######     SESSION      ######### 
-
-  inicioSesion(documento: string, password:string):Promise<any>{
-    const postData = new FormData();
-    postData.append('documento', documento.toString());
-    postData.append('password', password.toString());
-    return this.http.post(this.urlBase + 'inicioSesion', postData,{responseType: 'text'}).toPromise();
-  }
-
-  validarSession(session_id: string):Promise<any>{
-    return this.http.get(this.urlBase + 'validarSesion', {params: { session_id } } ).toPromise();
-  }
-
-  eliminarSesion(session_id: string, name: string):Promise<any>{
-    //elimino la coockie en la parte del cliente.
-    this.deleteCookie(name);
-    //hago la baja en el servidor.
-    return this.http.delete(this.urlBase + 'eliminarSesion', {params: { session_id }}).toPromise();
-  }
-
-  isProfesor(id: string): Promise<any> {
-    return this.http.get(this.urlBase + 'isProfesor', {params: { id }}).toPromise();
-  }
-
-  inicioSesionFake(documento: string): Promise<any> {
-    return this.http
-      .get(this.urlBase + 'inicioSesionFake', { params: { documento } })
-      .toPromise();
-  }
-
-
+   
   //#######     CURSO      #########  
   getCurso(id: string): Promise<any> {
     return this.http
@@ -138,7 +130,6 @@ export class DataApiService {
   }
 
   getCursos(): Promise<any> {
-    console.log('Entro en getCursos() en apicontroller')
     return this.http.get(this.urlBase + 'cursos').toPromise();
   }
 
@@ -186,6 +177,28 @@ export class DataApiService {
       })
       .toPromise();
   }
+   //#######     SESSION      ######### 
+
+   inicioSesion(documento: string, password:string):Promise<any>{
+    const postData = new FormData();
+    postData.append('documento', documento.toString());
+    postData.append('password', password.toString());
+    return this.http.post(this.urlBase + 'inicioSesion', postData,{responseType: 'text'}).toPromise();
+  }
+
+  validarSession(session_id: string): Promise<any> {
+    return this.http.get(this.urlBase + 'validarSesion', {params: { session_id } } ).toPromise();
+  }
+
+  eliminarSesion(session_id: string): Promise<any> {
+    console.log("Eliminado sesion = ", session_id)
+    return this.http.post(this.urlBase + 'eliminarSesion', session_id).toPromise();
+  }
+
+  isProfesor(id: string): Promise<any> {
+    return this.http.get(this.urlBase + 'isProfesor', {params: { id }}).toPromise();
+  }
+
 
 //#######     COOKIES      ######### 
    setCookie(name: String, val: String) {
@@ -211,6 +224,9 @@ export class DataApiService {
 
 
   deleteCookie(name: String){
+    //Obtengo la session_id
+    var session_id = this.getCookie(name);
+  
   //Elimina la cookie del cliente.
     const date = new Date();
 
@@ -220,6 +236,9 @@ export class DataApiService {
     //Seteo la coockie.
 
     document.cookie = name+"=; expires= "+ date.toUTCString() + "; path=/"; 
+    //ahora la elimino del servidor.
+    this.eliminarSesion(session_id)
+    this.setUser(null,null);
 
   }
 

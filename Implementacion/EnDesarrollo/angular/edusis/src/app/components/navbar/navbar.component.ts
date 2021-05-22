@@ -17,14 +17,10 @@ export class NavbarComponent implements OnInit {
   constructor(private dataApiService: DataApiService, private router: Router) {}
 
   ngOnInit() {
-    
-
-
-
   }
 
   cerrarSesion() {
-    console.log('CERRANDO');
+    
     this.dataApiService.deleteCookie('SessionCookie');
     this.router.navigate(['']);
   }
@@ -33,6 +29,7 @@ export class NavbarComponent implements OnInit {
     //Busco en cookies, para ver si estsa el usuario loggeado, si esta, agarro sus datos, 
     //Si no esta, lo mando a loggearse.
     var session_id = this.dataApiService.getCookie("SessionCookie");
+    var userType = session_id.slice(session_id.length - 1);
     //ya tengo el id de la session, vamos a ver si es valido!
     var user_id;
     await this.dataApiService.validarSession(session_id).then(
@@ -47,45 +44,27 @@ export class NavbarComponent implements OnInit {
       }
       else{
         //busco el usuario loggeado!
-        var esProfe;
-        await this.dataApiService.isProfesor(user_id).then(
-          (respuesta) =>{
-             esProfe = respuesta;
-          }
-        );
-        if(esProfe){
-          this.esProfesor = true;
-          await this.dataApiService.getProfesor(user_id).then(
-            (respuesta) => {
-              this.nombre_usuario = respuesta.nombre;
-            }
-          );
-          
+        this.dataApiService.setUser(user_id,userType);
+        if (userType == '0' ){
+            // es tutor.
+            this.esTutor = true;
+            await this.dataApiService.getTutor(user_id).then(
+              (respuesta) => {
+                this.nombre_usuario = respuesta.nombre;
+              }
+            );
         }
         else{
-          this.esTutor = true;
-          await this.dataApiService.getTutor(user_id).then(
-            (respuesta) => {
-              this.nombre_usuario = respuesta.nombre;
+            //es Profesor
+            this.esProfesor = true;
+            await this.dataApiService.getProfesor(user_id).then(
+              (respuesta) => {
+                this.nombre_usuario = respuesta.nombre;
+              }
+            );
             }
-          );
-        }
         
       }
 
-    /*
-    console.log('AHORA ENTRÓ');
-    if (this.dataApiService.usuario != null) {
-      if (this.dataApiService.usuario.nombre === 'Manuel') {
-        this.profeLog = true;
-        this.tutorLog = false;
-      }
-      if (this.dataApiService.usuario.nombre === 'Tutor') {
-        this.tutorLog = true;
-        this.profeLog = false;
-      }
-
-    }
-    */
   }
 }

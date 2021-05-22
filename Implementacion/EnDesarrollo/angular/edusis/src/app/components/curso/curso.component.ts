@@ -30,11 +30,15 @@ export class CursoComponent implements OnInit {
       this.route.snapshot.paramMap.get('id') != null
         ? Number(this.route.snapshot.paramMap.get('id'))
         : null;
+        
     this.get();
+    
     this.getAll();
+   
   }
 
   get() {
+    
     this.dataApiService.getCurso(this.cursoId).then((res) => {
       this.nombre = res.nombre;
       this.urlImagen = res.iconoURL;

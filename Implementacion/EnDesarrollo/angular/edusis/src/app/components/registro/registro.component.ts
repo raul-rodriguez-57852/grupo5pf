@@ -20,18 +20,6 @@ export class RegistroComponent implements OnInit {
   constructor(private dataApiService: DataApiService, private router: Router) {
     var id: any;
 
-    /*    if(this.router.getCurrentNavigation().extras.state.id != 3)
-    {
-      if (this.router.getCurrentNavigation().extras.state.id == 1)
-      {
-        this.esCuentaTutor = false;
-      }
-      else
-      {
-        this.esCuentaTutor = true;
-      }
-      console.log(this.router.getCurrentNavigation().extras.state.id); 
-    } */
   }
   ngOnInit() {
     this.getTiposDoc();
@@ -91,12 +79,13 @@ export class RegistroComponent implements OnInit {
           break;
         }
       }
-      console.log("PASSWORD DOCENTE: ", this.profesor.password);
+      
       this.dataApiService
         .guardarProfesor(this.profesor)
         .then((respuesta) => {
           this.mensaje = "Cuenta creada con éxito.";
           document.getElementById("open-modal").click();
+          
         })
         .catch((respuesta) => {
           this.mensaje = "Error al guardar.";
@@ -117,4 +106,11 @@ export class RegistroComponent implements OnInit {
   recargar(id) {
     this.router.navigate(["registro"], { state: { id: id } });
   }
+
+  irLogIn(){
+    this.router.navigate(['']);
+    }
+
 }
+
+  

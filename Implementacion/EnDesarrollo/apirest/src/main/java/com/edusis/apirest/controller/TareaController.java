@@ -43,6 +43,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -284,6 +285,10 @@ public class TareaController {
         }
         realizacion.calcularPorcentaje();
         realizacionTareaService.save(realizacion);
+        //Actualizo ultimo acceso para el alumno.
+        Calendar fecha = Calendar.getInstance();
+        alumno.setUltimoAcceso(fecha);
+        alumnoService.save(alumno);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     

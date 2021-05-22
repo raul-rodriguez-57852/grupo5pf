@@ -13,6 +13,7 @@ export class InicioSesionComponent implements OnInit {
   esCuentaTutor = true;
   mensaje: string = null;
   documento: string = null;
+  password: string = null;
 
   constructor(private dataApiService: DataApiService,private router: Router)
    {
@@ -39,18 +40,7 @@ export class InicioSesionComponent implements OnInit {
   ngOnInit() {}
 
   iniciar(formInicioSesion: NgForm) {
-    this.dataApiService
-      .inicioSesionFake(this.documento)
-      .then((respuesta) => {
-        this.dataApiService.usuario = respuesta;
-        console.log(this.dataApiService.usuario);
-        this.mensaje = 'Usuario logueado con éxito.';
-        document.getElementById('open-modal').click();
-      })
-      .catch((respuesta) => {
-        this.mensaje = 'Error al iniciar sesión.';
-        document.getElementById('open-modal').click();
-      });
+    
   }
 
   cambiarTipoCuenta() {

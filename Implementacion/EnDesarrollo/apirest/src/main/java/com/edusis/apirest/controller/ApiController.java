@@ -43,10 +43,12 @@ import com.edusis.apirest.service.dto.PreguntaDto;
 import com.edusis.apirest.service.dto.PreguntaPasapalabraDto;
 import com.edusis.apirest.service.dto.ProfesorDto;
 import com.edusis.apirest.service.dto.TutorDto;
+import com.edusis.apirest.specs.AlumnoSpecs;
 import com.edusis.apirest.specs.AsignaturaSpecs;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.querydsl.core.types.Predicate;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -276,6 +278,13 @@ public class ApiController {
         return alumnoService.get(id);
     }
     
+    @GetMapping("alumnosByTutor")
+    public List<Alumno> alumnosByTutor (@RequestParam Long idTutor){
+        Tutor tutor = tutorService.get(idTutor);
+        return alumnoService.getAll(AlumnoSpecs.byTutor(tutor));
+        
+    }
+    
     @PostMapping("ingresoAlumno")
     public ResponseEntity<Long> ingresoAlumno(@RequestParam Long id, @RequestParam Long emoji1Id, @RequestParam Long emoji2Id, @RequestParam Long emoji3Id) {
         Alumno alumno = alumnoService.get(id);
@@ -307,7 +316,7 @@ public class ApiController {
     }
     
     @PostMapping("generarCodigoCurso")
-    public ResponseEntity<Long> generarCodigoCurso(@RequestBody CursoDto cursoDto) throws NoSuchAlgorithmException{
+    public Curso generarCodigoCurso(@RequestBody CursoDto cursoDto) throws NoSuchAlgorithmException{
         Curso curso = cursoService.get(cursoDto.getId());
         if(curso.getCodigo() != null){
             //Ya tiene codigo asignado
@@ -388,34 +397,32 @@ public class ApiController {
                 System.err.println("Erro, MD5 no es un algoritmo de encriptacion correcto para MessageDigest");
             }
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return curso;
     }
     
     @GetMapping("buscarCursoPorCodigo")
-    public Long buscarCursoPorCodigo(@RequestParam String codigo){
+    public Long buscarCursoPorCodigo(@RequestParam String codigo) {
         //param: codigo --> Codigo del curso a buscar
         //return value "-1" --> Curso no encontrado o error en la busqueda
         //return value int != -1 --> es el id del curso a inscribirme
-        
+
         //Consigo todos los cursos
         List<Curso> listado_cursos = (ArrayList<Curso>) cursoService.getAll();
-        if(listado_cursos.isEmpty()){
+        if (listado_cursos.isEmpty()) {
             //No hay cursos creados por ahora, por ende devuelvo -1
             return Long.valueOf(-1);
-        }
-        else{
-            for (int i = 0; i < listado_cursos.size(); i++)
-                {
-                if(listado_cursos.get(i).getCodigo().equals(codigo))
-                    {
-                //Encontre el curso con ese codigo.
-                //devuelvo su id
-                    return listado_cursos.get(i).getId();
-                    }
+        } else {
+            for (Curso curso : listado_cursos) {
+                if (curso.getCodigo().equals(codigo)) {
+                    //Encontre el curso con ese codigo.
+                    //devuelvo su id
+                    return curso.getId();
                 }
+            }
+
             //no encontre ningun curso con dicho codigo. devuelvo -1
             return Long.valueOf(-1);
-            }
+        }
     }
     
     @PostMapping("guardarAsignatura")
@@ -530,7 +537,13 @@ public class ApiController {
                 //No lo hago todo junto por si queremos diferneciar en documento encontrado y no encontrado
                 //documento encontrado, valido si la contraseña tambien coincide.
                 //en la base, esta la contraseña cifrada, por ende tengo que cifrar la password del front y comprarla con la del server
+                //System.out.println(persona.getClass());
                 if (persona.getPassword().equals(cifrarClave(password))) {
+                    char userType = '0'; // 0 para Tutor.
+                    if( persona instanceof Profesor){
+                        userType = '1'; //1 para Profesor.
+                    }
+                   
                     //la contraseña tambien coincide.
                     //tengo que crear la session.
                     Sesion sesion = new Sesion();
@@ -547,6 +560,7 @@ public class ApiController {
                         codigobuilder.append(String.format("%02x", bytes & 0xff));
                     }
                     String codigo = codigobuilder.toString();
+                    codigo = codigo + userType;//concateno en el codigo el tipo de usuario que es.
                     codigo = codigo.toUpperCase();
                     sesion.setSession_id(codigo);
                     Calendar fecha = Calendar.getInstance();
@@ -554,7 +568,7 @@ public class ApiController {
                     sesion.setExpiracion(fecha);
                     sesionService.save(sesion);
                     //devuelvo el session id al usuario para que vaya en la coockie
-                    return codigo;
+                    return codigo; 
                 } else {
                     //Contraseña incorrecta
                     return "wrong_password";
@@ -568,17 +582,18 @@ public class ApiController {
     public ResponseEntity<Long> eliminarSesion(@RequestBody String sessionId) {
         //Busco el id de esa sesion para borarla.
         List<Sesion> listadoSesiones = (ArrayList<Sesion>) sesionService.getAll();
-        
+
         if (listadoSesiones.isEmpty()) {
             //no hay sesiones en la base
             throw new Error();
-        } else {
+        } 
+        else {
             //recorro las sesiones
-            System.out.println(sessionId);
-            for (int i = 0; i < listadoSesiones.size(); i++) {
-                if (listadoSesiones.get(i).getSession_id().equals(sessionId)) {
+
+            for (Sesion sesion : listadoSesiones) {
+                if (sesion.getSession_id().equals(sessionId)) {
                     //Encontre la sesion.
-                    sesionService.deleteById(listadoSesiones.get(i).getId());
+                    sesionService.deleteById(sesion.getId());
                     return new ResponseEntity<>(HttpStatus.OK);
                 }
             }
@@ -590,32 +605,34 @@ public class ApiController {
     
     // --------- # # Funciones AUXILIARES # # --------- //
     @GetMapping("validarSesion")
-    public Long validarSesion(@RequestParam String session_id){
+    public Long validarSesion(@RequestParam String session_id) {
         // Tengo que comparar la sesion que recibo con alguna de la base, si coincide, entonces devuelvo el usuario.
         //Voy a obtener todas las sesiones activas de la base.
         List<Sesion> listado_sesiones = (ArrayList<Sesion>) sesionService.getAll();
-        
+
         //obtengo una lista con solo los codigos de mis sesiones en la base.
         //List<String> listado_sesiones_ids = listado_sesiones.stream().map(x -> x.getSession_id()).collect(Collectors.toList());
-        
-        if(!listado_sesiones.isEmpty()){
-            //recorro las sesiones
-            for (int i = 0; i < listado_sesiones.size(); i++) {
-                //Checkeo si son iguales las id de session
-                if(listado_sesiones.get(i).getSession_id().equals(session_id)){
-                    //encontre la session con el mismo id, por ende devuelvo el id del usuario correspondiente.
-                    String doc = listado_sesiones.get(i).getDocumento().getNumero();
-                    Long user_id = getPersonaByDocumento(doc);
-                    return user_id;
-                }  
-            }
-        }
-        else{
+        if (listado_sesiones.isEmpty()) {
             //no hay sesiones en la base
             throw new Error();
+
+        } else {
+            //recorro las sesiones
+            for (Sesion sesion : listado_sesiones) {
+                if (sesion.getSession_id().equals(session_id)) {
+                    //encontre la session con el mismo id, por ende devuelvo el id del usuario correspondiente.
+                    String doc = sesion.getDocumento().getNumero();
+                    Long user_id = getPersonaByDocumento(doc);
+                    return user_id;
+                }
+
+            }
+
         }
-      return null;          
+
+        return null;
     }
+    
     
     @GetMapping("isProfesor")
     public Boolean isProfesor(Long id){

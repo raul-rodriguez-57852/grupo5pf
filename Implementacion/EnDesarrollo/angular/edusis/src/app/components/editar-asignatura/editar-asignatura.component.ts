@@ -36,7 +36,8 @@ export class EditarAsignaturaComponent implements OnInit {
 
   save(formAsignatura: NgForm) {
     //this.asignatura.creadorId = this.dataApiService.usuario.id;
-    this.asignatura.creadorId = 1;
+    this.asignatura.creadorId = this.dataApiService.getUsuario();
+    console.log("user saved = ",this.dataApiService.getUsuario());
     this.dataApiService.guardarAsignatura(this.asignatura).then(
       (respuesta) => {
         this.mensaje = 'Asignatura guardada con éxito.';

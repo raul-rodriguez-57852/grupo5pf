@@ -34,7 +34,6 @@ export class HomeAlumnoComponent implements OnInit {
     }
 
     ngOnInit(){
-        
         if(this.alumnoID != null){
             this.getAlumno(this.alumnoID)
         }
@@ -71,6 +70,44 @@ export class HomeAlumnoComponent implements OnInit {
         this.esregistro = false;
         //Checkeamos que halla ingresado un codigo de curso
         this.codigoCurso = (<HTMLInputElement>document.getElementById('InputCodigoCurso')).value.toString();
+        if(this.codigoCurso == ''){
+            this.mensaje = "Debes ingresar un codigo de invitacion a curso!"
+            document.getElementById('open-modal').click();
+        }
+        else{
+            //Nos fijamos si el curso deseado exite.
+            await this.dataApiService.buscarCursoPorCodigo(this.codigoCurso).then(
+                (respuesta) => {
+                    this.chek_codigo = respuesta;
+                }
+            );
+            if (this.chek_codigo == -1){
+                this.mensaje = "Lo siento, curso no encontrado!";
+                //Vaciamos el input.
+                (<HTMLInputElement>document.getElementById('InputCodigoCurso')).value = '';
+                document.getElementById('open-modal').click();
+            }
+            else{
+                //curso encontrado.
+                await this.dataApiService.getCurso(this.chek_codigo.toString()).then(
+                    (respuesta) => {
+                        this.curso = respuesta;
+                        this.esregistro = true;
+                    }
+                ).catch(() =>{
+                    this.mensaje = "Error al buscar el curso!";
+                    //Vaciamos el input.
+                    (<HTMLInputElement>document.getElementById('InputCodigoCurso')).value = '';
+                    document.getElementById('open-modal').click();
+                });
+                this.mensaje = "¡Curso Encontrado! \nNombre del curso: " + this.curso.nombre + '\n¿Desea unirse al curso?';
+                document.getElementById('open-modal').click();
+            }
+
+        }
+    }
+        /*
+
         if(this.codigoCurso != ''){
             //operamos
             console.log('Codigo ingresado = ',this.codigoCurso);
@@ -110,8 +147,8 @@ export class HomeAlumnoComponent implements OnInit {
             this.mensaje = "Debes ingresar un codigo de invitacion a curso!"
             document.getElementById('open-modal').click();
         }
-
-    }
+        */
+    
 
     getAllCursos(){
         //Mostrar todos los cursos del alumno.

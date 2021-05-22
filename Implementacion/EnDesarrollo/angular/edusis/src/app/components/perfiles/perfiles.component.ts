@@ -2,6 +2,8 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { DataApiService } from '../../services/data-api.service';
 import { PasswordEmoji } from '../../models/password-emoji';
 import { Router } from '@angular/router';
+import { Alumno } from 'src/app/models/alumno';
+
 
 @Component({
   selector: 'app-perfiles',
@@ -9,7 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./perfiles.component.css']
 })
 export class PerfilesComponent implements OnInit {
-
+  alumno: Alumno = new Alumno();
   perfiles = [];
   perfilSeleccionado = null;
   emojis = [];
@@ -19,10 +21,11 @@ export class PerfilesComponent implements OnInit {
   constructor(
     private dataApiService: DataApiService,
     private elementRef: ElementRef,
-    private router: Router
+    private router: Router  
   ) { }
 
   ngOnInit() {
+
     this.getAlumnos();
     this.getEmojis();
   }
@@ -34,16 +37,23 @@ export class PerfilesComponent implements OnInit {
     });
   }
 
-  getAlumnos() {
-    console.log('GetAlumnos');
-    this.dataApiService.getAlumnos().then((respuesta) => {
-      this.perfiles = respuesta;
-      console.log(respuesta);
-    });
+  async getAlumnos() {
+    await this.dataApiService.alumnosByTutor(this.dataApiService.getUsuario()).then(
+      (respuesta) => {
+        this.perfiles = respuesta;
+      }
+    );
+    //Lets try adding an empty profile 
+    this.alumno.nombre = 'Nuevo Alumno';
+    this.alumno.avatarUrl = 'assets/img/emptyPerfil.png';    
+    this.perfiles.push(this.alumno);
   }
 
   seleccionarPerfil(perfil: any) {
     this.perfilSeleccionado = perfil;
+    if (perfil.id == null){
+      this.router.navigate(['editar-alumno']);
+    }
   }
 
   addEmoji(emoji: any) {
@@ -63,9 +73,8 @@ export class PerfilesComponent implements OnInit {
       this.dataApiService.ingresoAlumno(this.perfilSeleccionado.id.toString(), pwd).then(
         (respuesta) => {
           this.mensaje = 'Iniciaste sesión correctamente';
-          
+          this.dataApiService.setUser(thisId,'2'); //LE pongo un 2 porque 0 es para tutor, 1 para profesores, y 2 para alumnos.
           this.router.navigate(['home-alumno'], {state: {id: thisId}});
-          
         }
       ).catch(
         (respuesta) => {
@@ -75,13 +84,9 @@ export class PerfilesComponent implements OnInit {
       );
     }
   }
-
-  nuevoalumno(){
-    this.router.navigate(['editar-alumno']);
-  }
-
   recargar() {
-    window.location.reload();
+    this.emojisSeleccionados = [];
+    this.perfilSeleccionado = null;
   }
-
+  
 }

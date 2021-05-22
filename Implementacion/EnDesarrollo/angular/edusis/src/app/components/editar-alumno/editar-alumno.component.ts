@@ -4,6 +4,7 @@ import { DataApiService } from '../../services/data-api.service';
 import { NgForm } from '@angular/forms';
 import { PasswordEmoji } from '../../models/password-emoji';
 import { Tutor } from 'src/app/models/tutor';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-editar-alumno',
@@ -28,12 +29,17 @@ export class EditarAlumnoComponent implements OnInit {
   tiposDoc = [];
 
   constructor(
-    private dataApiService: DataApiService
+    private dataApiService: DataApiService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.getEmojis();
     this.getTiposDoc();
+    if( this.dataApiService.getUsuario() == null){
+      this.mensaje = "Permiso Denegado";
+      document.getElementById('open-modal').click();
+    }
   }
 
   getTiposDoc() {
@@ -46,16 +52,13 @@ export class EditarAlumnoComponent implements OnInit {
   getEmojis() {
     this.dataApiService.getEmojis().then((respuesta) => {
       this.emojis = respuesta;
-      console.log(this.emojis);
     });
   }
 
   save(formAlumno: NgForm) {
-    // HARDCODEADO MODIFICAR
-    var idtutor = 2;
-    //this.alumno.tutor = this.dataApiService.getTutor(idtutor.toString());
+    
+    var idtutor = this.dataApiService.getUsuario();
     this.alumno.tutorId = idtutor;
-    console.log('Tutor: ', this.alumno.tutorId);
     const pwd = new PasswordEmoji();
     pwd.emoji1Id = Number(this.emojisSeleccionados[0].id);
     pwd.emoji2Id = Number(this.emojisSeleccionados[1].id);
@@ -83,7 +86,7 @@ export class EditarAlumnoComponent implements OnInit {
     this.dataApiService.guardarAlumno(this.alumno).then(
       (respuesta) => {
         this.mensaje = 'Alumno guardado con éxito.';
-        this.recargar();
+        document.getElementById('open-modal').click();
       }
     ).catch(
       (respuesta) => {
@@ -105,6 +108,10 @@ export class EditarAlumnoComponent implements OnInit {
 
   seleccionar(avatar: any) {
     this.avatarSeleccionado = avatar;
+  }
+
+  irPerfiles(){
+    this.router.navigate(['perfiles']);
   }
 
 }

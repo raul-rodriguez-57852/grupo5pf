@@ -23,19 +23,10 @@ export class CursosComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    //Busco en cookies, para ver si estsa el usuario loggeado, si esta, agarro sus datos, 
-    //Si no esta, lo mando a loggearse.
-    var session_id = this.dataApiService.getCookie("SessionCookie");
-    //ya tengo el id de la session, vamos a ver si es valido!
-    
-    await this.dataApiService.validarSession(session_id).then(
-      (respuesta) => {
-        this.id_profesor = respuesta;
-      }
-      );
+    this.id_profesor = this.dataApiService.getUsuario()
       if(this.id_profesor == null)
       {
-        this.router.navigate(['login']);
+        console.log("USUARIO NO ENCONTRADO: ", this.dataApiService.getUsuario())
       }
 
     this.getAll();
@@ -66,31 +57,28 @@ export class CursosComponent implements OnInit {
     this.router.navigate(['editar-curso']);
   }
 
-  generarCodigoCurso(id: number){
-    //console.log('ID = ', id);
-    this.dataApiService.getCurso(id.toString()).then(
+  async generarCodigoCurso(id: number){
+    console.log('ID = ', id);
+    await this.dataApiService.getCurso(id.toString()).then(
       (curso) => {
         this.curso = curso;
-        
-        if(this.curso.codigo === null){
-          //console.log('Codigo Null');
-          this.curso = this.dataApiService.generarCodigoCurso(curso).then(
-            (respuesta) => {
-              this.curso = curso
-            }
-          )
-        }
       }
     );
-    //this.mensaje = "Codigo de invitacion al curso!";
-    //document.getElementById('open-modal-codigo-curso').click();
-    this.dataApiService.getCurso(id.toString()).then(
-      (curso) => {
-        this.curso = curso;
-        console.log('CODIGO DE INVITACION! = ',this.curso.codigo);
-        this.copiarTexto(this.curso.codigo.toString());
+
+    if(this.curso.codigo === null){
+      //console.log('Codigo Null');
+      await this.dataApiService.generarCodigoCurso(this.curso).then(
+        (respuesta) => {
+          //obtengo el curso actualizaco ya con el codigo.
+          this.curso = respuesta;
         }
-    );
+      ).catch((respuesta) => {
+        this.mensaje = "Error al generar Codigo.";
+        document.getElementById("open-modal").click();
+      });
+    }
+    console.log('CODIGO DE INVITACION! = ',this.curso.codigo);
+    this.copiarTexto(this.curso.codigo.toString());
   }
 
   copiarTexto(texto: string){
