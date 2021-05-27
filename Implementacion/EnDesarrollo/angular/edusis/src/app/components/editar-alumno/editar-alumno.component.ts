@@ -55,6 +55,10 @@ export class EditarAlumnoComponent implements OnInit {
     });
   }
 
+  clearEmoji() {
+    this.emojisSeleccionados.pop();
+  }
+
   save(formAlumno: NgForm) {
     
     var idtutor = this.dataApiService.getUsuario();

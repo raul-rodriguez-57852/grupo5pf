@@ -36,6 +36,7 @@ export class RealizacionPreguntasComponent {
   onInit(id: number) {
     this.id = id;
     this.preguntaActualNumero = 0;
+    this.respuestasCorrectas = 0;
     this.dataApiService.getActividad(this.id).then((res) => {
       console.log(res);
       this.segundos = res.segundos;

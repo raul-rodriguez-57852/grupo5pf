@@ -16,6 +16,7 @@ export class RegistroComponent implements OnInit {
   mensaje: string = null;
   esCuentaTutor = true;
   tiposDoc = [];
+  registroExitoso = false;
 
   constructor(private dataApiService: DataApiService, private router: Router) {
     var id: any;
@@ -55,6 +56,7 @@ export class RegistroComponent implements OnInit {
         .guardarTutor(this.tutor)
         .then((respuesta) => {
           this.mensaje = "Cuenta creada con éxito.";
+          this.registroExitoso = true;
           document.getElementById("open-modal").click();
         })
         .catch((respuesta) => {
@@ -84,6 +86,7 @@ export class RegistroComponent implements OnInit {
         .guardarProfesor(this.profesor)
         .then((respuesta) => {
           this.mensaje = "Cuenta creada con éxito.";
+          this.registroExitoso = true;
           document.getElementById("open-modal").click();
           
         })

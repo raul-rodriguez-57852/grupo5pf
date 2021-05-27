@@ -74,11 +74,15 @@ export class LoginComponent implements OnInit{
         if(documento == ""){
             //No ingreso documento 
             console.log('Documento Vacio!');
+            this.mensaje = 'Documento Vacio!';
+            document.getElementById('open-modal').click();
         }
 
         if( clave == ""){
             //no ingreso password
             console.log('Password Vacia!');
+            this.mensaje = 'Password Vacia!';
+            document.getElementById('open-modal').click();
         }
         
 
@@ -100,7 +104,15 @@ export class LoginComponent implements OnInit{
                   this.retrived_id = this.dataApiService.getCookie("SessionCookie");
             }
             else{
+                
                 console.log(session_id);
+                if(session_id == 'wrong_password'){
+                    this.mensaje = 'Contraseña incorrecta';
+                }
+                if(session_id == 'user_not_found'){
+                    this.mensaje = 'El usuario ingresado no existe. Si desea crear una nueva cuenta toque el boton Registrate.';
+                }
+                document.getElementById('open-modal').click();
             }
         }
 

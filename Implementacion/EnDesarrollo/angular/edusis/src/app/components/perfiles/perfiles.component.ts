@@ -62,6 +62,10 @@ export class PerfilesComponent implements OnInit {
     }
   }
 
+  clearEmoji() {
+    this.emojisSeleccionados.pop();
+  }
+
   ingresoAlumno() {
     if (this.emojisSeleccionados.length === 3) {
       const pwd = new PasswordEmoji();
@@ -79,14 +83,21 @@ export class PerfilesComponent implements OnInit {
       ).catch(
         (respuesta) => {
           this.mensaje = 'Contraseña incorrecta';
+          this.emojisSeleccionados = [];
           document.getElementById('open-modal').click();
         }
       );
     }
   }
+
   recargar() {
     this.emojisSeleccionados = [];
     this.perfilSeleccionado = null;
   }
+
+  volverAPerfiles(){
+    this.perfilSeleccionado = null;
+  }
+
   
 }

@@ -27,6 +27,9 @@
         <label>Contraseña</label>
         <div class="input-password">
           <img *ngFor="let emoji of emojisSeleccionados" src="{{ emoji.iconoURL }}" style="margin-left: 3px; margin-right: 3px;" class="imagen-emoji">
+          <button id="search-clear" class="btn bg-transparent"  (click)="clearEmoji()">
+            <i class="fa fa-times"></i>
+          </button>
         </div>
       </div>
       <div class="form-group">

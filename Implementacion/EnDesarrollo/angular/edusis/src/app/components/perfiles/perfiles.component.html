@@ -30,6 +30,9 @@
     <div class="form-group">
       <div class="input-password">
         <img *ngFor="let emoji of emojisSeleccionados" src="{{ emoji.iconoURL }}" style="margin-left: 3px; margin-right: 3px;" class="imagen-emoji">
+        <button id="search-clear" class="btn bg-transparent"  (click)="clearEmoji()">
+          <i class="fa fa-times"></i>
+        </button>
       </div>
     </div>
     <div class="form-group">
@@ -42,6 +45,7 @@
       </div>
     </div>
     <button (click)="ingresoAlumno()" class="btn btn-lg btn-block btn-personalizado-inverso">Ingresar</button>
+    <button (click)="volverAPerfiles()" class="btn btn-lg btn-block btn-personalizado-txtblanco">Volver</button>
   </div>
 </section>
 
@@ -60,7 +64,7 @@
         {{ mensaje }}
       </div>
       <div class="modal-footer">
-        <button type="button" data-dismiss="modal" (click)="recargar()" class="btn btn-personalizado">Aceptar</button>
+        <button type="button" data-dismiss="modal" class="btn btn-personalizado">Aceptar</button>
       </div>
     </div>
   </div>
