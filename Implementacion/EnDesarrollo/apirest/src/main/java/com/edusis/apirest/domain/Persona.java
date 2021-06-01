@@ -45,6 +45,7 @@ public abstract class Persona extends GenericEntity {
     
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "documento_id")
+    @NotNull
     private Documento documento;
     
     @Temporal(TemporalType.TIMESTAMP)
@@ -107,6 +108,7 @@ public abstract class Persona extends GenericEntity {
     public void validar(){
         AssertUtils.notNull(nombre, "El nombre no puede ser nulo");
         AssertUtils.notNull(apellido, "El apellido no puede ser nulo");
+        AssertUtils.notNull(documento, "El documento no puede ser nulo");
     }
     
 }

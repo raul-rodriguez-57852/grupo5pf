@@ -1,3 +1,4 @@
+import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataApiService } from '../../services/data-api.service';
@@ -23,6 +24,9 @@ export class NavbarComponent implements OnInit {
 
     var session_id = this.dataApiService.getCookie('SessionCookie');
     this.dataApiService.eliminarSesion(session_id);
+    this.user_logged = false;
+    this.esTutor = false;
+    this.esProfesor = false;
     this.router.navigate(['']);
   }
   
@@ -30,6 +34,10 @@ export class NavbarComponent implements OnInit {
     //Busco en cookies, para ver si estsa el usuario loggeado, si esta, agarro sus datos, 
     //Si no esta, lo mando a loggearse.
     var session_id = this.dataApiService.getCookie("SessionCookie");
+    if( session_id == null){
+      return;
+    }
+    
     var userType = session_id.slice(session_id.length - 1);
     //ya tengo el id de la session, vamos a ver si es valido!
     var user_id;

@@ -17,7 +17,7 @@ export class DataApiService {
   urlBase: string;
   urlTarea: string;
   private usuario = null;
-  private userType = null;
+  private userType = null; //0 si es tutor e 1 si es profesor y 2 si es alumno.
 
   constructor(private http: HttpClient) {
     this.urlBase = 'http://192.168.0.100:8090/api/';
@@ -214,7 +214,11 @@ public setUser(id: String, type: String){
   }
 
   getCookie(name: String){
+    if ( document.cookie == "" ){
+      return null;
+    }
     const value = "; " + document.cookie;
+
     const parts = value.split("; " + name + "=");
 
     if(parts.length == 2){
