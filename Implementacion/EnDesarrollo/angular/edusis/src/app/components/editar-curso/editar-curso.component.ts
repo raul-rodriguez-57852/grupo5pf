@@ -58,34 +58,27 @@ export class EditarCursoComponent implements OnInit {
   
 
   async save(formCurso: NgForm) {
-    //Busco en cookies, para ver si estsa el usuario loggeado, si esta, agarro sus datos, 
-    //Si no esta, lo mando a loggearse.
-    var session_id = this.dataApiService.getCookie("SessionCookie");
-    //ya tengo el id de la session, vamos a ver si es valido!
-    
-    await this.dataApiService.validarSession(session_id).then(
-      (respuesta) => {
-        this.id_profesor = respuesta;
-      }
+    this.id_profesor = this.dataApiService.getUsuario();
+    if(this.id_profesor == null || this.dataApiService.getUserType() != 1){
+      //Acceso denegado.
+      this.router.navigate(['login']);
+    }
+    else{
+      this.curso.creadorId = this.id_profesor;
+      console.log("This is the creator id: ", this.curso.creadorId);
+      this.dataApiService.guardarCurso(this.curso).then(
+        (respuesta) => {
+          this.mensaje = 'Curso guardado con éxito.';
+          document.getElementById('open-modal').click();
+        }
+      ).catch(
+        (respuesta) => {
+          this.mensaje = 'Error al guardar.';
+          document.getElementById('open-modal').click();
+        }
       );
-      if(this.id_profesor == null)
-      {
-        this.router.navigate(['login']);
-      }
-    this.curso.creadorId = this.id_profesor;
-    console.log("CREADOR ID: ",this.curso.creadorId);
-    this.dataApiService.guardarCurso(this.curso).then(
-      (respuesta) => {
-        this.mensaje = 'Curso guardado con éxito.';
-        document.getElementById('open-modal').click();
-//        this.recargar();
-      }
-    ).catch(
-      (respuesta) => {
-        this.mensaje = 'Error al guardar.';
-        document.getElementById('open-modal').click();
-      }
-    );
+    }
+    
   }
 
   recargar() {

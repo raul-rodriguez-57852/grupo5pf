@@ -191,7 +191,7 @@ public setUser(id: String, type: String){
   }
 
   eliminarSesion(session_id: string): Promise<any> {
-    console.log("Eliminado sesion = ", session_id)
+    this.deleteCookie('SessionCookie');
     return this.http.post(this.urlBase + 'eliminarSesion', session_id).toPromise();
   }
 
@@ -223,21 +223,14 @@ public setUser(id: String, type: String){
   }
 
 
-  deleteCookie(name: String){
-    //Obtengo la session_id
-    var session_id = this.getCookie(name);
-  
+  deleteCookie(name: String){ 
   //Elimina la cookie del cliente.
     const date = new Date();
-
     //Seteo una fecha de expiracion menor a fecha actual.
     date.setTime(date.getTime() + (-1 * 24 * 60 * 60 * 1000));
-
     //Seteo la coockie.
-
     document.cookie = name+"=; expires= "+ date.toUTCString() + "; path=/"; 
     //ahora la elimino del servidor.
-    this.eliminarSesion(session_id)
     this.setUser(null,null);
 
   }

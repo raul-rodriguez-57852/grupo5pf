@@ -1,177 +1,215 @@
-<section id="registro" class="margin-top-90">
-  <div class="container">
-    <p class="aclaracionCenter" *ngIf="esCuentaTutor">
-      <a (click)="cambiarTipoCuenta()">O creá una cuenta de profesor</a>
-    </p>
-    <p class="aclaracionCenter" *ngIf="!esCuentaTutor">
-      <a (click)="cambiarTipoCuenta()">O creá una cuenta de tutor</a>
-    </p>
-    <form
-      name="formRegistro"
-      #formRegistro="ngForm"
-      (ngSubmit)="save(formRegistro)"
-    >
-      <div class="form-group">
-        <label for="nombre">Nombre</label>
-        <input
-          [ngModel]="esCuentaTutor ? tutor.nombre : profesor.nombre"
-          (ngModelChange)="
-            esCuentaTutor ? (tutor.nombre = $event) : (profesor.nombre = $event)
-          "
-          type="text"
-          name="nombre"
-          class="form-control"
-          placeholder="Nombre"
-          required
-          autocomplete="off"
+<section id="registro">
+  <!--   <img class="wave" src="/assets/img/wave.png" />
+   -->  
+    <div class="fondo position-fixed">
+    </div>
+    
+    <div class="container" style="padding-top: 90px;">
+      <ng-container *ngIf="!esCuentaTutor">
+        <div class="img__wrap">
+          <img
+          style="max-width: 625px; max-height: 290px; padding: 20px"
+          src="/assets/img/profesor.png"
         />
-      </div>
-      <div class="form-group">
-        <label for="apellido">Apellido</label>
-        <input
-          [ngModel]="esCuentaTutor ? tutor.apellido : profesor.apellido"
-          (ngModelChange)="
-            esCuentaTutor
-              ? (tutor.apellido = $event)
-              : (profesor.apellido = $event)
-          "
-          type="text"
-          name="iconoURL"
-          class="form-control"
-          placeholder="Apellido"
-          required
-          autocomplete="off"
-        />
-      </div>
-      <div class="form-group">
-        <label>Documento</label>
-        <div class="row">
-          <div class="col-4">
-            <select
-              class="form-control"
-              [ngModel]="
-                esCuentaTutor ? tutor.tipoDocumento : profesor.tipoDocumento
-              "
-              (ngModelChange)="
-                esCuentaTutor
-                  ? (tutor.tipoDocumento = $event)
-                  : (profesor.tipoDocumento = $event)
-              "
-              name="tipoDoc"
-              placeholder="Tipo"
-            >
-              <option [ngValue]="null" hidden>Tipo</option>
-              <option *ngFor="let tipo of tiposDoc" [ngValue]="tipo">{{
-                tipo
-              }}</option>
-            </select>
-          </div>
-          <div class="col-8">
-            <input
-              [ngModel]="esCuentaTutor ? tutor.documento : profesor.documento"
-              (ngModelChange)="
-                esCuentaTutor
-                  ? (tutor.documento = $event)
-                  : (profesor.documento = $event)
-              "
-              type="tel"
-              name="documento"
-              class="form-control"
-              placeholder="Documento"
-              required
-              autocomplete="off"
-            />
-          </div>
+        <p class="img__description" (click)= "cambiarTipoCuenta()">Resgitrarme como tutor</p>
         </div>
-        <!-- <label for="documento">Documento</label>
-        <input
-          [(ngModel)]="profesor.documento"
-          type="tel"
-          name="documento"
-          class="form-control"
-          placeholder="Documento"
-          required
-          autocomplete="off"
-        /> -->
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input
-          type="email"
-          name="email"
-          class="form-control"
-          placeholder="Email"
-          required
-          autocomplete="off"
+      </ng-container>
+      <ng-container *ngIf="esCuentaTutor">
+        <div class="img__wrap">
+          <img
+          style="max-width: 625px; max-height: 290px; padding: 20px"
+          src="/assets/img/tutorConChicos.png"
         />
-      </div>
-      <div class="form-group">
-        <label for="password">Contraseña</label>
-        <input
-        [ngModel]="esCuentaTutor ? tutor.password : profesor.password"
-        (ngModelChange)="
-            esCuentaTutor
-              ? (tutor.password = $event)
-              : (profesor.password = $event)
-          "
-          type="password"
-          name="password"
-          class="form-control"
-          placeholder="Contraseña"
-          required
-          autocomplete="off"
+        <p class="img__description" (click)= "cambiarTipoCuenta()">Resgitrarme como Profesor</p>
+        </div>
+      </ng-container>
+      
+     
+      <div class="login-content" style="justify-content: center">
+        
+        <form name="formRegistro" #formRegistro="ngForm" (ngSubmit)="save(formRegistro)">
+        
+          <div id="div-nombre" class="input-div one">
+            <div class="i">
+              <i class="fa fa-address-card-o"></i>
+            </div>
+            <div class="div">
+              <h5>Nombre</h5>
+              <input
+                tabindex="1"
+                id="InputNombre"
+                (blur)="removeFocus()"
+                (click)="addFocus('div-nombre')"
+                type="text"
+                class="input focus"
+                autocomplete="off"
+                name="nombre"
+                [ngModel]="esCuentaTutor ? tutor.nombre : profesor.nombre"
+                (ngModelChange)="
+                esCuentaTutor? (tutor.nombre = $event): (profesor.nombre = $event)"
+              />
+            </div>
+          </div>
+          
+          <div id="div-apellido" class="input-div pass">
+            <div class="i">
+              <i class="fa fa-address-card-o"></i>
+            </div>
+            <div class="div">
+              <h5>Apellido</h5>
+              <input
+                tabindex="2"
+                id="inputApellido"
+                (blur)="removeFocus()"
+                (click)="addFocus('div-apellido')"
+                type="text"
+                class="input focus"
+                autocomplete="off"
+                [ngModel]="esCuentaTutor ? tutor.apellido : profesor.apellido"
+                (ngModelChange)="
+                esCuentaTutor? (tutor.apellido = $event): (profesor.apellido = $event)"
+                name="apellido"
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row" >
+              <div class="col-4">
+                <select
+                  class="form-control"
+                  [ngModel]="
+                    esCuentaTutor ? tutor.tipoDocumento : profesor.tipoDocumento
+                  "
+                  (ngModelChange)="
+                    esCuentaTutor
+                      ? (tutor.tipoDocumento = $event)
+                      : (profesor.tipoDocumento = $event)
+                  "
+                  name="tipoDoc"
+                  placeholder="Tipo"
+                >
+                  <option [ngValue]="null" hidden>Tipo</option>
+                  <option *ngFor="let tipo of tiposDoc" [ngValue]="tipo">{{
+                    tipo
+                  }}</option>
+                </select>
+              </div>
+              <div id="div-documento" class="col-8 input-div pass">
+                <div class="i">
+                  <i class=" fa fa-address-card-o"></i>
+                </div>
+                <div class="div">
+                  <h5>Documento</h5>
+                  <input
+                  [ngModel]="esCuentaTutor ? tutor.documento : profesor.documento"
+                  (ngModelChange)="
+                    esCuentaTutor
+                      ? (tutor.documento = $event)
+                      : (profesor.documento = $event)
+                  "
+                  type="tel"
+                  id="inputDocumento"
+                  (blur)="removeFocus()"
+                  (click)="addFocus('div-documento')"
+                  class="input focus"
+                  required
+                  autocomplete="off"
+                  name="documento"
+                />
+                </div>  
+              </div>
+            </div>
+          </div>
+       
+          <div id="div-email" class="input-div pass">
+            <div class="i">
+              <i class="fa fa-envelope-o"></i>
+            </div>
+            <div class="div">
+              <h5>Email</h5>
+              <input
+                tabindex="2"
+                (blur)="removeFocus()"
+                (click)="addFocus('div-email')"
+                id="inputEmail"
+                type="text"
+                class="input focus"
+                name="email"
+              />
+            </div>
+          </div>
+          <div id="div-password" class="input-div pass">
+            <div class="i">
+              <i class="fa fa-lock"></i>
+            </div>
+            <div class="div">
+              <h5>Contraseña</h5>
+              <input
+                tabindex="2"
+                id="inputPassword"
+                (blur)="removeFocus()"
+                (click)="addFocus('div-password')"
+                type="password"
+                class="input focus"
+                [ngModel]="esCuentaTutor ? tutor.password : profesor.password"
+                (ngModelChange)="esCuentaTutor? (tutor.password = $event): (profesor.password = $event)"
+                name="password"
+              />
+            </div>
+          </div>
+          <input
+          tabindex="3"
+          type="submit"
+          class="btn btn-personalizado-inverso"
+          value="Registrarme"
         />
+        </form>
       </div>
-      <button type="submit" class="btn btn-lg btn-block btn-personalizado">
-        Registrarme
-      </button>
-    </form>
-  </div>
-</section>
-
-<!-- Modal -->
-<button
-  id="open-modal"
-  [hidden]="true"
-  data-toggle="modal"
-  data-target="#informacion"
->
-  Open Modal
-</button>
-<div
-  class="modal fade"
-  id="informacion"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Ludikon</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        {{ mensaje }}
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          data-dismiss="modal"
-          (click)="irLogIn()"
-          class="btn btn-personalizado"
-        >
-          Aceptar
-        </button>
+    </div>
+  </section>
+  <!-- Modal -->
+  <button
+    id="open-modal"
+    [hidden]="true"
+    data-toggle="modal"
+    data-target="#informacion"
+  >
+    Open Modal
+  </button>
+  <div
+    class="modal fade"
+    id="informacion"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ludikon</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{ mensaje }}
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            data-dismiss="modal"
+            class="btn btn-personalizado"
+          >
+            Aceptar
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+  

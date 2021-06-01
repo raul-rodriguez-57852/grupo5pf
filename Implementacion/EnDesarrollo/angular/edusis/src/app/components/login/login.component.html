@@ -18,6 +18,8 @@
           <div class="div">
             <h5>Número de Documento</h5>
             <input
+              tabindex="1"
+              (keydown.Tab) = "addFocus('div-password')"
               id="InputDocumento"
               (blur)="removeFocus()"
               (click)="addFocus('div-dni')"
@@ -34,16 +36,18 @@
           <div class="div">
             <h5>Contraseña</h5>
             <input
+              tabindex="2"
               id="inputPassword"
               (blur)="removeFocus()"
               (click)="addFocus('div-password')"
               type="password"
-              class="input"
+              class="input focus"
             />
           </div>
         </div>
         <a href="#">¿Olvidaste tu contraseña?</a>
         <input
+          tabindex="3"
           type="submit"
           (click)="login()"
           class="btn btn-personalizado-inverso"

@@ -154,9 +154,8 @@ export class RealizacionTareaComponent implements OnInit {
       let realizacion = new Realizacion();
       realizacion.idTarea = this.tareaId;
       ////  realizacion.idAlumno = Number.parseInt(this.dataApiService.getCookie("SessionCookie")); ////
-      //////////////////////////////// HARDCODEADO POR AHORA /////////////////////////////////////
+      
       realizacion.idAlumno = this.dataApiService.getUsuario();
-      /////////////////////////////////////////////////////
       realizacion.detalles = this.detalles;
 
       this.dataTareaService

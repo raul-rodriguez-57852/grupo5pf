@@ -113,6 +113,33 @@ export class RegistroComponent implements OnInit {
   irLogIn(){
     this.router.navigate(['']);
     }
+  
+
+  addFocus(id:string ){
+      document.getElementById(id).classList.add('focus');
+      document.getElementById(id).click();
+  }
+
+  removeFocus(){
+
+      if((<HTMLInputElement>document.getElementById('InputNombre')).value == ""){
+          document.getElementById('div-nombre').classList.remove('focus');
+      }
+      if((<HTMLInputElement>document.getElementById('inputApellido')).value == ""){
+          document.getElementById('div-apellido').classList.remove('focus');
+      }  
+      if((<HTMLInputElement>document.getElementById('inputEmail')).value == ""){
+        document.getElementById('div-email').classList.remove('focus');
+      }
+      if((<HTMLInputElement>document.getElementById('inputPassword')).value == ""){
+        document.getElementById('div-password').classList.remove('focus');
+      }   
+      if((<HTMLInputElement>document.getElementById('inputDocumento')).value == ""){
+        document.getElementById('div-documento').classList.remove('focus');
+      } 
+  }
+
+
 
 }
 

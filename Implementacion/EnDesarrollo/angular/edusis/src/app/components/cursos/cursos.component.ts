@@ -24,25 +24,26 @@ export class CursosComponent implements OnInit {
 
   async ngOnInit() {
     this.id_profesor = this.dataApiService.getUsuario()
-      if(this.id_profesor == null)
+      if(this.id_profesor == null || this.dataApiService.getUserType() != 1)
       {
-        console.log("USUARIO NO ENCONTRADO: ", this.dataApiService.getUsuario())
+        this.router.navigate(['login']);
       }
 
     this.getAll();
   
   }
 
-  getAll() {
+  async getAll() {
     console.log("ID PROFESOR: ",this.id_profesor)
-    //this.dataApiService.getCursosByProfesor(this.id_profesor).then(
-      this.dataApiService.getCursos().then(
+
+      await this.dataApiService.getCursosByProfesor(this.id_profesor).then(
       (cursos) => {
         this.cursos = cursos;
-        console.log(cursos);
-        //console.log(this.cursos[0].codigo);
+        
+        
       }
     );
+    console.log('CURSOS DEL PROFESOR: ',this.dataApiService.getUsuario(),' : ', this.cursos);
   }
 
   editar(id: number) {

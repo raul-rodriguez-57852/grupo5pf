@@ -141,7 +141,8 @@ public class ApiController {
     
     @GetMapping("getCursosByProfesor")
     public List<Curso> getCursosByProfesor(@RequestParam Long id) {
-        Profesor profe = (Profesor)Hibernate.unproxy(profesorService.get(id));
+        Profesor profe = profesorService.get(id);
+        //Recursion.
         return profe.getCursos();
     }
     
@@ -308,10 +309,26 @@ public class ApiController {
         Curso curso = cursoDto.getId() != null ? cursoService.get(cursoDto.getId()) : new Curso();
         curso.setNombre(cursoDto.getNombre());
         curso.setIconoURL(cursoDto.getIconoURL());
-        curso.setCreador(profesorService.get(cursoDto.getCreadorId()));
+        Profesor profe = profesorService.get(cursoDto.getCreadorId());
+        curso.setCreador(profe);
         curso.setCodigo(null);
         curso.validar();
+        //Hay que guardar el curso en el lado del profesor tambien.
+        if( profe.getCursos().size() != 0){
+            //Ya tiene cursos agregados.
+            if(!profe.getCursos().contains(curso)){
+                profe.getCursos().add(curso);
+                
+            }
+        }
+        else{
+            //El profesor no tiene ningun Curso.
+            ArrayList<Curso> cursos = new ArrayList<Curso>();
+            cursos.add(curso);
+            profe.setCursos(cursos);
+        }
         cursoService.save(curso);
+        profesorService.save(profe);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
@@ -614,7 +631,7 @@ public class ApiController {
         //List<String> listado_sesiones_ids = listado_sesiones.stream().map(x -> x.getSession_id()).collect(Collectors.toList());
         if (listado_sesiones.isEmpty()) {
             //no hay sesiones en la base
-            throw new Error();
+            return null;
 
         } else {
             //recorro las sesiones

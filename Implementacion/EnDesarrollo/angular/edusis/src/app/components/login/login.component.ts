@@ -48,14 +48,20 @@ export class LoginComponent implements OnInit{
                 }
                 
             }
+            else{
+                //no match de sesion en la DB.
+                this.dataApiService.deleteCookie('SessionCookie');
+            }
 
         }
 
     }
+    
 
 
     addFocus(id:string ){
         document.getElementById(id).classList.add('focus');
+        document.getElementById(id).click();
     }
 
     removeFocus(){

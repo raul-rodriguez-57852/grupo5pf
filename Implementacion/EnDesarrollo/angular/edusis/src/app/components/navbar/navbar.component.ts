@@ -20,8 +20,9 @@ export class NavbarComponent implements OnInit {
   }
 
   cerrarSesion() {
-    
-    this.dataApiService.deleteCookie('SessionCookie');
+
+    var session_id = this.dataApiService.getCookie('SessionCookie');
+    this.dataApiService.eliminarSesion(session_id);
     this.router.navigate(['']);
   }
   

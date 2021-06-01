@@ -48,7 +48,7 @@ export class CursoAlumnoComponent implements OnInit {
       this.dataTareaService.getTareas(this.cursoId).then((tareas) => {
         this.tareas = tareas;
         console.log(this.tareas);
-        this.dataTareaService.getRealizaciones(this.cursoId, 3).then((realizaciones) => {
+        this.dataTareaService.getRealizaciones(this.cursoId, this.dataApiService.getUsuario()).then((realizaciones) => {
           realizaciones.forEach(element => {
             if(element.puntaje != null){
               element.puntaje = parseInt(element.puntaje);
