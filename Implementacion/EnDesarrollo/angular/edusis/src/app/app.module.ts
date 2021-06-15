@@ -35,6 +35,8 @@ import { RealizacionPasapalabrasComponent } from './components/realizacion-pasap
 import { HomeProfesorComponent } from './components/home-profesor/home-profesor.component';
 import { CallbackPipe} from "./callBackPipe";
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,6 +67,7 @@ import { CallbackPipe} from "./callBackPipe";
     RealizacionPasapalabrasComponent,
     HomeProfesorComponent,
     CallbackPipe,
+
   ],
   imports: [
     BrowserModule,

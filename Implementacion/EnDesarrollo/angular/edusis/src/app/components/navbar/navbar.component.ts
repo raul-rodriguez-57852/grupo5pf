@@ -2,6 +2,7 @@ import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataApiService } from '../../services/data-api.service';
+import { NavbarService } from '../../services/navbar-service';
 
 @Component({
   selector: 'app-navbar',
@@ -15,9 +16,13 @@ export class NavbarComponent implements OnInit {
   user_logged = true;
   esProfesor = false;
 
-  constructor(private dataApiService: DataApiService, private router: Router) {}
+  constructor(private dataApiService: DataApiService, private router: Router, private navbarService: NavbarService) {
+    navbarService.data.subscribe(param => {this.recargar();})
+  }
 
   ngOnInit() {
+    //this.recargar();
+    
   }
 
   cerrarSesion() {
@@ -31,6 +36,7 @@ export class NavbarComponent implements OnInit {
   }
   
   async recargar() {
+    
     //Busco en cookies, para ver si estsa el usuario loggeado, si esta, agarro sus datos, 
     //Si no esta, lo mando a loggearse.
     var session_id = this.dataApiService.getCookie("SessionCookie");
@@ -46,6 +52,7 @@ export class NavbarComponent implements OnInit {
         user_id = respuesta;
       }
       );
+      
       if(user_id == null)
       {
         this.user_logged = false;

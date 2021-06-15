@@ -3,7 +3,8 @@ import { DataApiService } from '../../services/data-api.service';
 import { PasswordEmoji } from '../../models/password-emoji';
 import { Router } from '@angular/router';
 import { Alumno } from 'src/app/models/alumno';
-
+import { NavbarService } from '../../services/navbar-service';
+import { Tutor } from 'src/app/models/tutor';
 
 @Component({
   selector: 'app-perfiles',
@@ -21,13 +22,15 @@ export class PerfilesComponent implements OnInit {
   constructor(
     private dataApiService: DataApiService,
     private elementRef: ElementRef,
-    private router: Router  
+    private router: Router,
+    private navbarService: NavbarService
   ) { }
 
   ngOnInit() {
 
     this.getAlumnos();
     this.getEmojis();
+    this.navbarService.triggerNavbarGet();
   }
 
   getEmojis() {
@@ -38,6 +41,17 @@ export class PerfilesComponent implements OnInit {
   }
 
   async getAlumnos() {
+    let tutor;
+    if(this.dataApiService.getUserType() == '2'){
+        await this.dataApiService.tutorByAlumno(this.dataApiService.getUsuario()).then(
+          (respuesta) => {
+            tutor = respuesta;
+            console.log(respuesta);
+          }
+        );
+      
+        this.dataApiService.setUser(tutor.id.toString(),'0');
+    }
     await this.dataApiService.alumnosByTutor(this.dataApiService.getUsuario()).then(
       (respuesta) => {
         this.perfiles = respuesta;

@@ -29,7 +29,8 @@ public class Profesor extends Persona {
     private List<Curso> cursos;
     
     @ManyToMany
-    @JoinTable(name="asignaturas",joinColumns = @JoinColumn(name= "profesor_id"),
+    @JsonIgnore
+    @JoinTable(name="asignaturas_profesores",joinColumns = @JoinColumn(name= "profesor_id"),
             inverseJoinColumns = @JoinColumn(name = "asignatura_id"))
     private List<Asignatura> asignaturas;
 

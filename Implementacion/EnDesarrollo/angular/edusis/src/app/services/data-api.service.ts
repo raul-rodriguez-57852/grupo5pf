@@ -31,6 +31,9 @@ public getUsuario(){
 
 public getUserType(){
   return this.userType;
+  // 0 tutor
+  // 1 profesor
+  // 2 alumno
 }
 
 public setUser(id: String, type: String){
@@ -82,6 +85,10 @@ public setUser(id: String, type: String){
 
   guardarTutor(tutor: Tutor): Promise<any> {
     return this.http.post(this.urlBase + 'guardarTutor', tutor).toPromise();
+  }
+
+  tutorByAlumno(idAlumno: string): Promise<any> {
+    return this.http.get(this.urlBase + 'tutorByAlumno', { params: { idAlumno } }).toPromise();
   }
 
   //#######     DOCUMENTO      #########  

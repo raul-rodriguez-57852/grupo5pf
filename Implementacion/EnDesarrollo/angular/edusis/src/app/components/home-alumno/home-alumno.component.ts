@@ -73,82 +73,41 @@ export class HomeAlumnoComponent implements OnInit {
         if(this.codigoCurso == ''){
             this.mensaje = "Debes ingresar un codigo de invitacion a curso!"
             document.getElementById('open-modal').click();
+            return;
         }
-        else{
-            //Nos fijamos si el curso deseado exite.
-            await this.dataApiService.buscarCursoPorCodigo(this.codigoCurso).then(
-                (respuesta) => {
-                    this.chek_codigo = respuesta;
-                }
-            );
-            if (this.chek_codigo == -1){
-                this.mensaje = "Lo siento, curso no encontrado!";
-                //Vaciamos el input.
-                (<HTMLInputElement>document.getElementById('InputCodigoCurso')).value = '';
-                document.getElementById('open-modal').click();
+        
+        //Nos fijamos si el curso deseado exite.
+        await this.dataApiService.buscarCursoPorCodigo(this.codigoCurso).then(
+            (respuesta) => {
+                this.chek_codigo = respuesta;
             }
-            else{
-                //curso encontrado.
-                await this.dataApiService.getCurso(this.chek_codigo.toString()).then(
-                    (respuesta) => {
-                        this.curso = respuesta;
-                        this.esregistro = true;
-                    }
-                ).catch(() =>{
-                    this.mensaje = "Error al buscar el curso!";
-                    //Vaciamos el input.
-                    (<HTMLInputElement>document.getElementById('InputCodigoCurso')).value = '';
-                    document.getElementById('open-modal').click();
-                });
-                this.mensaje = "¡Curso Encontrado! \nNombre del curso: " + this.curso.nombre + '\n¿Desea unirse al curso?';
-                document.getElementById('open-modal').click();
-            }
+        );
 
-        }
-    }
-        /*
-
-        if(this.codigoCurso != ''){
-            //operamos
-            console.log('Codigo ingresado = ',this.codigoCurso);
-            await this.dataApiService.buscarCursoPorCodigo(this.codigoCurso).then(
-                async (respuesta) => {
-                    this.chek_codigo = respuesta;
-                    if(this.chek_codigo != -1){
-                        console.log('CURSO ENCONTRADO! \nID CURSO: ',this.chek_codigo);
-                          //Traigo el curso para mostrarle los datos y que confirme el registro.
-                        console.log('This.check.codigo = ',this.chek_codigo);
-                        await this.dataApiService.getCurso(this.chek_codigo.toString()).then(
-                            (respuesta) => {
-                                this.curso = respuesta;
-                                this.esregistro = true;
-                                this.mensaje = "¡Curso Encontrado! \nNombre del curso: " + this.curso.nombre + '\n¿Desea unirse al curso?';
-                                document.getElementById('open-modal').click();            
-                            }
-                        )
-                        .catch(() =>{
-                            this.mensaje = "Error al buscar el curso!";
-                            document.getElementById('open-modal').click();
-
-                        });
-                    }
-                    else{
-                        this.mensaje = "Lo siento, curso no encontrado!"
-                        document.getElementById('open-modal').click();
-                    }
-                }
-            )
-            .catch((error) =>{
-                this.mensaje = "Lo siento, ocurrio un error al buscar ese curso";
-                document.getElementById('open-modal').click();
-            });
-        }
-        else{
-            this.mensaje = "Debes ingresar un codigo de invitacion a curso!"
+        if (this.chek_codigo == -1){
+            this.mensaje = "Lo siento, curso no encontrado!";
+            //Vaciamos el input.
+            (<HTMLInputElement>document.getElementById('InputCodigoCurso')).value = '';
             document.getElementById('open-modal').click();
+            return;
         }
-        */
+        
+
+        //curso encontrado.
+        await this.dataApiService.getCurso(this.chek_codigo.toString()).then(
+            (respuesta) => {
+                this.curso = respuesta;
+                this.esregistro = true;
+            }
+        ).catch(() =>{
+            this.mensaje = "Error al buscar el curso!";
+            //Vaciamos el input.
+            (<HTMLInputElement>document.getElementById('InputCodigoCurso')).value = '';
+            document.getElementById('open-modal').click();
+        });
+        this.mensaje = "¡Curso Encontrado! \nNombre del curso: " + this.curso.nombre + '\n¿Desea unirse al curso?';
+        document.getElementById('open-modal').click();
     
+    }
 
     getAllCursos(){
         //Mostrar todos los cursos del alumno.

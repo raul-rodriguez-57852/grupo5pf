@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NavbarService } from '../../services/navbar-service';
+
 
 @Component({
   selector: 'app-home-profesor',
@@ -9,10 +11,13 @@ import { Router } from '@angular/router';
 export class HomeProfesorComponent implements OnInit {
 
   constructor(
-    private router: Router
+    private router: Router,
+    private navbarService: NavbarService
+    
   ) { }
 
   ngOnInit(): void {
+    this.navbarService.triggerNavbarGet();
   }
 
   misCursos() {

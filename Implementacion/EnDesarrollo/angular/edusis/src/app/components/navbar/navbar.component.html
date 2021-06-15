@@ -12,14 +12,7 @@
       <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" >
         <a class="nav-link" routerLink="/"><i class="fa fa-home"></i> Home</a>
       </li>
-<!--
-      <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" >
-        <a class="nav-link" routerLink="/emojis"><i class="fa fa-smile-o"></i> Emojis</a>
-      </li>
-      <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" >
-        <a class="nav-link" routerLink="/editar-alumno"><i class="fa fa-pencil"></i> Nuevo alumno</a>
-      </li>
-    -->
+
       <li *ngIf="esTutor" class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" >
         <a class="nav-link" routerLink="/perfiles"><i class="fa fa-users"></i> Perfiles</a>
       </li>

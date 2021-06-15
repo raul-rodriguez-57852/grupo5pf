@@ -42,7 +42,7 @@ public class Asignatura extends GenericEntity {
     private Profesor creador;
     
     @ManyToMany
-    @JoinTable(name="asignaturas",joinColumns = @JoinColumn(name= "asignatura_id"),
+    @JoinTable(name="asignaturas_profesores",joinColumns = @JoinColumn(name= "asignatura_id"),
             inverseJoinColumns = @JoinColumn(name = "profesor_id"))
     private List<Profesor> profesores;
     

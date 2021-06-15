@@ -209,6 +209,13 @@ public class ApiController {
         return tutorService.get(id);
     }
     
+    @GetMapping("tutorByAlumno")
+    public Tutor tutorByAlumno(@RequestParam Long idAlumno) {
+        Alumno alumno = alumnoService.get(idAlumno);
+        Tutor tutor = alumno.getTutor();
+        return tutor;
+    }
+    
     @DeleteMapping("eliminarTutor")
     public ResponseEntity<Long> eliminarTutor(@RequestParam Long id) {
         /*Tutor tutor = tutorService.get(id);
@@ -447,9 +454,12 @@ public class ApiController {
         Asignatura asignatura = asignaturaDto.getId() != null ? asignaturaService.get(asignaturaDto.getId()) : new Asignatura();
         asignatura.setNombre(asignaturaDto.getNombre());
         asignatura.setIconoURL(asignaturaDto.getIconoURL());
-        asignatura.setCreador(profesorService.get(asignaturaDto.getCreadorId()));
+        Profesor profe = profesorService.get(asignaturaDto.getCreadorId());
+        asignatura.setCreador(profe);
         Curso curso = cursoService.get(asignaturaDto.getCursoId());
         asignatura.setCurso(curso);
+        asignatura.validar();
+        //Guardamos la asignatura en la entidad curso.
         if(curso.getAsignaturas() != null){
             if(!curso.getAsignaturas().contains(asignatura)){
                 curso.getAsignaturas().add(asignatura);
@@ -461,8 +471,20 @@ public class ApiController {
             curso.setAsignaturas(asignaturas);
             cursoService.save(curso);
         }
-        asignatura.validar();
+        //Guardamos la asignatura en la entidad Profesor.
+        if(profe.getAsignaturas() != null){
+            if(!profe.getAsignaturas().contains(asignatura)){
+                profe.getAsignaturas().add(asignatura);
+                
+            }
+        }
+        else{
+            ArrayList<Asignatura> asignaturas = new ArrayList<Asignatura>();
+            asignaturas.add(asignatura);
+            profe.setAsignaturas(asignaturas); 
+        }
         asignaturaService.save(asignatura);
+        profesorService.save(profe);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
