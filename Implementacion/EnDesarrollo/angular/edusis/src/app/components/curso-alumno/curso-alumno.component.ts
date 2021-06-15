@@ -13,9 +13,15 @@ export class CursoAlumnoComponent implements OnInit {
   urlImagen = null;
   cursoId = null;
   asignaturas = [];
+  asignaturaFiltro = null;
   tareas = [];
   mensaje: string;
   tareasPuntaje = null;
+  tareasFiltradas = [];
+
+  page = 1;
+  pageSize = 4;
+  collectionSize: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -47,6 +53,7 @@ export class CursoAlumnoComponent implements OnInit {
       console.log(this.asignaturas);
       this.dataTareaService.getTareas(this.cursoId).then((tareas) => {
         this.tareas = tareas;
+        
         console.log(this.tareas);
         this.dataTareaService.getRealizaciones(this.cursoId, this.dataApiService.getUsuario()).then((realizaciones) => {
           realizaciones.forEach(element => {
@@ -56,6 +63,8 @@ export class CursoAlumnoComponent implements OnInit {
     
           });
           this.tareasPuntaje = realizaciones;
+          this.tareasFiltradas = this.tareasPuntaje;
+          this.collectionSize = this.tareasPuntaje.length;
           console.log(this.tareasPuntaje);
           this.imagenAAsignatura();
         });    
@@ -77,4 +86,25 @@ export class CursoAlumnoComponent implements OnInit {
   irATarea(id: number) {
     this.router.navigate(["realizacion-tarea", { id: id, cursoId: this.cursoId }]);
   }
+
+
+  volverACursos(){
+    this.router.navigate(['home-alumno'], {state: {id: this.dataApiService.getUsuario()}});
+  }
+
+  onAsignaturaFilter(){
+    if(this.asignaturaFiltro == null){
+      this.tareasFiltradas = this.tareasPuntaje;
+      this.collectionSize = this.tareasFiltradas.length;
+      return;
+    }
+
+    let filtered = this.tareasPuntaje.filter(t => t.asignatura == this.asignaturaFiltro.nombre);
+    console.log(filtered);
+    this.tareasFiltradas = filtered;
+    this.collectionSize = this.tareasFiltradas.length;
+
+
+  }
+
 }

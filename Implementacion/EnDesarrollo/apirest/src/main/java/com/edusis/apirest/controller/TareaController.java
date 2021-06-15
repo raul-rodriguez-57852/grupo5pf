@@ -97,6 +97,7 @@ public class TareaController {
         tarea.setNombre(tareaDto.getNombre());
         tarea.setCreador(profesorService.get(tareaDto.getCreadorId()));
         tarea.setPuntajeMaximo(tareaDto.getPuntajeMaximo());
+        tarea.setFechaLimite(tareaDto.getFechaLimite());
         Asignatura asignatura = asignaturaService.get(tareaDto.getAsignaturaId());
         tarea.setAsignatura(asignatura);
         if(asignatura.getTareas() != null){

@@ -30,6 +30,13 @@
           </option>
         </select>
       </div>
+      <div class="form-group">
+        <label for="asignatura">Fecha límite</label>
+        <input class="form-control" placeholder="dd/mm/yyyy" name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" (ngModelChange)="select(model)">
+        <div class="input-group-append"  >
+          <button id="calendarButton" type="button" (click)="d.toggle()" ><img src="/assets/img/calendar.png"></button>
+        </div>
+      </div>
       <button type="submit" class="btn btn-lg btn-block btn-personalizado">
         Guardar
       </button>

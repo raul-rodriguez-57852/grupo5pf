@@ -430,7 +430,7 @@ public class ApiController {
             return Long.valueOf(-1);
         } else {
             for (Curso curso : listado_cursos) {
-                if (curso.getCodigo().equals(codigo)) {
+                if (curso.getCodigo() != null && curso.getCodigo().equals(codigo)) {
                     //Encontre el curso con ese codigo.
                     //devuelvo su id
                     return curso.getId();

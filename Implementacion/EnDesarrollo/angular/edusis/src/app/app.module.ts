@@ -1,5 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -32,6 +33,7 @@ import { RealizacionTareaComponent } from './components/realizacion-tarea/realiz
 import { RealizacionPreguntasComponent } from './components/realizacion-preguntas/realizacion-preguntas.component';
 import { RealizacionPasapalabrasComponent } from './components/realizacion-pasapalabras/realizacion-pasapalabras.component';
 import { HomeProfesorComponent } from './components/home-profesor/home-profesor.component';
+import { CallbackPipe} from "./callBackPipe";
 
 @NgModule({
   declarations: [
@@ -62,6 +64,7 @@ import { HomeProfesorComponent } from './components/home-profesor/home-profesor.
     RealizacionPreguntasComponent,
     RealizacionPasapalabrasComponent,
     HomeProfesorComponent,
+    CallbackPipe,
   ],
   imports: [
     BrowserModule,
@@ -69,6 +72,7 @@ import { HomeProfesorComponent } from './components/home-profesor/home-profesor.
     HttpClientModule,
     FormsModule,
     YouTubePlayerModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent],

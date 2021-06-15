@@ -3,8 +3,20 @@
     <img class="imagenCard" src="{{ urlImagen }}" alt="Card image cap">
     <div class="centered">{{ nombre }}</div>  
   </div>
+
+  
+
   <div class="container">
-      <div *ngFor="let tarea of tareasPuntaje">
+
+    <select [(ngModel)]="asignaturaFiltro" (change)="onAsignaturaFilter()" name="asignatura" placeholder="Asignatura"
+      class="form-control margin-bottom-16" >
+      <option [ngValue]="null">Todas las asignaturas</option>
+      <option *ngFor="let asignatura of asignaturas" [ngValue]="asignatura">{{
+        asignatura.nombre
+        }}</option>
+    </select>
+
+      <div *ngFor="let tarea of tareasFiltradas | slice: (page-1) * pageSize : page * pageSize"><!--| callback: filterMateria -->
         <div class="card mb-3" (click)="irATarea(tarea.id)">
           <div class="contenedorImagenCard" *ngIf="tarea.iconoURL !== undefined">
             <img class="card-img-top imagenCard"  src="{{ tarea.iconoURL }}" alt="Card image cap">
@@ -20,8 +32,19 @@
           </div>
         </div>
       </div>
+      <div *ngIf='tareasFiltradas.length === 0 || tareasFiltradas === null'>
+        <div class="alert alert-primary" role="alert" >
+        Aun no tienes tareas cargadas para las asignaturas seleccionadas.
+      </div>
+    </div>
+
+      <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="collectionSize" [maxSize]="4" [rotate]="true"
+        [ellipses]="false" size="lg" class="d-flex justify-content-center">
+      
+      </ngb-pagination>
       <!--       </ul> -->
     </div>
+    <button (click)="volverACursos()" class="btn btn-lg btn-block btn-personalizado-txtblanco">Volver</button>
 </section>
 
 <!-- Modal -->

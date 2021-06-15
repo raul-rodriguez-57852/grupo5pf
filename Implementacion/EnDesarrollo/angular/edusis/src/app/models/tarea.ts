@@ -4,4 +4,5 @@ export class Tarea {
   creadorId: number;
   asignaturaId: number;
   puntajeMaximo: number;
+  fechaLimite: Date;
 }
