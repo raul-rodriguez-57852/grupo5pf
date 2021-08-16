@@ -34,6 +34,7 @@ import { RealizacionPreguntasComponent } from './components/realizacion-pregunta
 import { RealizacionPasapalabrasComponent } from './components/realizacion-pasapalabras/realizacion-pasapalabras.component';
 import { HomeProfesorComponent } from './components/home-profesor/home-profesor.component';
 import { CallbackPipe} from "./callBackPipe";
+import { ConfiguracionTutorComponent } from "./components/configuracion-tutor/configuracion-tutor.component";
 
 
 
@@ -67,6 +68,7 @@ import { CallbackPipe} from "./callBackPipe";
     RealizacionPasapalabrasComponent,
     HomeProfesorComponent,
     CallbackPipe,
+    ConfiguracionTutorComponent,
 
   ],
   imports: [

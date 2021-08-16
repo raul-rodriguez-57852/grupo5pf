@@ -126,6 +126,10 @@ public setUser(id: String, type: String){
   getCursosDeAlumno(idAlumno: string): Promise<any>{
     return this.http.get(this.urlBase + 'getCursosDeAlumno', {params: { idAlumno } }).toPromise();
   }
+
+  eliminarAlumno(alumnoId: string): Promise<any>{
+    return this.http.post(this.urlBase + 'eliminarAlumno', {params: { alumnoId } }).toPromise();
+  }
   
 
    

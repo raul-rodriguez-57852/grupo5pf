@@ -13,7 +13,7 @@ import { CompileStylesheetMetadata } from '@angular/compiler';
 
 export class HomeAlumnoComponent implements OnInit {
 
-    alumno: Alumno = { nombre: null, apellido: null, documento: null, tipoDocumento: null, fechaNacimiento: null, avatarUrl: null, passwordEmoji: null, tutorId: null};
+    alumno: Alumno = { id: null, nombre: null, apellido: null, documento: null, tipoDocumento: null, fechaNacimiento: null, avatarUrl: null, passwordEmoji: null, tutorId: null};
     curso: Curso = {id: null, nombre: null, iconoURL: null, creadorId: null, codigo:null }
     cursos = [];
     mensaje: string = null;

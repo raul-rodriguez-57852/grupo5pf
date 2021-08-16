@@ -5,6 +5,7 @@ import { NgForm } from '@angular/forms';
 import { PasswordEmoji } from '../../models/password-emoji';
 import { Tutor } from 'src/app/models/tutor';
 import { Router } from '@angular/router';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-editar-alumno',
@@ -14,9 +15,11 @@ import { Router } from '@angular/router';
 export class EditarAlumnoComponent implements OnInit {
 
   alumno: Alumno = new Alumno();
+  alumnoDoc = null;
   mensaje: string = null;
   emojis = [];
   emojisSeleccionados = [];
+  AlumnoParaEditar = null;
   avatares = [{ url: 'https://i.imgur.com/VLU8okq.png'},
               { url: 'https://i.imgur.com/s6C5DC9.png'},
               { url: 'https://i.imgur.com/K9aV9cK.png'},
@@ -33,12 +36,29 @@ export class EditarAlumnoComponent implements OnInit {
     private router: Router
   ) { }
 
-  ngOnInit() {
+ async ngOnInit() {
     this.getEmojis();
     this.getTiposDoc();
     if( this.dataApiService.getUsuario() == null){
       this.mensaje = "Permiso Denegado";
       document.getElementById('open-modal').click();
+    }
+    
+    if (this.dataApiService.getUserType() == '2'){
+     await this.dataApiService.getAlumno(this.dataApiService.getUsuario()).then(
+        (respuesta) => {
+          this.AlumnoParaEditar = respuesta;
+        }
+      );
+      this.addEmoji(this.AlumnoParaEditar.passwordEmoji.emoji1);
+      this.addEmoji(this.AlumnoParaEditar.passwordEmoji.emoji2);
+      this.addEmoji(this.AlumnoParaEditar.passwordEmoji.emoji3);
+      this.seleccionar(this.AlumnoParaEditar.avatarUrl);
+      this.alumno.tipoDocumento = this.AlumnoParaEditar.documento.tipo;
+      this.alumno.nombre = this.AlumnoParaEditar.nombre;
+      this.alumno.apellido = this.AlumnoParaEditar.apellido;
+      console.log('ALUMNO: ', this.AlumnoParaEditar);
+      console.log('ALUMNO: ', this.alumno);
     }
   }
 
@@ -59,9 +79,22 @@ export class EditarAlumnoComponent implements OnInit {
     this.emojisSeleccionados.pop();
   }
 
-  save(formAlumno: NgForm) {
+  async save(formAlumno: NgForm) {
+    let tutor;
     
-    var idtutor = this.dataApiService.getUsuario();
+    if(this.dataApiService.getUserType() == '2'){
+      await this.dataApiService.tutorByAlumno(this.dataApiService.getUsuario()).then(
+        (respuesta) => {
+          tutor = respuesta;
+        }
+      );
+      var idtutor = tutor.id;
+      this.alumno.id = this.dataApiService.getUsuario();
+    }
+    else{
+      var idtutor = this.dataApiService.getUsuario();
+    }
+    console.log('Este es el tutor id: ', idtutor);
     this.alumno.tutorId = idtutor;
     const pwd = new PasswordEmoji();
     pwd.emoji1Id = Number(this.emojisSeleccionados[0].id);

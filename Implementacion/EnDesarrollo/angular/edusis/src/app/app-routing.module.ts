@@ -27,9 +27,9 @@ import { RealizacionPasapalabrasComponent } from './components/realizacion-pasap
 import { HomeProfesorComponent } from './components/home-profesor/home-profesor.component';
 import { DocenteAuthGuard } from './guards/docente-auth.guard';
 import { TutorAuthGuard } from './guards/tutor-auth.guard';
+import { ConfiguracionTutorComponent } from './components/configuracion-tutor/configuracion-tutor.component';
 
 const routes: Routes = [
-  // TODO: DEFINIR AUTH
 
   // Públicos
   { path: 'home', component: HomeComponent }, // Aparentemente ya no se utiliza
@@ -63,6 +63,8 @@ const routes: Routes = [
   { path: 'realizacion-tarea', component: RealizacionTareaComponent, canActivate: [TutorAuthGuard] },
   { path: 'realizacion-preguntas', component: RealizacionPreguntasComponent, canActivate: [TutorAuthGuard] },
   { path: 'realizacion-pasapalabras', component: RealizacionPasapalabrasComponent, canActivate: [TutorAuthGuard] },
+  { path: 'configuracion-tutor', component: ConfiguracionTutorComponent, canActivate: [TutorAuthGuard]},
+
 ];
 
 @NgModule({

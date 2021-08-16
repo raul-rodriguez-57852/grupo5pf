@@ -236,6 +236,12 @@ public class ApiController {
         return lista;
     }
     
+    @PostMapping("eliminarAlumno")
+    public ResponseEntity<Long> eliminarAlumno(@RequestBody Long alumnoId) {
+        alumnoService.deleteById(alumnoId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
     @PostMapping("guardarAlumno")
     public ResponseEntity<Long> guardarAlumno(@RequestBody AlumnoDto alumnoDto) {
         Alumno alumno = alumnoDto.getId() != null ? alumnoService.get(alumnoDto.getId()) : new Alumno();
