@@ -4,27 +4,38 @@
     <div class="fondo position-fixed">
     </div>
     
-    <div class="container" style="padding-top: 90px;">
+    <div class="container" style="padding-top: 90px;">      
       <ng-container *ngIf="!esCuentaTutor">
-        <div class="img__wrap">
+        <div>
           <img
-          style="max-width: 625px; max-height: 290px; padding: 20px"
+          style="max-width: 100%; max-height: 290px; padding: 20px"
           src="/assets/img/profesor.png"
         />
-        <p class="img__description" (click)= "cambiarTipoCuenta()">Resgitrarme como tutor</p>
         </div>
       </ng-container>
       <ng-container *ngIf="esCuentaTutor">
-        <div class="img__wrap">
+        <div>
           <img
-          style="max-width: 625px; max-height: 290px; padding: 20px"
+          style="max-width: 100%; max-height: 290px; padding: 20px"
           src="/assets/img/tutorConChicos.png"
         />
-        <p class="img__description" (click)= "cambiarTipoCuenta()">Resgitrarme como Profesor</p>
         </div>
       </ng-container>
-      
      
+      <div  class="text-center" style="color: white;">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="esCuentaTutor" (click)="cambiarTipoCuenta('TUTOR')" id="flexRadioDefault2" checked>
+          <label class="form-check-label" for="flexRadioDefault2">
+            Registrarme como tutor
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="esCuentaTutor" (click)="cambiarTipoCuenta('DOCENTE')" id="flexRadioDefault1">
+          <label class="form-check-label" for="flexRadioDefault1">
+            Registrarme como docente
+          </label>
+        </div>
+      </div>
       <div class="login-content" style="justify-content: center">
         
         <form name="formRegistro" #formRegistro="ngForm" (ngSubmit)="save(formRegistro)">
@@ -74,7 +85,7 @@
           </div>
           <div class="form-group">
             <div class="row" >
-              <div class="col-4">
+              <div class="col-4" style="margin-top: 35px;">
                 <select
                   class="form-control"
                   [ngModel]="

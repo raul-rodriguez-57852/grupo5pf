@@ -25,49 +25,44 @@ import { RealizacionTareaComponent } from './components/realizacion-tarea/realiz
 import { RealizacionPreguntasComponent } from './components/realizacion-preguntas/realizacion-preguntas.component';
 import { RealizacionPasapalabrasComponent } from './components/realizacion-pasapalabras/realizacion-pasapalabras.component';
 import { HomeProfesorComponent } from './components/home-profesor/home-profesor.component';
+import { DocenteAuthGuard } from './guards/docente-auth.guard';
+import { TutorAuthGuard } from './guards/tutor-auth.guard';
 
 const routes: Routes = [
   // TODO: DEFINIR AUTH
-  { path: 'home', component: HomeComponent },
-  { path: 'registro', component: RegistroComponent },
-  { path: 'cursos', component: CursosComponent },
-  { path: 'editar-curso', component: EditarCursoComponent },
-  { path: 'curso', component: CursoComponent },
-  { path: 'editar-asignatura', component: EditarAsignaturaComponent },
-  { path: 'crear-actividad', component: CrearActividadComponent },
-  {
-    path: 'crear-actividad-pasapalabra',
-    component: CrearActividadPasapalabraComponent,
-  },
-  { path: 'vista-previa-actividad', component: VistaPreviaActividadComponent },
-  {
-    path: 'vista-previa-pasapalabra',
-    component: VistaPreviaPasapalabraComponent,
-  },
-  { path: 'inicio-sesion', component: InicioSesionComponent },
-  { path: 'editar-emoji', component: EditarEmojiComponent },
-  { path: 'emojis', component: EmojisComponent },
-  { path: 'editar-alumno', component: EditarAlumnoComponent },
-  { path: 'editar-tarea', component: EditarTareaComponent },
-  {
-    path: 'editar-detalle-multimedia',
-    component: EditarDetalleMultimediaComponent,
-  },
-  {
-    path: 'editar-detalle-actividad',
-    component: EditarDetalleActividadComponent,
-  },
-  { path: 'perfiles', component: PerfilesComponent },
-  { path: 'home-profesor', component: HomeProfesorComponent },
-  { path: 'home-alumno', component: HomeAlumnoComponent },
-  { path: 'curso-alumno', component: CursoAlumnoComponent },
-  { path: 'realizacion-tarea', component: RealizacionTareaComponent },
-  { path: 'realizacion-preguntas', component: RealizacionPreguntasComponent },
-  {
-    path: 'realizacion-pasapalabras',
-    component: RealizacionPasapalabrasComponent,
-  },
+
+  // Públicos
+  { path: 'home', component: HomeComponent }, // Aparentemente ya no se utiliza
   { path: '', component: LoginComponent },
+  { path: 'registro', component: RegistroComponent },
+  { path: 'inicio-sesion', component: InicioSesionComponent }, // Aparentemente ya no se utiliza
+
+  // Docentes
+  { path: 'cursos', component: CursosComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'editar-curso', component: EditarCursoComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'curso', component: CursoComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'editar-asignatura', component: EditarAsignaturaComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'crear-actividad', component: CrearActividadComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'crear-actividad-pasapalabra', component: CrearActividadPasapalabraComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'vista-previa-actividad', component: VistaPreviaActividadComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'vista-previa-pasapalabra', component: VistaPreviaPasapalabraComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'editar-tarea', component: EditarTareaComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'editar-detalle-multimedia', component: EditarDetalleMultimediaComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'editar-detalle-actividad', component: EditarDetalleActividadComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'home-profesor', component: HomeProfesorComponent, canActivate: [DocenteAuthGuard] },
+
+  // Por ahora docentes, luego admin...
+  { path: 'editar-emoji', component: EditarEmojiComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'emojis', component: EmojisComponent, canActivate: [DocenteAuthGuard] },
+
+  // Tutores (luego habría que hacer una diferenciación con alumno, por ahora iguales)
+  { path: 'editar-alumno', component: EditarAlumnoComponent, canActivate: [TutorAuthGuard] },
+  { path: 'perfiles', component: PerfilesComponent, canActivate: [TutorAuthGuard] },
+  { path: 'home-alumno', component: HomeAlumnoComponent, canActivate: [TutorAuthGuard] },
+  { path: 'curso-alumno', component: CursoAlumnoComponent, canActivate: [TutorAuthGuard] },
+  { path: 'realizacion-tarea', component: RealizacionTareaComponent, canActivate: [TutorAuthGuard] },
+  { path: 'realizacion-preguntas', component: RealizacionPreguntasComponent, canActivate: [TutorAuthGuard] },
+  { path: 'realizacion-pasapalabras', component: RealizacionPasapalabrasComponent, canActivate: [TutorAuthGuard] },
 ];
 
 @NgModule({

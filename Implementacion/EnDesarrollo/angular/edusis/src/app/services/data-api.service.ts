@@ -20,7 +20,7 @@ export class DataApiService {
   private userType = null; //0 si es tutor e 1 si es profesor y 2 si es alumno.
 
   constructor(private http: HttpClient) {
-    this.urlBase = 'http://192.168.0.100:8090/api/';
+    this.urlBase = 'http://localhost:8090/api/';
   }
 
 

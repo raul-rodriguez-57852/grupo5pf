@@ -97,11 +97,11 @@ export class RegistroComponent implements OnInit {
     }
   }
 
-  cambiarTipoCuenta() {
-    if (this.esCuentaTutor === true) {
-      this.esCuentaTutor = false;
-    } else {
+  cambiarTipoCuenta(tipo: string) {
+    if (tipo === 'TUTOR') {
       this.esCuentaTutor = true;
+    } else {
+      this.esCuentaTutor = false;
     }
     this.ngOnInit();
   }
