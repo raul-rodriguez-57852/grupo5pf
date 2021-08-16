@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataApiService } from '../../services/data-api.service';
 import { NgForm } from '@angular/forms';
 import { PreguntaPasapalabra } from '../../models/pregunta-pasapalabra';
@@ -17,13 +17,23 @@ export class CrearActividadPasapalabraComponent implements OnInit {
   nombre = null;
   preguntas: PreguntaPasapalabra[];
   plantilla: PlantillaPasapalabra;
+  idTareaRoute = null;
 
   constructor(
     private dataApiService: DataApiService,
+    private route: ActivatedRoute,
     private router: Router) { }
 
   ngOnInit() {
+
+    this.idTareaRoute =
+      this.route.snapshot.paramMap.get('tareaId') != null
+        ? Number(this.route.snapshot.paramMap.get('tareaId'))
+        : null;
+
     this.plantilla = new PlantillaPasapalabra();
+    let idProfesor = this.dataApiService.getUsuario();  
+    this.plantilla.creadorId = idProfesor;
   }
 
   next(formActividad: NgForm) {
@@ -217,7 +227,15 @@ export class CrearActividadPasapalabraComponent implements OnInit {
     this.plantilla.preguntasPasapalabraDto = this.preguntas;
     this.dataApiService.crearActividadPasapalabra(this.plantilla).then(res => {
       console.log(res);
+      /// Si no es nulo this.idTareaRoute significa que se llego a esta pantalla desde la creacion de una tarea. Redirigimos despues de guardar
+      if(this.idTareaRoute != null){
+        this.router.navigate([
+          "editar-detalle-actividad",
+          { tareaId: this.idTareaRoute },
+        ]);
+      }
     });
+  
   }
 
 }

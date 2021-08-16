@@ -11,6 +11,7 @@ import com.edusis.apirest.domain.Curso;
 import com.edusis.apirest.domain.DetalleTarea;
 import com.edusis.apirest.domain.DetalleTareaActividad;
 import com.edusis.apirest.domain.DetalleTareaMultimedia;
+import com.edusis.apirest.domain.Persona;
 import com.edusis.apirest.domain.Plantilla;
 import com.edusis.apirest.domain.PlantillaPasapalabra;
 import com.edusis.apirest.domain.PlantillaPreguntas;
@@ -33,6 +34,7 @@ import com.edusis.apirest.service.dto.DetalleTareaMultimediaDto;
 import com.edusis.apirest.service.dto.RealizacionDetalleDto;
 import com.edusis.apirest.service.dto.RealizacionTareaDto;
 import com.edusis.apirest.service.dto.TareaDto;
+import com.edusis.apirest.specs.AlumnoSpecs;
 import com.edusis.apirest.specs.AsignaturaSpecs;
 import com.edusis.apirest.specs.DetalleTareaActividadSpecs;
 import com.edusis.apirest.specs.DetalleTareaMultimediaSpecs;
@@ -40,7 +42,6 @@ import com.edusis.apirest.specs.RealizacionTareaSpecs;
 import com.edusis.apirest.specs.TareaSpecs;
 import com.edusis.apirest.utils.AssertUtils;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -157,10 +158,46 @@ public class TareaController {
             p.addProperty("id", tarea.getId());
             p.addProperty("nombre", tarea.getNombre());
             p.addProperty("asignatura", tarea.getAsignatura().getNombre());
-            Double puntaje = realizacionesList.isEmpty() ? null: realizacionesList.get(0).getPuntajeObtenido();
+            Double puntaje = realizacionesList.isEmpty() ? 0: realizacionesList.get(0).getPuntajeObtenido();
             p.addProperty("puntaje", puntaje);
+            Long fechaLimite = tarea.getFechaLimite() == null ? null: tarea.getFechaLimite().getTimeInMillis();
+            p.addProperty("fechaLimite",fechaLimite);
             realizacionesJson.add(p);
 //            mapa.put(tarea, realizacionesList);
+        }
+        return realizacionesJson.toString();
+        
+    }
+    
+    @GetMapping("porcentajeRealizacion")
+    public String getPorcentajeRealizacion(@RequestParam Long cursoId) {
+        Curso curso = cursoService.get(cursoId);
+//        List<Tarea> tareas = tareaService.getAll(TareaSpecs.byAsignaturas(asignaturas));
+        List<Tarea> tareas = getTareas(cursoId);
+        List<Alumno> alumnos = alumnoService.getAll(AlumnoSpecs.byCurso(curso));
+        Integer totalAlumnos = alumnos.size();
+        List<RealizacionTarea> realizaciones = realizacionTareaService.getAll(RealizacionTareaSpecs.byTareas(tareas));
+        JsonArray realizacionesJson = new JsonArray();
+        for (Tarea tarea : tareas) {
+            JsonObject p = new JsonObject();
+            p.addProperty("id", tarea.getId());
+            p.addProperty("nombre", tarea.getNombre());
+            p.addProperty("asignatura", tarea.getAsignatura().getNombre());
+            Integer alumnosRealizado = 0;
+            for (Alumno alumno : alumnos) {
+                for (RealizacionTarea realizacion : realizaciones) {
+                    if(tarea.equals(realizacion.getTarea()) && alumno.equals(realizacion.getAlumno())){
+                        alumnosRealizado ++;
+                        break;
+                    }
+                }
+            }
+            float porcentaje = alumnosRealizado * 100 / totalAlumnos;
+                    
+            p.addProperty("porcentajeRealizacion", porcentaje);
+            Long fechaLimite = tarea.getFechaLimite() == null ? null: tarea.getFechaLimite().getTimeInMillis();
+            p.addProperty("fechaLimite",fechaLimite);
+            realizacionesJson.add(p);
         }
         return realizacionesJson.toString();
         

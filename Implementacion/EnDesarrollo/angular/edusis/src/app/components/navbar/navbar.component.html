@@ -1,27 +1,96 @@
-<nav id="menuNavegacion" class="menuNavegacion navbar fixed-top navbar-expand-sm navbar-light bg-light">
-  <a routerLink="/"><img data-toggle="collapse" data-target=".navbar-collapse.show" src="assets/img/logo-x2.png" width="50" height="50" alt="Ludikon"></a>
-  <button class="navbar-toggler custom-toggler" (click)="recargar()" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+<nav
+  id="menuNavegacion"
+  class="menuNavegacion navbar fixed-top navbar-expand-sm navbar-light bg-light"
+>
+  <a routerLink="/"
+    ><img
+      data-toggle="collapse"
+      data-target=".navbar-collapse.show"
+      src="assets/img/logo-x2.png"
+      width="50"
+      height="50"
+      alt="Ludikon"
+  /></a>
+  <button
+    class="navbar-toggler custom-toggler"
+    (click)="recargar()"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarText"
+    aria-controls="navbarText"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarText">
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" >
+      <li
+        class="nav-item"
+        data-toggle="collapse"
+        data-target=".navbar-collapse.show"
+      >
         <a class="nav-link" routerLink="/"><i class="fa fa-home"></i> Home</a>
       </li>
-      <li *ngIf="esTutor" class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" >
-        <a class="nav-link" routerLink="/perfiles"><i class="fa fa-users"></i> Perfiles</a>
+      <li
+        *ngIf="esTutor"
+        class="nav-item"
+        data-toggle="collapse"
+        data-target=".navbar-collapse.show"
+      >
+        <a class="nav-link" routerLink="/perfiles"
+          ><i class="fa fa-users"></i> Perfiles</a
+        >
       </li>
-      <li *ngIf="esTutor" class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" >
-        <a class="nav-link" routerLink="/configuracion-tutor"><i class="fa fa-cogs"></i> Configuración</a>
+      <li
+        *ngIf="esTutor"
+        class="nav-item"
+        data-toggle="collapse"
+        data-target=".navbar-collapse.show"
+      >
+        <a class="nav-link" routerLink="/configuracion-tutor"
+          ><i class="fa fa-cogs"></i> Configuración</a
+        >
       </li>
-      <li  *ngIf= "esProfesor" class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" >
-        <a class="nav-link" routerLink="/cursos"><i class="fa fa-graduation-cap"></i> Cursos</a>
+      <li
+        *ngIf="esProfesor"
+        class="nav-item"
+        data-toggle="collapse"
+        data-target=".navbar-collapse.show"
+      >
+        <a class="nav-link" routerLink="/cursos"
+          ><i class="fa fa-graduation-cap"></i> Cursos</a
+        >
       </li>
-      <li *ngIf="esProfesor" class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" >
-        <a class="nav-link" routerLink="/crear-actividad"><i class="fa fa-sticky-note"></i> Actividades</a>
+      <li
+        *ngIf="esProfesor"
+        class="nav-item"
+        data-toggle="collapse"
+        data-target=".navbar-collapse.show"
+      >
+        <a class="nav-link" routerLink="/crear-actividad"
+          ><i class="fa fa-sticky-note"></i> Actividades</a
+        >
       </li>
-      <li *ngIf="esProfesor || esTutor" class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show" >
-        <a class="nav-link" (click)="cerrarSesion()"><i class="fa fa-sign-out"></i> Cerrar sesión</a>
+      <li
+        *ngIf="esProfesor"
+        class="nav-item"
+        data-toggle="collapse"
+        data-target=".navbar-collapse.show"
+      >
+        <a class="nav-link" routerLink="/estadisticas-profesor"
+          ><i class="fa fa-bar-chart"></i> Estadísticas</a
+        >
+      </li>
+      <li
+        *ngIf="esProfesor || esTutor"
+        class="nav-item"
+        data-toggle="collapse"
+        data-target=".navbar-collapse.show"
+      >
+        <a class="nav-link" (click)="cerrarSesion()"
+          ><i class="fa fa-sign-out"></i> Cerrar sesión</a
+        >
       </li>
     </ul>
   </div>

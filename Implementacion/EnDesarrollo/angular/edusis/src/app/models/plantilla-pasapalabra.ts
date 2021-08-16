@@ -3,4 +3,5 @@ export class PlantillaPasapalabra {
   nombre: string;
   segundos: number;
   preguntasPasapalabraDto: PreguntaPasapalabra[];
+  creadorId: number;
 }

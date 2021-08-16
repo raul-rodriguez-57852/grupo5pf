@@ -1,13 +1,13 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { HomeComponent } from "./components/home/home.component";
 import { RegistroComponent } from "./components/registro/registro.component";
 import { NavbarComponent } from "./components/navbar/navbar.component";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
 import { EditarEmojiComponent } from "./components/editar-emoji/editar-emoji.component";
 import { EmojisComponent } from "./components/emojis/emojis.component";
@@ -33,8 +33,12 @@ import { RealizacionTareaComponent } from './components/realizacion-tarea/realiz
 import { RealizacionPreguntasComponent } from './components/realizacion-preguntas/realizacion-preguntas.component';
 import { RealizacionPasapalabrasComponent } from './components/realizacion-pasapalabras/realizacion-pasapalabras.component';
 import { HomeProfesorComponent } from './components/home-profesor/home-profesor.component';
-import { CallbackPipe} from "./callBackPipe";
+import { CallbackPipe } from "./callBackPipe";
 import { ConfiguracionTutorComponent } from "./components/configuracion-tutor/configuracion-tutor.component";
+import { NgxSpinnerModule } from "ngx-spinner";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { InterceptorService } from "./services/interceptor.service";
+import { EstadisticasProfesorComponent } from './components/estadisticas-profesor/estadisticas-profesor.component';
 
 
 
@@ -69,6 +73,7 @@ import { ConfiguracionTutorComponent } from "./components/configuracion-tutor/co
     HomeProfesorComponent,
     CallbackPipe,
     ConfiguracionTutorComponent,
+    EstadisticasProfesorComponent,
 
   ],
   imports: [
@@ -77,9 +82,13 @@ import { ConfiguracionTutorComponent } from "./components/configuracion-tutor/co
     HttpClientModule,
     FormsModule,
     YouTubePlayerModule,
-    NgbModule
+    NgbModule,
+    NgxSpinnerModule,
+    BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

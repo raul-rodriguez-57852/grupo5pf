@@ -24,25 +24,25 @@ export class DataApiService {
   }
 
 
-//#######     USUARIO LOGGEADO ######
-public getUsuario(){
-  return this.usuario;
-}
+  //#######     USUARIO LOGGEADO ######
+  public getUsuario() {
+    return this.usuario;
+  }
 
-public getUserType(){
-  return this.userType;
-  // 0 tutor
-  // 1 profesor
-  // 2 alumno
-}
+  public getUserType() {
+    return this.userType;
+    // 0 tutor
+    // 1 profesor
+    // 2 alumno
+  }
 
-public setUser(id: String, type: String){
-  this.usuario = id;
-  this.userType = type;
-}
+  public setUser(id: String, type: String) {
+    this.usuario = id;
+    this.userType = type;
+  }
 
 
-//#######     EMOJI      #########  
+  //#######     EMOJI      #########  
 
   getEmojis(): Promise<any> {
     return this.http.get(this.urlBase + 'emojis').toPromise();
@@ -73,14 +73,14 @@ public setUser(id: String, type: String){
   }
 
   getProfesor(id: string): Promise<any> {
-    return this.http.get(this.urlBase + 'getProfesor', {params: { id }}).toPromise();
+    return this.http.get(this.urlBase + 'getProfesor', { params: { id } }).toPromise();
   }
 
   //#######     TUTOR      #########  
   getTutor(id: string): Promise<any> {
     return this.http
-    .get(this.urlBase + 'tutor', {params: { id } })
-    .toPromise();
+      .get(this.urlBase + 'tutor', { params: { id } })
+      .toPromise();
   }
 
   guardarTutor(tutor: Tutor): Promise<any> {
@@ -101,7 +101,7 @@ public setUser(id: String, type: String){
     return this.http.get(this.urlBase + 'alumnosByTutor', { params: { idTutor } }).toPromise();
   }
 
-//#######     ALUMNO      #########  
+  //#######     ALUMNO      #########  
   guardarAlumno(alumno: Alumno): Promise<any> {
     return this.http.post(this.urlBase + 'guardarAlumno', alumno).toPromise();
   }
@@ -110,7 +110,7 @@ public setUser(id: String, type: String){
     return this.http.get(this.urlBase + 'alumnos').toPromise();
   }
 
-  getAlumno(id: string):Promise<any>{
+  getAlumno(id: string): Promise<any> {
     return this.http.get(this.urlBase + 'alumno', { params: { id } }).toPromise();
   }
 
@@ -123,16 +123,17 @@ public setUser(id: String, type: String){
     return this.http.post(this.urlBase + 'ingresoAlumno', postData).toPromise();
   }
 
-  getCursosDeAlumno(idAlumno: string): Promise<any>{
-    return this.http.get(this.urlBase + 'getCursosDeAlumno', {params: { idAlumno } }).toPromise();
+  getCursosDeAlumno(idAlumno: string): Promise<any> {
+    return this.http.get(this.urlBase + 'getCursosDeAlumno', { params: { idAlumno } }).toPromise();
   }
 
-  eliminarAlumno(alumnoId: string): Promise<any>{
-    return this.http.post(this.urlBase + 'eliminarAlumno', {params: { alumnoId } }).toPromise();
+  eliminarAlumno(alumnoId: string): Promise<any> {
+    return this.http.post(this.urlBase + 'eliminarAlumno', { params: { alumnoId } }).toPromise();
   }
-  
 
-   
+
+
+
   //#######     CURSO      #########  
   getCurso(id: string): Promise<any> {
     return this.http
@@ -145,7 +146,7 @@ public setUser(id: String, type: String){
   }
 
   getCursosByProfesor(id: string): Promise<any> {
-    return this.http.get(this.urlBase + 'getCursosByProfesor', {params: { id }}).toPromise();
+    return this.http.get(this.urlBase + 'getCursosByProfesor', { params: { id } }).toPromise();
   }
 
   guardarCurso(curso: Curso): Promise<any> {
@@ -154,11 +155,11 @@ public setUser(id: String, type: String){
 
   generarCodigoCurso(curso: Curso): Promise<any> {
     return this.http
-    .post(this.urlBase + 'generarCodigoCurso',curso).toPromise();
+      .post(this.urlBase + 'generarCodigoCurso', curso).toPromise();
   }
 
   buscarCursoPorCodigo(codigo: string): Promise<any> {
-    return this.http.get(this.urlBase + 'buscarCursoPorCodigo', {params: { codigo }}).toPromise();
+    return this.http.get(this.urlBase + 'buscarCursoPorCodigo', { params: { codigo } }).toPromise();
   }
 
   agregarAlumnoACurso(idAlumno: string, idCurso: string): Promise<any> {
@@ -188,17 +189,17 @@ public setUser(id: String, type: String){
       })
       .toPromise();
   }
-   //#######     SESSION      ######### 
+  //#######     SESSION      ######### 
 
-   inicioSesion(documento: string, password:string):Promise<any>{
+  inicioSesion(documento: string, password: string): Promise<any> {
     const postData = new FormData();
     postData.append('documento', documento.toString());
     postData.append('password', password.toString());
-    return this.http.post(this.urlBase + 'inicioSesion', postData,{responseType: 'text'}).toPromise();
+    return this.http.post(this.urlBase + 'inicioSesion', postData, { responseType: 'text' }).toPromise();
   }
 
   validarSession(session_id: string): Promise<any> {
-    return this.http.get(this.urlBase + 'validarSesion', {params: { session_id } } ).toPromise();
+    return this.http.get(this.urlBase + 'validarSesion', { params: { session_id } }).toPromise();
   }
 
   eliminarSesion(session_id: string): Promise<any> {
@@ -207,12 +208,12 @@ public setUser(id: String, type: String){
   }
 
   isProfesor(id: string): Promise<any> {
-    return this.http.get(this.urlBase + 'isProfesor', {params: { id }}).toPromise();
+    return this.http.get(this.urlBase + 'isProfesor', { params: { id } }).toPromise();
   }
 
 
-//#######     COOKIES      ######### 
-   setCookie(name: String, val: String) {
+  //#######     COOKIES      ######### 
+  setCookie(name: String, val: String) {
     const date = new Date();
     const value = val;
 
@@ -220,38 +221,42 @@ public setUser(id: String, type: String){
     date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000));
 
     //Seteo la cookie.
-    document.cookie = name+"=" + value + "; expires=" + date.toUTCString() + "; path=/";
-  
+    document.cookie = name + "=" + value + "; expires=" + date.toUTCString() + "; path=/";
+
   }
 
-  getCookie(name: String){
-    if ( document.cookie == "" ){
+  getCookie(name: String) {
+    if (document.cookie == "") {
       return null;
     }
     const value = "; " + document.cookie;
 
     const parts = value.split("; " + name + "=");
 
-    if(parts.length == 2){
+    if (parts.length == 2) {
       return parts.pop().split(";").shift();
     }
   }
 
 
-  deleteCookie(name: String){ 
-  //Elimina la cookie del cliente.
+  deleteCookie(name: String) {
+    //Elimina la cookie del cliente.
     const date = new Date();
     //Seteo una fecha de expiracion menor a fecha actual.
     date.setTime(date.getTime() + (-1 * 24 * 60 * 60 * 1000));
     //Seteo la coockie.
-    document.cookie = name+"=; expires= "+ date.toUTCString() + "; path=/"; 
+    document.cookie = name + "=; expires= " + date.toUTCString() + "; path=/";
     //ahora la elimino del servidor.
-    this.setUser(null,null);
+    this.setUser(null, null);
 
   }
 
   getActividades(): Promise<any> {
     return this.http.get(this.urlBase + 'actividades').toPromise();
+  }
+
+  getActividadesByProfesor(creadorId: string): Promise<any> {
+    return this.http.get(this.urlBase + 'actividadesByProfesor', { params: { creadorId } }).toPromise();
   }
 
   getActividad(id: string): Promise<any> {

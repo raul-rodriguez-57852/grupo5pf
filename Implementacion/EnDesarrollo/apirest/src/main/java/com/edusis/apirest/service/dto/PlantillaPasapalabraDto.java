@@ -16,6 +16,7 @@ public class PlantillaPasapalabraDto {
     private String nombre;
     private Integer segundos;
     private List<PreguntaPasapalabraDto> preguntasPasapalabraDto;
+    private Long creadorId;
 
     public String getNombre() {
         return nombre;
@@ -39,6 +40,14 @@ public class PlantillaPasapalabraDto {
 
     public void setPreguntasPasapalabraDto(List<PreguntaPasapalabraDto> preguntasPasapalabraDto) {
         this.preguntasPasapalabraDto = preguntasPasapalabraDto;
+    }
+
+    public Long getCreadorId() {
+        return creadorId;
+    }
+
+    public void setCreadorId(Long creadorId) {
+        this.creadorId = creadorId;
     }
     
 }

@@ -60,7 +60,6 @@ export class CursoAlumnoComponent implements OnInit {
             if(element.puntaje != null){
               element.puntaje = parseInt(element.puntaje);
             }
-    
           });
           this.tareasPuntaje = realizaciones;
           this.tareasFiltradas = this.tareasPuntaje;

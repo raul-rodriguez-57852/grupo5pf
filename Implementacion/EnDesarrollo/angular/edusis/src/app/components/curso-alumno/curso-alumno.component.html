@@ -23,7 +23,16 @@
             <div class="centered">{{ tarea.asignatura }}</div>  
           </div>              
           <div [ngClass]="(tarea.puntaje == null)?'card-body':'card-body realizada'">
-            <h5 class="card-title">{{ tarea.nombre }}</h5>
+            <div class="row align-items-center mb-2 d-flex">
+              <div class="col-8">
+                  <h5 class="d-flex align-items-center mb-0">
+                    <h5 class="card-title">{{ tarea.nombre }}</h5>
+                  </h5>
+              </div>
+              <div class="col-4 text-right">
+                  <span>{{tarea.fechaLimite | date:'dd/MM/yyyy'}}<i class="fa fa-calendar"></i></span>
+              </div>
+          </div>
             <div class="progress margin-bottom-16" [hidden]="tarea.puntaje == null">
               <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{tarea.puntaje}}%" [attr.aria-valuenow]="tarea.puntaje" aria-valuemin="0" aria-valuemax="100">{{ tarea.puntaje }}%</div>
             </div>

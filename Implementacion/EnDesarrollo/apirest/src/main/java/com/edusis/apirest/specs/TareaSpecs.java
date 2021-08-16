@@ -7,6 +7,7 @@ package com.edusis.apirest.specs;
 
 import com.edusis.apirest.domain.Asignatura;
 import com.edusis.apirest.domain.QTarea;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import java.util.List;
 
@@ -24,6 +25,10 @@ public class TareaSpecs {
     
     public static BooleanExpression byAsignaturas(List<Asignatura> asignaturas){
         return T.asignatura.in(asignaturas);
+    }
+    
+    public static OrderSpecifier byFechaDesc(){
+        return T.fechaLimite.desc();
     }
     
 }

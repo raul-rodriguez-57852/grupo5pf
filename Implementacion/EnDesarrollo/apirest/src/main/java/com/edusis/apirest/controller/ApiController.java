@@ -45,6 +45,7 @@ import com.edusis.apirest.service.dto.ProfesorDto;
 import com.edusis.apirest.service.dto.TutorDto;
 import com.edusis.apirest.specs.AlumnoSpecs;
 import com.edusis.apirest.specs.AsignaturaSpecs;
+import com.edusis.apirest.specs.PlantillaSpecs;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -770,6 +771,30 @@ public class ApiController {
         return plantillasJson.toString();
     }
     
+    @GetMapping("actividadesByProfesor")
+    public String getActividadesByProfesor(@RequestParam Long creadorId) {
+        Profesor profesor = profesorService.get(creadorId);
+        JsonArray plantillasJson = new JsonArray();
+        List<Plantilla> plantillas = plantillaService.getAll(PlantillaSpecs.byCreador(profesor));
+        for (Plantilla plantilla : plantillas) {
+            if (plantilla instanceof PlantillaPreguntas) {
+                JsonObject p = new JsonObject();
+                p.addProperty("nombre", plantilla.getNombre());
+                p.addProperty("id", plantilla.getId());
+                p.addProperty("tipo", "Preguntas");
+                plantillasJson.add(p);
+            }
+            if (plantilla instanceof PlantillaPasapalabra) {
+                JsonObject p = new JsonObject();
+                p.addProperty("nombre", plantilla.getNombre());
+                p.addProperty("id", plantilla.getId());
+                p.addProperty("tipo", "Pasapalabra");
+                plantillasJson.add(p);
+            }
+        }
+        return plantillasJson.toString();
+    }
+    
     @GetMapping("actividad")
     public Plantilla getActividad(@RequestParam Long id) {
         Plantilla plantilla = (Plantilla) Hibernate.unproxy(plantillaService.get(id));
@@ -779,6 +804,8 @@ public class ApiController {
     @PostMapping("crearActividadPreguntas")
     public ResponseEntity<Long> crearActividadPreguntas(@RequestBody PlantillaPreguntasDto plantillaPreguntasDto) {
         PlantillaPreguntas plantilla = new PlantillaPreguntas();
+        Profesor profe = profesorService.get(plantillaPreguntasDto.getCreadorId());
+        plantilla.setCreador(profe);
         plantilla.setNombre(plantillaPreguntasDto.getNombre());
         plantilla.setSegundos(plantillaPreguntasDto.getSegundos()); 
         for (PreguntaDto preg : plantillaPreguntasDto.getPreguntasDto()) {
@@ -815,6 +842,8 @@ public class ApiController {
     @PostMapping("crearActividadPasapalabra")
     public ResponseEntity<Long> crearActividadPasapalabra(@RequestBody PlantillaPasapalabraDto plantillaPasapalabraDto) {
         PlantillaPasapalabra plantilla = new PlantillaPasapalabra();
+        Profesor profe = profesorService.get(plantillaPasapalabraDto.getCreadorId());
+        plantilla.setCreador(profe);
         plantilla.setNombre(plantillaPasapalabraDto.getNombre());
         plantilla.setSegundos(plantillaPasapalabraDto.getSegundos());
         for (PreguntaPasapalabraDto preg : plantillaPasapalabraDto.getPreguntasPasapalabraDto()) {

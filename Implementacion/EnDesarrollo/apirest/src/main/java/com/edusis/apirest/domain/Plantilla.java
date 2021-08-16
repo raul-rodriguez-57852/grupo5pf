@@ -7,11 +7,13 @@
 package com.edusis.apirest.domain;
 
 import com.edusis.apirest.generic.GenericEntity;
+import com.edusis.apirest.utils.AssertUtils;
 import com.sun.istack.NotNull;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -31,6 +33,10 @@ public class Plantilla extends GenericEntity {
     private String nombre;
     
     private Integer puntajeMaximo;
+    
+    @NotNull
+    @ManyToOne
+    private Profesor creador;
 
     public String getNombre() {
         return nombre;
@@ -46,6 +52,19 @@ public class Plantilla extends GenericEntity {
 
     public void setPuntajeMaximo(Integer puntajeMaximo) {
         this.puntajeMaximo = puntajeMaximo;
+    }
+
+    public Profesor getCreador() {
+        return creador;
+    }
+
+    public void setCreador(Profesor creador) {
+        this.creador = creador;
+    }
+    
+    public void validar(){
+        AssertUtils.notNull(nombre, "El nombre no puede ser nulo");
+        AssertUtils.notNull(creador, "El creador no puede ser nulo");
     }
 
 }

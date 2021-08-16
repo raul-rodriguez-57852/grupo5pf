@@ -5,6 +5,7 @@
  */
 package com.edusis.apirest.specs;
 
+import com.edusis.apirest.domain.Curso;
 import com.edusis.apirest.domain.QAlumno;
 import com.edusis.apirest.domain.Tutor;
 
@@ -20,6 +21,10 @@ public class AlumnoSpecs {
     
     public static BooleanExpression byTutor(Tutor tutor){
         return A.tutor.eq(tutor);
+    }
+    
+    public static BooleanExpression byCurso(Curso curso){
+        return A.cursos.contains(curso);
     }
 
 

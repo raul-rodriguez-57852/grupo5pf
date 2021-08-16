@@ -3,4 +3,5 @@ export class PlantillaPreguntas {
   nombre: string;
   segundos: number;
   preguntasDto: Pregunta[];
+  creadorId: number;
 }

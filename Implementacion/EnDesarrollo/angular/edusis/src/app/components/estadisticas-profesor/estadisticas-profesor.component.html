@@ -1,0 +1,182 @@
+<section id="estadisticas" class="margin-top-60">
+  <div class="contenedorImagenCard margin-bottom-16">
+    <img class="imagenCard" src="assets/img/stats.jpg" alt="Card image cap" />
+    <div class="centered">Estadisticas</div>
+  </div>
+  <div class="container" *ngIf="!cursoSelected">
+    <ul class="list-group list-group-flush margin-bottom-16">
+      <li
+        class="
+          list-group-item
+          d-flex
+          justify-content-between
+          align-items-center
+        "
+      >
+        <strong>Cursos</strong>
+        <strong>Opciones</strong>
+      </li>
+      <li
+        *ngFor="let curso of cursos"
+        class="
+          list-group-item
+          d-flex
+          justify-content-between
+          align-items-center
+        "
+      >
+        <div (click)="selectCurso(curso.id)">
+          <img
+            style="height: 31px; margin-right: 10px"
+            src="{{ curso.iconoURL }}"
+          />{{ curso.nombre }}
+        </div>
+        <!-- <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+            <button type="button" (click)="generarCodigoCurso(curso.id)" class="btn btn-personalizado-txtblanco" ><i class="fa fa-share-alt"></i></button>
+            <button type="button" (click)="editar(curso.id)" class="btn btn-info"><i class="fa fa-edit"></i></button>
+            <button type="button" (click)="setearId(curso.id)" data-toggle="modal" data-target="#eliminar" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+          </div> -->
+      </li>
+    </ul>
+  </div>
+
+  <!--          Curso seleccionado      -->
+  <div class="container" *ngIf="cursoSelected">
+    <div class="contenedorImagenCard foto-principal margin-bottom-16">
+      <img class="imagenCard" src="{{ urlImagenCurso }}" alt="Card image cap" />
+      <div class="centered">Curso : {{ nombreCurso }}</div>
+    </div>
+
+    <select
+      [(ngModel)]="asignaturaFiltro"
+      (change)="onAsignaturaFilter()"
+      name="asignatura"
+      placeholder="Asignatura"
+      class="form-control margin-bottom-16"
+    >
+      <option [ngValue]="null">Todas las asignaturas</option>
+      <option *ngFor="let asignatura of asignaturas" [ngValue]="asignatura">
+        {{ asignatura.nombre }}
+      </option>
+    </select>
+
+    <div
+      *ngFor="
+        let tarea of tareasFiltradas
+          | slice: (page - 1) * pageSize:page * pageSize
+      "
+    >
+      <div class="card mb-3">
+        <!-- (click)="irATarea(tarea.id)" -->
+        <div class="imagenCardAsignatura" *ngIf="tarea.iconoURL !== undefined">
+          <img
+            class="card-img-top imagenCard"
+            src="{{ tarea.iconoURL }}"
+            alt="Card image cap"
+          />
+          <div class="centered">{{ tarea.asignatura }}</div>
+        </div>
+        <div class="card-body">
+          <div class="row align-items-center mb-2 d-flex">
+            <div class="col-8">
+              <h5 class="d-flex align-items-center mb-0">
+                <h5 class="card-title">{{ tarea.nombre }}</h5>
+              </h5>
+            </div>
+            <div class="col-4 text-right">
+              <span
+                >{{ tarea.fechaLimite | date: "dd/MM/yyyy"
+                }}<i class="fa fa-calendar"></i
+              ></span>
+            </div>
+          </div>
+
+          <div class="no-padding">Porcentaje de realización:</div>
+          <div class="progress margin-bottom-16">
+            <div
+              class="progress-bar progress-bar-striped bg-success"
+              role="progressbar"
+              style="width: {{ tarea.porcentajeRealizacion }}%"
+              [attr.aria-valuenow]="tarea.porcentajeRealizacion"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              {{ tarea.porcentajeRealizacion }}%
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="tareasFiltradas.length === 0 || tareasFiltradas === null">
+      <div class="alert alert-primary" role="alert">
+        Aun no tienes tareas cargadas para las asignaturas seleccionadas.
+      </div>
+    </div>
+
+    <ngb-pagination
+      [(page)]="page"
+      [pageSize]="pageSize"
+      [collectionSize]="collectionSize"
+      [maxSize]="4"
+      [rotate]="true"
+      [ellipses]="false"
+      size="lg"
+      class="d-flex justify-content-center"
+    >
+    </ngb-pagination>
+
+    <button
+      (click)="volverACursos()"
+      class="btn btn-lg btn-block btn-personalizado-txtblanco"
+    >
+      Volver
+    </button>
+    <!--       </ul> -->
+  </div>
+</section>
+
+<!-- Modal -->
+<button
+  id="open-modal"
+  [hidden]="true"
+  data-toggle="modal"
+  data-target="#informacion"
+>
+  Open Modal
+</button>
+<div
+  class="modal fade"
+  id="informacion"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ludikon</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {{ mensaje }}
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          data-dismiss="modal"
+          class="btn btn-personalizado"
+        >
+          Aceptar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -40,7 +40,9 @@ export class EditarDetalleActividadComponent implements OnInit {
           this.actividadesSelected.push(element.plantilla);
         });
       });
-    this.dataApiService.getActividades().then((res) => {
+     
+    let idProfesor = this.dataApiService.getUsuario();  
+    this.dataApiService.getActividadesByProfesor(idProfesor).then((res) => {
       this.actividades = res;
     });
   }
@@ -100,5 +102,12 @@ export class EditarDetalleActividadComponent implements OnInit {
       });
   }
 
-  nuevaActividad() {}
+  nuevaActividad() {
+
+    this.router.navigate([
+      "crear-actividad",
+      { tareaId: this.idTareaRoute },
+    ]);
+
+  }
 }

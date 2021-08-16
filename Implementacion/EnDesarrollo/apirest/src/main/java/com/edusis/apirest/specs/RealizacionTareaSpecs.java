@@ -26,4 +26,8 @@ public class RealizacionTareaSpecs {
         return R.tarea.in(tareas).and(R.alumno.eq(alumno));
     }
     
+    public static BooleanExpression byTareas(List<Tarea> tareas){
+        return R.tarea.in(tareas);
+    }
+    
 }

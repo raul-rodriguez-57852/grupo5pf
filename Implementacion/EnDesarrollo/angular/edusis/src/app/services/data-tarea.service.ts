@@ -49,6 +49,14 @@ export class DataTareaService {
       .toPromise();
   }
 
+  getPorcentajeRealizacion(cursoId: number): Promise<any> {
+    return this.http
+      .get(this.urlBase + "porcentajeRealizacion", {
+        params: { cursoId: cursoId.toString() },
+      })
+      .toPromise();
+  }
+
   guardarDetalleMultimedia(detalle: DetalleMultimedia): Promise<any> {
     return this.http
       .post(this.urlBase + "guardarDetalleMultimedia", detalle)

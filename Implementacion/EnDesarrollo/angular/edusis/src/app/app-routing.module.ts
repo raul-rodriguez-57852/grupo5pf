@@ -25,6 +25,7 @@ import { RealizacionTareaComponent } from './components/realizacion-tarea/realiz
 import { RealizacionPreguntasComponent } from './components/realizacion-preguntas/realizacion-preguntas.component';
 import { RealizacionPasapalabrasComponent } from './components/realizacion-pasapalabras/realizacion-pasapalabras.component';
 import { HomeProfesorComponent } from './components/home-profesor/home-profesor.component';
+import { EstadisticasProfesorComponent } from './components/estadisticas-profesor/estadisticas-profesor.component';
 import { DocenteAuthGuard } from './guards/docente-auth.guard';
 import { TutorAuthGuard } from './guards/tutor-auth.guard';
 import { ConfiguracionTutorComponent } from './components/configuracion-tutor/configuracion-tutor.component';
@@ -50,6 +51,7 @@ const routes: Routes = [
   { path: 'editar-detalle-multimedia', component: EditarDetalleMultimediaComponent, canActivate: [DocenteAuthGuard] },
   { path: 'editar-detalle-actividad', component: EditarDetalleActividadComponent, canActivate: [DocenteAuthGuard] },
   { path: 'home-profesor', component: HomeProfesorComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'estadisticas-profesor', component: EstadisticasProfesorComponent, canActivate: [DocenteAuthGuard] },
 
   // Por ahora docentes, luego admin...
   { path: 'editar-emoji', component: EditarEmojiComponent, canActivate: [DocenteAuthGuard] },
@@ -74,4 +76,4 @@ const routes: Routes = [
   })],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

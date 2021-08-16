@@ -3,8 +3,9 @@ import { Tarea } from "src/app/models/tarea";
 import { DataApiService } from "src/app/services/data-api.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { DataTareaService } from "src/app/services/data-tarea.service";
-import {NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from "@angular/forms";
+
 
 
 /**
@@ -59,7 +60,7 @@ export class EditarTareaComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dataApiService: DataApiService,
-    private dataTareaService: DataTareaService
+    private dataTareaService: DataTareaService,
   ) {}
 
   ngOnInit() {
@@ -78,6 +79,9 @@ export class EditarTareaComponent implements OnInit {
         this.tarea.creadorId = tarea.creador.id;
         this.tarea.asignaturaId = tarea.asignatura.id;
         this.tarea.puntajeMaximo = tarea.puntajeMaximo;
+        this.model = this.fromModel(tarea.fechaLimite);
+        this.select(this.model);
+        
       });
     }
     this.getAsignaturas();
@@ -122,10 +126,24 @@ export class EditarTareaComponent implements OnInit {
   }
 
   select(model){  
-    console.log(model);
     this.tarea.fechaLimite = new Date(model.year,model.month-1,model.day);
-    console.log(this.tarea.fechaLimite);
 
   }
+
+  fromModel(value: string | null): NgbDateStruct | null {
+    if (value) {
+      let date = value.split('-');
+      return {
+        day : parseInt(date[2], 10),
+        month : parseInt(date[1], 10),
+        year : parseInt(date[0], 10)
+      };
+    }
+    return null;
+  }
+
+
+
+  
 
 }

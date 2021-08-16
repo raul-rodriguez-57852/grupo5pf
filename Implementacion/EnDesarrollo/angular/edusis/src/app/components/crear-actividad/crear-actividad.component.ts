@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { PlantillaPreguntas } from '../../models/plantilla-preguntas';
 import { Pregunta } from '../../models/pregunta';
 import { DataApiService } from '../../services/data-api.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-crear-actividad',
@@ -19,13 +19,23 @@ export class CrearActividadComponent implements OnInit {
   pregunta: Pregunta;
   plantilla: PlantillaPreguntas;
   actividades = null;
+  idTareaRoute = null;
 
   constructor(
     private dataApiService: DataApiService,
-    private router: Router) { }
+    private route: ActivatedRoute,
+    private router: Router,) { }
 
   ngOnInit() {
-    this.dataApiService.getActividades().then(res => {
+
+    this.idTareaRoute =
+      this.route.snapshot.paramMap.get('tareaId') != null
+        ? Number(this.route.snapshot.paramMap.get('tareaId'))
+        : null;
+
+
+    let idProfesor = this.dataApiService.getUsuario();      
+    this.dataApiService.getActividadesByProfesor(idProfesor).then(res => {
       this.actividades = res;
       console.log(this.actividades);
     });
@@ -34,10 +44,20 @@ export class CrearActividadComponent implements OnInit {
   crearPreguntasRespuestas() {
     this.plantillaPreguntaRespuestas = true;
     this.plantilla = new PlantillaPreguntas();
+    let idProfesor = this.dataApiService.getUsuario();  
+    this.plantilla.creadorId = idProfesor;
   }
 
   crearPasapalabra() {
-    this.router.navigate(['crear-actividad-pasapalabra']);
+    if(this.idTareaRoute != null){
+      this.router.navigate([
+        "crear-actividad-pasapalabra",
+        { tareaId: this.idTareaRoute },
+      ]);
+    }else{
+      this.router.navigate(['crear-actividad-pasapalabra']);
+    }
+    
   }
 
   next(formActividad: NgForm) {
@@ -52,8 +72,21 @@ export class CrearActividadComponent implements OnInit {
     this.agregarOtra();
     this.dataApiService.crearActividadPreguntas(this.plantilla).then(res => {
       console.log(res);
+      /// Si no es nulo this.idTareaRoute significa que se llego a esta pantalla desde la creacion de una tarea. Redirigimos despues de guardar
+      if(this.idTareaRoute != null){
+        this.router.navigate([
+          "editar-detalle-actividad",
+          { tareaId: this.idTareaRoute },
+        ]);
+      }else{
+        window.location.reload();
+      }
     });
-    window.location.reload();
+
+    
+
+     
+    
   }
 
   agregarOtra() {

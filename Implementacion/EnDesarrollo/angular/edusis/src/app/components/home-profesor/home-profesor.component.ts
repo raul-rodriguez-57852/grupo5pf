@@ -28,4 +28,8 @@ export class HomeProfesorComponent implements OnInit {
     this.router.navigate(['crear-actividad']);
   }
 
+  misEstadisticas() {
+    this.router.navigate(['estadisticas-profesor']);
+  }
+
 }
