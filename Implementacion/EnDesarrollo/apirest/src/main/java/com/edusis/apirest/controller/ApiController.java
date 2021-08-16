@@ -237,8 +237,8 @@ public class ApiController {
         return lista;
     }
     
-    @PostMapping("eliminarAlumno")
-    public ResponseEntity<Long> eliminarAlumno(@RequestBody Long alumnoId) {
+    @DeleteMapping("eliminarAlumno")
+    public ResponseEntity<Long> eliminarAlumno(@RequestParam Long alumnoId) {
         alumnoService.deleteById(alumnoId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

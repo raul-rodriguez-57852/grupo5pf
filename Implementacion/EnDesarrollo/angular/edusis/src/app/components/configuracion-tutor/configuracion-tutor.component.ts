@@ -47,7 +47,6 @@ import { Alumno } from 'src/app/models/alumno';
     }
 
     eliminarAlumno(alumnoId: string){
-        console.log('Estas queriendo eliminar al alumno con id: ', alumnoId);
         this.dataApiService.eliminarAlumno(alumnoId)
     }
 
