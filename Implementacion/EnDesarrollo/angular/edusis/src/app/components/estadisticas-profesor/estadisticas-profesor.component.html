@@ -47,18 +47,36 @@
       <div class="centered">Curso : {{ nombreCurso }}</div>
     </div>
 
-    <select
-      [(ngModel)]="asignaturaFiltro"
-      (change)="onAsignaturaFilter()"
-      name="asignatura"
-      placeholder="Asignatura"
-      class="form-control margin-bottom-16"
-    >
-      <option [ngValue]="null">Todas las asignaturas</option>
-      <option *ngFor="let asignatura of asignaturas" [ngValue]="asignatura">
-        {{ asignatura.nombre }}
-      </option>
-    </select>
+    <div class="row align-items-center mb-2 d-flex">
+      <div class="col-6">
+        <h5 class="d-flex align-items-center mb-0">
+          <select
+            [(ngModel)]="asignaturaFiltro"
+            (change)="onAsignaturaFilter()"
+            name="asignatura"
+            placeholder="Asignatura"
+            class="form-control"
+          >
+            <option [ngValue]="null">Todas las asignaturas</option>
+            <option
+              *ngFor="let asignatura of asignaturas"
+              [ngValue]="asignatura"
+            >
+              {{ asignatura.nombre }}
+            </option>
+          </select>
+        </h5>
+      </div>
+      <div class="col-1 text-right"></div>
+      <div class="col-5 text-right">
+        <button
+          (click)="irAEstadisticasPorAlumno()"
+          class="btn btn-lg btn-block btn-personalizado"
+        >
+          Por Alumno
+        </button>
+      </div>
+    </div>
 
     <div
       *ngFor="
@@ -66,8 +84,7 @@
           | slice: (page - 1) * pageSize:page * pageSize
       "
     >
-      <div class="card mb-3">
-        <!-- (click)="irATarea(tarea.id)" -->
+      <div class="card mb-3" (click)="irADetalle(tarea.id)">
         <div class="imagenCardAsignatura" *ngIf="tarea.iconoURL !== undefined">
           <img
             class="card-img-top imagenCard"

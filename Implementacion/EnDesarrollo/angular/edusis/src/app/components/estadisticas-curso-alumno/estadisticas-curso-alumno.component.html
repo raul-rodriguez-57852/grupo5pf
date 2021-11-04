@@ -1,0 +1,102 @@
+<section id="estadisticas" class="margin-top-60">
+  <div class="contenedorImagenCard margin-bottom-16">
+    <img class="imagenCard" src="assets/img/stats.jpg" alt="Card image cap" />
+    <div class="centered">Estadisticas</div>
+  </div>
+
+  <div class="container" *ngIf="!alumnoSelected">
+    <div class="row align-items-center mb-2 d-flex">
+      <div class="col-6">
+        <h5 class="d-flex align-items-center mb-0">
+          <input
+            type="text"
+            class="form-control"
+            id="search-text"
+            aria-describedby="search-text"
+            [(ngModel)]="searchText"
+            placeholder="Ingrese nombre"
+            autofocus
+          />
+        </h5>
+      </div>
+      <div class="col-1 text-right"></div>
+      <div class="col-5 text-right">
+        <h5 class="d-flex align-items-center mb-0">
+          <select
+            [(ngModel)]="asignaturaSelected"
+            name="asignatura"
+            placeholder="Asignatura"
+            class="form-control"
+          >
+            <option [ngValue]="null">Todas las asignaturas</option>
+            <option
+              *ngFor="let asignatura of asignaturas"
+              [ngValue]="asignatura"
+            >
+              {{ asignatura.nombre }}
+            </option>
+          </select>
+        </h5>
+      </div>
+    </div>
+    <ul class="list-group list-group-flush margin-bottom-16">
+      <li
+        *ngFor="
+          let alumno of alumnosFiltrados
+            | slice: (page - 1) * pageSize:page * pageSize
+            | nameFilter: searchText
+        "
+        class="
+          list-group-item
+          d-flex
+          justify-content-between
+          align-items-center
+        "
+      >
+        <div (click)="selectAlumno(alumno.id)">
+          {{ alumno.nombreCompleto }}
+        </div>
+      </li>
+    </ul>
+
+    <ngb-pagination
+      [(page)]="page"
+      [pageSize]="pageSize"
+      [collectionSize]="collectionSize"
+      [maxSize]="10"
+      [rotate]="true"
+      [ellipses]="false"
+      size="lg"
+      class="d-flex justify-content-center"
+    >
+    </ngb-pagination>
+
+    <button
+      (click)="volverATareas()"
+      class="btn btn-lg btn-block btn-personalizado-txtblanco"
+    >
+      Volver
+    </button>
+  </div>
+
+  <div class="container" *ngIf="alumnoSelected">
+    <div style="display: block">
+      <canvas
+        mdbChart
+        chartType="line"
+        [datasets]="chartDatasets"
+        [labels]="chartLabels"
+        [options]="chartOptions"
+        [legend]="true"
+      >
+      </canvas>
+    </div>
+
+    <button
+      (click)="volverALista()"
+      class="btn btn-lg btn-block btn-personalizado-txtblanco"
+    >
+      Volver
+    </button>
+  </div>
+</section>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { DataTareaService } from 'src/app/services/data-tarea.service';
 
@@ -32,6 +32,7 @@ export class EstadisticasProfesorComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private dataApiService: DataApiService,
     private dataTareaService: DataTareaService
   ) { }
@@ -39,7 +40,13 @@ export class EstadisticasProfesorComponent implements OnInit {
   async ngOnInit() {
     this.id_profesor = this.dataApiService.getUsuario()
 
-    this.getAll();
+    if (this.route.snapshot.paramMap.get("cursoId") != null) {
+      this.selectCurso(Number(this.route.snapshot.paramMap.get("cursoId")));
+    } else {
+      this.getAll();
+    }
+
+
 
   }
 
@@ -65,7 +72,7 @@ export class EstadisticasProfesorComponent implements OnInit {
     });
 
 
-    this.dataApiService.getAsignaturas(this.cursoId).then((asignaturas) => {
+    this.dataApiService.getAsignaturasByCreador(this.cursoId, this.id_profesor).then((asignaturas) => {
       this.asignaturas = asignaturas;
       this.dataTareaService.getPorcentajeRealizacion(this.cursoId).then((realizaciones) => {
         realizaciones.forEach(element => {
@@ -115,6 +122,14 @@ export class EstadisticasProfesorComponent implements OnInit {
   volverACursos() {
     this.cursoSelected = false;
     this.cursoId = null;
+  }
+
+  irADetalle(tareaId: number) {
+    this.router.navigate(["estadisticas-tarea", { tareaId: tareaId, cursoId: this.cursoId }]);
+  }
+
+  irAEstadisticasPorAlumno() {
+    this.router.navigate(["estadisticas-curso-alumno", { cursoId: this.cursoId }]);
   }
 
 

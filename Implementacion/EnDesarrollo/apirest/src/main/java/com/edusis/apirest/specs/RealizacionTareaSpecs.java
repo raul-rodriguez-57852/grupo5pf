@@ -30,4 +30,8 @@ public class RealizacionTareaSpecs {
         return R.tarea.in(tareas);
     }
     
+    public static BooleanExpression byTarea(Tarea tarea){
+        return R.tarea.eq(tarea);
+    }
+    
 }

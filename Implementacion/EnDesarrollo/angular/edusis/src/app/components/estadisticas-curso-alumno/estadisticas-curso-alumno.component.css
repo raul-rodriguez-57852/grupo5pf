@@ -1,0 +1,27 @@
+.contenedorImagenCard {
+  height: 150px;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+.card {
+  border-radius: 10px;
+}
+
+.imagenCard {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+  filter: brightness(50%);
+}
+
+.centered {
+  font-size: x-large;
+  text-shadow: 3px 3px 5px black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

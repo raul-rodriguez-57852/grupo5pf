@@ -16,6 +16,7 @@ import com.edusis.apirest.domain.Plantilla;
 import com.edusis.apirest.domain.PlantillaPasapalabra;
 import com.edusis.apirest.domain.PlantillaPreguntas;
 import com.edusis.apirest.domain.Profesor;
+import com.edusis.apirest.domain.QRealizacionTarea;
 import com.edusis.apirest.domain.RealizacionTarea;
 import com.edusis.apirest.domain.RealizacionTareaDetalle;
 import com.edusis.apirest.domain.Tarea;
@@ -41,15 +42,29 @@ import com.edusis.apirest.specs.DetalleTareaMultimediaSpecs;
 import com.edusis.apirest.specs.RealizacionTareaSpecs;
 import com.edusis.apirest.specs.TareaSpecs;
 import com.edusis.apirest.utils.AssertUtils;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.querydsl.core.types.Expression;
+import com.querydsl.core.types.Ops;
+import com.querydsl.core.types.dsl.NumberOperation;
+import com.querydsl.jpa.JPQLQuery;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Tuple;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -72,6 +87,9 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
 @RequestMapping("/tarea")
 public class TareaController {
+    
+    @PersistenceContext
+    EntityManager entityManager;
     
     @Autowired
     private CursoService cursoService;
@@ -203,6 +221,188 @@ public class TareaController {
         
     }
     
+    
+    @GetMapping("realizacionesPorAlumno")
+    public String getRealizacionesPorAlumno(@RequestParam Long tareaId) {
+        Tarea tarea = tareaService.get(tareaId);
+        
+        Curso curso = tarea.getAsignatura().getCurso();
+        List<Alumno> alumnos = alumnoService.getAll(AlumnoSpecs.byCurso(curso));
+       
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Tuple> q = cb.createTupleQuery();
+        Root<RealizacionTarea> c = q.from(RealizacionTarea.class);
+        q.multiselect(c.get("alumno"), cb.max(c.get("puntajeObtenido")), cb.count(c), cb.max(c.get("fecha")));
+        q.where(cb.equal(c.get("tarea"), tarea));
+        q.groupBy(c.get("alumno"));
+        
+        
+        List<Tuple> result = entityManager.createQuery(q).getResultList();
+        
+ 
+        JsonArray realizacionesJson = new JsonArray();
+        
+        for (Alumno alumno : alumnos) {
+            boolean encontrado = false;
+            for (Tuple tupla : result) {
+                if(alumno.equals(tupla.get(0,Persona.class))){
+                    JsonObject p = new JsonObject();
+                    p.addProperty("id", (tupla.get(0,Persona.class)).getId());
+                    p.addProperty("alumno", (tupla.get(0,Persona.class)).getNombreCompleto());
+                    p.addProperty("puntajeMaximo", tupla.get(1,Double.class));
+                    p.addProperty("intentos", tupla.get(2,Long.class));
+                    Long fechaLimite = tupla.get(3,Calendar.class) == null ? null: tupla.get(3,Calendar.class).getTimeInMillis();
+                    p.addProperty("ultimaFecha", fechaLimite);
+                    
+                    encontrado = true;
+                    realizacionesJson.add(p);
+                    break;
+                } 
+            }
+            if(!encontrado){
+                JsonObject p = new JsonObject();
+                p.addProperty("id", alumno.getId());
+                p.addProperty("alumno", alumno.getNombreCompleto());
+                p.addProperty("puntajeMaximo", 0);
+                p.addProperty("intentos", 0);
+                p.addProperty("ultimaFecha", 0);
+                realizacionesJson.add(p);
+            }
+            
+        }
+        return realizacionesJson.toString();
+        
+    }
+    
+    @GetMapping("alumnosPorCurso")
+    public List<Alumno> getAlumnosPorCurso(@RequestParam Long cursoId) {
+        
+        Curso curso = cursoService.get(cursoId);
+        List<Alumno> alumnos = alumnoService.getAll(AlumnoSpecs.byCurso(curso));
+        return alumnos;
+    
+    }
+    
+    @GetMapping("cantidadPorRangoTarea")
+    public String getCantidadPorRangoTarea(@RequestParam Long tareaId) {
+        Tarea tarea = tareaService.get(tareaId);
+        
+        Curso curso = tarea.getAsignatura().getCurso();
+        List<Alumno> alumnos = alumnoService.getAll(AlumnoSpecs.byCurso(curso));
+        
+        Map<String,Integer> rangoPuntaje = new HashMap<>(); 
+        rangoPuntaje.put("No realizada", 0);
+        rangoPuntaje.put("0-20", 0);
+        rangoPuntaje.put("20-40", 0);
+        rangoPuntaje.put("40-60", 0);
+        rangoPuntaje.put("60-80", 0);
+        rangoPuntaje.put("80-100", 0);
+        
+        
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Tuple> q = cb.createTupleQuery();
+        Root<RealizacionTarea> c = q.from(RealizacionTarea.class);
+        q.multiselect(c.get("alumno"), cb.max(c.get("puntajeObtenido")));
+        q.where(cb.equal(c.get("tarea"), tarea));
+        q.groupBy(c.get("alumno"));
+        
+        
+        List<Tuple> result = entityManager.createQuery(q).getResultList();
+ 
+        
+        for (Alumno alumno : alumnos) {
+            boolean encontrado = false;
+            for (Tuple tupla : result) {
+                if(alumno.equals(tupla.get(0,Persona.class))){
+                    
+                    if(tupla.get(1,Double.class) < 20){
+                        rangoPuntaje.put("0-20", rangoPuntaje.get("0-20") + 1);
+                    }
+                    if(tupla.get(1,Double.class) >= 20 && tupla.get(1,Double.class) < 40){
+                        rangoPuntaje.put("20-40", rangoPuntaje.get("20-40") + 1);
+                    }
+                    if(tupla.get(1,Double.class) >= 40 && tupla.get(1,Double.class) < 60){
+                        rangoPuntaje.put("40-60", rangoPuntaje.get("40-60") + 1);
+                    }
+                    if(tupla.get(1,Double.class) >= 60 && tupla.get(1,Double.class) < 80){
+                        rangoPuntaje.put("60-80", rangoPuntaje.get("60-80") + 1);
+                    }
+                    if(tupla.get(1,Double.class) >= 80){
+                        rangoPuntaje.put("80-100", rangoPuntaje.get("80-100") + 1);
+                    }  
+                    encontrado = true;
+
+                    break;
+                } 
+            }
+            if(!encontrado){
+                rangoPuntaje.put("No realizada", rangoPuntaje.get("No realizada") + 1);
+            }           
+        }
+        String jsonString = new Gson().toJson(rangoPuntaje);
+        return jsonString;
+        
+    }
+    
+    @GetMapping("puntajeAlumnoAcumulado")
+    public String getPuntajeAlumnoAcumulado(@RequestParam Long cursoId,@RequestParam Long alumnoId, @RequestParam(value = "asignaturaId") Optional<Long> asignaturaId) {
+        Curso curso = cursoService.get(cursoId);
+        Asignatura asignatura = null;
+        if(asignaturaId.isPresent()){
+            asignatura = asignaturaService.get(asignaturaId.get()); 
+        } 
+        List<Tarea> tareas = asignatura == null? getTareas(cursoId):tareaService.getAll(TareaSpecs.byAsignatura(asignatura)) ; 
+
+        Alumno alumno = alumnoService.get(alumnoId);
+        
+        
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Tuple> q = cb.createTupleQuery();
+        Root<RealizacionTarea> c = q.from(RealizacionTarea.class);
+        q.multiselect(c.get("tarea"), cb.max(c.get("puntajeObtenido")));
+        q.where(cb.equal(c.get("alumno"), alumno), c.get("tarea").in(tareas));
+        q.groupBy(c.get("tarea"));
+        
+        
+        List<Tuple> result = entityManager.createQuery(q).getResultList();
+        
+        JsonArray puntajesJson = new JsonArray();
+        
+        for (Tarea tarea : tareas) {
+            boolean encontrado = false;
+            for (Tuple tupla : result) {
+                if(tarea.equals(tupla.get(0,Tarea.class))){
+                    
+                    JsonObject p = new JsonObject();
+                    p.addProperty("tareaId", (tupla.get(0,Tarea.class)).getId());
+                    p.addProperty("puntajeMaximo", tupla.get(1,Double.class));
+                    Long fecha = tupla.get(0,Tarea.class).getFechaLimite() == null ? null: tupla.get(0,Tarea.class).getFechaLimite().getTimeInMillis();
+                    p.addProperty("fecha", fecha);
+                    p.addProperty("nombre", (tupla.get(0,Tarea.class)).getNombre());
+                    
+                    encontrado = true;
+                    puntajesJson.add(p);
+                    
+                    break;
+                } 
+            }
+            if(!encontrado){
+                JsonObject p = new JsonObject();
+                p.addProperty("tareaId", tarea.getId());
+                p.addProperty("puntajeMaximo", 0);
+                Long fecha = tarea.getFechaLimite() == null ? null: tarea.getFechaLimite().getTimeInMillis();
+                p.addProperty("fecha", fecha);
+                p.addProperty("nombre", tarea.getNombre());
+
+                puntajesJson.add(p);
+            }           
+        }
+        
+
+        return puntajesJson.toString();
+        
+    }
+    
     @PostMapping("guardarDetalleMultimedia")
     public ResponseEntity<Long> guardarDetalleMultimedia(@RequestBody DetalleTareaMultimediaDto detalleTareaMultimediaDto) {
         DetalleTareaMultimedia detalle = detalleTareaMultimediaDto.getId() != null ? detalleTareaMultimediaService.get(detalleTareaMultimediaDto.getId()) : new DetalleTareaMultimedia();
@@ -321,10 +521,11 @@ public class TareaController {
             
             realizacion.addDetalle(detalle);
         }
-        realizacion.calcularPorcentaje();
-        realizacionTareaService.save(realizacion);
-        //Actualizo ultimo acceso para el alumno.
         Calendar fecha = Calendar.getInstance();
+        realizacion.calcularPorcentaje();
+        realizacion.setFecha(fecha);
+        realizacionTareaService.save(realizacion);
+        //Actualizo ultimo acceso para el alumno.       
         alumno.setUltimoAcceso(fecha);
         alumnoService.save(alumno);
         return new ResponseEntity<>(HttpStatus.OK);

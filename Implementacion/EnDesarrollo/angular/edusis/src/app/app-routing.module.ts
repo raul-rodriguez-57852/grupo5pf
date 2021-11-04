@@ -29,6 +29,8 @@ import { EstadisticasProfesorComponent } from './components/estadisticas-profeso
 import { DocenteAuthGuard } from './guards/docente-auth.guard';
 import { TutorAuthGuard } from './guards/tutor-auth.guard';
 import { ConfiguracionTutorComponent } from './components/configuracion-tutor/configuracion-tutor.component';
+import { EstadisticasTareaComponent } from './components/estadisticas-tarea/estadisticas-tarea.component';
+import { EstadisticasCursoAlumnoComponent } from './components/estadisticas-curso-alumno/estadisticas-curso-alumno.component';
 
 const routes: Routes = [
 
@@ -52,6 +54,8 @@ const routes: Routes = [
   { path: 'editar-detalle-actividad', component: EditarDetalleActividadComponent, canActivate: [DocenteAuthGuard] },
   { path: 'home-profesor', component: HomeProfesorComponent, canActivate: [DocenteAuthGuard] },
   { path: 'estadisticas-profesor', component: EstadisticasProfesorComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'estadisticas-tarea', component: EstadisticasTareaComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'estadisticas-curso-alumno', component: EstadisticasCursoAlumnoComponent, canActivate: [DocenteAuthGuard] },
 
   // Por ahora docentes, luego admin...
   { path: 'editar-emoji', component: EditarEmojiComponent, canActivate: [DocenteAuthGuard] },
@@ -65,7 +69,7 @@ const routes: Routes = [
   { path: 'realizacion-tarea', component: RealizacionTareaComponent, canActivate: [TutorAuthGuard] },
   { path: 'realizacion-preguntas', component: RealizacionPreguntasComponent, canActivate: [TutorAuthGuard] },
   { path: 'realizacion-pasapalabras', component: RealizacionPasapalabrasComponent, canActivate: [TutorAuthGuard] },
-  { path: 'configuracion-tutor', component: ConfiguracionTutorComponent, canActivate: [TutorAuthGuard]},
+  { path: 'configuracion-tutor', component: ConfiguracionTutorComponent, canActivate: [TutorAuthGuard] },
 
 ];
 

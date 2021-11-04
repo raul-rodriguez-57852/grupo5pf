@@ -36,9 +36,13 @@ import { HomeProfesorComponent } from './components/home-profesor/home-profesor.
 import { CallbackPipe } from "./callBackPipe";
 import { ConfiguracionTutorComponent } from "./components/configuracion-tutor/configuracion-tutor.component";
 import { NgxSpinnerModule } from "ngx-spinner";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserAnimationsModule, NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { InterceptorService } from "./services/interceptor.service";
 import { EstadisticasProfesorComponent } from './components/estadisticas-profesor/estadisticas-profesor.component';
+import { EstadisticasTareaComponent } from './components/estadisticas-tarea/estadisticas-tarea.component';
+import { PipeList } from "./filterPipe";
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { EstadisticasCursoAlumnoComponent } from './components/estadisticas-curso-alumno/estadisticas-curso-alumno.component';
 
 
 
@@ -74,6 +78,9 @@ import { EstadisticasProfesorComponent } from './components/estadisticas-profeso
     CallbackPipe,
     ConfiguracionTutorComponent,
     EstadisticasProfesorComponent,
+    EstadisticasTareaComponent,
+    PipeList,
+    EstadisticasCursoAlumnoComponent
 
   ],
   imports: [
@@ -84,7 +91,9 @@ import { EstadisticasProfesorComponent } from './components/estadisticas-profeso
     YouTubePlayerModule,
     NgbModule,
     NgxSpinnerModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MDBBootstrapModule.forRoot(),
+    NoopAnimationsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }

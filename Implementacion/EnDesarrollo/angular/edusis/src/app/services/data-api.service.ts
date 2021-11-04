@@ -127,8 +127,8 @@ export class DataApiService {
     return this.http.get(this.urlBase + 'getCursosDeAlumno', { params: { idAlumno } }).toPromise();
   }
 
-  eliminarAlumno(alumnoId: string): Promise<any>{
-    return this.http.delete(this.urlBase + 'eliminarAlumno', {params: { alumnoId } }).toPromise();
+  eliminarAlumno(alumnoId: string): Promise<any> {
+    return this.http.delete(this.urlBase + 'eliminarAlumno', { params: { alumnoId } }).toPromise();
   }
 
 
@@ -186,6 +186,14 @@ export class DataApiService {
     return this.http
       .get(this.urlBase + 'asignaturas', {
         params: { cursoId: cursoId.toString() },
+      })
+      .toPromise();
+  }
+
+  getAsignaturasByCreador(cursoId: number, creadorId: number): Promise<any> {
+    return this.http
+      .get(this.urlBase + 'asignaturasByCreador', {
+        params: { cursoId: cursoId.toString(), creadorId: creadorId.toString() },
       })
       .toPromise();
   }

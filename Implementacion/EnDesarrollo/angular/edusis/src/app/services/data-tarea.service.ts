@@ -57,6 +57,47 @@ export class DataTareaService {
       .toPromise();
   }
 
+  getRealizacionesPorAlumno(tareaId: number): Promise<any> {
+    return this.http
+      .get(this.urlBase + "realizacionesPorAlumno", {
+        params: { tareaId: tareaId.toString() },
+      })
+      .toPromise();
+  }
+
+  getAlumnosPorCurso(cursoId: number): Promise<any> {
+    return this.http
+      .get(this.urlBase + "alumnosPorCurso", {
+        params: { cursoId: cursoId.toString() },
+      })
+      .toPromise();
+  }
+
+  getCantidadPorRangoTarea(tareaId: number): Promise<any> {
+    return this.http
+      .get(this.urlBase + "cantidadPorRangoTarea", {
+        params: { tareaId: tareaId.toString() },
+      })
+      .toPromise();
+  }
+
+  getPuntajeAlumnoAcumulado(cursoId: number, alumnoId: number, asignaturaId?: number): Promise<any> {
+    if (asignaturaId != null) {
+      return this.http
+        .get(this.urlBase + "puntajeAlumnoAcumulado", {
+          params: { cursoId: cursoId.toString(), alumnoId: alumnoId.toString(), asignaturaId: asignaturaId.toString() },
+        })
+        .toPromise();
+    } else {
+      return this.http
+        .get(this.urlBase + "puntajeAlumnoAcumulado", {
+          params: { cursoId: cursoId.toString(), alumnoId: alumnoId.toString() },
+        })
+        .toPromise();
+    }
+
+  }
+
   guardarDetalleMultimedia(detalle: DetalleMultimedia): Promise<any> {
     return this.http
       .post(this.urlBase + "guardarDetalleMultimedia", detalle)

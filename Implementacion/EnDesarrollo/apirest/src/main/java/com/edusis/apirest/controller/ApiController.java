@@ -490,6 +490,22 @@ public class ApiController {
             asignaturas.add(asignatura);
             profe.setAsignaturas(asignaturas); 
         }
+        
+        //Hay que guardar el profesor en el lado del asignaturas tambien.
+        if( asignatura.getProfesores() != null){
+            //Ya tiene cursos agregados.
+            if(!asignatura.getProfesores().contains(profe)){
+                asignatura.getProfesores().add(profe);     
+            }
+        }
+        else{
+            //El profesor no tiene ningun Curso.
+            ArrayList<Profesor> profesores = new ArrayList<Profesor>();
+            profesores.add(profe);
+            asignatura.setProfesores(profesores);
+        }
+        
+        
         asignaturaService.save(asignatura);
         profesorService.save(profe);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -505,7 +521,15 @@ public class ApiController {
     public List<Asignatura> getAsignaturas(@RequestParam Long cursoId) {
         Curso curso = cursoService.get(cursoId);
         return asignaturaService.getAll(AsignaturaSpecs.byCurso(curso));
-//        return asignaturaService.getAll();
+
+    }
+    
+    @GetMapping("asignaturasByCreador")
+    public List<Asignatura> getAsignaturasByCreador(@RequestParam Long cursoId, @RequestParam Long creadorId) {
+        Curso curso = cursoService.get(cursoId);
+        Profesor profe = profesorService.get(creadorId);
+        return asignaturaService.getAll(AsignaturaSpecs.byCurso(curso).and(AsignaturaSpecs.byCreador(profe)));
+
     }
     
     @GetMapping("cursos")
@@ -584,6 +608,9 @@ public class ApiController {
                 //documento encontrado, valido si la contraseña tambien coincide.
                 //en la base, esta la contraseña cifrada, por ende tengo que cifrar la password del front y comprarla con la del server
                 //System.out.println(persona.getClass());
+                if (persona.getPassword() == null){
+                    continue;
+                }
                 if (persona.getPassword().equals(cifrarClave(password))) {
                     char userType = '0'; // 0 para Tutor.
                     if( persona instanceof Profesor){
