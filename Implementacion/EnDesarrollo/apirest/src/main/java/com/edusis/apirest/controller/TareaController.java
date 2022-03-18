@@ -12,14 +12,15 @@ import com.edusis.apirest.domain.DetalleTarea;
 import com.edusis.apirest.domain.DetalleTareaActividad;
 import com.edusis.apirest.domain.DetalleTareaMultimedia;
 import com.edusis.apirest.domain.Persona;
-import com.edusis.apirest.domain.Plantilla;
-import com.edusis.apirest.domain.PlantillaPasapalabra;
-import com.edusis.apirest.domain.PlantillaPreguntas;
+import com.edusis.apirest.domain.plantillas.Plantilla;
+import com.edusis.apirest.domain.plantillas.PlantillaPasapalabra;
+import com.edusis.apirest.domain.plantillas.PlantillaPreguntas;
 import com.edusis.apirest.domain.Profesor;
 import com.edusis.apirest.domain.QRealizacionTarea;
 import com.edusis.apirest.domain.RealizacionTarea;
 import com.edusis.apirest.domain.RealizacionTareaDetalle;
 import com.edusis.apirest.domain.Tarea;
+import com.edusis.apirest.domain.plantillas.PlantillaGrilla;
 import com.edusis.apirest.service.AlumnoService;
 import com.edusis.apirest.service.AsignaturaService;
 import com.edusis.apirest.service.CursoService;
@@ -482,14 +483,14 @@ public class TareaController {
         if (plantilla instanceof PlantillaPreguntas) {
             return "Preguntas";
         }
-
         if (plantilla instanceof PlantillaPasapalabra) {
-            return "Pasapalabras";
+            return "Pasapalabra";
+        }
+        if (plantilla instanceof PlantillaGrilla) {
+            return "Grilla";
         }
         return null;
-
     }
-    
     
     @GetMapping("tiposPlantillas")
     public Set<String> getTiposPlantillas () {

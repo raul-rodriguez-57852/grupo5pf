@@ -6,7 +6,7 @@
 
 package com.edusis.apirest.service;
 
-import com.edusis.apirest.domain.Respuesta;
+import com.edusis.apirest.domain.plantillas.Respuesta;
 import com.edusis.apirest.generic.GenericService;
 
 /**

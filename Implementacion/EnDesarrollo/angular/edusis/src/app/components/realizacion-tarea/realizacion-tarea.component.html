@@ -99,12 +99,11 @@
 </section>
 
 <section
-  id="realizacion-pasapalabras"
+  id="realizacion-pasapalabra"
   class="margin-top-90"
-  [hidden]="!isPasaPalabra"
+  [hidden]="!isPasapalabra"
 >
-  <app-realizacion-pasapalabras #realizacionPasapalabras [id]="actividadId" (finalizado)="onFinalizado($event)"
+  <app-realizacion-pasapalabra #realizacionPasapalabra [id]="actividadId" (finalizado)="onFinalizado($event)"
   >
-    ></app-realizacion-pasapalabras
-  >
+    ></app-realizacion-pasapalabra>
 </section>

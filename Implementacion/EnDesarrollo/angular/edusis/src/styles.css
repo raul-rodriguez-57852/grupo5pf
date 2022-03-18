@@ -20,6 +20,10 @@
   padding: 0px !important;
 }
 
+.margin-top-16 {
+  margin-top: 16px;
+}
+
 .margin-top-30 {
   margin-top: 30px;
 }
@@ -73,6 +77,10 @@
 .btn-personalizado-inverso:hover {
   background-color: #c2ab53 !important;
   color: #13334c !important;
+}
+
+.swal2-styled.swal2-confirm {
+  background-color: #13334c !important;
 }
 
 .modal {

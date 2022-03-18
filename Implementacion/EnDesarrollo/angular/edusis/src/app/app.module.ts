@@ -31,7 +31,7 @@ import { YouTubePlayerModule } from "@angular/youtube-player";
 import { CursoAlumnoComponent } from './components/curso-alumno/curso-alumno.component';
 import { RealizacionTareaComponent } from './components/realizacion-tarea/realizacion-tarea.component';
 import { RealizacionPreguntasComponent } from './components/realizacion-preguntas/realizacion-preguntas.component';
-import { RealizacionPasapalabrasComponent } from './components/realizacion-pasapalabras/realizacion-pasapalabras.component';
+import { RealizacionPasapalabraComponent } from './components/realizacion-pasapalabra/realizacion-pasapalabra.component';
 import { HomeProfesorComponent } from './components/home-profesor/home-profesor.component';
 import { CallbackPipe } from "./callBackPipe";
 import { ConfiguracionTutorComponent } from "./components/configuracion-tutor/configuracion-tutor.component";
@@ -43,6 +43,9 @@ import { EstadisticasTareaComponent } from './components/estadisticas-tarea/esta
 import { PipeList } from "./filterPipe";
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { EstadisticasCursoAlumnoComponent } from './components/estadisticas-curso-alumno/estadisticas-curso-alumno.component';
+import { CrearActividadGrillaComponent } from './components/crear-actividad-grilla/crear-actividad-grilla.component';
+import { VistaPreviaGrillaComponent } from './components/vista-previa-grilla/vista-previa-grilla.component';
+import { RealizacionGrillaComponent } from './components/realizacion-grilla/realizacion-grilla.component';
 
 
 
@@ -73,15 +76,17 @@ import { EstadisticasCursoAlumnoComponent } from './components/estadisticas-curs
     CursoAlumnoComponent,
     RealizacionTareaComponent,
     RealizacionPreguntasComponent,
-    RealizacionPasapalabrasComponent,
+    RealizacionPasapalabraComponent,
     HomeProfesorComponent,
     CallbackPipe,
     ConfiguracionTutorComponent,
     EstadisticasProfesorComponent,
     EstadisticasTareaComponent,
     PipeList,
-    EstadisticasCursoAlumnoComponent
-
+    EstadisticasCursoAlumnoComponent,
+    CrearActividadGrillaComponent,
+    VistaPreviaGrillaComponent,
+    RealizacionGrillaComponent,
   ],
   imports: [
     BrowserModule,

@@ -5,8 +5,9 @@ import { Realizacion } from 'src/app/models/realizacion';
 import { RealizacionDetalle } from 'src/app/models/realizacion-detalle';
 import { DataApiService } from "src/app/services/data-api.service";
 import { DataTareaService } from "src/app/services/data-tarea.service";
-import { RealizacionPasapalabrasComponent } from "../realizacion-pasapalabras/realizacion-pasapalabras.component";
+import { RealizacionPasapalabraComponent } from "../realizacion-pasapalabra/realizacion-pasapalabra.component";
 import { RealizacionPreguntasComponent } from "../realizacion-preguntas/realizacion-preguntas.component";
+import { RealizacionGrillaComponent } from '../realizacion-grilla/realizacion-grilla.component';
 
 @Component({
   selector: "app-realizacion-tarea",
@@ -33,15 +34,19 @@ export class RealizacionTareaComponent implements OnInit {
   actividadTipo: string = null;
   isMultimedia = true;
   isPreguntas = false;
-  isPasaPalabra = false;
+  isPasapalabra = false;
+  isGrilla = false;
 
   detalles: RealizacionDetalle[] = [];
 
   @ViewChild("realizacionPreguntas", { static: false })
   realizacionPreguntas: RealizacionPreguntasComponent;
 
-  @ViewChild("realizacionPasapalabras", { static: false })
-  realizacionPasapalabras: RealizacionPasapalabrasComponent;
+  @ViewChild("realizacionPasapalabra", { static: false })
+  realizacionPasapalabra: RealizacionPasapalabraComponent;
+
+  @ViewChild("realizacionGrilla", { static: false })
+  realizacionGrilla: RealizacionGrillaComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -120,16 +125,26 @@ export class RealizacionTareaComponent implements OnInit {
         if (this.actividadTipo === "Preguntas") {
           this.isMultimedia = false;
           this.isPreguntas = true;
-          this.isPasaPalabra = false;
+          this.isPasapalabra = false;
+          this.isGrilla = false;
 
           this.realizacionPreguntas.onInit(this.actividadId);
         }
-        if (this.actividadTipo === "Pasapalabras") {
+        if (this.actividadTipo === "Pasapalabra") {
           this.isMultimedia = false;
           this.isPreguntas = false;
-          this.isPasaPalabra = true;
+          this.isPasapalabra = true;
+          this.isGrilla = false;
 
-          this.realizacionPasapalabras.onInit(this.actividadId);
+          this.realizacionPasapalabra.onInit(this.actividadId);
+        }
+        if (this.actividadTipo === "Grilla") {
+          this.isMultimedia = false;
+          this.isPreguntas = false;
+          this.isPasapalabra = false;
+          this.isGrilla = true;
+
+          this.realizacionGrilla.onInit(this.actividadId);
         }
       }
     });
@@ -147,8 +162,8 @@ export class RealizacionTareaComponent implements OnInit {
     } else {
       this.isMultimedia = true;
       this.isPreguntas = false;
-      this.isPasaPalabra = false;
-
+      this.isPasapalabra = false;
+      this.isGrilla = false;
       /// Persistimos la realizacion
 
       let realizacion = new Realizacion();

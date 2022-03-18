@@ -60,6 +60,18 @@ export class CrearActividadComponent implements OnInit {
     
   }
 
+  crearGrilla() {
+    if(this.idTareaRoute != null){
+      this.router.navigate([
+        "crear-actividad-grilla",
+        { tareaId: this.idTareaRoute },
+      ]);
+    }else{
+      this.router.navigate(['crear-actividad-grilla']);
+    }
+    
+  }
+
   next(formActividad: NgForm) {
     this.paso = 2;
     this.plantilla.nombre = this.nombre;
@@ -104,6 +116,10 @@ export class CrearActividadComponent implements OnInit {
     if (actividad.tipo === 'Pasapalabra') {
       const id = actividad.id;
       this.router.navigate(['vista-previa-pasapalabra', { id }]);
+    }
+    if (actividad.tipo === 'Grilla') {
+      const id = actividad.id;
+      this.router.navigate(['vista-previa-grilla', { id }]);
     }
   }
 

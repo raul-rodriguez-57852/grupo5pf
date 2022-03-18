@@ -7,7 +7,7 @@ package com.edusis.apirest.specs;
 
 import com.edusis.apirest.domain.Curso;
 import com.edusis.apirest.domain.Profesor;
-import com.edusis.apirest.domain.QPlantilla;
+import com.edusis.apirest.domain.plantillas.QPlantilla;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
 /**

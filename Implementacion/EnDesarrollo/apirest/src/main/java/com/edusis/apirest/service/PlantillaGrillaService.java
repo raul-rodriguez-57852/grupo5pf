@@ -6,7 +6,7 @@
 
 package com.edusis.apirest.service;
 
-import com.edusis.apirest.domain.plantillas.Pregunta;
+import com.edusis.apirest.domain.plantillas.PlantillaGrilla;
 import com.edusis.apirest.generic.GenericService;
 
 /**
@@ -14,6 +14,6 @@ import com.edusis.apirest.generic.GenericService;
  * @author Facundo Raviolo
  */
 
-public interface PreguntaService extends GenericService<Pregunta, Long> {
+public interface PlantillaGrillaService extends GenericService<PlantillaGrilla, Long> {
 
 }

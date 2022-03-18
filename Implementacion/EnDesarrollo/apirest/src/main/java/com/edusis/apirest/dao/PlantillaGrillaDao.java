@@ -4,16 +4,16 @@
  * and open the template in the editor.
  */
 
-package com.edusis.apirest.service;
+package com.edusis.apirest.dao;
 
-import com.edusis.apirest.domain.plantillas.Pregunta;
-import com.edusis.apirest.generic.GenericService;
+import com.edusis.apirest.domain.plantillas.PlantillaGrilla;
+import com.edusis.apirest.generic.GenericDao;
 
 /**
  *
  * @author Facundo Raviolo
  */
 
-public interface PreguntaService extends GenericService<Pregunta, Long> {
+public interface PlantillaGrillaDao extends GenericDao<PlantillaGrilla, Long> {
 
 }

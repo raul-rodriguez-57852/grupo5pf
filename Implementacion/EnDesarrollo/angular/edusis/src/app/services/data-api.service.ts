@@ -9,6 +9,7 @@ import { Curso } from '../models/curso';
 import { Asignatura } from '../models/asignatura';
 import { PlantillaPreguntas } from '../models/plantilla-preguntas';
 import { PlantillaPasapalabra } from '../models/plantilla-pasapalabra';
+import { PlantillaGrilla } from '../models/plantilla-grilla';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,7 @@ export class DataApiService {
   private userType = null; //0 si es tutor e 1 si es profesor y 2 si es alumno.
 
   constructor(private http: HttpClient) {
-    this.urlBase = 'http://localhost:8090/api/';
+    this.urlBase = 'http://192.168.0.253:8090/api/';
   }
 
 
@@ -273,6 +274,12 @@ export class DataApiService {
       .toPromise();
   }
 
+  getImagenGrilla(id: string): Promise<any> {
+    return this.http
+      .get(this.urlBase + 'imagenGrilla', { params: { id }, responseType: 'text' })
+      .toPromise();
+  }
+
   crearActividadPreguntas(plantilla: PlantillaPreguntas): Promise<any> {
     return this.http.post(this.urlBase + 'crearActividadPreguntas', plantilla).toPromise();
   }
@@ -280,5 +287,10 @@ export class DataApiService {
   crearActividadPasapalabra(plantilla: PlantillaPasapalabra): Promise<any> {
     return this.http.post(this.urlBase + 'crearActividadPasapalabra', plantilla).toPromise();
   }
+
+  crearActividadaGrilla(plantilla: PlantillaGrilla): Promise<any> {
+    return this.http.post(this.urlBase + 'crearActividadGrilla', plantilla).toPromise();
+  }
+
 
 }

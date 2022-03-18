@@ -6,7 +6,7 @@
 
 package com.edusis.apirest.dao;
 
-import com.edusis.apirest.domain.PlantillaPasapalabra;
+import com.edusis.apirest.domain.plantillas.PlantillaPasapalabra;
 import com.edusis.apirest.generic.GenericDao;
 
 /**

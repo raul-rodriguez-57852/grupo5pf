@@ -7,7 +7,7 @@
 package com.edusis.apirest.service.impl;
 
 import com.edusis.apirest.dao.PlantillaDao;
-import com.edusis.apirest.domain.Plantilla;
+import com.edusis.apirest.domain.plantillas.Plantilla;
 import com.edusis.apirest.generic.GenericServiceImpl;
 import com.edusis.apirest.service.PlantillaService;
 import org.springframework.beans.factory.annotation.Autowired;

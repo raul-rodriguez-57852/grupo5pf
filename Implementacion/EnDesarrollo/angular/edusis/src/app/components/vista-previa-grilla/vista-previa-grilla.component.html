@@ -1,0 +1,33 @@
+<section id="grilla" class="margin-top-90">
+  <div class="container">
+    <div *ngIf="!final">
+      <div class="position-relative" [style.height.px]="height">
+        <img class="position-absolute" id="imagen-grilla" src="{{ this.imagen }}" (load)="calcularWidthHeight()" width="100%">
+        <table class="position-absolute fixed" [style.width.px]="width" [style.height.px]="height">
+          <tr *ngFor="let fila of filas" [style.height.px]="height / filas.length">
+            <td class="espacio" id="{{ fila }}-{{ columna }}" *ngFor="let columna of columnas" [style.width.px]="width / columnas.length">
+              <button class="boton-celda" id="boton-{{ fila }}-{{ columna }}" *ngIf="pintarCelda(fila, columna)" (click)="responder(fila, columna)"></button>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="container">
+        <div class="container">
+          <div class="row">
+            <div class="col-12 no-padding" style="padding-top: 15px !important;">
+                <button type="button" (click)="finalizar()" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Finalizar</button>
+            </div>
+          </div>
+        </div>
+      </div>  
+    </div>
+    <div *ngIf="final">
+      <div class="text-center">
+        <h3 style="color: #13334c">Respuestas correctas:</h3>
+        <h3 style="color: #13334c">{{ respuestasCorrectas }} / {{ celdas.length }}</h3>
+      </div>
+      <button type="button" (click)="volver()" class="btn btn-lg btn-block btn-personalizado">Volver a plantillas</button>
+    </div>
+  </div>
+</section>
