@@ -12,21 +12,24 @@ import com.edusis.apirest.domain.Documento;
 import com.edusis.apirest.domain.Emoji;
 import com.edusis.apirest.domain.PasswordEmoji;
 import com.edusis.apirest.domain.Persona;
-import com.edusis.apirest.domain.Plantilla;
-import com.edusis.apirest.domain.PlantillaPasapalabra;
-import com.edusis.apirest.domain.PlantillaPreguntas;
-import com.edusis.apirest.domain.Pregunta;
-import com.edusis.apirest.domain.PreguntaPasapalabra;
+import com.edusis.apirest.domain.plantillas.Plantilla;
+import com.edusis.apirest.domain.plantillas.PlantillaPasapalabra;
+import com.edusis.apirest.domain.plantillas.PlantillaPreguntas;
+import com.edusis.apirest.domain.plantillas.Pregunta;
+import com.edusis.apirest.domain.plantillas.PreguntaPasapalabra;
 import com.edusis.apirest.domain.Profesor;
 import com.edusis.apirest.domain.Sesion;
-import com.edusis.apirest.domain.Respuesta;
+import com.edusis.apirest.domain.plantillas.Respuesta;
 import com.edusis.apirest.domain.TipoDocumento;
 import com.edusis.apirest.domain.Tutor;
+import com.edusis.apirest.domain.plantillas.CeldaGrilla;
+import com.edusis.apirest.domain.plantillas.PlantillaGrilla;
 import com.edusis.apirest.service.AlumnoService;
 import com.edusis.apirest.service.AsignaturaService;
 import com.edusis.apirest.service.CursoService;
 import com.edusis.apirest.service.EmojiService;
 import com.edusis.apirest.service.PersonaService;
+import com.edusis.apirest.service.PlantillaGrillaService;
 import com.edusis.apirest.service.PlantillaPasapalabraService;
 import com.edusis.apirest.service.PlantillaPreguntasService;
 import com.edusis.apirest.service.PlantillaService;
@@ -35,8 +38,10 @@ import com.edusis.apirest.service.SesionService;
 import com.edusis.apirest.service.TutorService;
 import com.edusis.apirest.service.dto.AlumnoDto;
 import com.edusis.apirest.service.dto.AsignaturaDto;
+import com.edusis.apirest.service.dto.CeldaGrillaDto;
 import com.edusis.apirest.service.dto.CursoDto;
 import com.edusis.apirest.service.dto.EmojiDto;
+import com.edusis.apirest.service.dto.PlantillaGrillaDto;
 import com.edusis.apirest.service.dto.PlantillaPasapalabraDto;
 import com.edusis.apirest.service.dto.PlantillaPreguntasDto;
 import com.edusis.apirest.service.dto.PreguntaDto;
@@ -50,6 +55,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.querydsl.core.types.Predicate;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -60,6 +66,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.persistence.Convert;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -111,6 +118,9 @@ public class ApiController {
     @Autowired
     private PlantillaPasapalabraService plantillaPasapalabraService;
 
+    @Autowired
+    private PlantillaGrillaService plantillaGrillaService;
+    
     @Autowired
     private PlantillaService plantillaService;
     
@@ -422,10 +432,10 @@ public class ApiController {
            }
             catch (java.io.UnsupportedEncodingException e)
             {
-                System.err.println("Erro, MD5 no es un algoritmo de encriptacion correcto para MessageDigest (ApiContrller) trying setCodigo");
+                System.err.println("Error, MD5 no es un algoritmo de encriptacion correcto para MessageDigest (ApiContrller) trying setCodigo");
             }
             catch (NoSuchAlgorithmException er){
-                System.err.println("Erro, MD5 no es un algoritmo de encriptacion correcto para MessageDigest");
+                System.err.println("Error, MD5 no es un algoritmo de encriptacion correcto para MessageDigest");
             }
         }
         return curso;
@@ -489,6 +499,22 @@ public class ApiController {
             asignaturas.add(asignatura);
             profe.setAsignaturas(asignaturas); 
         }
+        
+        //Hay que guardar el profesor en el lado del asignaturas tambien.
+        if( asignatura.getProfesores() != null){
+            //Ya tiene cursos agregados.
+            if(!asignatura.getProfesores().contains(profe)){
+                asignatura.getProfesores().add(profe);     
+            }
+        }
+        else{
+            //El profesor no tiene ningun Curso.
+            ArrayList<Profesor> profesores = new ArrayList<Profesor>();
+            profesores.add(profe);
+            asignatura.setProfesores(profesores);
+        }
+        
+        
         asignaturaService.save(asignatura);
         profesorService.save(profe);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -504,7 +530,15 @@ public class ApiController {
     public List<Asignatura> getAsignaturas(@RequestParam Long cursoId) {
         Curso curso = cursoService.get(cursoId);
         return asignaturaService.getAll(AsignaturaSpecs.byCurso(curso));
-//        return asignaturaService.getAll();
+
+    }
+    
+    @GetMapping("asignaturasByCreador")
+    public List<Asignatura> getAsignaturasByCreador(@RequestParam Long cursoId, @RequestParam Long creadorId) {
+        Curso curso = cursoService.get(cursoId);
+        Profesor profe = profesorService.get(creadorId);
+        return asignaturaService.getAll(AsignaturaSpecs.byCurso(curso).and(AsignaturaSpecs.byCreador(profe)));
+
     }
     
     @GetMapping("cursos")
@@ -591,6 +625,9 @@ public class ApiController {
                 //documento encontrado, valido si la contraseña tambien coincide.
                 //en la base, esta la contraseña cifrada, por ende tengo que cifrar la password del front y comprarla con la del server
                 //System.out.println(persona.getClass());
+                if (persona.getPassword() == null){
+                    continue;
+                }
                 if (persona.getPassword().equals(cifrarClave(password))) {
                     char userType = '0'; // 0 para Tutor.
                     if( persona instanceof Profesor){
@@ -793,6 +830,13 @@ public class ApiController {
                 p.addProperty("tipo", "Pasapalabra");
                 plantillasJson.add(p);
             }
+            if (plantilla instanceof PlantillaGrilla) {
+                JsonObject p = new JsonObject();
+                p.addProperty("nombre", plantilla.getNombre());
+                p.addProperty("id", plantilla.getId());
+                p.addProperty("tipo", "Grilla");
+                plantillasJson.add(p);
+            }
         }
         return plantillasJson.toString();
     }
@@ -801,6 +845,16 @@ public class ApiController {
     public Plantilla getActividad(@RequestParam Long id) {
         Plantilla plantilla = (Plantilla) Hibernate.unproxy(plantillaService.get(id));
         return plantilla;
+    }
+    
+    @GetMapping("imagenGrilla")
+    public String getImagenGrilla(@RequestParam Long id) {
+        String imagen = null;
+        Plantilla plantilla = (Plantilla) Hibernate.unproxy(plantillaService.get(id));
+        if (plantilla instanceof PlantillaGrilla) {
+            imagen = new String(((PlantillaGrilla) plantilla).getImagen(), StandardCharsets.UTF_8);
+        }
+        return imagen;
     }
     
     @PostMapping("crearActividadPreguntas")
@@ -858,6 +912,27 @@ public class ApiController {
         }
         plantilla.setPuntajeMaximo(plantillaPasapalabraDto.getPreguntasPasapalabraDto().size());
         plantillaPasapalabraService.save(plantilla);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping("crearActividadGrilla")
+    public ResponseEntity<Long> crearActividadGrilla(@RequestBody PlantillaGrillaDto plantillaGrillaDto) {
+        PlantillaGrilla plantilla = new PlantillaGrilla();
+        Profesor profe = profesorService.get(plantillaGrillaDto.getCreadorId());
+        plantilla.setCreador(profe);
+        plantilla.setNombre(plantillaGrillaDto.getNombre());
+        plantilla.setImagen(plantillaGrillaDto.getImagen().getBytes());
+        plantilla.setCantidadFilas(plantillaGrillaDto.getCantidadFilas());
+        plantilla.setCantidadColumnas(plantillaGrillaDto.getCantidadColumnas());
+        for (CeldaGrillaDto cel : plantillaGrillaDto.getCeldasDto()) {
+            CeldaGrilla celda = new CeldaGrilla();
+            celda.setFila(cel.getFila());
+            celda.setColumna(cel.getColumna());
+            celda.setValorCorrecto(cel.getValorCorrecto());
+            plantilla.addCelda(celda);
+        }
+        plantilla.setPuntajeMaximo(plantillaGrillaDto.getCeldasDto().size());
+        plantillaGrillaService.save(plantilla);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

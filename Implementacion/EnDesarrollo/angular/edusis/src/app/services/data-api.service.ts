@@ -9,6 +9,7 @@ import { Curso } from '../models/curso';
 import { Asignatura } from '../models/asignatura';
 import { PlantillaPreguntas } from '../models/plantilla-preguntas';
 import { PlantillaPasapalabra } from '../models/plantilla-pasapalabra';
+import { PlantillaGrilla } from '../models/plantilla-grilla';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,7 @@ export class DataApiService {
   
 
   constructor(private http: HttpClient) {
-    this.urlBase = 'http://localhost:8090/api/';
+    this.urlBase = 'http://192.168.0.253:8090/api/';
   }
 
   public getTutorType() {
@@ -146,7 +147,7 @@ export class DataApiService {
   }
 
   eliminarAlumno(alumnoId: string): Promise<any> {
-    return this.http.delete(this.urlBase + 'eliminarAlumno', {params: { alumnoId } }).toPromise();
+    return this.http.delete(this.urlBase + 'eliminarAlumno', { params: { alumnoId } }).toPromise();
   }
 
 
@@ -204,6 +205,14 @@ export class DataApiService {
     return this.http
       .get(this.urlBase + 'asignaturas', {
         params: { cursoId: cursoId.toString() },
+      })
+      .toPromise();
+  }
+
+  getAsignaturasByCreador(cursoId: number, creadorId: number): Promise<any> {
+    return this.http
+      .get(this.urlBase + 'asignaturasByCreador', {
+        params: { cursoId: cursoId.toString(), creadorId: creadorId.toString() },
       })
       .toPromise();
   }
@@ -283,6 +292,12 @@ export class DataApiService {
       .toPromise();
   }
 
+  getImagenGrilla(id: string): Promise<any> {
+    return this.http
+      .get(this.urlBase + 'imagenGrilla', { params: { id }, responseType: 'text' })
+      .toPromise();
+  }
+
   crearActividadPreguntas(plantilla: PlantillaPreguntas): Promise<any> {
     return this.http.post(this.urlBase + 'crearActividadPreguntas', plantilla).toPromise();
   }
@@ -290,5 +305,10 @@ export class DataApiService {
   crearActividadPasapalabra(plantilla: PlantillaPasapalabra): Promise<any> {
     return this.http.post(this.urlBase + 'crearActividadPasapalabra', plantilla).toPromise();
   }
+
+  crearActividadaGrilla(plantilla: PlantillaGrilla): Promise<any> {
+    return this.http.post(this.urlBase + 'crearActividadGrilla', plantilla).toPromise();
+  }
+
 
 }

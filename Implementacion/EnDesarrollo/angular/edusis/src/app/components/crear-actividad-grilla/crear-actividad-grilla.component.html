@@ -1,0 +1,47 @@
+<section id="cursos" class="margin-top-90">
+  <div class="container">
+    <form *ngIf="paso === 1" name="formActividad" #formActividad="ngForm" (ngSubmit)="next(formActividad)">
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input [(ngModel)]="nombre" type="text" name="nombre" class="form-control" placeholder="Nombre" required autocomplete="off">
+        <label class="margin-top-16" for="file">Imagen</label>
+        <input type="file" accept="image/*" name="file" id="file" (change)="onFileChanged($event)" />
+      </div>
+      <button type="submit" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Siguiente</button>
+    </form>
+    <div *ngIf="paso === 2" name="formActividad2">
+      <div class="form-group">
+        <label for="cantidadFilas">Filas</label>
+        <input [(ngModel)]="cantidadFilas" type="tel" name="cantidadFilas" class="form-control" placeholder="Filas" required autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="cantidadColumnas">Columnas</label>
+        <input [(ngModel)]="cantidadColumnas" type="tel" name="cantidadColumnas" class="form-control" placeholder="Columnas" required autocomplete="off">
+      </div>
+      <button (click)="actualizar()" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Actualizar</button>
+      <div class="position-relative" [style.height.px]="height">
+        <img class="position-absolute" id="imagen-grilla" src="{{ this.imagen }}" (load)="calcularWidthHeight()" width="100%">
+        <table class="position-absolute" [style.width.px]="width" [style.height.px]="height">
+          <tr *ngFor="let fila of filas">
+            <td id="{{ fila }}-{{ columna }}" (click)="addCelda(fila, columna)" *ngFor="let columna of columnas"></td>
+          </tr>
+        </table>
+      </div>
+      <button type="button" (click)="save()" class="btn btn-personalizado btn-lg btn-block margin-top-16 margin-bottom-16">Finalizar</button>
+      <!--<div *ngFor="let pregunta of preguntas" class="margin-bottom-30">
+        <div class="form-group">
+          <label for="pregunta">Letra {{ pregunta.letra }}</label>
+          <input [(ngModel)]="pregunta.pregunta" type="text" name="pregunta" class="form-control" placeholder="Pregunta" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <input [(ngModel)]="pregunta.respuestaCorrecta" type="text" name="respuestaCorrecta" class="form-control" placeholder="Respuesta correcta" required autocomplete="off">
+        </div>
+        <div class="form-check">
+          <input [(ngModel)]="pregunta.empiezaCon" name="empiezaCon" type="checkbox" class="form-check-input">
+          <label class="form-check-label" for="empiezaCon">Empieza con</label>
+        </div>  
+      </div> 
+      <button type="button" (click)="save()" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Finalizar</button>-->
+    </div>
+  </div>
+</section>

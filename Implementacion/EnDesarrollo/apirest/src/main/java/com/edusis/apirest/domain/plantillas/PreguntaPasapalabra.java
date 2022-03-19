@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.edusis.apirest.domain;
+package com.edusis.apirest.domain.plantillas;
 
+import com.edusis.apirest.domain.plantillas.PlantillaPasapalabra;
 import com.edusis.apirest.generic.GenericEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Entity;

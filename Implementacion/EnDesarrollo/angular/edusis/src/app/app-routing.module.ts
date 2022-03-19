@@ -23,12 +23,17 @@ import { CrearActividadPasapalabraComponent } from './components/crear-actividad
 import { CursoAlumnoComponent } from './components/curso-alumno/curso-alumno.component';
 import { RealizacionTareaComponent } from './components/realizacion-tarea/realizacion-tarea.component';
 import { RealizacionPreguntasComponent } from './components/realizacion-preguntas/realizacion-preguntas.component';
-import { RealizacionPasapalabrasComponent } from './components/realizacion-pasapalabras/realizacion-pasapalabras.component';
+import { RealizacionPasapalabraComponent } from './components/realizacion-pasapalabra/realizacion-pasapalabra.component';
 import { HomeProfesorComponent } from './components/home-profesor/home-profesor.component';
 import { EstadisticasProfesorComponent } from './components/estadisticas-profesor/estadisticas-profesor.component';
 import { DocenteAuthGuard } from './guards/docente-auth.guard';
 import { TutorAuthGuard } from './guards/tutor-auth.guard';
 import { ConfiguracionTutorComponent } from './components/configuracion-tutor/configuracion-tutor.component';
+import { EstadisticasTareaComponent } from './components/estadisticas-tarea/estadisticas-tarea.component';
+import { EstadisticasCursoAlumnoComponent } from './components/estadisticas-curso-alumno/estadisticas-curso-alumno.component';
+import { VistaPreviaGrillaComponent } from './components/vista-previa-grilla/vista-previa-grilla.component';
+import { CrearActividadGrillaComponent } from './components/crear-actividad-grilla/crear-actividad-grilla.component';
+import { RealizacionGrillaComponent } from './components/realizacion-grilla/realizacion-grilla.component';
 
 const routes: Routes = [
 
@@ -45,13 +50,17 @@ const routes: Routes = [
   { path: 'editar-asignatura', component: EditarAsignaturaComponent, canActivate: [DocenteAuthGuard] },
   { path: 'crear-actividad', component: CrearActividadComponent, canActivate: [DocenteAuthGuard] },
   { path: 'crear-actividad-pasapalabra', component: CrearActividadPasapalabraComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'crear-actividad-grilla', component: CrearActividadGrillaComponent, canActivate: [DocenteAuthGuard] },
   { path: 'vista-previa-actividad', component: VistaPreviaActividadComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'vista-previa-grilla', component: VistaPreviaGrillaComponent, canActivate: [DocenteAuthGuard] },
   { path: 'vista-previa-pasapalabra', component: VistaPreviaPasapalabraComponent, canActivate: [DocenteAuthGuard] },
   { path: 'editar-tarea', component: EditarTareaComponent, canActivate: [DocenteAuthGuard] },
   { path: 'editar-detalle-multimedia', component: EditarDetalleMultimediaComponent, canActivate: [DocenteAuthGuard] },
   { path: 'editar-detalle-actividad', component: EditarDetalleActividadComponent, canActivate: [DocenteAuthGuard] },
   { path: 'home-profesor', component: HomeProfesorComponent, canActivate: [DocenteAuthGuard] },
   { path: 'estadisticas-profesor', component: EstadisticasProfesorComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'estadisticas-tarea', component: EstadisticasTareaComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'estadisticas-curso-alumno', component: EstadisticasCursoAlumnoComponent, canActivate: [DocenteAuthGuard] },
 
   // Por ahora docentes, luego admin...
   { path: 'editar-emoji', component: EditarEmojiComponent, canActivate: [DocenteAuthGuard] },
@@ -64,7 +73,9 @@ const routes: Routes = [
   { path: 'curso-alumno', component: CursoAlumnoComponent, canActivate: [TutorAuthGuard] },
   { path: 'realizacion-tarea', component: RealizacionTareaComponent, canActivate: [TutorAuthGuard] },
   { path: 'realizacion-preguntas', component: RealizacionPreguntasComponent, canActivate: [TutorAuthGuard] },
-  { path: 'realizacion-pasapalabras', component: RealizacionPasapalabrasComponent, canActivate: [TutorAuthGuard] },
+  { path: 'configuracion-tutor', component: ConfiguracionTutorComponent, canActivate: [TutorAuthGuard] },
+  { path: 'realizacion-pasapalabra', component: RealizacionPasapalabraComponent, canActivate: [TutorAuthGuard] },
+  { path: 'realizacion-grilla', component: RealizacionGrillaComponent, canActivate: [TutorAuthGuard] },
   { path: 'configuracion-tutor', component: ConfiguracionTutorComponent, canActivate: [TutorAuthGuard]},
 
 ];

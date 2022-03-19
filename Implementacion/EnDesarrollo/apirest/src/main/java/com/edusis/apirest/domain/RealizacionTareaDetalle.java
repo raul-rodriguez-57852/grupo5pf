@@ -6,6 +6,7 @@
 
 package com.edusis.apirest.domain;
 
+import com.edusis.apirest.domain.plantillas.Plantilla;
 import com.edusis.apirest.generic.GenericEntity;
 import com.sun.istack.NotNull;
 import javax.persistence.Entity;

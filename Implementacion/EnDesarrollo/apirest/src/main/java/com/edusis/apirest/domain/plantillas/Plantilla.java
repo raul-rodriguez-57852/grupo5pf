@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 
-package com.edusis.apirest.domain;
+package com.edusis.apirest.domain.plantillas;
 
+import com.edusis.apirest.domain.Profesor;
 import com.edusis.apirest.generic.GenericEntity;
 import com.edusis.apirest.utils.AssertUtils;
 import com.sun.istack.NotNull;
@@ -28,6 +29,7 @@ public class Plantilla extends GenericEntity {
 
     public static final String DTYPE_PREGUNTAS = "PREGUNTAS";
     public static final String DTYPE_PASAPALABRA = "PASAPALABRA";
+    public static final String DTYPE_GRILLA = "GRILLA";
 
     @NotNull
     private String nombre;

@@ -54,6 +54,12 @@ public abstract class Persona extends GenericEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar ultimoAcceso;
     
+    // CUSTOM
+    
+    public String getNombreCompleto(){
+        return nombre.concat(" " + apellido);
+    }
+    
      // GETTERS && SETTERS 
 
     public Calendar getUltimoAcceso() {

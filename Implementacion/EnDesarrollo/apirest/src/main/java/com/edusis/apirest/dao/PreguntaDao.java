@@ -6,7 +6,7 @@
 
 package com.edusis.apirest.dao;
 
-import com.edusis.apirest.domain.Pregunta;
+import com.edusis.apirest.domain.plantillas.Pregunta;
 import com.edusis.apirest.generic.GenericDao;
 
 /**

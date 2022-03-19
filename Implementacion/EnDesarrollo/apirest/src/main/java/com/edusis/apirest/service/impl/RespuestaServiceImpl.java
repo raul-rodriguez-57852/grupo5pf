@@ -7,7 +7,7 @@
 package com.edusis.apirest.service.impl;
 
 import com.edusis.apirest.dao.RespuestaDao;
-import com.edusis.apirest.domain.Respuesta;
+import com.edusis.apirest.domain.plantillas.Respuesta;
 import com.edusis.apirest.generic.GenericDao;
 import com.edusis.apirest.generic.GenericServiceImpl;
 import com.edusis.apirest.service.RespuestaService;

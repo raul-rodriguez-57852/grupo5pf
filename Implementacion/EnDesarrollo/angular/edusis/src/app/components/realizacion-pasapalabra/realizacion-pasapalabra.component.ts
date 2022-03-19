@@ -3,11 +3,11 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { DataApiService } from "src/app/services/data-api.service";
 
 @Component({
-  selector: "app-realizacion-pasapalabras",
-  templateUrl: "./realizacion-pasapalabras.component.html",
-  styleUrls: ["./realizacion-pasapalabras.component.css"],
+  selector: "app-realizacion-pasapalabra",
+  templateUrl: "./realizacion-pasapalabra.component.html",
+  styleUrls: ["./realizacion-pasapalabra.component.css"],
 })
-export class RealizacionPasapalabrasComponent {
+export class RealizacionPasapalabraComponent {
   @Output() finalizado: EventEmitter<number> = new EventEmitter<number>();
 
   id = null;

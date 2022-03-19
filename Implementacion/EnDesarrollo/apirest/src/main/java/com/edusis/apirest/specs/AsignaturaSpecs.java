@@ -6,6 +6,7 @@
 package com.edusis.apirest.specs;
 
 import com.edusis.apirest.domain.Curso;
+import com.edusis.apirest.domain.Profesor;
 import com.edusis.apirest.domain.QAsignatura;
 import com.querydsl.core.types.dsl.BooleanExpression;
 
@@ -19,5 +20,9 @@ public class AsignaturaSpecs {
     
     public static BooleanExpression byCurso(Curso curso){
         return A.curso.eq(curso);
+    }
+    
+    public static BooleanExpression byCreador(Profesor profe){
+        return A.creador.eq(profe);
     }
 }

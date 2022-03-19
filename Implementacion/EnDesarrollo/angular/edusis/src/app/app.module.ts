@@ -31,14 +31,21 @@ import { YouTubePlayerModule } from "@angular/youtube-player";
 import { CursoAlumnoComponent } from './components/curso-alumno/curso-alumno.component';
 import { RealizacionTareaComponent } from './components/realizacion-tarea/realizacion-tarea.component';
 import { RealizacionPreguntasComponent } from './components/realizacion-preguntas/realizacion-preguntas.component';
-import { RealizacionPasapalabrasComponent } from './components/realizacion-pasapalabras/realizacion-pasapalabras.component';
+import { RealizacionPasapalabraComponent } from './components/realizacion-pasapalabra/realizacion-pasapalabra.component';
 import { HomeProfesorComponent } from './components/home-profesor/home-profesor.component';
 import { CallbackPipe } from "./callBackPipe";
 import { ConfiguracionTutorComponent } from "./components/configuracion-tutor/configuracion-tutor.component";
 import { NgxSpinnerModule } from "ngx-spinner";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserAnimationsModule, NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { InterceptorService } from "./services/interceptor.service";
 import { EstadisticasProfesorComponent } from './components/estadisticas-profesor/estadisticas-profesor.component';
+import { EstadisticasTareaComponent } from './components/estadisticas-tarea/estadisticas-tarea.component';
+import { PipeList } from "./filterPipe";
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { EstadisticasCursoAlumnoComponent } from './components/estadisticas-curso-alumno/estadisticas-curso-alumno.component';
+import { CrearActividadGrillaComponent } from './components/crear-actividad-grilla/crear-actividad-grilla.component';
+import { VistaPreviaGrillaComponent } from './components/vista-previa-grilla/vista-previa-grilla.component';
+import { RealizacionGrillaComponent } from './components/realizacion-grilla/realizacion-grilla.component';
 
 
 
@@ -69,12 +76,17 @@ import { EstadisticasProfesorComponent } from './components/estadisticas-profeso
     CursoAlumnoComponent,
     RealizacionTareaComponent,
     RealizacionPreguntasComponent,
-    RealizacionPasapalabrasComponent,
+    RealizacionPasapalabraComponent,
     HomeProfesorComponent,
     CallbackPipe,
     ConfiguracionTutorComponent,
     EstadisticasProfesorComponent,
-
+    EstadisticasTareaComponent,
+    PipeList,
+    EstadisticasCursoAlumnoComponent,
+    CrearActividadGrillaComponent,
+    VistaPreviaGrillaComponent,
+    RealizacionGrillaComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,7 +96,9 @@ import { EstadisticasProfesorComponent } from './components/estadisticas-profeso
     YouTubePlayerModule,
     NgbModule,
     NgxSpinnerModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MDBBootstrapModule.forRoot(),
+    NoopAnimationsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
