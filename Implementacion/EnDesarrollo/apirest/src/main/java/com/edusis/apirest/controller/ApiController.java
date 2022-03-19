@@ -450,7 +450,6 @@ public class ApiController {
                     return curso.getId();
                 }
             }
-
             //no encontre ningun curso con dicho codigo. devuelvo -1
             return Long.valueOf(-1);
         }
@@ -563,7 +562,15 @@ public class ApiController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+   
+    @PostMapping("validarTutor")
+    public Boolean validarTutor(@RequestParam Long tutorId, @RequestParam String password) {
+        Tutor tutor = tutorService.get(tutorId);
+        if (tutor == null || !tutor.getPassword().equals(cifrarClave(password))) {
+            return false;
+        }
+            return true;
+    }
     
     @PostMapping("inicioSesion")
     public String inicioSesion(@RequestParam String documento, @RequestParam String password) {
@@ -655,13 +662,11 @@ public class ApiController {
         // Tengo que comparar la sesion que recibo con alguna de la base, si coincide, entonces devuelvo el usuario.
         //Voy a obtener todas las sesiones activas de la base.
         List<Sesion> listado_sesiones = (ArrayList<Sesion>) sesionService.getAll();
-
         //obtengo una lista con solo los codigos de mis sesiones en la base.
         //List<String> listado_sesiones_ids = listado_sesiones.stream().map(x -> x.getSession_id()).collect(Collectors.toList());
         if (listado_sesiones.isEmpty()) {
             //no hay sesiones en la base
             return null;
-
         } else {
             //recorro las sesiones
             for (Sesion sesion : listado_sesiones) {
@@ -671,11 +676,8 @@ public class ApiController {
                     Long user_id = getPersonaByDocumento(doc);
                     return user_id;
                 }
-
             }
-
         }
-
         return null;
     }
     

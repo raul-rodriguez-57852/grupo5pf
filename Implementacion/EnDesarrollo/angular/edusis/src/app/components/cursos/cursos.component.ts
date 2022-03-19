@@ -24,7 +24,7 @@ export class CursosComponent implements OnInit {
 
   async ngOnInit() {
     this.id_profesor = this.dataApiService.getUsuario()
-      if(this.id_profesor == null || this.dataApiService.getUserType() != 1)
+      if(this.id_profesor == null || this.dataApiService.getUserType() != this.dataApiService.getProfesorType())
       {
         this.router.navigate(['login']);
       }
@@ -142,16 +142,6 @@ export class CursosComponent implements OnInit {
 
 
   eliminar() {
-    /*this.dataApiService.elimi(this.id.toString()).then(
-      (respuesta) => {
-        this.recargar();
-      }
-    ).catch(
-      (respuesta) => {
-        this.mensaje = 'Error al eliminar el curso.';
-        document.getElementById('open-modal').click();
-      }
-    );*/
   }
 
   irACurso(id: number) {
@@ -159,7 +149,6 @@ export class CursosComponent implements OnInit {
   }
 
   recargar() {
-    // window.location.reload();
   }
 
 

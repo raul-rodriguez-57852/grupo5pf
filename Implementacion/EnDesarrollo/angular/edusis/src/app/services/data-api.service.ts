@@ -13,16 +13,30 @@ import { PlantillaPasapalabra } from '../models/plantilla-pasapalabra';
 @Injectable({
   providedIn: 'root',
 })
+  
+
 export class DataApiService {
   urlBase: string;
   urlTarea: string;
   private usuario = null;
   private userType = null; //0 si es tutor e 1 si es profesor y 2 si es alumno.
+  
 
   constructor(private http: HttpClient) {
     this.urlBase = 'http://localhost:8090/api/';
   }
 
+  public getTutorType() {
+    return '0';
+  }
+
+  public getProfesorType() {
+    return '1';
+  }
+
+  public getAlumnoType() {
+    return '2';
+  }
 
   //#######     USUARIO LOGGEADO ######
   public getUsuario() {
@@ -31,9 +45,6 @@ export class DataApiService {
 
   public getUserType() {
     return this.userType;
-    // 0 tutor
-    // 1 profesor
-    // 2 alumno
   }
 
   public setUser(id: String, type: String) {
@@ -91,6 +102,13 @@ export class DataApiService {
     return this.http.get(this.urlBase + 'tutorByAlumno', { params: { idAlumno } }).toPromise();
   }
 
+  validarTutor(tutorId: string, password: string): Promise<any> {
+    const postData = new FormData();
+    postData.append('tutorId', tutorId.toString());
+    postData.append('password', password.toString());
+    return this.http.post(this.urlBase + 'validarTutor', postData).toPromise();
+  }
+
   //#######     DOCUMENTO      #########  
 
   getTiposDoc(): Promise<any> {
@@ -127,7 +145,7 @@ export class DataApiService {
     return this.http.get(this.urlBase + 'getCursosDeAlumno', { params: { idAlumno } }).toPromise();
   }
 
-  eliminarAlumno(alumnoId: string): Promise<any>{
+  eliminarAlumno(alumnoId: string): Promise<any> {
     return this.http.delete(this.urlBase + 'eliminarAlumno', {params: { alumnoId } }).toPromise();
   }
 

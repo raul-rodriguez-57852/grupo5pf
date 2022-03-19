@@ -24,13 +24,13 @@
      
       <div  class="text-center" style="color: white;">
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="esCuentaTutor" (click)="cambiarTipoCuenta('TUTOR')" id="flexRadioDefault2" checked>
+          <input class="form-check-input" type="radio" name="esCuentaTutor" (click)="cambiarTipoCuenta('0')" id="flexRadioDefault2" checked>
           <label class="form-check-label" for="flexRadioDefault2">
             Registrarme como tutor
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="esCuentaTutor" (click)="cambiarTipoCuenta('DOCENTE')" id="flexRadioDefault1">
+          <input class="form-check-input" type="radio" name="esCuentaTutor" (click)="cambiarTipoCuenta('1')" id="flexRadioDefault1">
           <label class="form-check-label" for="flexRadioDefault1">
             Registrarme como docente
           </label>
@@ -146,6 +146,7 @@
                 type="text"
                 class="input focus"
                 name="email"
+                autocomplete="off"
               />
             </div>
           </div>
@@ -165,6 +166,7 @@
                 [ngModel]="esCuentaTutor ? tutor.password : profesor.password"
                 (ngModelChange)="esCuentaTutor? (tutor.password = $event): (profesor.password = $event)"
                 name="password"
+                autocomplete="off"
               />
             </div>
           </div>
@@ -178,50 +180,3 @@
       </div>
     </div>
   </section>
-  <!-- Modal -->
-  <button
-    id="open-modal"
-    [hidden]="true"
-    data-toggle="modal"
-    data-target="#informacion"
-  >
-    Open Modal
-  </button>
-  <div
-    class="modal fade"
-    id="informacion"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ludikon</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          {{ mensaje }}
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            data-dismiss="modal"
-            class="btn btn-personalizado"
-            (click)="registroExitoso ? irLogIn() : registroExitoso = false"
-          >
-            Aceptar
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  

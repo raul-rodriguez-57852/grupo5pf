@@ -22,7 +22,6 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     //this.recargar();
-    
   }
 
   cerrarSesion() {
@@ -34,7 +33,7 @@ export class NavbarComponent implements OnInit {
     this.esProfesor = false;
     this.router.navigate(['']);
   }
-  
+    
   async recargar() {
     
     //Busco en cookies, para ver si estsa el usuario loggeado, si esta, agarro sus datos, 
@@ -79,8 +78,6 @@ export class NavbarComponent implements OnInit {
               }
             );
             }
-        
       }
-
   }
 }
