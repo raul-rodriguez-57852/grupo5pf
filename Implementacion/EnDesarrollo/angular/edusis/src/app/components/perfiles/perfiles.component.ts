@@ -91,7 +91,7 @@ export class PerfilesComponent implements OnInit {
       this.dataApiService.ingresoAlumno(this.perfilSeleccionado.id.toString(), pwd).then(
         (respuesta) => {
           this.mensaje = 'Iniciaste sesión correctamente';
-          this.dataApiService.setUser(thisId,'2'); //LE pongo un 2 porque 0 es para tutor, 1 para profesores, y 2 para alumnos.
+          this.dataApiService.setUser(thisId, this.dataApiService.getAlumnoType());
           this.router.navigate(['home-alumno'], {state: {id: thisId}});
         }
       ).catch(

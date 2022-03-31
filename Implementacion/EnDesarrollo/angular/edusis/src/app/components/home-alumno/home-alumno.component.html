@@ -13,7 +13,7 @@
 
     <div class="list-group list-group-flush margin-bottom-16" style="border-radius: 10px;">
       <li class="list-group-item d-flex justify-content-between align-items-center">
-        <strong style="align-content: center;">Cursos</strong>
+        <strong style="align-content: center;">Mis Cursos</strong>
       </li>
       <li *ngFor="let curso of cursos" class="list-group-item d-flex justify-content-between align-items-center">
         <div (click)="irACurso(curso.id)"><img style="height: 31px; margin-right: 10px;" src="{{ curso.iconoURL }}">{{ curso.nombre }}</div>
@@ -32,28 +32,3 @@
       </div>
     </div>
   </div>
-
-<!-- Modal -->
-<button id="open-modal" [hidden]="true" data-toggle="modal" data-target="#informacion">Open Modal</button>
-<div class="modal fade" id="informacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Ludikon</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        {{ mensaje }}
-      </div>
-      <div class="modal-footer" *ngIf=!esregistro>
-        <button type="button" (click)="recargar()" data-dismiss="modal" class="btn btn-personalizado">Aceptar</button>
-      </div>
-      <div class="modal-footer" *ngIf=esregistro>
-        <button type="button" data-dismiss="modal" (click)="confirmarRegistro()" class="btn btn-personalizado">Unirme</button>
-        <button type="button" data-dismiss="modal" class="btn btn-personalizado" >Cancelar</button>
-      </div>
-    </div>
-  </div>
-</div>

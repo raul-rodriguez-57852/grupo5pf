@@ -4,6 +4,7 @@ import { Alumno } from '../../models/alumno';
 import { Curso } from '../../models/curso';
 import { Router, UrlHandlingStrategy, ActivatedRoute } from '@angular/router';
 import { CompileStylesheetMetadata } from '@angular/compiler';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-home-alumno',
@@ -70,9 +71,12 @@ export class HomeAlumnoComponent implements OnInit {
         this.esregistro = false;
         //Checkeamos que halla ingresado un codigo de curso
         this.codigoCurso = (<HTMLInputElement>document.getElementById('InputCodigoCurso')).value.toString();
-        if(this.codigoCurso == ''){
-            this.mensaje = "Debes ingresar un codigo de invitacion a curso!"
-            document.getElementById('open-modal').click();
+        if(this.codigoCurso == '') {
+            Swal.fire(
+                'Upss',
+                'Recuerda que debes ingresar un codigo para unirte al curso',
+                'warning'
+            )
             return;
         }
         
@@ -83,11 +87,14 @@ export class HomeAlumnoComponent implements OnInit {
             }
         );
 
-        if (this.chek_codigo == -1){
-            this.mensaje = "Lo siento, curso no encontrado!";
+        if (this.chek_codigo == -1) {
+            Swal.fire(
+                'Upss',
+                'No encontramos el curso que deseas',
+                'warning'
+            );
             //Vaciamos el input.
             (<HTMLInputElement>document.getElementById('InputCodigoCurso')).value = '';
-            document.getElementById('open-modal').click();
             return;
         }
         
@@ -98,24 +105,38 @@ export class HomeAlumnoComponent implements OnInit {
                 this.curso = respuesta;
                 this.esregistro = true;
             }
-        ).catch(() =>{
-            this.mensaje = "Error al buscar el curso!";
+        ).catch(() => {
+            Swal.fire(
+                'Upss',
+                'Algo salio mal :(',
+                'error'
+            );
             //Vaciamos el input.
             (<HTMLInputElement>document.getElementById('InputCodigoCurso')).value = '';
-            document.getElementById('open-modal').click();
+            
         });
-        this.mensaje = "¡Curso Encontrado! \nNombre del curso: " + this.curso.nombre + '\n¿Desea unirse al curso?';
-        document.getElementById('open-modal').click();
-    
+        // Agregar nombre al curso en popup
+        Swal.fire({
+            title: 'Encontramos tu curso!',
+            text: "Deseas unirte a este curso?",
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonColor: '#a5dc86',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, Quiero unirme!',
+            cancelButtonText: 'Cancelar',
+            reverseButtons: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+                this.confirmarRegistro();
+            }
+          })
     }
 
     getAllCursos(){
-        //Mostrar todos los cursos del alumno.
-        console.log('Buscando todos los cursos del alumno!');
         this.dataApiService.getCursosDeAlumno(this.alumnoID.toString()).then(
             (respuesta) => {
                 this.cursos = respuesta;
-                console.log("Cursos: \n", this.cursos);
             }
         )
     }
@@ -125,28 +146,31 @@ export class HomeAlumnoComponent implements OnInit {
     }
 
 
-    confirmarRegistro(){
-        console.log('Estoy en confirmar registro \n check_codigo= ',this.chek_codigo);
-        if(this.chek_codigo != -1){
-            console.log('Entro en el if de check_codigo != -1 /n llamando a agregarAlumnoACurso');
+    confirmarRegistro() {
+        if(this.chek_codigo != -1) {
             this.dataApiService.agregarAlumnoACurso(this.alumnoID.toString(), this.curso.id.toString()).then(
                 (respuesta) => {
                   this.recargar();
-                    this.mensaje = "Te has unido correctamente al curso.";
+                  Swal.fire(
+                    'Felicitaciones!',
+                    'Ya formas parte del curso!',
+                    'success'
+                    );
                     this.esregistro = false;
-                    document.getElementById('open-modal').click();
                 }
             )
             .catch(() =>{
-                this.mensaje = "Se produjo un error intentando registrarse al curso.";
+                Swal.fire(
+                    'Upss',
+                    'Algo salio mal al registrarse al curso :(',
+                    'error'
+                );
                 this.esregistro = false;
-                document.getElementById('open-modal').click();
             });    
         }
     }
 
     recargar() {
-      console.log('ENTRÓ');
       this.router.navigate(['home-alumno'], {state: {id: this.alumnoID}});
     }
 }

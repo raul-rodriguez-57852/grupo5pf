@@ -6,6 +6,7 @@ import { PasswordEmoji } from '../../models/password-emoji';
 import { Tutor } from 'src/app/models/tutor';
 import { Router } from '@angular/router';
 import { Console } from 'console';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-editar-alumno',
@@ -94,7 +95,6 @@ export class EditarAlumnoComponent implements OnInit {
     else{
       var idtutor = this.dataApiService.getUsuario();
     }
-    console.log('Este es el tutor id: ', idtutor);
     this.alumno.tutorId = idtutor;
     const pwd = new PasswordEmoji();
     pwd.emoji1Id = Number(this.emojisSeleccionados[0].id);
@@ -119,16 +119,22 @@ export class EditarAlumnoComponent implements OnInit {
         break;
       }
     }
-    console.log(this.alumno);
     this.dataApiService.guardarAlumno(this.alumno).then(
       (respuesta) => {
-        this.mensaje = 'Alumno guardado con éxito.';
-        document.getElementById('open-modal').click();
+        Swal.fire(
+          this.alumno.nombre,
+          'Creado con exito! :)',
+          'success'
+        );
+        this.irPerfiles();
       }
     ).catch(
       (respuesta) => {
-        this.mensaje = 'Error al guardar.';
-        document.getElementById('open-modal').click();
+        Swal.fire(
+          this.alumno.nombre,
+          'No se pudo crear ;(',
+          'error'
+        );
       }
     );
   }

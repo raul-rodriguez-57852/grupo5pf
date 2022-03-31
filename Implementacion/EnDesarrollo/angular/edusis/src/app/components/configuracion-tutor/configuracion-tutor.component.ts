@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { DataApiService } from '../../services/data-api.service';
 import { Router } from '@angular/router';
 import { Alumno } from 'src/app/models/alumno';
-import swal from 'sweetalert';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -51,7 +50,10 @@ import Swal from 'sweetalert2';
       const { value: password } = await Swal.fire({
         showCancelButton: true,
         cancelButtonColor: '#d33',
-        title: 'Valide su identidad',
+        title: 'Guau! digo, Quien eres?',
+        imageUrl: '\\assets\\img\\dogGuard.png',
+        imageWidth: 300,
+        imageHeight: 385,
         input: 'password',
         inputLabel: 'Contraseña',
         inputPlaceholder: 'Ingrese su contraseña',
@@ -69,15 +71,20 @@ import Swal from 'sweetalert2';
       if (password) {
         var result =  await this.validarTutor(password);
         if(result) {
-            swal('Acceso Consedido :)','','success');
+            Swal.fire('Bienvenido :)','','success');
             return;
         } else {
-            await swal('Acceso Denegado :(','','error');
+            await Swal.fire({
+              title: 'Grrr! No te conozco ;(',
+              imageUrl: '\\assets\\img\\dogGuardAngry.png',
+              imageWidth: 300,
+              imageHeight: 385
+            });
             this.requestPasswordPopUp();
         }
       } else {
-        await swal('Ingrese una contraseña','','warning');
-      this.requestPasswordPopUp();
+        await Swal.fire('Ingresa tu contraseña','','warning');
+        this.requestPasswordPopUp();
       }
     }
     
@@ -112,6 +119,8 @@ import Swal from 'sweetalert2';
         'Dec': "diciembre",
      };
        let userDate = new Date(fecha).toString();
+       //ADAPT IT TO OUR LOCAL TIME ZONE
+       delta = delta - 3 * hour;
        if (fecha == null) {
         return this.alumnoLastConnection = 'Nunca ha ingresado a la plataforma.';
        }
@@ -173,7 +182,8 @@ import Swal from 'sweetalert2';
             'Alumno Eliminado Excitosamente!',
             alumnoNombre + ' ha sido eliminado',
             'success'
-          )
+          );
+          this.getAlumnos();
         }
       })
     }
