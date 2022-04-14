@@ -42,6 +42,19 @@
           ><i class="fa fa-users"></i> Perfiles</a
         >
       </li>
+
+      <!-- <*ngIf="esAlumno"> -->
+
+      <li
+        *ngIf="esTutor"
+        class="nav-item"
+        data-toggle="collapse"
+        data-target=".navbar-collapse.show"
+      >
+        <a class="nav-link" routerLink="/recompensas"
+          ><i class="fa fa-star"></i> Recompensas</a
+        >
+      </li>
       <li
         *ngIf="esTutor"
         class="nav-item"

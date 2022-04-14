@@ -28,7 +28,7 @@ export class CursoAlumnoComponent implements OnInit {
     private router: Router,
     private dataApiService: DataApiService,
     private dataTareaService: DataTareaService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.cursoId =
@@ -44,7 +44,7 @@ export class CursoAlumnoComponent implements OnInit {
       this.nombre = res.nombre;
       this.urlImagen = res.iconoURL;
     });
-    
+
   }
 
   getAll() {
@@ -53,11 +53,11 @@ export class CursoAlumnoComponent implements OnInit {
       console.log(this.asignaturas);
       this.dataTareaService.getTareas(this.cursoId).then((tareas) => {
         this.tareas = tareas;
-        
+
         console.log(this.tareas);
         this.dataTareaService.getRealizaciones(this.cursoId, this.dataApiService.getUsuario()).then((realizaciones) => {
           realizaciones.forEach(element => {
-            if(element.puntaje != null){
+            if (element.puntaje != null) {
               element.puntaje = parseInt(element.puntaje);
             }
           });
@@ -66,8 +66,8 @@ export class CursoAlumnoComponent implements OnInit {
           this.collectionSize = this.tareasPuntaje.length;
           console.log(this.tareasPuntaje);
           this.imagenAAsignatura();
-        });    
-      });  
+        });
+      });
     });
   }
 
@@ -87,12 +87,12 @@ export class CursoAlumnoComponent implements OnInit {
   }
 
 
-  volverACursos(){
-    this.router.navigate(['home-alumno'], {state: {id: this.dataApiService.getUsuario()}});
+  volverACursos() {
+    this.router.navigate(['home-alumno'], { state: { id: this.dataApiService.getUsuario() } });
   }
 
-  onAsignaturaFilter(){
-    if(this.asignaturaFiltro == null){
+  onAsignaturaFilter() {
+    if (this.asignaturaFiltro == null) {
       this.tareasFiltradas = this.tareasPuntaje;
       this.collectionSize = this.tareasFiltradas.length;
       return;

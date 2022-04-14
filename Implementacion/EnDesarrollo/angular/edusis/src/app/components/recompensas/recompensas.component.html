@@ -1,0 +1,63 @@
+<section id="home-alumno">
+  <div class="fondo position-fixed"></div>
+  <div class="container" style="padding-top: 90px">
+    <div
+      class="col-sm-12 d-flex justify-content-center"
+      style="margin-bottom: 10px"
+    >
+      <img class="imagen-avatar" src="{{ alumno.avatarUrl }}" />
+    </div>
+    <div class="col-sm-12 d-flex justify-content-center">
+      <div class="nombre">
+        {{ alumno.nombre }}
+      </div>
+    </div>
+    <div
+      class="col-sm-12 d-flex justify-content-center"
+      style="margin-bottom: 20px"
+    >
+      <div class="nombre">
+        {{ alumno.saldoEstrellas }}
+      </div>
+      <img src="/assets/img/star.png" class="star" />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="container">
+      <div class="row">
+        <div
+          class="col-3 no-padding d-flex justify-content-center"
+          style="margin-bottom: 15px"
+          *ngFor="let addon of addons"
+        >
+          <div class="btn-check">
+            <button
+              type="button"
+              (click)="selectAddon(addon)"
+              class="btn btn-lg btn-light"
+              [ngClass]="{
+                'btn-comprado': listRecompensasComprada.includes(addon.id),
+                'btn-equipado': listRecompensasEquipada.includes(addon.id)
+              }"
+            >
+              <img src="{{ addon.iconoURL }}" class="imagen-recompensa" />
+            </button>
+            <i
+              [ngClass]="{
+                'fa fa-check': listRecompensasEquipada.includes(addon.id)
+              }"
+            ></i>
+            <br />
+            <div class="nombre">
+              {{ addon.costo }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <button type="button" (click)="cargarAddons()" class="btn btn-lg btn-light">
+    Cargar addons
+  </button> -->
+</section>

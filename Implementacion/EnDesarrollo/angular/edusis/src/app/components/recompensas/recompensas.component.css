@@ -1,3 +1,10 @@
+.fondo {
+  z-index: -1;
+  background-color: #13334c;
+  height: 100%;
+  width: 100%;
+}
+
 .imagen-avatar {
   width: 180px;
   height: 180px;
@@ -20,15 +27,38 @@
   color: white;
 }
 
-.fondo {
-  z-index: -1;
-  background-color: #13334c;
-  height: 100%;
-  width: 100%;
+.imagen-recompensa {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
 }
 
 .star {
   height: 3em;
   vertical-align: bottom;
   margin-top: 10px;
+}
+
+.btn-comprado {
+  border-radius: 3px;
+  border: 5px solid #f5db77;
+}
+
+.btn-equipado {
+  border-radius: 3px;
+  border: 5px solid green;
+}
+
+.btn-check {
+  position: relative;
+  display: inline-block;
+}
+
+.btn-check .fa-check {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  color: green;
+  font-weight: bolder;
+  font-size: 30px;
 }

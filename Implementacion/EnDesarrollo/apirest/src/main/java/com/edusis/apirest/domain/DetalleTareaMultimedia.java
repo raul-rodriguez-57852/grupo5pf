@@ -6,7 +6,9 @@
 
 package com.edusis.apirest.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 /**
@@ -21,7 +23,11 @@ public class DetalleTareaMultimedia extends DetalleTarea {
     
     private String linkYoutube;
     
-    // Resta agregar video y imagen
+    @Lob
+    @JsonIgnore
+    private byte[] imagen;
+    
+    // GETTERS & SETTERS
 
     public String getDescripcion() {
         return descripcion;
@@ -39,6 +45,12 @@ public class DetalleTareaMultimedia extends DetalleTarea {
         this.linkYoutube = linkYoutube;
     }
     
-    
+    public byte[] getImagen() {
+        return imagen;
+    }
 
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
+    }
+     
 }

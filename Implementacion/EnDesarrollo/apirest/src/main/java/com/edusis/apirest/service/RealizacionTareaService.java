@@ -6,7 +6,9 @@
 
 package com.edusis.apirest.service;
 
+import com.edusis.apirest.domain.Alumno;
 import com.edusis.apirest.domain.RealizacionTarea;
+import com.edusis.apirest.domain.Tarea;
 import com.edusis.apirest.generic.GenericService;
 
 /**
@@ -15,5 +17,7 @@ import com.edusis.apirest.generic.GenericService;
  */
 
 public interface RealizacionTareaService extends GenericService<RealizacionTarea, Long> {
+    
+    Integer getEstrellasGanadas(Alumno alumno, Tarea tarea, RealizacionTarea realizacion);
 
 }

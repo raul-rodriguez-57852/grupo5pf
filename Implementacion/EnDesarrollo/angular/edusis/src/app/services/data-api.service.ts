@@ -24,7 +24,7 @@ export class DataApiService {
   
 
   constructor(private http: HttpClient) {
-    this.urlBase = 'http://192.168.0.253:8090/api/';
+    this.urlBase = 'http://localhost:8090/api/';
   }
 
   public getTutorType() {
@@ -310,5 +310,30 @@ export class DataApiService {
     return this.http.post(this.urlBase + 'crearActividadGrilla', plantilla).toPromise();
   }
 
+  cargarAddons(): Promise<any> {
+    return this.http.post(this.urlBase + 'cargarAddons', null).toPromise();
+  }
+
+  getAddons(): Promise<any> {
+    return this.http.get(this.urlBase + 'addons').toPromise();
+  }
+
+  comprarAddon(idAlumno: string, idAddon: string): Promise<any> {
+    const postData = new FormData();
+    postData.append('idAlumno', idAlumno);
+    postData.append('idAddon', idAddon)
+    return this.http.post(this.urlBase + 'comprarAddon', postData).toPromise();
+  }
+
+  equiparDesequiparAddon(idAlumno: string, idAddon: string): Promise<any> {
+    const postData = new FormData();
+    postData.append('idAlumno', idAlumno);
+    postData.append('idAddon', idAddon)
+    return this.http.post(this.urlBase + 'equiparDesequiparAddon', postData).toPromise();
+  }
+
+  getMapRecompensasAlumno(idAlumno: string): Promise<any> {
+    return this.http.get(this.urlBase + 'mapRecompensasAlumno', { params: { idAlumno } }).toPromise();
+  }
 
 }

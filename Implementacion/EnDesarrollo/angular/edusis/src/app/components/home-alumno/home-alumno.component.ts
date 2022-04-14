@@ -7,15 +7,15 @@ import { CompileStylesheetMetadata } from '@angular/compiler';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-home-alumno',
-  templateUrl: './home-alumno.component.html',
-  styleUrls: ['./home-alumno.component.css']
+    selector: 'app-home-alumno',
+    templateUrl: './home-alumno.component.html',
+    styleUrls: ['./home-alumno.component.css']
 })
 
 export class HomeAlumnoComponent implements OnInit {
 
-    alumno: Alumno = { id: null, nombre: null, apellido: null, documento: null, tipoDocumento: null, fechaNacimiento: null, avatarUrl: null, passwordEmoji: null, tutorId: null};
-    curso: Curso = {id: null, nombre: null, iconoURL: null, creadorId: null, codigo:null }
+    alumno: Alumno = { id: null, nombre: null, apellido: null, documento: null, tipoDocumento: null, fechaNacimiento: null, avatarUrl: null, passwordEmoji: null, tutorId: null, saldoEstrellas: null, mapRecompensas: null };
+    curso: Curso = { id: null, nombre: null, iconoURL: null, creadorId: null, codigo: null }
     cursos = [];
     mensaje: string = null;
     alumnoID: number = null;
@@ -24,27 +24,26 @@ export class HomeAlumnoComponent implements OnInit {
     esregistro = false;
     //thisId
 
-    constructor( private dataApiService: DataApiService,private elementRef: ElementRef,private router: Router,private route: ActivatedRoute)
-    {
-      // Las siguientes tres lineas son para que recargue, sino al ser la misma pagina no recarga
-        this.router.routeReuseStrategy.shouldReuseRoute = function() {
-          return false;
+    constructor(private dataApiService: DataApiService, private elementRef: ElementRef, private router: Router, private route: ActivatedRoute) {
+        // Las siguientes tres lineas son para que recargue, sino al ser la misma pagina no recarga
+        this.router.routeReuseStrategy.shouldReuseRoute = function () {
+            return false;
         };
         var id: any;
-        this.alumnoID = this.router.getCurrentNavigation().extras.state.id != null ?  this.router.getCurrentNavigation().extras.state.id : null;
+        this.alumnoID = this.router.getCurrentNavigation().extras.state.id != null ? this.router.getCurrentNavigation().extras.state.id : null;
     }
 
-    ngOnInit(){
-        if(this.alumnoID != null){
+    ngOnInit() {
+        if (this.alumnoID != null) {
             this.getAlumno(this.alumnoID)
         }
-        else{
+        else {
             console.log('Error, no Student ID found!')
         }
         this.getAllCursos();
     }
 
-    getAlumno(id: number){
+    getAlumno(id: number) {
         this.dataApiService.getAlumno(id.toString()).then(
             (respuesta) => {
                 //console.log(respuesta);
@@ -56,22 +55,23 @@ export class HomeAlumnoComponent implements OnInit {
                 this.alumno.avatarUrl = respuesta.avatarUrl;
                 this.alumno.passwordEmoji = respuesta.passwordEmoji;
                 this.alumno.tutorId = respuesta.tutorId;
+                this.alumno.saldoEstrellas = respuesta.saldoEstrellas;
 
             }
         )
     }
 
-    getCursosAlumno(id: number){
+    getCursosAlumno(id: number) {
         //Devuelve todos los cursos del alumno cuyo alumno.id == id
 
     }
 
-    
-    async regsitroCurso(){
+
+    async regsitroCurso() {
         this.esregistro = false;
         //Checkeamos que halla ingresado un codigo de curso
         this.codigoCurso = (<HTMLInputElement>document.getElementById('InputCodigoCurso')).value.toString();
-        if(this.codigoCurso == '') {
+        if (this.codigoCurso == '') {
             Swal.fire(
                 'Upss',
                 'Recuerda que debes ingresar un codigo para unirte al curso',
@@ -79,7 +79,7 @@ export class HomeAlumnoComponent implements OnInit {
             )
             return;
         }
-        
+
         //Nos fijamos si el curso deseado exite.
         await this.dataApiService.buscarCursoPorCodigo(this.codigoCurso).then(
             (respuesta) => {
@@ -97,7 +97,7 @@ export class HomeAlumnoComponent implements OnInit {
             (<HTMLInputElement>document.getElementById('InputCodigoCurso')).value = '';
             return;
         }
-        
+
 
         //curso encontrado.
         await this.dataApiService.getCurso(this.chek_codigo.toString()).then(
@@ -113,7 +113,7 @@ export class HomeAlumnoComponent implements OnInit {
             );
             //Vaciamos el input.
             (<HTMLInputElement>document.getElementById('InputCodigoCurso')).value = '';
-            
+
         });
         // Agregar nombre al curso en popup
         Swal.fire({
@@ -126,14 +126,14 @@ export class HomeAlumnoComponent implements OnInit {
             confirmButtonText: 'Si, Quiero unirme!',
             cancelButtonText: 'Cancelar',
             reverseButtons: true
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
                 this.confirmarRegistro();
             }
-          })
+        })
     }
 
-    getAllCursos(){
+    getAllCursos() {
         this.dataApiService.getCursosDeAlumno(this.alumnoID.toString()).then(
             (respuesta) => {
                 this.cursos = respuesta;
@@ -142,35 +142,39 @@ export class HomeAlumnoComponent implements OnInit {
     }
 
     irACurso(id: number) {
-      this.router.navigate(['curso-alumno', { id }]);
+        this.router.navigate(['curso-alumno', { id }]);
+    }
+
+    irRecompensas() {
+        this.router.navigate(['recompensas']);
     }
 
 
     confirmarRegistro() {
-        if(this.chek_codigo != -1) {
+        if (this.chek_codigo != -1) {
             this.dataApiService.agregarAlumnoACurso(this.alumnoID.toString(), this.curso.id.toString()).then(
                 (respuesta) => {
-                  this.recargar();
-                  Swal.fire(
-                    'Felicitaciones!',
-                    'Ya formas parte del curso!',
-                    'success'
+                    this.recargar();
+                    Swal.fire(
+                        'Felicitaciones!',
+                        'Ya formas parte del curso!',
+                        'success'
                     );
                     this.esregistro = false;
                 }
             )
-            .catch(() =>{
-                Swal.fire(
-                    'Upss',
-                    'Algo salio mal al registrarse al curso :(',
-                    'error'
-                );
-                this.esregistro = false;
-            });    
+                .catch(() => {
+                    Swal.fire(
+                        'Upss',
+                        'Algo salio mal al registrarse al curso :(',
+                        'error'
+                    );
+                    this.esregistro = false;
+                });
         }
     }
 
     recargar() {
-      this.router.navigate(['home-alumno'], {state: {id: this.alumnoID}});
+        this.router.navigate(['home-alumno'], { state: { id: this.alumnoID } });
     }
 }

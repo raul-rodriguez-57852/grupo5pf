@@ -7,7 +7,9 @@ package com.edusis.apirest.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -42,6 +44,20 @@ public class Alumno extends Persona {
             inverseJoinColumns = @JoinColumn(name = "alumno_id"))
     private List<Curso> cursos;
     
+    private Integer saldoEstrellas;
+    
+    private HashMap<Addon,Boolean> mapRecompensas;
+    
+    // CUSTOM
+    
+    public Integer sumarEstrellas(Integer estrellas){
+        if(saldoEstrellas == null){
+            saldoEstrellas = estrellas;
+        }else{
+            saldoEstrellas = saldoEstrellas + estrellas;
+        }
+        return saldoEstrellas;
+    }
     
     /////// GETTERS && SETTERS ///////
     
@@ -76,6 +92,22 @@ public class Alumno extends Persona {
 
     public void setTutor(Tutor tutor) {
         this.tutor = tutor;
+    }
+
+    public Integer getSaldoEstrellas() {
+        return saldoEstrellas;
+    }
+
+    public void setSaldoEstrellas(Integer saldoEstrellas) {
+        this.saldoEstrellas = saldoEstrellas;
+    }
+
+    public HashMap<Addon, Boolean> getMapRecompensas() {
+        return mapRecompensas;
+    }
+
+    public void setMapRecompensas(HashMap<Addon, Boolean> mapRecompensas) {
+        this.mapRecompensas = mapRecompensas;
     }
     
 }

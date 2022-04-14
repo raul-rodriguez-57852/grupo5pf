@@ -27,6 +27,8 @@ public class AlumnoDto {
     private String avatarUrl;
     private List<Curso> cursos;
     private Long tutorId;
+    private Integer saldoEstrellas;
+    private String mapRecompensas;
 
     public List<Curso> getCursos() {
         return cursos;
@@ -106,6 +108,22 @@ public class AlumnoDto {
 
     public void setTutorId(Long tutor) {
         this.tutorId = tutor;
+    }
+
+    public Integer getSaldoEstrellas() {
+        return saldoEstrellas;
+    }
+
+    public void setSaldoEstrellas(Integer saldoEstrellas) {
+        this.saldoEstrellas = saldoEstrellas;
+    }
+
+    public String getMapRecompensas() {
+        return mapRecompensas;
+    }
+
+    public void setMapRecompensas(String mapRecompensas) {
+        this.mapRecompensas = mapRecompensas;
     }
 
 }

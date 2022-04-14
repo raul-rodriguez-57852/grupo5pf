@@ -50,6 +50,7 @@ import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Ops;
 import com.querydsl.core.types.dsl.NumberOperation;
 import com.querydsl.jpa.JPQLQuery;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -409,6 +410,12 @@ public class TareaController {
         DetalleTareaMultimedia detalle = detalleTareaMultimediaDto.getId() != null ? detalleTareaMultimediaService.get(detalleTareaMultimediaDto.getId()) : new DetalleTareaMultimedia();
         detalle.setDescripcion(detalleTareaMultimediaDto.getDescripcion());
         detalle.setLinkYoutube(detalleTareaMultimediaDto.getLinkYoutube());
+        if(detalleTareaMultimediaDto.getImagen() != null){
+            detalle.setImagen(detalleTareaMultimediaDto.getImagen().getBytes());
+        }else{
+            detalle.setImagen(null);
+        }
+        
         Tarea tarea = tareaService.get(detalleTareaMultimediaDto.getIdTarea());
         tarea.addLinea(detalle);
         tarea.validar();
@@ -426,6 +433,14 @@ public class TareaController {
         Tarea tarea = tareaService.get(tareaId);
         tarea = Hibernate.unproxy(tarea, Tarea.class);
         return detalleTareaMultimediaService.findOne(DetalleTareaMultimediaSpecs.byTarea(tarea));
+    }
+    
+    @GetMapping("imagenDetalle")
+    public String getImagenDetalle(@RequestParam Long id) {
+        DetalleTareaMultimedia detalle = (DetalleTareaMultimedia) Hibernate.unproxy(detalleTareaMultimediaService.get(id));
+        
+        String imagen = new String(detalle.getImagen(), StandardCharsets.UTF_8);
+        return imagen;
     }
     
     @PostMapping("guardarDetalleActividad")
@@ -525,9 +540,11 @@ public class TareaController {
         Calendar fecha = Calendar.getInstance();
         realizacion.calcularPorcentaje();
         realizacion.setFecha(fecha);
+        Integer estrellasGanadas = realizacionTareaService.getEstrellasGanadas(alumno, tarea, realizacion);
         realizacionTareaService.save(realizacion);
         //Actualizo ultimo acceso para el alumno.       
         alumno.setUltimoAcceso(fecha);
+        alumno.sumarEstrellas(estrellasGanadas);
         alumnoService.save(alumno);
         return new ResponseEntity<>(HttpStatus.OK);
     }

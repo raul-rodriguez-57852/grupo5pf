@@ -3,4 +3,5 @@ export class DetalleMultimedia {
   descripcion: string;
   idTarea: number;
   linkYoutube: string;
+  imagen: string;
 }

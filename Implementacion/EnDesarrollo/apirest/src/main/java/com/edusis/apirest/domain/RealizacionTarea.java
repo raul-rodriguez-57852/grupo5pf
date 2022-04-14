@@ -45,6 +45,8 @@ public class RealizacionTarea extends GenericEntity {
     @JsonIgnore
     private List<RealizacionTareaDetalle> detalles;
     
+    private Boolean mayorPuntaje;
+    
     //////////////////// CUSTOM ///////////////////////
     
     public void calcularPorcentaje(){
@@ -107,6 +109,14 @@ public class RealizacionTarea extends GenericEntity {
 
     public void setPuntajeObtenido(Double puntajeObtenido) {
         this.puntajeObtenido = puntajeObtenido;
+    }
+
+    public Boolean getMayorPuntaje() {
+        return mayorPuntaje;
+    }
+
+    public void setMayorPuntaje(Boolean mayorPuntaje) {
+        this.mayorPuntaje = mayorPuntaje;
     }
 
     public List<RealizacionTareaDetalle> getDetalles() {

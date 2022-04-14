@@ -34,6 +34,7 @@ import { EstadisticasCursoAlumnoComponent } from './components/estadisticas-curs
 import { VistaPreviaGrillaComponent } from './components/vista-previa-grilla/vista-previa-grilla.component';
 import { CrearActividadGrillaComponent } from './components/crear-actividad-grilla/crear-actividad-grilla.component';
 import { RealizacionGrillaComponent } from './components/realizacion-grilla/realizacion-grilla.component';
+import { RecompensasComponent } from './components/recompensas/recompensas.component';
 
 const routes: Routes = [
 
@@ -76,7 +77,8 @@ const routes: Routes = [
   { path: 'configuracion-tutor', component: ConfiguracionTutorComponent, canActivate: [TutorAuthGuard] },
   { path: 'realizacion-pasapalabra', component: RealizacionPasapalabraComponent, canActivate: [TutorAuthGuard] },
   { path: 'realizacion-grilla', component: RealizacionGrillaComponent, canActivate: [TutorAuthGuard] },
-  { path: 'configuracion-tutor', component: ConfiguracionTutorComponent, canActivate: [TutorAuthGuard]},
+  { path: 'configuracion-tutor', component: ConfiguracionTutorComponent, canActivate: [TutorAuthGuard] },
+  { path: 'recompensas', component: RecompensasComponent, canActivate: [TutorAuthGuard] },
 
 ];
 

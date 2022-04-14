@@ -14,6 +14,7 @@ public class DetalleTareaMultimediaDto {
     private Long id;
     private String descripcion;
     private String linkYoutube;
+    private String imagen;
     private Long idTarea;
 
     public Long getId() {
@@ -48,5 +49,11 @@ public class DetalleTareaMultimediaDto {
         this.linkYoutube = linkYoutube;
     }
     
-    
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }   
 }

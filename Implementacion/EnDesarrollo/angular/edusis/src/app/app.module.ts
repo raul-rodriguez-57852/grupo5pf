@@ -36,7 +36,7 @@ import { HomeProfesorComponent } from './components/home-profesor/home-profesor.
 import { CallbackPipe } from "./callBackPipe";
 import { ConfiguracionTutorComponent } from "./components/configuracion-tutor/configuracion-tutor.component";
 import { NgxSpinnerModule } from "ngx-spinner";
-import { BrowserAnimationsModule, NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { InterceptorService } from "./services/interceptor.service";
 import { EstadisticasProfesorComponent } from './components/estadisticas-profesor/estadisticas-profesor.component';
 import { EstadisticasTareaComponent } from './components/estadisticas-tarea/estadisticas-tarea.component';
@@ -46,6 +46,7 @@ import { EstadisticasCursoAlumnoComponent } from './components/estadisticas-curs
 import { CrearActividadGrillaComponent } from './components/crear-actividad-grilla/crear-actividad-grilla.component';
 import { VistaPreviaGrillaComponent } from './components/vista-previa-grilla/vista-previa-grilla.component';
 import { RealizacionGrillaComponent } from './components/realizacion-grilla/realizacion-grilla.component';
+import { RecompensasComponent } from "./components/recompensas/recompensas.component";
 
 
 
@@ -82,11 +83,14 @@ import { RealizacionGrillaComponent } from './components/realizacion-grilla/real
     ConfiguracionTutorComponent,
     EstadisticasProfesorComponent,
     EstadisticasTareaComponent,
-    PipeList,
     EstadisticasCursoAlumnoComponent,
     CrearActividadGrillaComponent,
     VistaPreviaGrillaComponent,
     RealizacionGrillaComponent,
+    EstadisticasCursoAlumnoComponent,
+    RecompensasComponent,
+    PipeList
+
   ],
   imports: [
     BrowserModule,
@@ -98,7 +102,6 @@ import { RealizacionGrillaComponent } from './components/realizacion-grilla/real
     NgxSpinnerModule,
     BrowserAnimationsModule,
     MDBBootstrapModule.forRoot(),
-    NoopAnimationsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }

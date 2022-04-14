@@ -42,7 +42,7 @@ public class Tarea extends GenericEntity {
 
     @Temporal(javax.persistence.TemporalType.DATE)
     private Calendar fechaLimite;
-
+    
     @OneToMany(mappedBy = "tarea", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<DetalleTarea> lineas;

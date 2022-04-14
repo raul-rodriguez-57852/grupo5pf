@@ -29,11 +29,13 @@ export class RealizacionGrillaComponent {
   ) { }
 
   onInit(id: number) {
-    this.id = this.route.snapshot.paramMap.get('id') != null ? Number(this.route.snapshot.paramMap.get('id')) : null;
+    /* this.id = this.route.snapshot.paramMap.get('id') != null ? Number(this.route.snapshot.paramMap.get('id')) : null; */
+
+    this.id = id;
     this.dataApiService.getActividad(this.id).then(res => {
       console.log(res);
-      this.filas = Array.from({length: res.cantidadFilas}, (_, i) => i + 1);
-      this.columnas = Array.from({length: res.cantidadColumnas}, (_, i) => i + 1);  
+      this.filas = Array.from({ length: res.cantidadFilas }, (_, i) => i + 1);
+      this.columnas = Array.from({ length: res.cantidadColumnas }, (_, i) => i + 1);
       this.celdas = res.celdas;
       this.nombre = res.nombre;
       this.dataApiService.getImagenGrilla(this.id).then(res => {
@@ -56,7 +58,7 @@ export class RealizacionGrillaComponent {
         pintar = true;
       }
     });
-    return pintar;  
+    return pintar;
   }
 
   async responder(fila, columna) {

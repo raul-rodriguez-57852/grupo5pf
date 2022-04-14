@@ -1,3 +1,4 @@
+import { Addon } from './addon';
 import { PasswordEmoji } from './password-emoji';
 export class Alumno {
   id: number;
@@ -9,4 +10,6 @@ export class Alumno {
   avatarUrl: string;
   passwordEmoji: PasswordEmoji;
   tutorId: number;
+  saldoEstrellas: number;
+  mapRecompensas: Map<Addon, Boolean>;
 }

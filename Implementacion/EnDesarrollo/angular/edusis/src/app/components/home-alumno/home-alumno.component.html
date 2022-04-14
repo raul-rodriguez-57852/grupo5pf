@@ -1,34 +1,77 @@
 <section id="home-alumno">
-  <div class="fondo position-fixed">
-  </div>
-  <div class="container" style="padding-top: 90px;">
-    <div class="col-sm-12 d-flex justify-content-center" style="margin-bottom: 10px;" >
-        <img class="imagen-avatar"  src="{{ alumno.avatarUrl }}">
+  <div class="fondo position-fixed"></div>
+  <div class="container" style="padding-top: 90px">
+    <div
+      class="col-sm-12 d-flex justify-content-center"
+      style="margin-bottom: 10px"
+    >
+      <img class="imagen-avatar" src="{{ alumno.avatarUrl }}" />
     </div>
-    <div class="col-sm-12 d-flex justify-content-center" style="margin-bottom: 20px;" >
+    <div class="col-sm-12 d-flex justify-content-center">
       <div class="nombre">
         {{ alumno.nombre }}
       </div>
     </div>
+    <div
+      class="col-sm-12 d-flex justify-content-center"
+      style="margin-bottom: 20px"
+    >
+      <div class="nombre" (click)="irRecompensas()">
+        {{ alumno.saldoEstrellas }}
+      </div>
+      <img src="/assets/img/star.png" class="star" (click)="irRecompensas()" />
+    </div>
 
-    <div class="list-group list-group-flush margin-bottom-16" style="border-radius: 10px;">
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <strong style="align-content: center;">Mis Cursos</strong>
+    <div
+      class="list-group list-group-flush margin-bottom-16"
+      style="border-radius: 10px"
+    >
+      <li
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <strong style="align-content: center">Mis Cursos</strong>
       </li>
-      <li *ngFor="let curso of cursos" class="list-group-item d-flex justify-content-between align-items-center">
-        <div (click)="irACurso(curso.id)"><img style="height: 31px; margin-right: 10px;" src="{{ curso.iconoURL }}">{{ curso.nombre }}</div>
+      <li
+        *ngFor="let curso of cursos"
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <div (click)="irACurso(curso.id)">
+          <img
+            style="height: 31px; margin-right: 10px"
+            src="{{ curso.iconoURL }}"
+          />{{ curso.nombre }}
+        </div>
       </li>
     </div>
 
     <div class="form-group">
-      <div class="texto" style="padding-bottom: 5px;">• Unirme a un nuevo curso</div>
+      <div class="texto" style="padding-bottom: 5px">
+        • Unirme a un nuevo curso
+      </div>
       <div class="row">
         <div class="col-8">
-          <input id="InputCodigoCurso" [(ngModel)]="codigoCurso" type="text" name="codigoCurso" class="form-control" placeholder="Código de Invitacion" required autocomplete="off">
+          <input
+            id="InputCodigoCurso"
+            [(ngModel)]="codigoCurso"
+            type="text"
+            name="codigoCurso"
+            class="form-control"
+            placeholder="Código de Invitacion"
+            required
+            autocomplete="off"
+          />
         </div>
         <div class="col-4">
-          <button type="button" style="text-align: center;" (click)="regsitroCurso()" class="btn btn-personalizado-inverso btn-block margin-bottom-16">Unirme</button>
+          <button
+            type="button"
+            style="text-align: center"
+            (click)="regsitroCurso()"
+            class="btn btn-personalizado-inverso btn-block margin-bottom-16"
+          >
+            Unirme
+          </button>
         </div>
       </div>
     </div>
   </div>
+</section>

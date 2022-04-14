@@ -34,4 +34,12 @@ public class RealizacionTareaSpecs {
         return R.tarea.eq(tarea);
     }
     
+    public static BooleanExpression byAlumno(Alumno alumno){
+        return R.alumno.eq(alumno);
+    }
+    
+    public static BooleanExpression puntajeMaximo(){
+        return R.mayorPuntaje.eq(true);
+    }
+    
 }

@@ -16,17 +16,19 @@ export class EditarDetalleMultimediaComponent implements OnInit {
     descripcion: null,
     idTarea: null,
     linkYoutube: null,
+    imagen: null
   };
   mensaje: string = null;
   idTareaRoute = null;
   videoId: string = null;
+  files = null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private dataApiService: DataApiService,
     private dataTareaService: DataTareaService
-  ) {}
+  ) { }
 
   ngOnInit() {
     const tag = document.createElement("script");
@@ -47,8 +49,17 @@ export class EditarDetalleMultimediaComponent implements OnInit {
       .then((res) => {
         if (res !== null) {
           this.detalle = res;
+          this.dataTareaService
+            .getImagenDetalle(this.detalle.id.toString())
+            .then((res) => {
+              if (res !== null) {
+                this.detalle.imagen = res;
+              }
+            });
         }
       });
+
+
   }
 
   save(formDetalleMultimedia: NgForm) {
@@ -89,5 +100,14 @@ export class EditarDetalleMultimediaComponent implements OnInit {
       video_id = video_id.substring(0, ampersandPosition);
     }
     return video_id;
+  }
+
+  onFileChanged(event: any) {
+    this.files = event.target.files;
+    const reader = new FileReader();
+    reader.readAsDataURL(this.files[0]);
+    reader.onload = (e) => {
+      this.detalle.imagen = e.target.result.toString();
+    }
   }
 }

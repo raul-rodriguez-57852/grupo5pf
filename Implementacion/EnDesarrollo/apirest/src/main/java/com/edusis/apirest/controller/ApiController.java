@@ -5,6 +5,7 @@
  */
 package com.edusis.apirest.controller;
 
+import com.edusis.apirest.domain.Addon;
 import com.edusis.apirest.domain.Alumno;
 import com.edusis.apirest.domain.Asignatura;
 import com.edusis.apirest.domain.Curso;
@@ -24,6 +25,7 @@ import com.edusis.apirest.domain.TipoDocumento;
 import com.edusis.apirest.domain.Tutor;
 import com.edusis.apirest.domain.plantillas.CeldaGrilla;
 import com.edusis.apirest.domain.plantillas.PlantillaGrilla;
+import com.edusis.apirest.service.AddonService;
 import com.edusis.apirest.service.AlumnoService;
 import com.edusis.apirest.service.AsignaturaService;
 import com.edusis.apirest.service.CursoService;
@@ -51,8 +53,11 @@ import com.edusis.apirest.service.dto.TutorDto;
 import com.edusis.apirest.specs.AlumnoSpecs;
 import com.edusis.apirest.specs.AsignaturaSpecs;
 import com.edusis.apirest.specs.PlantillaSpecs;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.querydsl.core.types.Predicate;
 import java.nio.charset.StandardCharsets;
@@ -61,7 +66,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
@@ -79,6 +86,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -123,6 +131,9 @@ public class ApiController {
     
     @Autowired
     private PlantillaService plantillaService;
+    
+    @Autowired
+    private AddonService addonService;
     
 
     
@@ -254,7 +265,7 @@ public class ApiController {
     }
     
     @PostMapping("guardarAlumno")
-    public ResponseEntity<Long> guardarAlumno(@RequestBody AlumnoDto alumnoDto) {
+    public ResponseEntity<Long> guardarAlumno(@RequestBody AlumnoDto alumnoDto) throws JsonProcessingException {
         Alumno alumno = alumnoDto.getId() != null ? alumnoService.get(alumnoDto.getId()) : new Alumno();
         alumno.setNombre(alumnoDto.getNombre());
         alumno.setApellido(alumnoDto.getApellido());
@@ -271,6 +282,19 @@ public class ApiController {
             pwd.setEmoji3(emoji3);
             alumno.setPasswordEmoji(pwd);
         }
+        
+        alumno.setSaldoEstrellas(alumnoDto.getSaldoEstrellas());
+        
+        String jsonInput = alumnoDto.getMapRecompensas();
+        if (jsonInput != null) {
+            TypeReference<HashMap<Addon, Boolean>> typeRef
+                    = new TypeReference<HashMap<Addon, Boolean>>() {
+            };
+            ObjectMapper mapper = new ObjectMapper();
+            HashMap<Addon, Boolean> map = mapper.readValue(jsonInput, typeRef);
+            alumno.setMapRecompensas(map);
+        }
+        
         Long tutor = alumnoDto.getTutorId();
         Tutor esteTutor = tutorService.get(tutor);
         alumno.setTutor(esteTutor);
@@ -288,7 +312,7 @@ public class ApiController {
             esteTutor.setAlumnos(alumnos);
             tutorService.save(esteTutor);
         }
-        
+  
         alumnoService.save(alumno);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -321,6 +345,8 @@ public class ApiController {
                 Calendar ultimo_acceso = Calendar.getInstance();
                 alumno.setUltimoAcceso(ultimo_acceso);
                 alumnoService.save(alumno);
+                
+                ////  MODIFICAR LA COOKIE DE SESION PARA QUE EL CODIGO SEA DE ALUMNO
                 
                 return new ResponseEntity<>(HttpStatus.OK);                
             }
@@ -934,6 +960,77 @@ public class ApiController {
         plantilla.setPuntajeMaximo(plantillaGrillaDto.getCeldasDto().size());
         plantillaGrillaService.save(plantilla);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @PostMapping("cargarAddons")
+    public ResponseEntity<Long> cargarAddons() {
+        for (int i = 1; i < 8; i++) {
+            Addon addon = new Addon();
+            addon.setNombre(String.valueOf(i));
+            addon.setIconoURL("assets/img/emojis/" + i + ".png");
+            addon.setCosto(i * 2);
+            addonService.save(addon);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @GetMapping("addons")
+    public List<Addon> getAddons() {
+        return addonService.getAll(); 
+    }
+    
+    @PostMapping("comprarAddon")
+    public ResponseEntity<Long> comprarAddon(@RequestParam Long idAlumno, @RequestParam Long idAddon) {
+        Alumno alumno = alumnoService.get(idAlumno);
+        alumno = Hibernate.unproxy(alumno, Alumno.class);
+        Addon addon = addonService.get(idAddon);
+        addon = Hibernate.unproxy(addon, Addon.class);
+        
+        
+        if(alumno.getSaldoEstrellas() < addon.getCosto()){
+            throw new Error("Saldo insuficiende de estrellas");
+        }
+        
+        if(alumno.getMapRecompensas() == null){
+            alumno.setMapRecompensas(new HashMap<>());
+        }
+        alumno.getMapRecompensas().put(addon, true);
+        alumno.setSaldoEstrellas(alumno.getSaldoEstrellas() - addon.getCosto());
+        
+        alumnoService.save(alumno);
+        
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping("equiparDesequiparAddon")
+    public ResponseEntity<Long> equiparDesequiparAddon(@RequestParam Long idAlumno, @RequestParam Long idAddon) {
+        Alumno alumno = alumnoService.get(idAlumno);
+        alumno = Hibernate.unproxy(alumno, Alumno.class);
+        Addon addon = addonService.get(idAddon);
+        addon = Hibernate.unproxy(addon, Addon.class);
+        
+        if(alumno.getMapRecompensas() == null || !alumno.getMapRecompensas().containsKey(addon)){
+            throw new Error("El addon no ha sido comprado aun");
+        }
+        
+        alumno.getMapRecompensas().put(addon, !alumno.getMapRecompensas().get(addon));
+        
+        alumnoService.save(alumno);
+        
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @GetMapping("mapRecompensasAlumno")
+    @ResponseBody
+    public String getMapRecompensasAlumno(@RequestParam Long idAlumno) {
+        Alumno alumno = alumnoService.get(idAlumno);
+        JsonArray recompensasJson = new JsonArray();
+        for (Map.Entry<Addon, Boolean> entry : alumno.getMapRecompensas().entrySet()) {
+            JsonObject p = new JsonObject();
+            p.addProperty("id", entry.getKey().getId());
+            p.addProperty("boolean", entry.getValue());
+            recompensasJson.add(p);
+        }
+        return recompensasJson.toString();
     }
 
 }

@@ -1,7 +1,12 @@
 <section id="detalle-multimedia" class="margin-top-60" [hidden]="!isMultimedia">
   <div class="contenedorImagenCard margin-bottom-16">
-    <img class="imagenCard" *ngIf="tarea && tarea.asignatura.iconoURL !== null" src="{{ tarea.asignatura.iconoURL }}" alt="Card image cap">
-    <div class="centered" *ngIf="tarea">{{ tarea.asignatura.nombre }}</div>  
+    <img
+      class="imagenCard"
+      *ngIf="tarea && tarea.asignatura.iconoURL !== null"
+      src="{{ tarea.asignatura.iconoURL }}"
+      alt="Card image cap"
+    />
+    <div class="centered" *ngIf="tarea">{{ tarea.asignatura.nombre }}</div>
   </div>
   <div class="container">
     <div class="form-group">
@@ -27,15 +32,13 @@
       Realizar las actividades
     </button>
     <button
-    type="button"
-    class="btn btn-personalizado btn-block btn-lg"
-    (click)="volver()"
+      type="button"
+      class="btn btn-personalizado btn-block btn-lg"
+      (click)="volver()"
     >
       Volver
     </button>
-
   </div>
-
 </section>
 
 <!-- Modal -->
@@ -103,7 +106,21 @@
   class="margin-top-90"
   [hidden]="!isPasapalabra"
 >
-  <app-realizacion-pasapalabra #realizacionPasapalabra [id]="actividadId" (finalizado)="onFinalizado($event)"
+  <app-realizacion-pasapalabra
+    #realizacionPasapalabra
+    [id]="actividadId"
+    (finalizado)="onFinalizado($event)"
   >
-    ></app-realizacion-pasapalabra>
+    ></app-realizacion-pasapalabra
+  >
+</section>
+
+<section id="realizacion-grilla" class="margin-top-90" [hidden]="!isGrilla">
+  <app-realizacion-grilla
+    #realizacionGrilla
+    [id]="actividadId"
+    (finalizado)="onFinalizado($event)"
+  >
+    ></app-realizacion-grilla
+  >
 </section>

@@ -24,6 +24,7 @@ export class RealizacionTareaComponent implements OnInit {
     descripcion: null,
     idTarea: null,
     linkYoutube: null,
+    imagen: null
   };
   mensaje: string = null;
   videoId: string = null;
@@ -53,7 +54,7 @@ export class RealizacionTareaComponent implements OnInit {
     private router: Router,
     private dataApiService: DataApiService,
     private dataTareaService: DataTareaService
-  ) {}
+  ) { }
 
   ngOnInit() {
     const tag = document.createElement("script");
@@ -69,7 +70,7 @@ export class RealizacionTareaComponent implements OnInit {
       this.route.snapshot.paramMap.get("cursoId") != null
         ? Number(this.route.snapshot.paramMap.get("cursoId"))
         : null;
-  
+
     this.get();
   }
 
@@ -169,19 +170,19 @@ export class RealizacionTareaComponent implements OnInit {
       let realizacion = new Realizacion();
       realizacion.idTarea = this.tareaId;
       ////  realizacion.idAlumno = Number.parseInt(this.dataApiService.getCookie("SessionCookie")); ////
-      
+
       realizacion.idAlumno = this.dataApiService.getUsuario();
       realizacion.detalles = this.detalles;
 
       this.dataTareaService
-      .guardarRealizacionTarea(realizacion)
-      .then((respuesta) => {
-        this.mensaje = "¡La tarea ha sido completada!";
-      })
-      .catch((respuesta) => {
-        this.mensaje = "Error al guardar.";
-        document.getElementById("open-modal").click();
-      });
+        .guardarRealizacionTarea(realizacion)
+        .then((respuesta) => {
+          this.mensaje = "¡La tarea ha sido completada!";
+        })
+        .catch((respuesta) => {
+          this.mensaje = "Error al guardar.";
+          document.getElementById("open-modal").click();
+        });
 
     }
   }

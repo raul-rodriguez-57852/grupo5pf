@@ -15,6 +15,20 @@
           required
           rows="3"
         ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="file">Imagen</label>
+        <br />
+        <input
+          type="file"
+          accept="image/*"
+          name="file"
+          id="file"
+          (change)="onFileChanged($event)"
+        />
+        <img id="imagen-grilla" src="{{ this.detalle.imagen }}" width="100%" />
+      </div>
+      <div class="form-group">
         <label for="linkYoutube">Link Youtube</label>
         <div class="input-group">
           <input

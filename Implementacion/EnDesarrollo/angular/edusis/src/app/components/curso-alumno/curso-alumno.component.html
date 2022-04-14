@@ -1,59 +1,125 @@
 <section id="curso" class="margin-top-60">
   <div class="foto-principal margin-bottom-16">
-    <img class="imagenCard" src="{{ urlImagen }}" alt="Card image cap">
-    <div class="centered">{{ nombre }}</div>  
+    <img class="imagenCard" src="{{ urlImagen }}" alt="Card image cap" />
+    <div class="centered">{{ nombre }}</div>
   </div>
 
-  
-
   <div class="container">
-
-    <select [(ngModel)]="asignaturaFiltro" (change)="onAsignaturaFilter()" name="asignatura" placeholder="Asignatura"
-      class="form-control margin-bottom-16" >
+    <select
+      [(ngModel)]="asignaturaFiltro"
+      (change)="onAsignaturaFilter()"
+      name="asignatura"
+      placeholder="Asignatura"
+      class="form-control margin-bottom-16"
+    >
       <option [ngValue]="null">Todas las asignaturas</option>
-      <option *ngFor="let asignatura of asignaturas" [ngValue]="asignatura">{{
-        asignatura.nombre
-        }}</option>
+      <option *ngFor="let asignatura of asignaturas" [ngValue]="asignatura">
+        {{ asignatura.nombre }}
+      </option>
     </select>
 
-      <div *ngFor="let tarea of tareasFiltradas | slice: (page-1) * pageSize : page * pageSize"><!--| callback: filterMateria -->
-        <div class="card mb-3" (click)="irATarea(tarea.id)">
-          <div class="contenedorImagenCard" *ngIf="tarea.iconoURL !== undefined">
-            <img class="card-img-top imagenCard"  src="{{ tarea.iconoURL }}" alt="Card image cap">
-            <div class="centered">{{ tarea.asignatura }}</div>  
-          </div>              
-          <div [ngClass]="(tarea.puntaje == null)?'card-body':'card-body realizada'">
-            <div class="row align-items-center mb-2 d-flex">
-              <div class="col-8">
-                  <h5 class="d-flex align-items-center mb-0">
-                    <h5 class="card-title">{{ tarea.nombre }}</h5>
-                  </h5>
-              </div>
-              <div class="col-4 text-right">
-                  <span>{{tarea.fechaLimite | date:'dd/MM/yyyy'}}<i class="fa fa-calendar"></i></span>
-              </div>
-          </div>
-            <div class="progress margin-bottom-16" [hidden]="tarea.puntaje == null">
-              <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{tarea.puntaje}}%" [attr.aria-valuenow]="tarea.puntaje" aria-valuemin="0" aria-valuemax="100">{{ tarea.puntaje }}%</div>
+    <div
+      *ngFor="
+        let tarea of tareasFiltradas
+          | slice: (page - 1) * pageSize:page * pageSize
+      "
+    >
+      <!--| callback: filterMateria -->
+      <div class="card mb-3" (click)="irATarea(tarea.id)">
+        <div class="contenedorImagenCard" *ngIf="tarea.iconoURL !== undefined">
+          <img
+            class="card-img-top imagenCard"
+            src="{{ tarea.iconoURL }}"
+            alt="Card image cap"
+          />
+          <div class="centered">{{ tarea.asignatura }}</div>
+        </div>
+        <div
+          [ngClass]="
+            tarea.puntaje == null ? 'card-body' : 'card-body realizada'
+          "
+        >
+          <div class="row align-items-center mb-2 d-flex">
+            <div class="col-8">
+              <h5 class="d-flex align-items-center mb-0">
+                <h5 class="card-title">{{ tarea.nombre }}</h5>
+              </h5>
             </div>
-            <button type="button" *ngIf="!tarea.puntaje" class="btn btn-personalizado-txtblanco">Iniciar tarea</button>
-            <button type="button" *ngIf="tarea.puntaje" class="btn btn-personalizado-txtblanco">Reintentar tarea</button>  
+            <div class="col-4 text-right">
+              <span
+                >{{ tarea.fechaLimite | date: "dd/MM/yyyy"
+                }}<i class="fa fa-calendar"></i
+              ></span>
+            </div>
           </div>
+          <!--           <div
+            class="progress margin-bottom-16"
+            [hidden]="tarea.puntaje == null"
+          >
+            <div
+              class="progress-bar progress-bar-striped bg-success"
+              role="progressbar"
+              style="width: {{ tarea.puntaje }}%"
+              [attr.aria-valuenow]="tarea.puntaje"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              {{ tarea.puntaje }}%
+            </div>
+          </div> -->
+          <label class="rating-label">
+            <input
+              class="rating"
+              max="5"
+              readonly
+              step="0.01"
+              style="--value:{{ tarea.puntaje / 20 }}"
+              type="range"
+              value="{{ tarea.puntaje / 20 }}"
+            />
+          </label>
+          <button
+            type="button"
+            *ngIf="!tarea.puntaje"
+            class="btn btn-personalizado-txtblanco"
+          >
+            Iniciar tarea
+          </button>
+          <button
+            type="button"
+            *ngIf="tarea.puntaje"
+            class="btn btn-personalizado-txtblanco"
+          >
+            Reintentar tarea
+          </button>
         </div>
       </div>
-      <div *ngIf='tareasFiltradas.length === 0 || tareasFiltradas === null'>
-        <div class="alert alert-primary" role="alert" >
+    </div>
+    <div *ngIf="tareasFiltradas.length === 0 || tareasFiltradas === null">
+      <div class="alert alert-primary" role="alert">
         Aun no tienes tareas cargadas para las asignaturas seleccionadas.
       </div>
     </div>
 
-      <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="collectionSize" [maxSize]="4" [rotate]="true"
-        [ellipses]="false" size="lg" class="d-flex justify-content-center">
-      
-      </ngb-pagination>
-      <!--       </ul> -->
-    </div>
-    <button (click)="volverACursos()" class="btn btn-lg btn-block btn-personalizado-txtblanco">Volver</button>
+    <ngb-pagination
+      [(page)]="page"
+      [pageSize]="pageSize"
+      [collectionSize]="collectionSize"
+      [maxSize]="4"
+      [rotate]="true"
+      [ellipses]="false"
+      size="lg"
+      class="d-flex justify-content-center"
+    >
+    </ngb-pagination>
+    <!--       </ul> -->
+  </div>
+  <button
+    (click)="volverACursos()"
+    class="btn btn-lg btn-block btn-personalizado-txtblanco"
+  >
+    Volver
+  </button>
 </section>
 
 <!-- Modal -->
