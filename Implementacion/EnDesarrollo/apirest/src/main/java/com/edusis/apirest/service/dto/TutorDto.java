@@ -23,7 +23,6 @@ public class TutorDto {
     private TipoDocumento tipoDocumento;
     private String documento;
     private Calendar fechaNacimiento;
-    private List<Alumno> alumnos;
     private String password;
 
     public String getPassword() {
@@ -34,8 +33,6 @@ public class TutorDto {
         this.password = password;
     }
 
-    
-    
     public Long getId() {
         return id;
     }
@@ -84,15 +81,6 @@ public class TutorDto {
     public void setFechaNacimiento(Calendar fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
-
-    public List<Alumno> getAlumnos() {
-        return alumnos;
-    }
-
-    public void setAlumnos(List<Alumno> alumnos) {
-        this.alumnos = alumnos;
-    }
-    
     
     
 }

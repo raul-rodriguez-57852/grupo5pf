@@ -20,9 +20,6 @@ public class CursoDto {
     private String nombre;
     private String iconoURL;
     private Long creadorId;
-    private List<Profesor> profesores;
-    private List<Asignatura> asignaturas;
-    private List<Alumno> alumnos;
     private String codigo;
 
     public String getCodigo() {
@@ -63,30 +60,6 @@ public class CursoDto {
 
     public void setCreadorId(Long creadorId) {
         this.creadorId = creadorId;
-    }
-
-    public List<Profesor> getProfesores() {
-        return profesores;
-    }
-
-    public void setProfesores(List<Profesor> profesores) {
-        this.profesores = profesores;
-    }
-
-    public List<Asignatura> getAsignaturas() {
-        return asignaturas;
-    }
-
-    public void setAsignaturas(List<Asignatura> asignaturas) {
-        this.asignaturas = asignaturas;
-    }
-
-    public List<Alumno> getAlumnos() {
-        return alumnos;
-    }
-
-    public void setAlumnos(List<Alumno> alumnos) {
-        this.alumnos = alumnos;
     }
     
 }

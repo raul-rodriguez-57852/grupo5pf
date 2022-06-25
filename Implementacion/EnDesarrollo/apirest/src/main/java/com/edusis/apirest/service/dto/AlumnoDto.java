@@ -25,19 +25,10 @@ public class AlumnoDto {
     private Calendar fechaNacimiento;
     private PasswordEmojiDto passwordEmoji;
     private String avatarUrl;
-    private List<Curso> cursos;
     private Long tutorId;
     private Integer saldoEstrellas;
     private String mapRecompensas;
 
-    public List<Curso> getCursos() {
-        return cursos;
-    }
-
-    public void setCursos(List<Curso> cursos) {
-        this.cursos = cursos;
-    }
-  
     public Long getId() {
         return id;
     }

@@ -64,14 +64,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.persistence.Convert;
 import org.hibernate.Hibernate;
@@ -93,15 +86,14 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author Facundo Raviolo
  */
-
 @RestController
-@CrossOrigin(origins = "*", methods= {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
-@RequestMapping("/api") 
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
+@RequestMapping("/api")
 public class ApiController {
-    
+
     @Autowired
     private EmojiService emojiService;
-    
+
     @Autowired
     private ProfesorService profesorService;
 
@@ -110,33 +102,31 @@ public class ApiController {
 
     @Autowired
     private AlumnoService alumnoService;
-    
+
     @Autowired
     private CursoService cursoService;
-    
+
     @Autowired
     private AsignaturaService asignaturaService;
-    
+
     @Autowired
     private SesionService sesionService;
-    
+
     @Autowired
     private PlantillaPreguntasService plantillaPreguntasService;
-    
+
     @Autowired
     private PlantillaPasapalabraService plantillaPasapalabraService;
 
     @Autowired
     private PlantillaGrillaService plantillaGrillaService;
-    
+
     @Autowired
     private PlantillaService plantillaService;
-    
+
     @Autowired
     private AddonService addonService;
-    
 
-    
     @PostMapping("guardarEmoji")
     public ResponseEntity<Long> guardarEmoji(@RequestBody EmojiDto emojiDto) {
         Emoji emoji = emojiDto.getId() != null ? emojiService.get(emojiDto.getId()) : new Emoji();
@@ -145,40 +135,40 @@ public class ApiController {
         emojiService.save(emoji);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @GetMapping("emojis")
     public List<Emoji> getEmojis() {
-        return emojiService.getAll(); 
+        return emojiService.getAll();
     }
-    
+
     @GetMapping("emoji")
     public Emoji getEmoji(@RequestParam Long id) {
         return emojiService.get(id);
     }
-       
+
     @GetMapping("curso")
     public Curso getCurso(@RequestParam Long id) {
         return cursoService.get(id);
     }
-    
+
     @GetMapping("getCursosByProfesor")
     public List<Curso> getCursosByProfesor(@RequestParam Long id) {
         Profesor profe = profesorService.get(id);
         //Recursion.
         return profe.getCursos();
     }
-    
+
     @GetMapping("asignatura")
     public Asignatura getAsignatura(@RequestParam Long id) {
         return asignaturaService.get(id);
     }
-    
+
     @DeleteMapping("eliminarEmoji")
     public ResponseEntity<Long> eliminarEmoji(@RequestParam Long id) {
         emojiService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @PostMapping("guardarProfesor")
     public ResponseEntity<Long> guardarProfesor(@RequestBody ProfesorDto profesorDto) {
         Profesor profesor = profesorDto.getId() != null ? profesorService.get(profesorDto.getId()) : new Profesor();
@@ -191,23 +181,23 @@ public class ApiController {
         profesorService.save(profesor);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @GetMapping("profesores")
     public List<Profesor> getProfesores() {
-        return profesorService.getAll(); 
+        return profesorService.getAll();
     }
-    
+
     @GetMapping("getProfesor")
     public Profesor getProfesor(@RequestParam Long id) {
         return profesorService.get(id);
     }
-    
+
     @DeleteMapping("eliminarProfesor")
     public ResponseEntity<Long> eliminarProfesor(@RequestParam Long id) {
         profesorService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @PostMapping("guardarTutor")
     public ResponseEntity<Long> guardarTutor(@RequestBody TutorDto tutorDto) {
         Tutor tutor = tutorDto.getId() != null ? tutorService.get(tutorDto.getId()) : new Tutor();
@@ -220,24 +210,24 @@ public class ApiController {
         tutorService.save(tutor);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @GetMapping("tutores")
     public List<Tutor> getTutores() {
-        return tutorService.getAll(); 
+        return tutorService.getAll();
     }
-    
+
     @GetMapping("tutor")
     public Tutor getTutor(@RequestParam Long id) {
         return tutorService.get(id);
     }
-    
+
     @GetMapping("tutorByAlumno")
     public Tutor tutorByAlumno(@RequestParam Long idAlumno) {
         Alumno alumno = alumnoService.get(idAlumno);
         Tutor tutor = alumno.getTutor();
         return tutor;
     }
-    
+
     @DeleteMapping("eliminarTutor")
     public ResponseEntity<Long> eliminarTutor(@RequestParam Long id) {
         /*Tutor tutor = tutorService.get(id);
@@ -247,7 +237,7 @@ public class ApiController {
         tutorService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @GetMapping("tiposDoc")
     public List<String> getTiposDoc() {
         TipoDocumento[] valores = TipoDocumento.values();
@@ -257,13 +247,13 @@ public class ApiController {
         }
         return lista;
     }
-    
+
     @DeleteMapping("eliminarAlumno")
     public ResponseEntity<Long> eliminarAlumno(@RequestParam Long alumnoId) {
         alumnoService.deleteById(alumnoId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @PostMapping("guardarAlumno")
     public ResponseEntity<Long> guardarAlumno(@RequestBody AlumnoDto alumnoDto) throws JsonProcessingException {
         Alumno alumno = alumnoDto.getId() != null ? alumnoService.get(alumnoDto.getId()) : new Alumno();
@@ -282,9 +272,9 @@ public class ApiController {
             pwd.setEmoji3(emoji3);
             alumno.setPasswordEmoji(pwd);
         }
-        
+
         alumno.setSaldoEstrellas(alumnoDto.getSaldoEstrellas());
-        
+
         String jsonInput = alumnoDto.getMapRecompensas();
         if (jsonInput != null) {
             TypeReference<HashMap<Addon, Boolean>> typeRef
@@ -293,67 +283,68 @@ public class ApiController {
             ObjectMapper mapper = new ObjectMapper();
             HashMap<Addon, Boolean> map = mapper.readValue(jsonInput, typeRef);
             alumno.setMapRecompensas(map);
+        } else {
+            alumno.setMapRecompensas(new HashMap<Addon, Boolean>());
         }
-        
+
         Long tutor = alumnoDto.getTutorId();
         Tutor esteTutor = tutorService.get(tutor);
         alumno.setTutor(esteTutor);
-        
-        if(esteTutor.getAlumnos().size() != 0){
+
+        if (esteTutor.getAlumnos().size() != 0) {
             //El tutor ya posee alumnos asignados.
-            if(!esteTutor.getAlumnos().contains(alumno)){
+            if (!esteTutor.getAlumnos().contains(alumno)) {
                 esteTutor.getAlumnos().add(alumno);
                 tutorService.save(esteTutor);
             }
-        } else{
+        } else {
             //El tutor no posee ningun alumno asignado
             ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
             alumnos.add(alumno);
             esteTutor.setAlumnos(alumnos);
             tutorService.save(esteTutor);
         }
-  
+
         alumnoService.save(alumno);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @GetMapping("alumnos")
     public List<Alumno> getAlumnos() {
         return alumnoService.getAll();
     }
-    
+
     @GetMapping("alumno")
     public Alumno getAlumno(@RequestParam Long id) {
         return alumnoService.get(id);
     }
-    
+
     @GetMapping("alumnosByTutor")
-    public List<Alumno> alumnosByTutor (@RequestParam Long idTutor){
+    public List<Alumno> alumnosByTutor(@RequestParam Long idTutor) {
         Tutor tutor = tutorService.get(idTutor);
         return alumnoService.getAll(AlumnoSpecs.byTutor(tutor));
-        
+
     }
-    
+
     @PostMapping("ingresoAlumno")
     public ResponseEntity<Long> ingresoAlumno(@RequestParam Long id, @RequestParam Long emoji1Id, @RequestParam Long emoji2Id, @RequestParam Long emoji3Id) {
         Alumno alumno = alumnoService.get(id);
         if (emoji1Id != null && emoji2Id != null && emoji3Id != null) {
-            if (Objects.equals(alumno.getPasswordEmoji().getEmoji1().getId(), emoji1Id) &&
-                Objects.equals(alumno.getPasswordEmoji().getEmoji2().getId(), emoji2Id) &&
-                Objects.equals(alumno.getPasswordEmoji().getEmoji3().getId(), emoji3Id)) {
+            if (Objects.equals(alumno.getPasswordEmoji().getEmoji1().getId(), emoji1Id)
+                    && Objects.equals(alumno.getPasswordEmoji().getEmoji2().getId(), emoji2Id)
+                    && Objects.equals(alumno.getPasswordEmoji().getEmoji3().getId(), emoji3Id)) {
                 //Seteamos el ultimo acceso en el alumno.
                 Calendar ultimo_acceso = Calendar.getInstance();
                 alumno.setUltimoAcceso(ultimo_acceso);
                 alumnoService.save(alumno);
-                
+
                 ////  MODIFICAR LA COOKIE DE SESION PARA QUE EL CODIGO SEA DE ALUMNO
-                
-                return new ResponseEntity<>(HttpStatus.OK);                
+                return new ResponseEntity<>(HttpStatus.OK);
             }
         }
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
-    
+
     @PostMapping("guardarCurso")
     public ResponseEntity<Long> guardarCurso(@RequestBody CursoDto cursoDto) {
         Curso curso = cursoDto.getId() != null ? cursoService.get(cursoDto.getId()) : new Curso();
@@ -364,14 +355,13 @@ public class ApiController {
         curso.setCodigo(null);
         curso.validar();
         //Hay que guardar el curso en el lado del profesor tambien.
-        if( profe.getCursos().size() != 0){
+        if (profe.getCursos().size() != 0) {
             //Ya tiene cursos agregados.
-            if(!profe.getCursos().contains(curso)){
+            if (!profe.getCursos().contains(curso)) {
                 profe.getCursos().add(curso);
-                
+
             }
-        }
-        else{
+        } else {
             //El profesor no tiene ningun Curso.
             ArrayList<Curso> cursos = new ArrayList<Curso>();
             cursos.add(curso);
@@ -381,51 +371,45 @@ public class ApiController {
         profesorService.save(profe);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @PostMapping("generarCodigoCurso")
-    public Curso generarCodigoCurso(@RequestBody CursoDto cursoDto) throws NoSuchAlgorithmException{
+    public Curso generarCodigoCurso(@RequestBody CursoDto cursoDto) throws NoSuchAlgorithmException {
         Curso curso = cursoService.get(cursoDto.getId());
-        if(curso.getCodigo() != null){
+        if (curso.getCodigo() != null) {
             //Ya tiene codigo asignado
-        }
-        else{
-            try{
+        } else {
+            try {
                 String identificador = cursoDto.getId().toString() + cursoDto.getNombre();
                 MessageDigest md5 = MessageDigest.getInstance("MD5");
                 byte[] byteMessage = identificador.getBytes("UTF-8");
                 byte[] digested = md5.digest(byteMessage);
                 StringBuffer codigobuilder = new StringBuffer();
-                for (byte bytes : digested) 
-                {
+                for (byte bytes : digested) {
                     codigobuilder.append(String.format("%02x", bytes & 0xff));
                 }
-                 String codigo = codigobuilder.toString();
-                 codigo = codigo.toUpperCase();
-                 int largo = codigo.length();
-                 codigo = codigo.substring(0, Math.min(largo , 8));
+                String codigo = codigobuilder.toString();
+                codigo = codigo.toUpperCase();
+                int largo = codigo.length();
+                codigo = codigo.substring(0, Math.min(largo, 8));
                 //listo todos los cursos
                 List<Curso> listado_cursos = (ArrayList<Curso>) cursoService.getAll();
                 //Listro los codigos de todos los cursos
                 //checkeo que no sea null la lista, si es null asigno codigo directamente
-                if(listado_cursos.size() == 1){
-                //No hay cursos por ahora solo este
-                curso.setCodigo(codigo);
-                
-                }
-                else{
+                if (listado_cursos.size() == 1) {
+                    //No hay cursos por ahora solo este
+                    curso.setCodigo(codigo);
+
+                } else {
                     List<String> listado_codigos = listado_cursos.stream().map(x -> x.getCodigo()).collect(Collectors.toList());
-                    
+
                     //Este es el codigo que quiero insertar en el nuevo curso
                     Random r = new Random();
                     boolean contiene = true;
                     boolean changes_made_to_codigo = false;
-                    while (contiene)
-                    {
-                        for(String cod_existente : listado_codigos)
-                        {
-                        //Recorro cada codigo del listado de codigos obtenido arriba
-                            if(codigo.equals(cod_existente))
-                            {
+                    while (contiene) {
+                        for (String cod_existente : listado_codigos) {
+                            //Recorro cada codigo del listado de codigos obtenido arriba
+                            if (codigo.equals(cod_existente)) {
                                 //Existe un codigo existente, entonces lo cambio al nuevo
                                 StringBuilder my_codigo = new StringBuilder(codigo);
                                 char c = (char) (r.nextInt(26) + 'a');
@@ -437,14 +421,11 @@ public class ApiController {
                             }
                         }
                         //Si yo hice cambios en mi codigo, tengo que validar que este nuevo codigo que obtuve, tampoco este dentro de la lista
-                        if(!changes_made_to_codigo)
-                        {
+                        if (!changes_made_to_codigo) {
                             //Recorri todo el listado de codigos, y no hice ningun cambio, osea que no se encontro el mismo codigo
                             //corto el ciclo.
                             contiene = false;
-                        }
-                        else
-                        {
+                        } else {
                             //Si realize cambios, entonces debo seguir iterando para chequear el codigo cambiado
                             //apago el flag de cambios para que no sea ciclico
                             changes_made_to_codigo = false;
@@ -452,21 +433,18 @@ public class ApiController {
                     }
                     //Asigno el codgio al curso.
                     curso.setCodigo(codigo);
-                    
-                }  
+
+                }
                 cursoService.save(curso);
-           }
-            catch (java.io.UnsupportedEncodingException e)
-            {
+            } catch (java.io.UnsupportedEncodingException e) {
                 System.err.println("Error, MD5 no es un algoritmo de encriptacion correcto para MessageDigest (ApiContrller) trying setCodigo");
-            }
-            catch (NoSuchAlgorithmException er){
+            } catch (NoSuchAlgorithmException er) {
                 System.err.println("Error, MD5 no es un algoritmo de encriptacion correcto para MessageDigest");
             }
         }
         return curso;
     }
-    
+
     @GetMapping("buscarCursoPorCodigo")
     public Long buscarCursoPorCodigo(@RequestParam String codigo) {
         //param: codigo --> Codigo del curso a buscar
@@ -490,7 +468,7 @@ public class ApiController {
             return Long.valueOf(-1);
         }
     }
-    
+
     @PostMapping("guardarAsignatura")
     public ResponseEntity<Long> guardarAsignatura(@RequestBody AsignaturaDto asignaturaDto) {
         Asignatura asignatura = asignaturaDto.getId() != null ? asignaturaService.get(asignaturaDto.getId()) : new Asignatura();
@@ -502,63 +480,60 @@ public class ApiController {
         asignatura.setCurso(curso);
         asignatura.validar();
         //Guardamos la asignatura en la entidad curso.
-        if(curso.getAsignaturas() != null){
-            if(!curso.getAsignaturas().contains(asignatura)){
+        if (curso.getAsignaturas() != null) {
+            if (!curso.getAsignaturas().contains(asignatura)) {
                 curso.getAsignaturas().add(asignatura);
                 cursoService.save(curso);
             }
-        } else{
+        } else {
             ArrayList<Asignatura> asignaturas = new ArrayList<Asignatura>();
             asignaturas.add(asignatura);
             curso.setAsignaturas(asignaturas);
             cursoService.save(curso);
         }
         //Guardamos la asignatura en la entidad Profesor.
-        if(profe.getAsignaturas() != null){
-            if(!profe.getAsignaturas().contains(asignatura)){
+        if (profe.getAsignaturas() != null) {
+            if (!profe.getAsignaturas().contains(asignatura)) {
                 profe.getAsignaturas().add(asignatura);
-                
+
             }
-        }
-        else{
+        } else {
             ArrayList<Asignatura> asignaturas = new ArrayList<Asignatura>();
             asignaturas.add(asignatura);
-            profe.setAsignaturas(asignaturas); 
+            profe.setAsignaturas(asignaturas);
         }
-        
+
         //Hay que guardar el profesor en el lado del asignaturas tambien.
-        if( asignatura.getProfesores() != null){
+        if (asignatura.getProfesores() != null) {
             //Ya tiene cursos agregados.
-            if(!asignatura.getProfesores().contains(profe)){
-                asignatura.getProfesores().add(profe);     
+            if (!asignatura.getProfesores().contains(profe)) {
+                asignatura.getProfesores().add(profe);
             }
-        }
-        else{
+        } else {
             //El profesor no tiene ningun Curso.
             ArrayList<Profesor> profesores = new ArrayList<Profesor>();
             profesores.add(profe);
             asignatura.setProfesores(profesores);
         }
-        
-        
+
         asignaturaService.save(asignatura);
         profesorService.save(profe);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @DeleteMapping("eliminarAsignatura")
     public ResponseEntity<Long> eliminarAsignatura(@RequestParam Long id) {
         asignaturaService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @GetMapping("asignaturas")
     public List<Asignatura> getAsignaturas(@RequestParam Long cursoId) {
         Curso curso = cursoService.get(cursoId);
         return asignaturaService.getAll(AsignaturaSpecs.byCurso(curso));
 
     }
-    
+
     @GetMapping("asignaturasByCreador")
     public List<Asignatura> getAsignaturasByCreador(@RequestParam Long cursoId, @RequestParam Long creadorId) {
         Curso curso = cursoService.get(cursoId);
@@ -566,55 +541,53 @@ public class ApiController {
         return asignaturaService.getAll(AsignaturaSpecs.byCurso(curso).and(AsignaturaSpecs.byCreador(profe)));
 
     }
-    
+
     @GetMapping("cursos")
     public List<Curso> getCursos() {
-        return cursoService.getAll(); 
+        return cursoService.getAll();
     }
-    
+
     @GetMapping("getCursosDeAlumno")
-    public List<Curso> getCursosDeAlumno(@RequestParam Long idAlumno){
+    public List<Curso> getCursosDeAlumno(@RequestParam Long idAlumno) {
         Alumno alumno = alumnoService.get(idAlumno);
-        if(alumno == null){
+        if (alumno == null) {
             throw new Error();
         }
-        
-        if(alumno.getCursos().isEmpty())
-        {
-        //No hay cursos para mostrar!
-        return null;
-        }
-        else{
+
+        if (alumno.getCursos().isEmpty()) {
+            //No hay cursos para mostrar!
+            return null;
+        } else {
             return alumno.getCursos();
         }
     }
-    
+
     @PostMapping("agregarAlumnoACurso")
-    public ResponseEntity<Long> agregarAlumnoACurso(@RequestParam Long idAlumno, @RequestParam Long idCurso){
+    public ResponseEntity<Long> agregarAlumnoACurso(@RequestParam Long idAlumno, @RequestParam Long idCurso) {
         Alumno alumno = alumnoService.get(idAlumno);
         Curso curso = cursoService.get(idCurso);
-        if(curso == null || alumno == null){
+        if (curso == null || alumno == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if(!curso.getAlumnos().isEmpty()){
-            if(!curso.getAlumnos().contains(alumno)){
+        if (!curso.getAlumnos().isEmpty()) {
+            if (!curso.getAlumnos().contains(alumno)) {
                 //el alumno no esta en el curso, lo agrego
                 curso.getAlumnos().add(alumno);
                 cursoService.save(curso);
             }
-        } else{
+        } else {
             //no hay alumnos en el curso
             ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
             alumnos.add(alumno);
             curso.setAlumnos(alumnos);
             cursoService.save(curso);
         }
-        if(!alumno.getCursos().isEmpty()){
-            if(!alumno.getCursos().contains(curso)){
+        if (!alumno.getCursos().isEmpty()) {
+            if (!alumno.getCursos().contains(curso)) {
                 alumno.getCursos().add(curso);
                 alumnoService.save(alumno);
             }
-        } else{
+        } else {
             ArrayList<Curso> cursos = new ArrayList<Curso>();
             cursos.add(curso);
             alumno.setCursos(cursos);
@@ -622,16 +595,16 @@ public class ApiController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-   
+
     @PostMapping("validarTutor")
     public Boolean validarTutor(@RequestParam Long tutorId, @RequestParam String password) {
         Tutor tutor = tutorService.get(tutorId);
         if (tutor == null || !tutor.getPassword().equals(cifrarClave(password))) {
             return false;
         }
-            return true;
+        return true;
     }
-    
+
     @PostMapping("inicioSesion")
     public String inicioSesion(@RequestParam String documento, @RequestParam String password) {
         //Recibo dni y contraseña, tengo que checkear que sean correctos, una vez validado, tengo que crear una session y devolver el id de las session al usuario
@@ -651,15 +624,15 @@ public class ApiController {
                 //documento encontrado, valido si la contraseña tambien coincide.
                 //en la base, esta la contraseña cifrada, por ende tengo que cifrar la password del front y comprarla con la del server
                 //System.out.println(persona.getClass());
-                if (persona.getPassword() == null){
+                if (persona.getPassword() == null) {
                     continue;
                 }
                 if (persona.getPassword().equals(cifrarClave(password))) {
                     char userType = '0'; // 0 para Tutor.
-                    if( persona instanceof Profesor){
+                    if (persona instanceof Profesor) {
                         userType = '1'; //1 para Profesor.
                     }
-                   
+
                     //la contraseña tambien coincide.
                     //tengo que crear la session.
                     Sesion sesion = new Sesion();
@@ -670,7 +643,7 @@ public class ApiController {
                     SecureRandom random = new SecureRandom();
                     byte[] contenedor = new byte[16];
                     random.nextBytes(contenedor);
-                    
+
                     StringBuffer codigobuilder = new StringBuffer();
                     for (byte bytes : contenedor) {
                         codigobuilder.append(String.format("%02x", bytes & 0xff));
@@ -684,7 +657,7 @@ public class ApiController {
                     sesion.setExpiracion(fecha);
                     sesionService.save(sesion);
                     //devuelvo el session id al usuario para que vaya en la coockie
-                    return codigo; 
+                    return codigo;
                 } else {
                     //Contraseña incorrecta
                     return "wrong_password";
@@ -693,7 +666,7 @@ public class ApiController {
         }
         return "user_not_found";
     }
-    
+
     @PostMapping("eliminarSesion")
     public ResponseEntity<Long> eliminarSesion(@RequestBody String sessionId) {
         //Busco el id de esa sesion para borarla.
@@ -702,8 +675,7 @@ public class ApiController {
         if (listadoSesiones.isEmpty()) {
             //no hay sesiones en la base
             throw new Error();
-        } 
-        else {
+        } else {
             //recorro las sesiones
 
             for (Sesion sesion : listadoSesiones) {
@@ -714,11 +686,10 @@ public class ApiController {
                 }
             }
         }
-        
+
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    
-    
+
     // --------- # # Funciones AUXILIARES # # --------- //
     @GetMapping("validarSesion")
     public Long validarSesion(@RequestParam String session_id) {
@@ -743,40 +714,35 @@ public class ApiController {
         }
         return null;
     }
-    
-    
+
     @GetMapping("isProfesor")
-    public Boolean isProfesor(Long id){
+    public Boolean isProfesor(Long id) {
         //Return True si es profesor, o Falso si es tutor.}
         List<Persona> personas = new ArrayList<Persona>();
         List<Profesor> profesores = profesorService.getAll();
         List<Tutor> tutores = tutorService.getAll();
         personas.addAll(profesores);
         personas.addAll(tutores);
-        for (Persona persona : personas) 
-        {
-            if(persona.getId().equals(id))
-            {
-                if(persona instanceof Profesor){
+        for (Persona persona : personas) {
+            if (persona.getId().equals(id)) {
+                if (persona instanceof Profesor) {
                     return true;
-                }
-                else
-                {
+                } else {
                     return false;
                 }
             }
         }
         return false;
     }
-    
-    public Long getPersonaByDocumento(String documento){
+
+    public Long getPersonaByDocumento(String documento) {
         List<Persona> personas = new ArrayList<Persona>();
         List<Profesor> profesores = profesorService.getAll();
         List<Tutor> tutores = tutorService.getAll();
         personas.addAll(profesores);
         personas.addAll(tutores);
         for (Persona persona : personas) {
-            if(persona.getDocumento() == null || persona.getDocumento().getNumero() == null){
+            if (persona.getDocumento() == null || persona.getDocumento().getNumero() == null) {
                 continue;
             }
             if (persona.getDocumento().getNumero().equals(documento)) {
@@ -785,34 +751,28 @@ public class ApiController {
         }
         throw new Error();
     }
-    
-    public String cifrarClave(String identificador)
-    {
-        
-        try{
-                MessageDigest md5 = MessageDigest.getInstance("MD5");
-                byte[] byteMessage = identificador.getBytes("UTF-8");
-                byte[] digested = md5.digest(byteMessage);
-                StringBuffer codigobuilder = new StringBuffer();
-                for (byte bytes : digested) 
-                {
-                    codigobuilder.append(String.format("%02x", bytes & 0xff));
-                }
-                 String codigo = codigobuilder.toString();
-                 codigo = codigo.toUpperCase();
-                 return codigo;
+
+    public String cifrarClave(String identificador) {
+
+        try {
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            byte[] byteMessage = identificador.getBytes("UTF-8");
+            byte[] digested = md5.digest(byteMessage);
+            StringBuffer codigobuilder = new StringBuffer();
+            for (byte bytes : digested) {
+                codigobuilder.append(String.format("%02x", bytes & 0xff));
             }
-        catch (java.io.UnsupportedEncodingException e)
-            {
-                System.err.println("Erro, MD5 no es un algoritmo de encriptacion correcto para MessageDigest (ApiContrller) trying setCodigo");
-            }
-        catch (NoSuchAlgorithmException er){
-                System.err.println("Erro, MD5 no es un algoritmo de encriptacion correcto para MessageDigest");
-            }
+            String codigo = codigobuilder.toString();
+            codigo = codigo.toUpperCase();
+            return codigo;
+        } catch (java.io.UnsupportedEncodingException e) {
+            System.err.println("Erro, MD5 no es un algoritmo de encriptacion correcto para MessageDigest (ApiContrller) trying setCodigo");
+        } catch (NoSuchAlgorithmException er) {
+            System.err.println("Erro, MD5 no es un algoritmo de encriptacion correcto para MessageDigest");
+        }
         return "";
     }
 
-        
     @GetMapping("actividades")
     public String getActividades() {
         JsonArray plantillasJson = new JsonArray();
@@ -835,7 +795,7 @@ public class ApiController {
         }
         return plantillasJson.toString();
     }
-    
+
     @GetMapping("actividadesByProfesor")
     public String getActividadesByProfesor(@RequestParam Long creadorId) {
         Profesor profesor = profesorService.get(creadorId);
@@ -866,13 +826,13 @@ public class ApiController {
         }
         return plantillasJson.toString();
     }
-    
+
     @GetMapping("actividad")
     public Plantilla getActividad(@RequestParam Long id) {
         Plantilla plantilla = (Plantilla) Hibernate.unproxy(plantillaService.get(id));
         return plantilla;
     }
-    
+
     @GetMapping("imagenGrilla")
     public String getImagenGrilla(@RequestParam Long id) {
         String imagen = null;
@@ -882,45 +842,45 @@ public class ApiController {
         }
         return imagen;
     }
-    
+
     @PostMapping("crearActividadPreguntas")
     public ResponseEntity<Long> crearActividadPreguntas(@RequestBody PlantillaPreguntasDto plantillaPreguntasDto) {
         PlantillaPreguntas plantilla = new PlantillaPreguntas();
         Profesor profe = profesorService.get(plantillaPreguntasDto.getCreadorId());
         plantilla.setCreador(profe);
         plantilla.setNombre(plantillaPreguntasDto.getNombre());
-        plantilla.setSegundos(plantillaPreguntasDto.getSegundos()); 
+        plantilla.setSegundos(plantillaPreguntasDto.getSegundos());
         for (PreguntaDto preg : plantillaPreguntasDto.getPreguntasDto()) {
             Pregunta pregunta = new Pregunta();
             pregunta.setPregunta(preg.getPregunta());
-            
+
             Respuesta correcta = new Respuesta();
             correcta.setCorrecta(true);
             correcta.setRespuesta(preg.getRespuestaCorrecta());
             pregunta.addRespuesta(correcta);
-            
+
             Respuesta incorrectaA = new Respuesta();
             incorrectaA.setCorrecta(false);
             incorrectaA.setRespuesta(preg.getRespuestaIncorrectaA());
             pregunta.addRespuesta(incorrectaA);
-            
+
             Respuesta incorrectaB = new Respuesta();
             incorrectaB.setCorrecta(false);
             incorrectaB.setRespuesta(preg.getRespuestaIncorrectaB());
             pregunta.addRespuesta(incorrectaB);
-            
+
             Respuesta incorrectaC = new Respuesta();
             incorrectaC.setCorrecta(false);
             incorrectaC.setRespuesta(preg.getRespuestaIncorrectaC());
             pregunta.addRespuesta(incorrectaC);
-            
+
             plantilla.addPregunta(pregunta);
         }
         plantilla.setPuntajeMaximo(plantillaPreguntasDto.getPreguntasDto().size());
         plantillaPreguntasService.save(plantilla);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @PostMapping("crearActividadPasapalabra")
     public ResponseEntity<Long> crearActividadPasapalabra(@RequestBody PlantillaPasapalabraDto plantillaPasapalabraDto) {
         PlantillaPasapalabra plantilla = new PlantillaPasapalabra();
@@ -933,14 +893,14 @@ public class ApiController {
             pregunta.setLetra(preg.getLetra());
             pregunta.setPregunta(preg.getPregunta());
             pregunta.setEmpiezaCon(preg.getEmpiezaCon());
-            pregunta.setRespuestaCorrecta(preg.getRespuestaCorrecta());            
+            pregunta.setRespuestaCorrecta(preg.getRespuestaCorrecta());
             plantilla.addPregunta(pregunta);
         }
         plantilla.setPuntajeMaximo(plantillaPasapalabraDto.getPreguntasPasapalabraDto().size());
         plantillaPasapalabraService.save(plantilla);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @PostMapping("crearActividadGrilla")
     public ResponseEntity<Long> crearActividadGrilla(@RequestBody PlantillaGrillaDto plantillaGrillaDto) {
         PlantillaGrilla plantilla = new PlantillaGrilla();
@@ -961,6 +921,7 @@ public class ApiController {
         plantillaGrillaService.save(plantilla);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @PostMapping("cargarAddons")
     public ResponseEntity<Long> cargarAddons() {
         for (int i = 1; i < 8; i++) {
@@ -972,53 +933,52 @@ public class ApiController {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @GetMapping("addons")
     public List<Addon> getAddons() {
-        return addonService.getAll(); 
+        return addonService.getAll();
     }
-    
+
     @PostMapping("comprarAddon")
     public ResponseEntity<Long> comprarAddon(@RequestParam Long idAlumno, @RequestParam Long idAddon) {
         Alumno alumno = alumnoService.get(idAlumno);
         alumno = Hibernate.unproxy(alumno, Alumno.class);
         Addon addon = addonService.get(idAddon);
         addon = Hibernate.unproxy(addon, Addon.class);
-        
-        
-        if(alumno.getSaldoEstrellas() < addon.getCosto()){
+
+        if (alumno.getSaldoEstrellas() < addon.getCosto()) {
             throw new Error("Saldo insuficiende de estrellas");
         }
-        
-        if(alumno.getMapRecompensas() == null){
+
+        if (alumno.getMapRecompensas() == null) {
             alumno.setMapRecompensas(new HashMap<>());
         }
         alumno.getMapRecompensas().put(addon, true);
         alumno.setSaldoEstrellas(alumno.getSaldoEstrellas() - addon.getCosto());
-        
+
         alumnoService.save(alumno);
-        
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @PostMapping("equiparDesequiparAddon")
     public ResponseEntity<Long> equiparDesequiparAddon(@RequestParam Long idAlumno, @RequestParam Long idAddon) {
         Alumno alumno = alumnoService.get(idAlumno);
         alumno = Hibernate.unproxy(alumno, Alumno.class);
         Addon addon = addonService.get(idAddon);
         addon = Hibernate.unproxy(addon, Addon.class);
-        
-        if(alumno.getMapRecompensas() == null || !alumno.getMapRecompensas().containsKey(addon)){
+
+        if (alumno.getMapRecompensas() == null || !alumno.getMapRecompensas().containsKey(addon)) {
             throw new Error("El addon no ha sido comprado aun");
         }
-        
+
         alumno.getMapRecompensas().put(addon, !alumno.getMapRecompensas().get(addon));
-        
+
         alumnoService.save(alumno);
-        
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
     @GetMapping("mapRecompensasAlumno")
     @ResponseBody
     public String getMapRecompensasAlumno(@RequestParam Long idAlumno) {

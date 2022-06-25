@@ -24,37 +24,8 @@ public class ProfesorDto {
     private String documento;
     private TipoDocumento tipoDocumento;
     private Calendar fechaNacimiento;
-    private List<Curso> cursos;
-    private List<Asignatura> asignaturas;
     private String password;
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
-    
-
-    public List<Curso> getCursos() {
-        return cursos;
-    }
-
-    public void setCursos(List<Curso> cursos) {
-        this.cursos = cursos;
-    }
-
-    public List<Asignatura> getAsignaturas() {
-        return asignaturas;
-    }
-
-    public void setAsignaturas(List<Asignatura> asignaturas) {
-        this.asignaturas = asignaturas;
-    }
-
-    
     public Long getId() {
         return id;
     }
@@ -94,8 +65,7 @@ public class ProfesorDto {
     public void setTipoDocumento(TipoDocumento tipoDocumento) {
         this.tipoDocumento = tipoDocumento;
     }
-
-
+    
     public Calendar getFechaNacimiento() {
         return fechaNacimiento;
     }
@@ -103,7 +73,13 @@ public class ProfesorDto {
     public void setFechaNacimiento(Calendar fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
-    
-    
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
     
 }
