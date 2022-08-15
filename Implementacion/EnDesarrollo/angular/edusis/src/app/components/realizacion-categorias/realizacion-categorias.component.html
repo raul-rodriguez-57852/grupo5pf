@@ -1,0 +1,57 @@
+<section id="categorias" class="margin-top-90">
+  <script src="DragDropTouch.js"></script>
+  <div class="container">
+    <div *ngIf="!final">
+      <div class="text-right">
+        <h3 style="color: #13334c; margin-bottom: 0" *ngIf="timeLeft > 5">
+          {{ timeLeft }} <i class="fa fa-clock-o"></i>
+        </h3>
+        <h3 style="color: red; margin-bottom: 0" *ngIf="timeLeft <= 5">
+          {{ timeLeft }} <i class="fa fa-clock-o"></i>
+        </h3>
+        <h6 style="color: #13334c">
+          Palabras restantes: {{ palabras.length }}
+        </h6>
+      </div>
+      <div class="nube margin-bottom-16">
+        <img class="imagenNube" src="assets/img/nube.png" />
+        <div draggable [dragData]="palabraActual" class="centered">
+          {{ palabraActual }}
+        </div>
+      </div>
+      <div class="bottom">
+        <div class="row lowRow">
+          <ng-container *ngFor="let categoria of categorias; let j = index">
+            <div
+              [ngClass]="cantCategorias == 2 ? 'col-6' : 'col-4'"
+              class="no-padding"
+            >
+              <div
+                class="casa"
+                droppable
+                (onDrop)="onItemDrop($event, categoria)"
+              >
+                <img class="imagenNube" src="assets/img/casa.png" />
+                <div class="centered">{{ categoria.nombre }}</div>
+                <div class="centered">{{ mapAciertos.get(categoria) }}</div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="final">
+      <div class="text-center">
+        <h3 style="color: #13334c">Respuestas correctas:</h3>
+        <h3 style="color: #13334c">{{ cantAciertos }} / {{ cantPreguntas }}</h3>
+      </div>
+      <button
+        type="button"
+        (click)="finalizar()"
+        class="btn btn-lg btn-block btn-personalizado"
+      >
+        Finalizar
+      </button>
+    </div>
+  </div>
+</section>

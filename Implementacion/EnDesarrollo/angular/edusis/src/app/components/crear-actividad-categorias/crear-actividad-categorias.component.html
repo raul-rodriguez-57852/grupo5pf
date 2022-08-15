@@ -1,0 +1,218 @@
+<section id="cursos" class="margin-top-90">
+  <div class="container">
+    <form
+      *ngIf="paso === 1"
+      name="formActividad"
+      #formActividad="ngForm"
+      (ngSubmit)="next(formActividad)"
+    >
+      <div class="form-group">
+        <label for="nombre">Nombre actividad</label>
+        <input
+          [(ngModel)]="nombre"
+          type="text"
+          name="nombre"
+          class="form-control"
+          placeholder="Nombre"
+          required
+          autocomplete="off"
+        />
+      </div>
+      <div class="form-group">
+        <label for="segundos">Segundos</label>
+        <input
+          [(ngModel)]="segundos"
+          type="tel"
+          name="segundos"
+          class="form-control"
+          placeholder="Segundos"
+          required
+          autocomplete="off"
+        />
+      </div>
+      <div style="text-align: center">
+        <div class="custom-control custom-radio custom-control-inline">
+          <input
+            type="radio"
+            id="customRadioInline1"
+            name="customRadioInline1"
+            class="custom-control-input"
+            [value]="2"
+            [(ngModel)]="cantCategorias"
+            (change)="changeCantidad($event)"
+          />
+          <label class="custom-control-label" for="customRadioInline1">
+            2 Categorías</label
+          >
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input
+            type="radio"
+            id="customRadioInline2"
+            name="customRadioInline2"
+            class="custom-control-input"
+            [value]="3"
+            [(ngModel)]="cantCategorias"
+            (change)="changeCantidad($event)"
+          />
+          <label class="custom-control-label" for="customRadioInline2">
+            3 Categorías</label
+          >
+        </div>
+      </div>
+      <div
+        *ngFor="let categoria of categorias; let i = index"
+        class="margin-bottom-30"
+      >
+        <div class="form-group">
+          <label for="pregunta">Categoría {{ i + 1 }}</label>
+          <input
+            [(ngModel)]="categoria.nombre"
+            type="text"
+            name="nombre"
+            class="form-control"
+            placeholder="Nombre"
+            required
+            autocomplete="off"
+          />
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="btn btn-personalizado btn-lg btn-block margin-bottom-16"
+      >
+        Siguiente
+      </button>
+    </form>
+    <div *ngIf="paso === 2" name="formActividad2">
+      <form [formGroup]="categoriaForm0">
+        <label class="centrado" style="font-weight: bold"
+          >Categoría: {{ categorias[0].nombre }}</label
+        >
+        <div
+          formArrayName="items"
+          *ngFor="
+            let item of categoriaForm0.get('items')['controls'];
+            let j = index
+          "
+        >
+          <div [formGroupName]="j" class="row">
+            <div class="form-group col-9" style="margin-bottom: 0">
+              <input
+                formControlName="respuesta"
+                placeholder="Respuesta"
+                type="text"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group col-3">
+              <button
+                type="button"
+                class="btn btn-danger btn-block margin-bottom-16"
+                (click)="eliminarItem(0, j)"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="btn btn-personalizado-inverso btn-block margin-bottom-16"
+          (click)="addItem(0)"
+        >
+          Agregar respuesta
+        </button>
+      </form>
+      <hr />
+      <form [formGroup]="categoriaForm1">
+        <label class="centrado" style="font-weight: bold"
+          >Categoría: {{ categorias[1].nombre }}</label
+        >
+        <div
+          formArrayName="items"
+          *ngFor="
+            let item of categoriaForm1.get('items')['controls'];
+            let j = index
+          "
+        >
+          <div [formGroupName]="j" class="row">
+            <div class="form-group col-9" style="margin-bottom: 0">
+              <input
+                formControlName="respuesta"
+                placeholder="Respuesta"
+                type="text"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group col-3">
+              <button
+                type="button"
+                class="btn btn-danger btn-block margin-bottom-16"
+                (click)="eliminarItem(1, j)"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="btn btn-personalizado-inverso btn-block margin-bottom-16"
+          (click)="addItem(1)"
+        >
+          Agregar respuesta
+        </button>
+      </form>
+      <div *ngIf="cantCategorias === 3">
+        <hr />
+        <form [formGroup]="categoriaForm2">
+          <label class="centrado" style="font-weight: bold"
+            >Categoría: {{ categorias[2].nombre }}</label
+          >
+          <div
+            formArrayName="items"
+            *ngFor="
+              let item of categoriaForm2.get('items')['controls'];
+              let j = index
+            "
+          >
+            <div [formGroupName]="j" class="row">
+              <div class="form-group col-9" style="margin-bottom: 0">
+                <input
+                  formControlName="respuesta"
+                  placeholder="Respuesta"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group col-3">
+                <button
+                  type="button"
+                  class="btn btn-danger btn-block margin-bottom-16"
+                  (click)="eliminarItem(2, j)"
+                >
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="btn btn-personalizado-inverso btn-block margin-bottom-16"
+            (click)="addItem(2)"
+          >
+            Agregar respuesta
+          </button>
+        </form>
+      </div>
+      <button
+        type="button"
+        (click)="save()"
+        class="btn btn-personalizado btn-lg btn-block margin-bottom-16"
+      >
+        Finalizar
+      </button>
+    </div>
+  </div>
+</section>

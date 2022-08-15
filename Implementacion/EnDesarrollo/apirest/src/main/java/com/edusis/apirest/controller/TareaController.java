@@ -16,11 +16,12 @@ import com.edusis.apirest.domain.plantillas.Plantilla;
 import com.edusis.apirest.domain.plantillas.PlantillaPasapalabra;
 import com.edusis.apirest.domain.plantillas.PlantillaPreguntas;
 import com.edusis.apirest.domain.Profesor;
-import com.edusis.apirest.domain.QRealizacionTarea;
 import com.edusis.apirest.domain.RealizacionTarea;
 import com.edusis.apirest.domain.RealizacionTareaDetalle;
 import com.edusis.apirest.domain.Tarea;
+import com.edusis.apirest.domain.plantillas.PlantillaCategorias;
 import com.edusis.apirest.domain.plantillas.PlantillaGrilla;
+import com.edusis.apirest.domain.plantillas.PlantillaVF;
 import com.edusis.apirest.service.AlumnoService;
 import com.edusis.apirest.service.AsignaturaService;
 import com.edusis.apirest.service.CursoService;
@@ -30,7 +31,6 @@ import com.edusis.apirest.service.PlantillaService;
 import com.edusis.apirest.service.ProfesorService;
 import com.edusis.apirest.service.RealizacionTareaService;
 import com.edusis.apirest.service.TareaService;
-import com.edusis.apirest.service.dto.AsignaturaDto;
 import com.edusis.apirest.service.dto.DetalleTareaActividadDto;
 import com.edusis.apirest.service.dto.DetalleTareaMultimediaDto;
 import com.edusis.apirest.service.dto.RealizacionDetalleDto;
@@ -46,14 +46,9 @@ import com.edusis.apirest.utils.AssertUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Ops;
-import com.querydsl.core.types.dsl.NumberOperation;
-import com.querydsl.jpa.JPQLQuery;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -61,7 +56,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -438,7 +432,9 @@ public class TareaController {
     @GetMapping("imagenDetalle")
     public String getImagenDetalle(@RequestParam Long id) {
         DetalleTareaMultimedia detalle = (DetalleTareaMultimedia) Hibernate.unproxy(detalleTareaMultimediaService.get(id));
-        
+        if(detalle.getImagen() == null){
+            return null;
+        }
         String imagen = new String(detalle.getImagen(), StandardCharsets.UTF_8);
         return imagen;
     }
@@ -503,6 +499,12 @@ public class TareaController {
         }
         if (plantilla instanceof PlantillaGrilla) {
             return "Grilla";
+        }
+        if (plantilla instanceof PlantillaCategorias) {
+            return "Categorias";
+        }
+        if (plantilla instanceof PlantillaVF) {
+            return "VerdaderoFalso";
         }
         return null;
     }

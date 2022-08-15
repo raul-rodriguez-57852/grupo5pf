@@ -5,33 +5,18 @@
  */
 package com.edusis.apirest.service.dto;
 
+import java.util.List;
+
 /**
  *
- * @author Manuel
+ * @author Facundo Raviolo
  */
-public class CursoDto {
+public class PlantillaCategoriasDto {
     
-    private Long id;
     private String nombre;
-    private String iconoURL;
+    private Integer segundos;
+    private List<CategoriaDto> categoriasDto;
     private Long creadorId;
-    private String codigo;
-
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getNombre() {
         return nombre;
@@ -41,12 +26,12 @@ public class CursoDto {
         this.nombre = nombre;
     }
 
-    public String getIconoURL() {
-        return iconoURL;
+    public Integer getSegundos() {
+        return segundos;
     }
 
-    public void setIconoURL(String iconoURL) {
-        this.iconoURL = iconoURL;
+    public void setSegundos(Integer segundos) {
+        this.segundos = segundos;
     }
 
     public Long getCreadorId() {
@@ -56,5 +41,13 @@ public class CursoDto {
     public void setCreadorId(Long creadorId) {
         this.creadorId = creadorId;
     }
-   
+
+    public List<CategoriaDto> getCategoriasDto() {
+        return categoriasDto;
+    }
+
+    public void setCategoriasDto(List<CategoriaDto> categoriasDto) {
+        this.categoriasDto = categoriasDto;
+    }
+    
 }

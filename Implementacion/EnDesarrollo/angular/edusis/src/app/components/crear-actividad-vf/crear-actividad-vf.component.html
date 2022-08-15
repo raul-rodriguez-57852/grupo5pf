@@ -1,0 +1,91 @@
+<section id="cursos" class="margin-top-90">
+  <div class="container">
+    <form
+      *ngIf="paso === 1"
+      name="formActividad"
+      #formActividad="ngForm"
+      (ngSubmit)="next(formActividad)"
+    >
+      <div class="form-group">
+        <label for="nombre">Nombre actividad</label>
+        <input
+          [(ngModel)]="nombre"
+          type="text"
+          name="nombre"
+          class="form-control"
+          placeholder="Nombre"
+          required
+          autocomplete="off"
+        />
+      </div>
+      <div class="form-group">
+        <label for="segundos">Segundos</label>
+        <input
+          [(ngModel)]="segundos"
+          type="tel"
+          name="segundos"
+          class="form-control"
+          placeholder="Segundos"
+          required
+          autocomplete="off"
+        />
+      </div>
+      <button
+        type="submit"
+        class="btn btn-personalizado btn-lg btn-block margin-bottom-16"
+      >
+        Siguiente
+      </button>
+    </form>
+
+    <form
+      *ngIf="paso === 2"
+      name="formActividad2"
+      #formActividad2="ngForm"
+      (ngSubmit)="save(formActividad2)"
+    >
+      <div class="form-group">
+        <label for="pregunta">Pregunta</label>
+        <input
+          [(ngModel)]="pregunta.pregunta"
+          type="text"
+          name="pregunta"
+          class="form-control"
+          placeholder="Pregunta"
+          required
+          autocomplete="off"
+        />
+      </div>
+      <div class="form-group">
+        <input
+          type="radio"
+          name="vf"
+          [(ngModel)]="pregunta.respuesta"
+          [value]="true"
+        />
+        Verdadero
+        <input
+          type="radio"
+          name="vf"
+          [(ngModel)]="pregunta.respuesta"
+          [value]="false"
+        />
+        Falso
+      </div>
+
+      <button
+        type="button"
+        (click)="agregarOtra()"
+        class="btn btn-personalizado btn-lg btn-block margin-bottom-16"
+      >
+        Agregar otra pregunta
+      </button>
+      <button
+        type="submit"
+        class="btn btn-personalizado btn-lg btn-block margin-bottom-16"
+      >
+        Finalizar
+      </button>
+    </form>
+  </div>
+</section>

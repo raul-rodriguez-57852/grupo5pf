@@ -34,7 +34,7 @@ export class CrearActividadComponent implements OnInit {
         : null;
 
 
-    let idProfesor = this.dataApiService.getUsuario();      
+    let idProfesor = this.dataApiService.getUsuario();
     this.dataApiService.getActividadesByProfesor(idProfesor).then(res => {
       this.actividades = res;
       console.log(this.actividades);
@@ -44,32 +44,56 @@ export class CrearActividadComponent implements OnInit {
   crearPreguntasRespuestas() {
     this.plantillaPreguntaRespuestas = true;
     this.plantilla = new PlantillaPreguntas();
-    let idProfesor = this.dataApiService.getUsuario();  
+    let idProfesor = this.dataApiService.getUsuario();
     this.plantilla.creadorId = idProfesor;
   }
 
   crearPasapalabra() {
-    if(this.idTareaRoute != null){
+    if (this.idTareaRoute != null) {
       this.router.navigate([
         "crear-actividad-pasapalabra",
         { tareaId: this.idTareaRoute },
       ]);
-    }else{
+    } else {
       this.router.navigate(['crear-actividad-pasapalabra']);
     }
-    
+
   }
 
   crearGrilla() {
-    if(this.idTareaRoute != null){
+    if (this.idTareaRoute != null) {
       this.router.navigate([
         "crear-actividad-grilla",
         { tareaId: this.idTareaRoute },
       ]);
-    }else{
+    } else {
       this.router.navigate(['crear-actividad-grilla']);
     }
-    
+
+  }
+
+  crearCategorias() {
+    if (this.idTareaRoute != null) {
+      this.router.navigate([
+        "crear-actividad-categorias",
+        { tareaId: this.idTareaRoute },
+      ]);
+    } else {
+      this.router.navigate(['crear-actividad-categorias']);
+    }
+
+  }
+
+  crearVF() {
+    if (this.idTareaRoute != null) {
+      this.router.navigate([
+        "crear-actividad-vf",
+        { tareaId: this.idTareaRoute },
+      ]);
+    } else {
+      this.router.navigate(['crear-actividad-vf']);
+    }
+
   }
 
   next(formActividad: NgForm) {
@@ -85,20 +109,17 @@ export class CrearActividadComponent implements OnInit {
     this.dataApiService.crearActividadPreguntas(this.plantilla).then(res => {
       console.log(res);
       /// Si no es nulo this.idTareaRoute significa que se llego a esta pantalla desde la creacion de una tarea. Redirigimos despues de guardar
-      if(this.idTareaRoute != null){
+      if (this.idTareaRoute != null) {
         this.router.navigate([
           "editar-detalle-actividad",
           { tareaId: this.idTareaRoute },
         ]);
-      }else{
+      } else {
         window.location.reload();
       }
     });
 
-    
 
-     
-    
   }
 
   agregarOtra() {
@@ -120,6 +141,14 @@ export class CrearActividadComponent implements OnInit {
     if (actividad.tipo === 'Grilla') {
       const id = actividad.id;
       this.router.navigate(['vista-previa-grilla', { id }]);
+    }
+    if (actividad.tipo === 'Categorias') {
+      const id = actividad.id;
+      this.router.navigate(['vista-previa-categorias', { id }]);
+    }
+    if (actividad.tipo === 'VerdaderoFalso') {
+      const id = actividad.id;
+      this.router.navigate(['vista-previa-vf', { id }]);
     }
   }
 

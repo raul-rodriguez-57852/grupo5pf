@@ -8,7 +8,7 @@ import { HomeComponent } from "./components/home/home.component";
 import { RegistroComponent } from "./components/registro/registro.component";
 import { NavbarComponent } from "./components/navbar/navbar.component";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { EditarEmojiComponent } from "./components/editar-emoji/editar-emoji.component";
 import { EmojisComponent } from "./components/emojis/emojis.component";
 import { EditarAlumnoComponent } from "./components/editar-alumno/editar-alumno.component";
@@ -47,6 +47,13 @@ import { CrearActividadGrillaComponent } from './components/crear-actividad-gril
 import { VistaPreviaGrillaComponent } from './components/vista-previa-grilla/vista-previa-grilla.component';
 import { RealizacionGrillaComponent } from './components/realizacion-grilla/realizacion-grilla.component';
 import { RecompensasComponent } from "./components/recompensas/recompensas.component";
+import { CrearActividadCategoriasComponent } from './components/crear-actividad-categorias/crear-actividad-categorias.component';
+import { VistaPreviaCategoriasComponent } from './components/vista-previa-categorias/vista-previa-categorias.component';
+import { NgDragDropModule } from "ng-drag-drop";
+import { RealizacionCategoriasComponent } from './components/realizacion-categorias/realizacion-categorias.component';
+import { CrearActividadVfComponent } from './components/crear-actividad-vf/crear-actividad-vf.component';
+import { VistaPreviaVfComponent } from './components/vista-previa-vf/vista-previa-vf.component';
+import { RealizacionVfComponent } from './components/realizacion-vf/realizacion-vf.component';
 
 
 
@@ -89,7 +96,13 @@ import { RecompensasComponent } from "./components/recompensas/recompensas.compo
     RealizacionGrillaComponent,
     EstadisticasCursoAlumnoComponent,
     RecompensasComponent,
-    PipeList
+    PipeList,
+    CrearActividadCategoriasComponent,
+    VistaPreviaCategoriasComponent,
+    RealizacionCategoriasComponent,
+    CrearActividadVfComponent,
+    VistaPreviaVfComponent,
+    RealizacionVfComponent
 
   ],
   imports: [
@@ -102,6 +115,8 @@ import { RecompensasComponent } from "./components/recompensas/recompensas.compo
     NgxSpinnerModule,
     BrowserAnimationsModule,
     MDBBootstrapModule.forRoot(),
+    ReactiveFormsModule,
+    NgDragDropModule.forRoot(),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }

@@ -35,6 +35,12 @@ import { VistaPreviaGrillaComponent } from './components/vista-previa-grilla/vis
 import { CrearActividadGrillaComponent } from './components/crear-actividad-grilla/crear-actividad-grilla.component';
 import { RealizacionGrillaComponent } from './components/realizacion-grilla/realizacion-grilla.component';
 import { RecompensasComponent } from './components/recompensas/recompensas.component';
+import { CrearActividadCategoriasComponent } from './components/crear-actividad-categorias/crear-actividad-categorias.component';
+import { VistaPreviaCategoriasComponent } from './components/vista-previa-categorias/vista-previa-categorias.component';
+import { RealizacionCategoriasComponent } from './components/realizacion-categorias/realizacion-categorias.component';
+import { CrearActividadVfComponent } from './components/crear-actividad-vf/crear-actividad-vf.component';
+import { VistaPreviaVfComponent } from './components/vista-previa-vf/vista-previa-vf.component';
+import { RealizacionVfComponent } from './components/realizacion-vf/realizacion-vf.component';
 
 const routes: Routes = [
 
@@ -52,9 +58,13 @@ const routes: Routes = [
   { path: 'crear-actividad', component: CrearActividadComponent, canActivate: [DocenteAuthGuard] },
   { path: 'crear-actividad-pasapalabra', component: CrearActividadPasapalabraComponent, canActivate: [DocenteAuthGuard] },
   { path: 'crear-actividad-grilla', component: CrearActividadGrillaComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'crear-actividad-categorias', component: CrearActividadCategoriasComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'crear-actividad-vf', component: CrearActividadVfComponent, canActivate: [DocenteAuthGuard] },
   { path: 'vista-previa-actividad', component: VistaPreviaActividadComponent, canActivate: [DocenteAuthGuard] },
   { path: 'vista-previa-grilla', component: VistaPreviaGrillaComponent, canActivate: [DocenteAuthGuard] },
   { path: 'vista-previa-pasapalabra', component: VistaPreviaPasapalabraComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'vista-previa-categorias', component: VistaPreviaCategoriasComponent, canActivate: [DocenteAuthGuard] },
+  { path: 'vista-previa-vf', component: VistaPreviaVfComponent, canActivate: [DocenteAuthGuard] },
   { path: 'editar-tarea', component: EditarTareaComponent, canActivate: [DocenteAuthGuard] },
   { path: 'editar-detalle-multimedia', component: EditarDetalleMultimediaComponent, canActivate: [DocenteAuthGuard] },
   { path: 'editar-detalle-actividad', component: EditarDetalleActividadComponent, canActivate: [DocenteAuthGuard] },
@@ -77,6 +87,8 @@ const routes: Routes = [
   { path: 'configuracion-tutor', component: ConfiguracionTutorComponent, canActivate: [TutorAuthGuard] },
   { path: 'realizacion-pasapalabra', component: RealizacionPasapalabraComponent, canActivate: [TutorAuthGuard] },
   { path: 'realizacion-grilla', component: RealizacionGrillaComponent, canActivate: [TutorAuthGuard] },
+  { path: 'realizacion-categorias', component: RealizacionCategoriasComponent, canActivate: [TutorAuthGuard] },
+  { path: 'realizacion-vf', component: RealizacionVfComponent, canActivate: [TutorAuthGuard] },
   { path: 'configuracion-tutor', component: ConfiguracionTutorComponent, canActivate: [TutorAuthGuard] },
   { path: 'recompensas', component: RecompensasComponent, canActivate: [TutorAuthGuard] },
 

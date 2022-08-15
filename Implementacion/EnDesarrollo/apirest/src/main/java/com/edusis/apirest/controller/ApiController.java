@@ -23,31 +23,41 @@ import com.edusis.apirest.domain.Sesion;
 import com.edusis.apirest.domain.plantillas.Respuesta;
 import com.edusis.apirest.domain.TipoDocumento;
 import com.edusis.apirest.domain.Tutor;
+import com.edusis.apirest.domain.plantillas.Categoria;
 import com.edusis.apirest.domain.plantillas.CeldaGrilla;
+import com.edusis.apirest.domain.plantillas.PlantillaCategorias;
 import com.edusis.apirest.domain.plantillas.PlantillaGrilla;
+import com.edusis.apirest.domain.plantillas.PlantillaVF;
+import com.edusis.apirest.domain.plantillas.PreguntaVF;
+import com.edusis.apirest.domain.plantillas.RespuestaCategoria;
 import com.edusis.apirest.service.AddonService;
 import com.edusis.apirest.service.AlumnoService;
 import com.edusis.apirest.service.AsignaturaService;
 import com.edusis.apirest.service.CursoService;
 import com.edusis.apirest.service.EmojiService;
-import com.edusis.apirest.service.PersonaService;
+import com.edusis.apirest.service.PlantillaCategoriasService;
 import com.edusis.apirest.service.PlantillaGrillaService;
 import com.edusis.apirest.service.PlantillaPasapalabraService;
 import com.edusis.apirest.service.PlantillaPreguntasService;
 import com.edusis.apirest.service.PlantillaService;
+import com.edusis.apirest.service.PlantillaVFService;
 import com.edusis.apirest.service.ProfesorService;
 import com.edusis.apirest.service.SesionService;
 import com.edusis.apirest.service.TutorService;
 import com.edusis.apirest.service.dto.AlumnoDto;
 import com.edusis.apirest.service.dto.AsignaturaDto;
+import com.edusis.apirest.service.dto.CategoriaDto;
 import com.edusis.apirest.service.dto.CeldaGrillaDto;
 import com.edusis.apirest.service.dto.CursoDto;
 import com.edusis.apirest.service.dto.EmojiDto;
+import com.edusis.apirest.service.dto.PlantillaCategoriasDto;
 import com.edusis.apirest.service.dto.PlantillaGrillaDto;
 import com.edusis.apirest.service.dto.PlantillaPasapalabraDto;
 import com.edusis.apirest.service.dto.PlantillaPreguntasDto;
+import com.edusis.apirest.service.dto.PlantillaVFDto;
 import com.edusis.apirest.service.dto.PreguntaDto;
 import com.edusis.apirest.service.dto.PreguntaPasapalabraDto;
+import com.edusis.apirest.service.dto.PreguntaVFDto;
 import com.edusis.apirest.service.dto.ProfesorDto;
 import com.edusis.apirest.service.dto.TutorDto;
 import com.edusis.apirest.specs.AlumnoSpecs;
@@ -56,17 +66,14 @@ import com.edusis.apirest.specs.PlantillaSpecs;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.querydsl.core.types.Predicate;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.*;
 import java.util.stream.Collectors;
-import javax.persistence.Convert;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -93,37 +100,43 @@ public class ApiController {
 
     @Autowired
     private EmojiService emojiService;
-
+    
     @Autowired
     private ProfesorService profesorService;
-
+    
     @Autowired
     private TutorService tutorService;
-
+    
     @Autowired
     private AlumnoService alumnoService;
-
+    
     @Autowired
     private CursoService cursoService;
-
+    
     @Autowired
     private AsignaturaService asignaturaService;
-
+    
     @Autowired
     private SesionService sesionService;
-
+    
     @Autowired
-    private PlantillaPreguntasService plantillaPreguntasService;
-
+    private PlantillaPreguntasService plantillaPreguntasService; 
+    
     @Autowired
     private PlantillaPasapalabraService plantillaPasapalabraService;
-
+    
     @Autowired
     private PlantillaGrillaService plantillaGrillaService;
-
+    
     @Autowired
     private PlantillaService plantillaService;
-
+    
+    @Autowired
+    private PlantillaCategoriasService plantillaCategoriasService;
+    
+    @Autowired
+    private PlantillaVFService plantillaVFService;
+    
     @Autowired
     private AddonService addonService;
 
@@ -577,7 +590,7 @@ public class ApiController {
             }
         } else {
             //no hay alumnos en el curso
-            ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
+            ArrayList<Alumno> alumnos = new ArrayList<>();
             alumnos.add(alumno);
             curso.setAlumnos(alumnos);
             cursoService.save(curso);
@@ -587,8 +600,8 @@ public class ApiController {
                 alumno.getCursos().add(curso);
                 alumnoService.save(alumno);
             }
-        } else {
-            ArrayList<Curso> cursos = new ArrayList<Curso>();
+        } else{
+            ArrayList<Curso> cursos = new ArrayList<>();
             cursos.add(curso);
             alumno.setCursos(cursos);
             alumnoService.save(alumno);
@@ -723,13 +736,11 @@ public class ApiController {
         List<Tutor> tutores = tutorService.getAll();
         personas.addAll(profesores);
         personas.addAll(tutores);
-        for (Persona persona : personas) {
-            if (persona.getId().equals(id)) {
-                if (persona instanceof Profesor) {
-                    return true;
-                } else {
-                    return false;
-                }
+        for (Persona persona : personas) 
+        {
+            if(persona.getId().equals(id))
+            {
+                return persona instanceof Profesor;
             }
         }
         return false;
@@ -821,6 +832,20 @@ public class ApiController {
                 p.addProperty("nombre", plantilla.getNombre());
                 p.addProperty("id", plantilla.getId());
                 p.addProperty("tipo", "Grilla");
+                plantillasJson.add(p);
+            }
+            if (plantilla instanceof PlantillaCategorias) {
+                JsonObject p = new JsonObject();
+                p.addProperty("nombre", plantilla.getNombre());
+                p.addProperty("id", plantilla.getId());
+                p.addProperty("tipo", "Categorias");
+                plantillasJson.add(p);
+            }
+            if (plantilla instanceof PlantillaVF) {
+                JsonObject p = new JsonObject();
+                p.addProperty("nombre", plantilla.getNombre());
+                p.addProperty("id", plantilla.getId());
+                p.addProperty("tipo", "VerdaderoFalso");
                 plantillasJson.add(p);
             }
         }
@@ -921,7 +946,51 @@ public class ApiController {
         plantillaGrillaService.save(plantilla);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+    
+    @PostMapping("crearActividadCategorias")
+    public ResponseEntity<Long> crearActividadCategorias(@RequestBody PlantillaCategoriasDto plantillaCategoriasDto) {
+        PlantillaCategorias plantilla = new PlantillaCategorias();
+        Profesor profe = profesorService.get(plantillaCategoriasDto.getCreadorId());
+        plantilla.setCreador(profe);
+        plantilla.setNombre(plantillaCategoriasDto.getNombre());
+        plantilla.setSegundos(plantillaCategoriasDto.getSegundos());
+        int cantidadRespuestas = 0;
+        for (CategoriaDto categoriaDto : plantillaCategoriasDto.getCategoriasDto()) {
+            Categoria categoria = new Categoria();
+            categoria.setNombre(categoriaDto.getNombre());
+            for (String respuesta : categoriaDto.getRespuestas()) {
+                RespuestaCategoria respuestaCategoria = new RespuestaCategoria();
+                respuestaCategoria.setRespuesta(respuesta);
+                categoria.addRespuesta(respuestaCategoria);
+                cantidadRespuestas++;
+            }
+            plantilla.addCategoria(categoria);
+        }
+        plantilla.setPuntajeMaximo(cantidadRespuestas);
+        plantilla.validar();
+        plantillaCategoriasService.save(plantilla);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping("crearActividadVF")
+    public ResponseEntity<Long> crearActividadVF(@RequestBody PlantillaVFDto plantillaVFDto) {
+        PlantillaVF plantilla = new PlantillaVF();
+        Profesor profe = profesorService.get(plantillaVFDto.getCreadorId());
+        plantilla.setCreador(profe);
+        plantilla.setNombre(plantillaVFDto.getNombre());
+        plantilla.setSegundos(plantillaVFDto.getSegundos());
+        for (PreguntaVFDto preguntaVFDto : plantillaVFDto.getPreguntaVFDto()) {
+            PreguntaVF pregunta = new PreguntaVF();
+            pregunta.setPregunta(preguntaVFDto.getPregunta());
+            pregunta.setRespuesta(preguntaVFDto.getRespuesta());
+            plantilla.addPregunta(pregunta);
+        }
+        plantilla.setPuntajeMaximo(plantilla.getPreguntas().size());
+        plantilla.validar();
+        plantillaVFService.save(plantilla);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
     @PostMapping("cargarAddons")
     public ResponseEntity<Long> cargarAddons() {
         for (int i = 1; i < 8; i++) {

@@ -1,0 +1,47 @@
+.pregunta {
+    padding-left: 15px;
+    padding-right: 15px;
+    font-size: large;
+    background-color: #1971B9;
+    color: white;
+    height: 110px;
+    line-height: 110px;
+    width: 100%;
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  .pregunta p {
+    line-height: 1.5;
+    display: inline-block;
+    vertical-align: middle !important;
+    margin-bottom: 0px !important;
+  }
+  
+  .btn {
+    border-radius: 10px;
+  }
+  
+  .reloj {
+    height: 45px;
+    width: 45px;
+  }
+  
+  .respuesta {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .textoCorrecto {
+    color: green;
+    font-size: xx-large;
+    font-family: "SpaceKids";
+    margin-bottom: 10px;
+  }
+  
+  .textoIncorrecto {
+    color: red;
+    font-size: xx-large;
+    font-family: "SpaceKids";
+    margin-bottom: 10px;
+  }

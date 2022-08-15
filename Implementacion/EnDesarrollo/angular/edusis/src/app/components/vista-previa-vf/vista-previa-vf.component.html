@@ -1,0 +1,106 @@
+<section id="cursos" class="margin-top-90">
+  <div class="container">
+    <div *ngIf="preguntaActual && !revision && !final">
+      <div class="text-right">
+        <h1 style="color: #13334c" *ngIf="timeLeft > 5">
+          {{ timeLeft }} <i class="fa fa-clock-o"></i>
+        </h1>
+        <h1 style="color: red" *ngIf="timeLeft <= 5">
+          {{ timeLeft }} <i class="fa fa-clock-o"></i>
+        </h1>
+      </div>
+      <div class="pregunta margin-bottom-30">
+        <p>{{ preguntaActual.pregunta }}</p>
+      </div>
+      <div class="respuesta">
+        <button
+          type="button"
+          (click)="opcion(true)"
+          class="btn btn-block btn-personalizado"
+        >
+          Verdadero
+        </button>
+      </div>
+      <div class="respuesta">
+        <button
+          type="button"
+          (click)="opcion(false)"
+          class="btn btn-block btn-personalizado"
+        >
+          Falso
+        </button>
+      </div>
+    </div>
+    <div *ngIf="revision">
+      <div class="text-right">
+        <h1 style="color: #13334c" *ngIf="timeLeft > 5">
+          {{ timeLeft }} <i class="fa fa-clock-o"></i>
+        </h1>
+        <h1 style="color: red" *ngIf="timeLeft <= 5">
+          {{ timeLeft }} <i class="fa fa-clock-o"></i>
+        </h1>
+      </div>
+      <div class="pregunta margin-bottom-30">
+        <p>{{ preguntaActual.pregunta }}</p>
+      </div>
+      <div class="respuesta">
+        <button
+          type="button"
+          class="btn btn-block"
+          [ngClass]="{
+            'btn-success': opcionCorrecta,
+            'btn-danger': opcionElegida && opcionCorrecta !== opcionElegida,
+            'btn-light': !opcionElegida && !opcionCorrecta
+          }"
+        >
+          Verdadero
+        </button>
+      </div>
+      <div class="respuesta">
+        <button
+          type="button"
+          class="btn btn-block"
+          [ngClass]="{
+            'btn-success': !opcionCorrecta,
+            'btn-danger': !opcionElegida && opcionCorrecta !== opcionElegida,
+            'btn-light': opcionCorrecta && opcionElegida
+          }"
+        >
+          Falso
+        </button>
+      </div>
+      <div *ngIf="correcto" class="text-center textoCorrecto">
+        <i class="fa fa-smile-o"></i>
+      </div>
+      <div *ngIf="!correcto" class="text-center textoIncorrecto">
+        <i class="fa fa-frown-o"></i>
+      </div>
+      <button
+        type="button"
+        (click)="continuar()"
+        class="btn btn-lg btn-block btn-personalizado"
+      >
+        Continuar
+      </button>
+    </div>
+    <div *ngIf="final">
+      <div class="text-center">
+        <h3 style="color: #13334c">Respuestas correctas:</h3>
+        <h3 style="color: #13334c">
+          {{ respuestasCorrectas }} / {{ cantidadPreguntas }}
+        </h3>
+      </div>
+      <button
+        type="button"
+        (click)="volver()"
+        class="btn btn-lg btn-block btn-personalizado"
+      >
+        Volver a plantillas
+      </button>
+    </div>
+  </div>
+
+  <!--   <button (click)='startTimer()'>Start Timer</button>
+    <button (click)='pauseTimer()'>Pause</button>
+   -->
+</section>

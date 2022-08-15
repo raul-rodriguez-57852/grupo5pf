@@ -1,0 +1,63 @@
+.nube {
+    height: 150px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    color: white;
+  }
+  
+  .casa {
+    height: 100px;
+    position: sticky;
+    bottom: 20px;
+    text-align: center;
+    color: black;
+  }
+  
+  .imagenNube {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  
+  .centered {
+    font-size: x-large;
+    text-shadow: 3px 3px 5px black;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  /* Draggable*/
+  
+  .drag-border {
+    border: #ff525b dashed 2px;
+  }
+  
+  .drag-handle {
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+  }
+  
+  .drag-handle:active {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+  }
+  
+  /* Droppable */
+  
+  .drag-hint-border {
+    border: #3c763d dashed 2px;
+  }
+  
+  .drag-over-border {
+    border: #fbbc05 dashed 2px;
+  }
+  
+  .drag-transit {
+    border: #3500ff dashed 2px;
+  }
+  

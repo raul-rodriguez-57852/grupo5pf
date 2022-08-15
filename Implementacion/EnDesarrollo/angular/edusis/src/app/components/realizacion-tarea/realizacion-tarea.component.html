@@ -10,10 +10,18 @@
   </div>
   <div class="container">
     <div class="form-group">
-      <h4 *ngIf="tarea">{{ tarea.nombre }}</h4>
+      <h3 *ngIf="tarea">{{ tarea.nombre }}</h3>
       <p>{{ detalleMultimedia.descripcion }}</p>
+      <div *ngIf="detalleMultimedia.imagen != null">
+        <h4>Vea la siguiente imagen</h4>
+        <img
+          id="imagen"
+          src="{{ this.detalleMultimedia.imagen }}"
+          width="100%"
+        />
+      </div>
       <div *ngIf="videoId != null">
-        <h3>Vea el siguiente video</h3>
+        <h4>Vea el siguiente video</h4>
 
         <youtube-player
           [videoId]="videoId"
@@ -122,5 +130,29 @@
     (finalizado)="onFinalizado($event)"
   >
     ></app-realizacion-grilla
+  >
+</section>
+
+<section
+  id="realizacion-categorias"
+  class="margin-top-90"
+  [hidden]="!isCategorias"
+>
+  <app-realizacion-categorias
+    #realizacionCategorias
+    [id]="actividadId"
+    (finalizado)="onFinalizado($event)"
+  >
+    ></app-realizacion-categorias
+  >
+</section>
+
+<section id="realizacion-vf" class="margin-top-90" [hidden]="!isVf">
+  <app-realizacion-vf
+    #realizacionVf
+    [id]="actividadId"
+    (finalizado)="onFinalizado($event)"
+  >
+    ></app-realizacion-vf
   >
 </section>

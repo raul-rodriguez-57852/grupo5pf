@@ -10,18 +10,20 @@ import { Asignatura } from '../models/asignatura';
 import { PlantillaPreguntas } from '../models/plantilla-preguntas';
 import { PlantillaPasapalabra } from '../models/plantilla-pasapalabra';
 import { PlantillaGrilla } from '../models/plantilla-grilla';
+import { PlantillaCategorias } from '../models/plantilla-categorias';
+import { PlantillaVF } from '../models/plantilla-vf';
 
 @Injectable({
   providedIn: 'root',
 })
-  
+
 
 export class DataApiService {
   urlBase: string;
   urlTarea: string;
   private usuario = null;
   private userType = null; //0 si es tutor e 1 si es profesor y 2 si es alumno.
-  
+
 
   constructor(private http: HttpClient) {
     this.urlBase = 'http://localhost:8090/api/';
@@ -168,8 +170,8 @@ export class DataApiService {
     return this.http.get(this.urlBase + 'getCursosByProfesor', { params: { id } }).toPromise();
   }
 
-  guardarCurso(curso: Curso): Promise<any> {
-    return this.http.post(this.urlBase + 'guardarCurso', curso).toPromise();
+  guardarCurso(cursoDto: Curso): Promise<any> {
+    return this.http.post(this.urlBase + 'guardarCurso', cursoDto).toPromise();
   }
 
   generarCodigoCurso(curso: Curso): Promise<any> {
@@ -308,6 +310,14 @@ export class DataApiService {
 
   crearActividadaGrilla(plantilla: PlantillaGrilla): Promise<any> {
     return this.http.post(this.urlBase + 'crearActividadGrilla', plantilla).toPromise();
+  }
+
+  crearActividadCategorias(plantilla: PlantillaCategorias): Promise<any> {
+    return this.http.post(this.urlBase + 'crearActividadCategorias', plantilla).toPromise();
+  }
+
+  crearActividadVF(plantilla: PlantillaVF): Promise<any> {
+    return this.http.post(this.urlBase + 'crearActividadVF', plantilla).toPromise();
   }
 
   cargarAddons(): Promise<any> {

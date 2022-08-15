@@ -1,57 +1,194 @@
 <section id="cursos" class="margin-top-60">
   <div class="contenedorImagenCard margin-bottom-16">
-    <img class="imagenCard" src="assets/img/desktop.jpg" alt="Card image cap">
-    <div class="centered">Mis Actividades</div>  
+    <img class="imagenCard" src="assets/img/desktop.jpg" alt="Card image cap" />
+    <div class="centered">Mis Actividades</div>
   </div>
   <div class="container">
-    <button *ngIf="!plantillaPreguntaRespuestas" type="button" (click)="crearPreguntasRespuestas()" class="btn btn-personalizado btn-block margin-bottom-16">Crear Preguntas y Respuestas</button>
-    <button *ngIf="!plantillaPreguntaRespuestas" type="button" (click)="crearGrilla()" class="btn btn-personalizado btn-block margin-bottom-16">Crear Grilla</button>
-    <button *ngIf="!plantillaPreguntaRespuestas" type="button" (click)="crearPasapalabra()" class="btn btn-personalizado btn-block margin-bottom-16">Crear Ruleta de Palabras</button>
-    <ul *ngIf="!plantillaPreguntaRespuestas" class="list-group list-group-flush margin-bottom-16">
-      <li class="list-group-item d-flex justify-content-between align-items-center">
+    <button
+      *ngIf="!plantillaPreguntaRespuestas"
+      type="button"
+      (click)="crearPreguntasRespuestas()"
+      class="btn btn-personalizado btn-block margin-bottom-16"
+    >
+      Crear Preguntas y Respuestas
+    </button>
+    <button
+      *ngIf="!plantillaPreguntaRespuestas"
+      type="button"
+      (click)="crearGrilla()"
+      class="btn btn-personalizado btn-block margin-bottom-16"
+    >
+      Crear Grilla
+    </button>
+    <button
+      *ngIf="!plantillaPreguntaRespuestas"
+      type="button"
+      (click)="crearPasapalabra()"
+      class="btn btn-personalizado btn-block margin-bottom-16"
+    >
+      Crear Ruleta de Palabras
+    </button>
+    <button
+      *ngIf="!plantillaPreguntaRespuestas"
+      type="button"
+      (click)="crearCategorias()"
+      class="btn btn-personalizado btn-block margin-bottom-16"
+    >
+      Crear Categorías
+    </button>
+    <button
+      *ngIf="!plantillaPreguntaRespuestas"
+      type="button"
+      (click)="crearVF()"
+      class="btn btn-personalizado btn-block margin-bottom-16"
+    >
+      Crear Verdadero o Falso
+    </button>
+    <ul
+      *ngIf="!plantillaPreguntaRespuestas"
+      class="list-group list-group-flush margin-bottom-16"
+    >
+      <li
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
         <strong>Actividades</strong>
       </li>
-      <li *ngFor="let actividad of actividades" class="list-group-item d-flex justify-content-between align-items-center">
+      <li
+        *ngFor="let actividad of actividades"
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
         <div (click)="vistaPrevia(actividad.id)">{{ actividad.nombre }}</div>
-        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-          <button type="button" (click)="vistaPrevia(actividad)" class="btn btn-info">Vista previa</button>
+        <div
+          class="btn-group btn-group-sm"
+          role="group"
+          aria-label="Basic example"
+        >
+          <button
+            type="button"
+            (click)="vistaPrevia(actividad)"
+            class="btn btn-info"
+          >
+            Vista previa
+          </button>
         </div>
       </li>
     </ul>
-    <form *ngIf="plantillaPreguntaRespuestas && paso === 1" name="formActividad" #formActividad="ngForm" (ngSubmit)="next(formActividad)">
+    <form
+      *ngIf="plantillaPreguntaRespuestas && paso === 1"
+      name="formActividad"
+      #formActividad="ngForm"
+      (ngSubmit)="next(formActividad)"
+    >
       <div class="form-group">
         <label for="nombre">Nombre</label>
-        <input [(ngModel)]="nombre" type="text" name="nombre" class="form-control" placeholder="Nombre" required autocomplete="off">
+        <input
+          [(ngModel)]="nombre"
+          type="text"
+          name="nombre"
+          class="form-control"
+          placeholder="Nombre"
+          required
+          autocomplete="off"
+        />
       </div>
       <div class="form-group">
         <label for="segundos">Segundos</label>
-        <input [(ngModel)]="segundos" type="tel" name="segundos" class="form-control" placeholder="Segundos" required autocomplete="off">
+        <input
+          [(ngModel)]="segundos"
+          type="tel"
+          name="segundos"
+          class="form-control"
+          placeholder="Segundos"
+          required
+          autocomplete="off"
+        />
       </div>
-      <button type="submit" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Siguiente</button>
+      <button
+        type="submit"
+        class="btn btn-personalizado btn-lg btn-block margin-bottom-16"
+      >
+        Siguiente
+      </button>
     </form>
-    <form *ngIf="plantillaPreguntaRespuestas && paso === 2" name="formActividad2" #formActividad2="ngForm" (ngSubmit)="save(formActividad2)">
+    <form
+      *ngIf="plantillaPreguntaRespuestas && paso === 2"
+      name="formActividad2"
+      #formActividad2="ngForm"
+      (ngSubmit)="save(formActividad2)"
+    >
       <div class="form-group">
         <label for="pregunta">Pregunta</label>
-        <input [(ngModel)]="pregunta.pregunta" type="text" name="pregunta" class="form-control" placeholder="Pregunta" required autocomplete="off">
+        <input
+          [(ngModel)]="pregunta.pregunta"
+          type="text"
+          name="pregunta"
+          class="form-control"
+          placeholder="Pregunta"
+          required
+          autocomplete="off"
+        />
       </div>
       <div class="form-group">
         <label for="respuestaCorrecta">Respuesta correcta</label>
-        <input [(ngModel)]="pregunta.respuestaCorrecta" type="text" name="respuestaCorrecta" class="form-control" placeholder="Respuesta correcta" required autocomplete="off">
+        <input
+          [(ngModel)]="pregunta.respuestaCorrecta"
+          type="text"
+          name="respuestaCorrecta"
+          class="form-control"
+          placeholder="Respuesta correcta"
+          required
+          autocomplete="off"
+        />
       </div>
       <div class="form-group">
         <label for="respuestaIncorrectaA">Respuesta incorrecta</label>
-        <input [(ngModel)]="pregunta.respuestaIncorrectaA" type="text" name="respuestaIncorrectaA" class="form-control" placeholder="Respuesta incorrecta" required autocomplete="off">
+        <input
+          [(ngModel)]="pregunta.respuestaIncorrectaA"
+          type="text"
+          name="respuestaIncorrectaA"
+          class="form-control"
+          placeholder="Respuesta incorrecta"
+          required
+          autocomplete="off"
+        />
       </div>
       <div class="form-group">
         <label for="respuestaIncorrectaB">Respuesta incorrecta</label>
-        <input [(ngModel)]="pregunta.respuestaIncorrectaB" type="text" name="respuestaIncorrectaB" class="form-control" placeholder="Respuesta incorrecta" required autocomplete="off">
+        <input
+          [(ngModel)]="pregunta.respuestaIncorrectaB"
+          type="text"
+          name="respuestaIncorrectaB"
+          class="form-control"
+          placeholder="Respuesta incorrecta"
+          required
+          autocomplete="off"
+        />
       </div>
       <div class="form-group">
         <label for="respuestaIncorrectaC">Respuesta incorrecta</label>
-        <input [(ngModel)]="pregunta.respuestaIncorrectaC" type="text" name="respuestaIncorrectaC" class="form-control" placeholder="Respuesta incorrecta" required autocomplete="off">
+        <input
+          [(ngModel)]="pregunta.respuestaIncorrectaC"
+          type="text"
+          name="respuestaIncorrectaC"
+          class="form-control"
+          placeholder="Respuesta incorrecta"
+          required
+          autocomplete="off"
+        />
       </div>
-      <button type="button" (click)="agregarOtra()" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Agregar otra pregunta</button>
-      <button type="submit" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Finalizar</button>
+      <button
+        type="button"
+        (click)="agregarOtra()"
+        class="btn btn-personalizado btn-lg btn-block margin-bottom-16"
+      >
+        Agregar otra pregunta
+      </button>
+      <button
+        type="submit"
+        class="btn btn-personalizado btn-lg btn-block margin-bottom-16"
+      >
+        Finalizar
+      </button>
     </form>
   </div>
 </section>

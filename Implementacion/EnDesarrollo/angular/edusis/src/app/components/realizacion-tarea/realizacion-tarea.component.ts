@@ -8,6 +8,8 @@ import { DataTareaService } from "src/app/services/data-tarea.service";
 import { RealizacionPasapalabraComponent } from "../realizacion-pasapalabra/realizacion-pasapalabra.component";
 import { RealizacionPreguntasComponent } from "../realizacion-preguntas/realizacion-preguntas.component";
 import { RealizacionGrillaComponent } from '../realizacion-grilla/realizacion-grilla.component';
+import { RealizacionCategoriasComponent } from "../realizacion-categorias/realizacion-categorias.component";
+import { RealizacionVfComponent } from "../realizacion-vf/realizacion-vf.component";
 
 @Component({
   selector: "app-realizacion-tarea",
@@ -37,6 +39,9 @@ export class RealizacionTareaComponent implements OnInit {
   isPreguntas = false;
   isPasapalabra = false;
   isGrilla = false;
+  isCategorias = false;
+  isVf = false;
+
 
   detalles: RealizacionDetalle[] = [];
 
@@ -48,6 +53,12 @@ export class RealizacionTareaComponent implements OnInit {
 
   @ViewChild("realizacionGrilla", { static: false })
   realizacionGrilla: RealizacionGrillaComponent;
+
+  @ViewChild("realizacionCategorias", { static: false })
+  realizacionCategorias: RealizacionCategoriasComponent;
+
+  @ViewChild("realizacionVf", { static: false })
+  realizacionVf: RealizacionVfComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -84,6 +95,13 @@ export class RealizacionTareaComponent implements OnInit {
       .then((res) => {
         if (res !== null) {
           this.detalleMultimedia = res;
+          this.dataTareaService
+            .getImagenDetalle(this.detalleMultimedia.id.toString())
+            .then((res) => {
+              if (res !== null && res !== "") {
+                this.detalleMultimedia.imagen = res;
+              }
+            });
           this.getYoutube();
         }
       });
@@ -128,6 +146,8 @@ export class RealizacionTareaComponent implements OnInit {
           this.isPreguntas = true;
           this.isPasapalabra = false;
           this.isGrilla = false;
+          this.isCategorias = false;
+          this.isVf = false;
 
           this.realizacionPreguntas.onInit(this.actividadId);
         }
@@ -136,6 +156,8 @@ export class RealizacionTareaComponent implements OnInit {
           this.isPreguntas = false;
           this.isPasapalabra = true;
           this.isGrilla = false;
+          this.isCategorias = false;
+          this.isVf = false;
 
           this.realizacionPasapalabra.onInit(this.actividadId);
         }
@@ -144,8 +166,30 @@ export class RealizacionTareaComponent implements OnInit {
           this.isPreguntas = false;
           this.isPasapalabra = false;
           this.isGrilla = true;
+          this.isCategorias = false;
+          this.isVf = false;
 
           this.realizacionGrilla.onInit(this.actividadId);
+        }
+        if (this.actividadTipo === "Categorias") {
+          this.isMultimedia = false;
+          this.isPreguntas = false;
+          this.isPasapalabra = false;
+          this.isGrilla = false;
+          this.isCategorias = true;
+          this.isVf = false;
+
+          this.realizacionCategorias.onInit(this.actividadId);
+        }
+        if (this.actividadTipo === "VerdaderoFalso") {
+          this.isMultimedia = false;
+          this.isPreguntas = false;
+          this.isPasapalabra = false;
+          this.isGrilla = false;
+          this.isCategorias = false;
+          this.isVf = true;
+
+          this.realizacionVf.onInit(this.actividadId);
         }
       }
     });
@@ -165,6 +209,8 @@ export class RealizacionTareaComponent implements OnInit {
       this.isPreguntas = false;
       this.isPasapalabra = false;
       this.isGrilla = false;
+      this.isCategorias = false;
+      this.isVf = false;
       /// Persistimos la realizacion
 
       let realizacion = new Realizacion();

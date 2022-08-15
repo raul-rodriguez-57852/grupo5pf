@@ -30,6 +30,8 @@ public class Plantilla extends GenericEntity {
     public static final String DTYPE_PREGUNTAS = "PREGUNTAS";
     public static final String DTYPE_PASAPALABRA = "PASAPALABRA";
     public static final String DTYPE_GRILLA = "GRILLA";
+    public static final String DTYPE_CATEGORIAS = "CATEGORIAS"; 
+    public static final String DTYPE_VERDADEROFALSO = "VERDADERO FALSO"; 
 
     @NotNull
     private String nombre;
