@@ -5,21 +5,12 @@
  */
 package com.edusis.apirest.controller;
 
-import com.edusis.apirest.domain.Addon;
-import com.edusis.apirest.domain.Alumno;
-import com.edusis.apirest.domain.Asignatura;
-import com.edusis.apirest.domain.Curso;
-import com.edusis.apirest.domain.Documento;
-import com.edusis.apirest.domain.Emoji;
-import com.edusis.apirest.domain.PasswordEmoji;
-import com.edusis.apirest.domain.Persona;
+import com.edusis.apirest.domain.*;
 import com.edusis.apirest.domain.plantillas.Plantilla;
 import com.edusis.apirest.domain.plantillas.PlantillaPasapalabra;
 import com.edusis.apirest.domain.plantillas.PlantillaPreguntas;
 import com.edusis.apirest.domain.plantillas.Pregunta;
 import com.edusis.apirest.domain.plantillas.PreguntaPasapalabra;
-import com.edusis.apirest.domain.Profesor;
-import com.edusis.apirest.domain.Sesion;
 import com.edusis.apirest.domain.plantillas.Respuesta;
 import com.edusis.apirest.domain.TipoDocumento;
 import com.edusis.apirest.domain.Tutor;
@@ -30,20 +21,7 @@ import com.edusis.apirest.domain.plantillas.PlantillaGrilla;
 import com.edusis.apirest.domain.plantillas.PlantillaVF;
 import com.edusis.apirest.domain.plantillas.PreguntaVF;
 import com.edusis.apirest.domain.plantillas.RespuestaCategoria;
-import com.edusis.apirest.service.AddonService;
-import com.edusis.apirest.service.AlumnoService;
-import com.edusis.apirest.service.AsignaturaService;
-import com.edusis.apirest.service.CursoService;
-import com.edusis.apirest.service.EmojiService;
-import com.edusis.apirest.service.PlantillaCategoriasService;
-import com.edusis.apirest.service.PlantillaGrillaService;
-import com.edusis.apirest.service.PlantillaPasapalabraService;
-import com.edusis.apirest.service.PlantillaPreguntasService;
-import com.edusis.apirest.service.PlantillaService;
-import com.edusis.apirest.service.PlantillaVFService;
-import com.edusis.apirest.service.ProfesorService;
-import com.edusis.apirest.service.SesionService;
-import com.edusis.apirest.service.TutorService;
+import com.edusis.apirest.service.*;
 import com.edusis.apirest.service.dto.AlumnoDto;
 import com.edusis.apirest.service.dto.AsignaturaDto;
 import com.edusis.apirest.service.dto.CategoriaDto;
@@ -64,8 +42,6 @@ import com.edusis.apirest.specs.AlumnoSpecs;
 import com.edusis.apirest.specs.AsignaturaSpecs;
 import com.edusis.apirest.specs.PlantillaSpecs;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.nio.charset.StandardCharsets;
@@ -139,6 +115,9 @@ public class ApiController {
     
     @Autowired
     private AddonService addonService;
+
+    @Autowired
+    private RecompensaAlumnoService recompensaAlumnoService;
 
     @PostMapping("guardarEmoji")
     public ResponseEntity<Long> guardarEmoji(@RequestBody EmojiDto emojiDto) {
@@ -287,18 +266,6 @@ public class ApiController {
         }
 
         alumno.setSaldoEstrellas(alumnoDto.getSaldoEstrellas());
-
-        String jsonInput = alumnoDto.getMapRecompensas();
-        if (jsonInput != null) {
-            TypeReference<HashMap<Addon, Boolean>> typeRef
-                    = new TypeReference<HashMap<Addon, Boolean>>() {
-            };
-            ObjectMapper mapper = new ObjectMapper();
-            HashMap<Addon, Boolean> map = mapper.readValue(jsonInput, typeRef);
-            alumno.setMapRecompensas(map);
-        } else {
-            alumno.setMapRecompensas(new HashMap<Addon, Boolean>());
-        }
 
         Long tutor = alumnoDto.getTutorId();
         Tutor esteTutor = tutorService.get(tutor);
@@ -544,7 +511,6 @@ public class ApiController {
     public List<Asignatura> getAsignaturas(@RequestParam Long cursoId) {
         Curso curso = cursoService.get(cursoId);
         return asignaturaService.getAll(AsignaturaSpecs.byCurso(curso));
-
     }
 
     @GetMapping("asignaturasByCreador")
@@ -552,7 +518,6 @@ public class ApiController {
         Curso curso = cursoService.get(cursoId);
         Profesor profe = profesorService.get(creadorId);
         return asignaturaService.getAll(AsignaturaSpecs.byCurso(curso).and(AsignaturaSpecs.byCreador(profe)));
-
     }
 
     @GetMapping("cursos")
@@ -993,10 +958,35 @@ public class ApiController {
     
     @PostMapping("cargarAddons")
     public ResponseEntity<Long> cargarAddons() {
-        for (int i = 1; i < 8; i++) {
+        for (int i = 1; i < 4; i++) {
             Addon addon = new Addon();
             addon.setNombre(String.valueOf(i));
-            addon.setIconoURL("assets/img/emojis/" + i + ".png");
+            addon.setIconoURL("assets/img/addons/anteojos-" + i + ".png");
+            addon.setTipo(TipoAddon.ANTEOJOS);
+            addon.setCosto(i * 2);
+            addonService.save(addon);
+        }
+        for (int i = 1; i < 7; i++) {
+            Addon addon = new Addon();
+            addon.setNombre(String.valueOf(i));
+            addon.setIconoURL("assets/img/addons/casaca-" + i + ".png");
+            addon.setTipo(TipoAddon.CAMISETA);
+            addon.setCosto(i * 2);
+            addonService.save(addon);
+        }
+        for (int i = 1; i < 7; i++) {
+            Addon addon = new Addon();
+            addon.setNombre(String.valueOf(i));
+            addon.setIconoURL("assets/img/addons/fondo-" + i + ".png");
+            addon.setTipo(TipoAddon.FONDO);
+            addon.setCosto(i * 2);
+            addonService.save(addon);
+        }
+        for (int i = 1; i < 4; i++) {
+            Addon addon = new Addon();
+            addon.setNombre(String.valueOf(i));
+            addon.setIconoURL("assets/img/addons/gorra-" + i + ".png");
+            addon.setTipo(TipoAddon.SOMBRERO);
             addon.setCosto(i * 2);
             addonService.save(addon);
         }
@@ -1010,19 +1000,24 @@ public class ApiController {
 
     @PostMapping("comprarAddon")
     public ResponseEntity<Long> comprarAddon(@RequestParam Long idAlumno, @RequestParam Long idAddon) {
+        // TODO CHEQUEAR QUE EL ADDON NO ESTÉ PREVIAMENTE COMPRADO, NO SEAMOS RANCIOS, LAS VALIDACIONES VAN EN EL BACK!!
         Alumno alumno = alumnoService.get(idAlumno);
         alumno = Hibernate.unproxy(alumno, Alumno.class);
         Addon addon = addonService.get(idAddon);
         addon = Hibernate.unproxy(addon, Addon.class);
 
         if (alumno.getSaldoEstrellas() < addon.getCosto()) {
-            throw new Error("Saldo insuficiende de estrellas");
+            throw new Error("Saldo insuficiente de estrellas");
         }
 
-        if (alumno.getMapRecompensas() == null) {
-            alumno.setMapRecompensas(new HashMap<>());
-        }
-        alumno.getMapRecompensas().put(addon, true);
+        deshabilitarAddonMismoTipo(alumno, addon);
+        RecompensaAlumno recompensaAlumno = new RecompensaAlumno();
+        recompensaAlumno.setAddon(addon);
+        recompensaAlumno.setEquipado(true);
+        recompensaAlumno.setAlumno(alumno);
+        recompensaAlumnoService.save(recompensaAlumno);
+
+        alumno.addRecompensa(recompensaAlumno);
         alumno.setSaldoEstrellas(alumno.getSaldoEstrellas() - addon.getCosto());
 
         alumnoService.save(alumno);
@@ -1032,34 +1027,42 @@ public class ApiController {
 
     @PostMapping("equiparDesequiparAddon")
     public ResponseEntity<Long> equiparDesequiparAddon(@RequestParam Long idAlumno, @RequestParam Long idAddon) {
-        Alumno alumno = alumnoService.get(idAlumno);
-        alumno = Hibernate.unproxy(alumno, Alumno.class);
-        Addon addon = addonService.get(idAddon);
-        addon = Hibernate.unproxy(addon, Addon.class);
+        final Alumno alumno = Hibernate.unproxy(alumnoService.get(idAlumno), Alumno.class);
+        final Addon addon = Hibernate.unproxy(addonService.get(idAddon), Addon.class);
 
-        if (alumno.getMapRecompensas() == null || !alumno.getMapRecompensas().containsKey(addon)) {
-            throw new Error("El addon no ha sido comprado aun");
+        if (alumno.getRecompensas() == null) {
+            throw new Error("El addon no ha sido comprado aún");
         }
 
-        alumno.getMapRecompensas().put(addon, !alumno.getMapRecompensas().get(addon));
+        RecompensaAlumno recompensa = alumno.getRecompensas()
+                .stream()
+                .filter(r -> r.getAddon().getId().equals(addon.getId()))
+                .findFirst()
+                .orElseThrow(() -> new Error("El addon no ha sido comprado aún"));
 
-        alumnoService.save(alumno);
+        if (!recompensa.getEquipado()) {
+            deshabilitarAddonMismoTipo(alumno, addon);
+        }
+        recompensa.setEquipado(!recompensa.getEquipado());
+
+        recompensaAlumnoService.save(recompensa);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("mapRecompensasAlumno")
+    @GetMapping("recompensasAlumno")
     @ResponseBody
-    public String getMapRecompensasAlumno(@RequestParam Long idAlumno) {
-        Alumno alumno = alumnoService.get(idAlumno);
-        JsonArray recompensasJson = new JsonArray();
-        for (Map.Entry<Addon, Boolean> entry : alumno.getMapRecompensas().entrySet()) {
-            JsonObject p = new JsonObject();
-            p.addProperty("id", entry.getKey().getId());
-            p.addProperty("boolean", entry.getValue());
-            recompensasJson.add(p);
-        }
-        return recompensasJson.toString();
+    public ResponseEntity<?> getRecompensasAlumno(@RequestParam Long idAlumno) {
+        Alumno alumno = Hibernate.unproxy(alumnoService.get(idAlumno), Alumno.class);
+        return new ResponseEntity<>(alumno.getRecompensas(), HttpStatus.OK);
+    }
+
+    private void deshabilitarAddonMismoTipo(Alumno alumno, Addon addon) {
+        alumno.getRecompensas()
+                .stream()
+                .filter(r -> r.getAddon().getTipo().equals(addon.getTipo()) && r.getEquipado())
+                .findFirst()
+                .ifPresent(r -> r.setEquipado(false));
     }
 
 }

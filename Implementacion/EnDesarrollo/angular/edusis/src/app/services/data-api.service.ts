@@ -26,7 +26,7 @@ export class DataApiService {
 
 
   constructor(private http: HttpClient) {
-    this.urlBase = 'http://localhost:8090/api/';
+    this.urlBase = 'http://192.168.0.253:8090/api/';
   }
 
   public getTutorType() {
@@ -342,8 +342,8 @@ export class DataApiService {
     return this.http.post(this.urlBase + 'equiparDesequiparAddon', postData).toPromise();
   }
 
-  getMapRecompensasAlumno(idAlumno: string): Promise<any> {
-    return this.http.get(this.urlBase + 'mapRecompensasAlumno', { params: { idAlumno } }).toPromise();
+  getRecompensasAlumno(idAlumno: string): Promise<any> {
+    return this.http.get(this.urlBase + 'recompensasAlumno', { params: { idAlumno } }).toPromise();
   }
 
 }

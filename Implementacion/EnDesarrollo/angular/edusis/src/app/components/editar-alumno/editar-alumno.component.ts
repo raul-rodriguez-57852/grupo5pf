@@ -21,14 +21,18 @@ export class EditarAlumnoComponent implements OnInit {
   emojis = [];
   emojisSeleccionados = [];
   AlumnoParaEditar = null;
-  avatares = [{ url: 'https://i.imgur.com/VLU8okq.png'},
-              { url: 'https://i.imgur.com/s6C5DC9.png'},
-              { url: 'https://i.imgur.com/K9aV9cK.png'},
-              { url: 'https://i.imgur.com/nynY87C.png'},
-              { url: 'https://i.imgur.com/O4NRluf.png'},
-              { url: 'https://i.imgur.com/SCNEr9Q.png'},
-              { url: 'https://i.imgur.com/q07I5VF.png'},
-              { url: 'https://i.imgur.com/Ojaz35C.png'}];
+  avatares = [{ url: 'assets/img/avatares/avatar-1.png'},
+              { url: 'assets/img/avatares/avatar-2.png'},
+              { url: 'assets/img/avatares/avatar-3.png'},
+              { url: 'assets/img/avatares/avatar-4.png'},
+              { url: 'assets/img/avatares/avatar-5.png'},
+              { url: 'assets/img/avatares/avatar-6.png'},
+              { url: 'assets/img/avatares/avatar-7.png'},
+              { url: 'assets/img/avatares/avatar-8.png'},
+              { url: 'assets/img/avatares/avatar-9.png'},
+              { url: 'assets/img/avatares/avatar-10.png'},
+              { url: 'assets/img/avatares/avatar-11.png'},
+              { url: 'assets/img/avatares/avatar-12.png'}];
   avatarSeleccionado = null;
   tiposDoc = [];
 
@@ -58,6 +62,7 @@ export class EditarAlumnoComponent implements OnInit {
       this.alumno.tipoDocumento = this.AlumnoParaEditar.documento.tipo;
       this.alumno.nombre = this.AlumnoParaEditar.nombre;
       this.alumno.apellido = this.AlumnoParaEditar.apellido;
+      this.alumno.saldoEstrellas = this.AlumnoParaEditar.saldoEstrellas;
       console.log('ALUMNO: ', this.AlumnoParaEditar);
       console.log('ALUMNO: ', this.alumno);
     }

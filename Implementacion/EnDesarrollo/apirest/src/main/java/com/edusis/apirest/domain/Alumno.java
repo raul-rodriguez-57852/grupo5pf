@@ -10,14 +10,7 @@ import com.sun.istack.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.persistence.CascadeType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 /**
  *
@@ -27,7 +20,6 @@ import javax.persistence.OneToOne;
 @DiscriminatorValue(value=Persona.DTYPE_ALUMNO)
 public class Alumno extends Persona {
 
-    
     @JsonIgnore
     @ManyToOne
     private Tutor tutor;
@@ -45,9 +37,10 @@ public class Alumno extends Persona {
     private List<Curso> cursos;
     
     private Integer saldoEstrellas;
-    
-    private HashMap<Addon,Boolean> mapRecompensas;
-    
+
+    @OneToMany(mappedBy = "alumno")
+    private List<RecompensaAlumno> recompensas;
+
     // CUSTOM
     
     public Integer sumarEstrellas(Integer estrellas){
@@ -102,12 +95,16 @@ public class Alumno extends Persona {
         this.saldoEstrellas = saldoEstrellas;
     }
 
-    public HashMap<Addon, Boolean> getMapRecompensas() {
-        return mapRecompensas;
+    public List<RecompensaAlumno> getRecompensas() {
+        return recompensas;
     }
 
-    public void setMapRecompensas(HashMap<Addon, Boolean> mapRecompensas) {
-        this.mapRecompensas = mapRecompensas;
+    public void setRecompensas(List<RecompensaAlumno> recompensas) {
+        this.recompensas = recompensas;
     }
-    
+
+    public void addRecompensa(RecompensaAlumno recompensa) {
+        this.recompensas.add(recompensa);
+    }
+
 }

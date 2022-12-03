@@ -3,9 +3,12 @@
   <div class="container" style="padding-top: 90px">
     <div
       class="col-sm-12 d-flex justify-content-center"
-      style="margin-bottom: 10px"
+      style="margin-bottom: 10px; height: 180px;"
     >
-      <img class="imagen-avatar" src="{{ alumno.avatarUrl }}" />
+
+      <img class="imagen-avatar" style="z-index: 10;" src="{{ alumno.avatarUrl }}" />
+      <img class="imagen-avatar-addons" [style.z-index]="addon.tipo.profundidad" *ngFor="let addon of listRecompensasEquipada" src="{{ addon.iconoURL }}"/>  
+
     </div>
     <div class="col-sm-12 d-flex justify-content-center">
       <div class="nombre">
@@ -37,15 +40,15 @@
               (click)="selectAddon(addon)"
               class="btn btn-lg btn-light"
               [ngClass]="{
-                'btn-comprado': listRecompensasComprada.includes(addon.id),
-                'btn-equipado': listRecompensasEquipada.includes(addon.id)
+                'btn-comprado': isComprado(addon),
+                'btn-equipado': isEquipado(addon)
               }"
             >
               <img src="{{ addon.iconoURL }}" class="imagen-recompensa" />
             </button>
             <i
               [ngClass]="{
-                'fa fa-check': listRecompensasEquipada.includes(addon.id)
+                'fa fa-check': isEquipado(addon)
               }"
             ></i>
             <br />

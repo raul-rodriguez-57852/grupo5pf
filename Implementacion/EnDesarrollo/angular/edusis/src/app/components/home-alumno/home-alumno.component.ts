@@ -14,7 +14,7 @@ import Swal from 'sweetalert2';
 
 export class HomeAlumnoComponent implements OnInit {
 
-    alumno: Alumno = { id: null, nombre: null, apellido: null, documento: null, tipoDocumento: null, fechaNacimiento: null, avatarUrl: null, passwordEmoji: null, tutorId: null, saldoEstrellas: null, mapRecompensas: null };
+    alumno: Alumno = { id: null, nombre: null, apellido: null, documento: null, tipoDocumento: null, fechaNacimiento: null, avatarUrl: null, passwordEmoji: null, tutorId: null, saldoEstrellas: null, recompensas: null, listRecompensasComprada: null, listRecompensasEquipada: null };
     curso: Curso = { id: null, nombre: null, iconoURL: null, creadorId: null, codigo: null }
     cursos = [];
     mensaje: string = null;
@@ -56,9 +56,26 @@ export class HomeAlumnoComponent implements OnInit {
                 this.alumno.passwordEmoji = respuesta.passwordEmoji;
                 this.alumno.tutorId = respuesta.tutorId;
                 this.alumno.saldoEstrellas = respuesta.saldoEstrellas;
-
+                this.actualizarAddons(id);
             }
         )
+    }
+
+    actualizarAddons(id: number) {
+      this.alumno.listRecompensasComprada = [];
+      this.alumno.listRecompensasEquipada = [];
+      this.dataApiService.getRecompensasAlumno(id.toString()).then(
+        (respuesta) => {
+          let map = respuesta;
+          map.forEach(recompensa => {
+            if (recompensa.equipado) {
+              this.alumno.listRecompensasEquipada.push(recompensa.addon);
+            } else {
+              this.alumno.listRecompensasComprada.push(recompensa.addon);
+            }
+          });
+        }
+      )        
     }
 
     getCursosAlumno(id: number) {

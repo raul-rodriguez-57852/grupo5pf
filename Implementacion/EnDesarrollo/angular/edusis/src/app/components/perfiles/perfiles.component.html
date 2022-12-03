@@ -11,8 +11,9 @@
 -->    
     <div class="row" style="padding-left: 15px; padding-right: 15px;">
       <div *ngFor="let perfil of perfiles" class="col-6" style="margin-bottom: 10px;" >
-        <div>
-          <img class="imagen-avatar-perfiles" (click)="seleccionarPerfil(perfil)" src="{{ perfil.avatarUrl }}">
+        <div (click)="seleccionarPerfil(perfil)" style="width:100%; padding-bottom: 100%; position:relative;">
+          <img class="imagen-avatar-perfiles" style="z-index: 10;" src="{{ perfil.avatarUrl }}">
+          <img class="imagen-avatar-perfiles-addons" [style.z-index]="addon.tipo.profundidad" *ngFor="let addon of perfil.listRecompensasEquipada" src="{{ addon.iconoURL }}"/>      
         </div>
         <div class="nombre" style="padding-top: 10px;">{{ perfil.nombre }}</div>
       </div>
@@ -20,9 +21,10 @@
   </div>
   <div class="container" style="padding-top: 90px;" *ngIf="perfilSeleccionado != null">
     <div class="row">
-      <div class="col-sm-12 d-flex justify-content-center" style="margin-bottom: 10px;" >
-        <img class="imagen-avatar" src="{{ perfilSeleccionado.avatarUrl }}">
-      </div>
+      <div class="col-sm-12 d-flex justify-content-center" style="height: 140px; margin-bottom: 10px" >
+        <img class="imagen-avatar" style="z-index: 10;" src="{{ perfilSeleccionado.avatarUrl }}" />
+        <img class="imagen-avatar-addons" [style.z-index]="addon.tipo.profundidad" *ngFor="let addon of perfilSeleccionado.listRecompensasEquipada" src="{{ addon.iconoURL }}"/>  
+        </div>
       <div class="col-sm-12 d-flex justify-content-center" >
         <div class="nombre">{{ perfilSeleccionado.nombre }}</div>
       </div>

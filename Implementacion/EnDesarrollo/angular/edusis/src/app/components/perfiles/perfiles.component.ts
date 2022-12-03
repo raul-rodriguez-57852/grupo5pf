@@ -33,6 +33,25 @@ export class PerfilesComponent implements OnInit {
     this.navbarService.triggerNavbarGet();
   }
 
+  actualizarAddons() {
+    this.perfiles.forEach(alumno => {
+      alumno.listRecompensasComprada = [];
+      alumno.listRecompensasEquipada = [];
+      this.dataApiService.getRecompensasAlumno(alumno.id.toString()).then(
+        (respuesta) => {
+          let map = respuesta;
+          map.forEach(recompensa => {
+            if (recompensa.equipado) {
+              alumno.listRecompensasEquipada.push(recompensa.addon);
+            } else {
+              alumno.listRecompensasComprada.push(recompensa.addon);
+            }
+          });
+        }
+      )        
+    });
+  }
+
   getEmojis() {
     this.dataApiService.getEmojis().then((respuesta) => {
       this.emojis = respuesta;
@@ -57,6 +76,7 @@ export class PerfilesComponent implements OnInit {
         this.perfiles = respuesta;
       }
     );
+    this.actualizarAddons();
     //Lets try adding an empty profile 
     this.alumno.nombre = 'Nuevo Alumno';
     this.alumno.avatarUrl = 'assets/img/emptyPerfil.png';    
