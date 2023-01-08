@@ -7,7 +7,6 @@ package com.edusis.apirest.service.dto;
 
 import com.edusis.apirest.domain.Curso;
 import com.edusis.apirest.domain.TipoDocumento;
-import com.edusis.apirest.domain.Tutor;
 import java.util.Calendar;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class AlumnoDto {
     private Long tutorId;
     private Integer saldoEstrellas;
     private String mapRecompensas;
-
+    
     public Long getId() {
         return id;
     }

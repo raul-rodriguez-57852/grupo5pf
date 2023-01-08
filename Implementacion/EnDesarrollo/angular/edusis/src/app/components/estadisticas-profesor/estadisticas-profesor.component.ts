@@ -24,11 +24,9 @@ export class EstadisticasProfesorComponent implements OnInit {
   page = 1;
   pageSize = 4;
   collectionSize: number;
-
   cursoSelected = false;
-
   id: number;
-  mensaje: string;
+  imageToShow = "assets/img/stats.jpg";
 
   constructor(
     private router: Router,
@@ -38,43 +36,36 @@ export class EstadisticasProfesorComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.id_profesor = this.dataApiService.getUsuario()
+    this.id_profesor = this.dataApiService.getUsuario();
 
     if (this.route.snapshot.paramMap.get("cursoId") != null) {
       this.selectCurso(Number(this.route.snapshot.paramMap.get("cursoId")));
     } else {
       this.getAll();
     }
-
-
-
   }
 
   async getAll() {
-    console.log("ID PROFESOR: ", this.id_profesor)
-
     await this.dataApiService.getCursosByProfesor(this.id_profesor).then(
       (cursos) => {
         this.cursos = cursos;
-
       }
     );
-    console.log('CURSOS DEL PROFESOR: ', this.dataApiService.getUsuario(), ' : ', this.cursos);
   }
 
-  selectCurso(id: number) {
+  async selectCurso(id: number) {
     this.cursoSelected = true;
     this.cursoId = id;
 
-    this.dataApiService.getCurso(this.cursoId).then((res) => {
+    await this.dataApiService.getCurso(this.cursoId).then((res) => {
       this.nombreCurso = res.nombre;
       this.urlImagenCurso = res.iconoURL;
+      this.imageToShow = res.iconoURL;
     });
 
-
-    this.dataApiService.getAsignaturasByCreador(this.cursoId, this.id_profesor).then((asignaturas) => {
+    await this.dataApiService.getAsignaturasByCreador(this.cursoId, this.id_profesor).then((asignaturas) => {
       this.asignaturas = asignaturas;
-      this.dataTareaService.getPorcentajeRealizacion(this.cursoId).then((realizaciones) => {
+        this.dataTareaService.getPorcentajeRealizacion(this.cursoId).then((realizaciones) => {
         realizaciones.forEach(element => {
           if (element.porcentajeRealizacion != null) {
             element.porcentajeRealizacion = parseFloat(element.porcentajeRealizacion);
@@ -84,14 +75,10 @@ export class EstadisticasProfesorComponent implements OnInit {
         this.tareas = realizaciones;
         this.tareasFiltradas = this.tareas;
         this.collectionSize = this.tareas.length;
-
         this.imagenAAsignatura();
-
       });
     });
-
   }
-
 
   onAsignaturaFilter() {
     if (this.asignaturaFiltro == null) {
@@ -101,11 +88,8 @@ export class EstadisticasProfesorComponent implements OnInit {
     }
 
     let filtered = this.tareas.filter(t => t.asignatura == this.asignaturaFiltro.nombre);
-    console.log(filtered);
     this.tareasFiltradas = filtered;
     this.collectionSize = this.tareasFiltradas.length;
-
-
   }
 
   // método provisorio luego cambiar
@@ -121,7 +105,8 @@ export class EstadisticasProfesorComponent implements OnInit {
 
   volverACursos() {
     this.cursoSelected = false;
-    this.cursoId = null;
+    this.imageToShow = "assets/img/stats.jpg";
+    this.getAll()
   }
 
   irADetalle(tareaId: number) {
@@ -131,10 +116,4 @@ export class EstadisticasProfesorComponent implements OnInit {
   irAEstadisticasPorAlumno() {
     this.router.navigate(["estadisticas-curso-alumno", { cursoId: this.cursoId }]);
   }
-
-
-
-
-
-
 }

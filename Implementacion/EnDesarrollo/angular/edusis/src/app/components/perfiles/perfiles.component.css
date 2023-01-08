@@ -94,3 +94,14 @@
   height: 100%;
   width: 100%;
 }
+
+.btn-light {
+  transition: transform 0.2s ease;
+  box-shadow: 0 6px 0 #c8c8c9;
+
+}
+
+.btn-light:active {
+  box-shadow: none;
+	transform: translateY(6px);
+}

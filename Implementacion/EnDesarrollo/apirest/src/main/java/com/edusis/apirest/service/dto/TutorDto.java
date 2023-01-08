@@ -24,6 +24,15 @@ public class TutorDto {
     private String documento;
     private Calendar fechaNacimiento;
     private String password;
+    private String email;
+    
+    public String getEmail() {
+        return email;
+    }
+    
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getPassword() {
         return password;
@@ -81,6 +90,5 @@ public class TutorDto {
     public void setFechaNacimiento(Calendar fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
-    
-    
+
 }

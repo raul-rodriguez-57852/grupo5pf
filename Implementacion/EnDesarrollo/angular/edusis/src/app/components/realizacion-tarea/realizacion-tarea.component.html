@@ -1,4 +1,5 @@
 <section id="detalle-multimedia" class="margin-top-60" [hidden]="!isMultimedia">
+  <div class="fondo position-fixed"></div>
   <div class="contenedorImagenCard margin-bottom-16">
     <img
       class="imagenCard"
@@ -33,7 +34,7 @@
     </div>
     <button
       type="button"
-      class="btn btn-personalizado btn-lg btn-block"
+      class="btn btn-personalizado-inverso btn-lg btn-block"
       (click)="continuarActividades()"
       [disabled]="actividades.length == 0"
     >

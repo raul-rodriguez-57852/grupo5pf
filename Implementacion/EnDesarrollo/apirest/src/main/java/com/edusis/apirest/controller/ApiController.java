@@ -39,6 +39,7 @@ import com.edusis.apirest.service.dto.PreguntaVFDto;
 import com.edusis.apirest.service.dto.ProfesorDto;
 import com.edusis.apirest.service.dto.TutorDto;
 import com.edusis.apirest.specs.AlumnoSpecs;
+import com.edusis.apirest.specs.CursoSpecs;
 import com.edusis.apirest.specs.AsignaturaSpecs;
 import com.edusis.apirest.specs.PlantillaSpecs;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -49,6 +50,15 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,8 +156,7 @@ public class ApiController {
     @GetMapping("getCursosByProfesor")
     public List<Curso> getCursosByProfesor(@RequestParam Long id) {
         Profesor profe = profesorService.get(id);
-        //Recursion.
-        return profe.getCursos();
+        return cursoService.getAll(CursoSpecs.byProfesor(profe));
     }
 
     @GetMapping("asignatura")
@@ -166,6 +175,7 @@ public class ApiController {
         Profesor profesor = profesorDto.getId() != null ? profesorService.get(profesorDto.getId()) : new Profesor();
         profesor.setNombre(profesorDto.getNombre());
         profesor.setApellido(profesorDto.getApellido());
+        profesor.setEmail(profesorDto.getEmail());
         profesor.setDocumento(new Documento(profesorDto.getTipoDocumento(), profesorDto.getDocumento()));
         profesor.setFechaNacimiento(profesorDto.getFechaNacimiento());
         //obtengo la password del profesor, la cifro, y la almaceno en la base.
@@ -195,6 +205,7 @@ public class ApiController {
         Tutor tutor = tutorDto.getId() != null ? tutorService.get(tutorDto.getId()) : new Tutor();
         tutor.setNombre(tutorDto.getNombre());
         tutor.setApellido(tutorDto.getApellido());
+        tutor.setEmail(tutorDto.getEmail());
         tutor.setDocumento(new Documento(tutorDto.getTipoDocumento(), tutorDto.getDocumento()));
         tutor.setFechaNacimiento(tutorDto.getFechaNacimiento());
         //Seteamos la password del tutor, nunca la password estara almacenada en crudo, siempre cifrada.
@@ -222,10 +233,6 @@ public class ApiController {
 
     @DeleteMapping("eliminarTutor")
     public ResponseEntity<Long> eliminarTutor(@RequestParam Long id) {
-        /*Tutor tutor = tutorService.get(id);
-        if (tutor != null) {
-            tutorService.delete(tutor);
-        }*/
         tutorService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -239,10 +246,20 @@ public class ApiController {
         }
         return lista;
     }
-
-    @DeleteMapping("eliminarAlumno")
+    
+    @GetMapping("eliminarAlumno")
     public ResponseEntity<Long> eliminarAlumno(@RequestParam Long alumnoId) {
-        alumnoService.deleteById(alumnoId);
+        Alumno alumno = alumnoService.get(alumnoId);
+        alumno.setIsActive(Boolean.FALSE);
+        alumnoService.save(alumno);   
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @GetMapping("eliminarCurso")
+    public ResponseEntity<Long> eliminarCurso(@RequestParam Long cursoId) {
+        Curso curso = cursoService.get(cursoId);
+        curso.setIsActive(Boolean.FALSE);
+        cursoService.save(curso);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -270,28 +287,15 @@ public class ApiController {
         Long tutor = alumnoDto.getTutorId();
         Tutor esteTutor = tutorService.get(tutor);
         alumno.setTutor(esteTutor);
-
-        if (esteTutor.getAlumnos().size() != 0) {
-            //El tutor ya posee alumnos asignados.
-            if (!esteTutor.getAlumnos().contains(alumno)) {
-                esteTutor.getAlumnos().add(alumno);
-                tutorService.save(esteTutor);
-            }
-        } else {
-            //El tutor no posee ningun alumno asignado
-            ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
-            alumnos.add(alumno);
-            esteTutor.setAlumnos(alumnos);
-            tutorService.save(esteTutor);
-        }
-
+        esteTutor = esteTutor.agregarAlumnosAlTutor(alumno);
+        tutorService.save(esteTutor);
         alumnoService.save(alumno);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("alumnos")
     public List<Alumno> getAlumnos() {
-        return alumnoService.getAll();
+        return alumnoService.getAll(AlumnoSpecs.isActive());
     }
 
     @GetMapping("alumno")
@@ -339,7 +343,6 @@ public class ApiController {
             //Ya tiene cursos agregados.
             if (!profe.getCursos().contains(curso)) {
                 profe.getCursos().add(curso);
-
             }
         } else {
             //El profesor no tiene ningun Curso.
@@ -353,95 +356,44 @@ public class ApiController {
     }
 
     @PostMapping("generarCodigoCurso")
-    public Curso generarCodigoCurso(@RequestBody CursoDto cursoDto) throws NoSuchAlgorithmException {
+    public Curso generarCodigoCurso(@RequestBody CursoDto cursoDto) {
+        //way to get every codigo from cursos.
+        //List<String> listado_codigos = listado_cursos.stream().map(x -> x.getCodigo()).collect(Collectors.toList());
         Curso curso = cursoService.get(cursoDto.getId());
-        if (curso.getCodigo() != null) {
-            //Ya tiene codigo asignado
-        } else {
-            try {
-                String identificador = cursoDto.getId().toString() + cursoDto.getNombre();
-                MessageDigest md5 = MessageDigest.getInstance("MD5");
-                byte[] byteMessage = identificador.getBytes("UTF-8");
-                byte[] digested = md5.digest(byteMessage);
-                StringBuffer codigobuilder = new StringBuffer();
-                for (byte bytes : digested) {
-                    codigobuilder.append(String.format("%02x", bytes & 0xff));
-                }
-                String codigo = codigobuilder.toString();
-                codigo = codigo.toUpperCase();
-                int largo = codigo.length();
-                codigo = codigo.substring(0, Math.min(largo, 8));
-                //listo todos los cursos
-                List<Curso> listado_cursos = (ArrayList<Curso>) cursoService.getAll();
-                //Listro los codigos de todos los cursos
-                //checkeo que no sea null la lista, si es null asigno codigo directamente
-                if (listado_cursos.size() == 1) {
-                    //No hay cursos por ahora solo este
-                    curso.setCodigo(codigo);
-
-                } else {
-                    List<String> listado_codigos = listado_cursos.stream().map(x -> x.getCodigo()).collect(Collectors.toList());
-
-                    //Este es el codigo que quiero insertar en el nuevo curso
-                    Random r = new Random();
-                    boolean contiene = true;
-                    boolean changes_made_to_codigo = false;
-                    while (contiene) {
-                        for (String cod_existente : listado_codigos) {
-                            //Recorro cada codigo del listado de codigos obtenido arriba
-                            if (codigo.equals(cod_existente)) {
-                                //Existe un codigo existente, entonces lo cambio al nuevo
-                                StringBuilder my_codigo = new StringBuilder(codigo);
-                                char c = (char) (r.nextInt(26) + 'a');
-                                //modifico en la posicion 3 por la letra aleatoria de la variable c
-                                my_codigo.setCharAt(3, c);
-                                //Ahora el codigo que quiero agregar esta cambiado
-                                codigo = my_codigo.toString();
-                                changes_made_to_codigo = true;
-                            }
-                        }
-                        //Si yo hice cambios en mi codigo, tengo que validar que este nuevo codigo que obtuve, tampoco este dentro de la lista
-                        if (!changes_made_to_codigo) {
-                            //Recorri todo el listado de codigos, y no hice ningun cambio, osea que no se encontro el mismo codigo
-                            //corto el ciclo.
-                            contiene = false;
-                        } else {
-                            //Si realize cambios, entonces debo seguir iterando para chequear el codigo cambiado
-                            //apago el flag de cambios para que no sea ciclico
-                            changes_made_to_codigo = false;
-                        }
-                    }
-                    //Asigno el codgio al curso.
-                    curso.setCodigo(codigo);
-
-                }
-                cursoService.save(curso);
-            } catch (java.io.UnsupportedEncodingException e) {
-                System.err.println("Error, MD5 no es un algoritmo de encriptacion correcto para MessageDigest (ApiContrller) trying setCodigo");
-            } catch (NoSuchAlgorithmException er) {
-                System.err.println("Error, MD5 no es un algoritmo de encriptacion correcto para MessageDigest");
-            }
+        if(curso.getCodigo() != null) {
+            return curso;
         }
+        String codigo = this.getRandomHexNumber(5);
+        // no vale la pena validar si este codigo se repite ya que hay 0.02e-10 chances de que se repita jsjsj 
+        curso.setCodigo(codigo);
+        cursoService.save(curso);
         return curso;
     }
-
+    
+    private String getRandomHexNumber(int cantidadNumeros) {
+        Random r = new Random();
+        StringBuffer sb = new StringBuffer();
+        while(sb.length() < cantidadNumeros){
+            sb.append(Integer.toHexString(r.nextInt()));
+        }
+        String result = sb.toString().substring(0, cantidadNumeros);
+        return result.toUpperCase();
+    }    
+    
     @GetMapping("buscarCursoPorCodigo")
-    public Long buscarCursoPorCodigo(@RequestParam String codigo) {
-        //param: codigo --> Codigo del curso a buscar
-        //return value "-1" --> Curso no encontrado o error en la busqueda
-        //return value int != -1 --> es el id del curso a inscribirme
-
-        //Consigo todos los cursos
+    public Object buscarCursoPorCodigo(@RequestParam String codigo) {
         List<Curso> listado_cursos = (ArrayList<Curso>) cursoService.getAll();
         if (listado_cursos.isEmpty()) {
             //No hay cursos creados por ahora, por ende devuelvo -1
             return Long.valueOf(-1);
         } else {
             for (Curso curso : listado_cursos) {
-                if (curso.getCodigo() != null && curso.getCodigo().equals(codigo)) {
-                    //Encontre el curso con ese codigo.
-                    //devuelvo su id
-                    return curso.getId();
+                if (curso.getCodigo() != null) {
+                    if (curso.getCodigo().equals(codigo)) {
+                    }
+                }
+                if (curso.getCodigo() != null && curso.getCodigo().equals(codigo) && curso.getIsActive()) {
+                    return curso;
                 }
             }
             //no encontre ningun curso con dicho codigo. devuelvo -1
@@ -459,51 +411,20 @@ public class ApiController {
         Curso curso = cursoService.get(asignaturaDto.getCursoId());
         asignatura.setCurso(curso);
         asignatura.validar();
-        //Guardamos la asignatura en la entidad curso.
-        if (curso.getAsignaturas() != null) {
-            if (!curso.getAsignaturas().contains(asignatura)) {
-                curso.getAsignaturas().add(asignatura);
-                cursoService.save(curso);
-            }
-        } else {
-            ArrayList<Asignatura> asignaturas = new ArrayList<Asignatura>();
-            asignaturas.add(asignatura);
-            curso.setAsignaturas(asignaturas);
-            cursoService.save(curso);
-        }
-        //Guardamos la asignatura en la entidad Profesor.
-        if (profe.getAsignaturas() != null) {
-            if (!profe.getAsignaturas().contains(asignatura)) {
-                profe.getAsignaturas().add(asignatura);
-
-            }
-        } else {
-            ArrayList<Asignatura> asignaturas = new ArrayList<Asignatura>();
-            asignaturas.add(asignatura);
-            profe.setAsignaturas(asignaturas);
-        }
-
-        //Hay que guardar el profesor en el lado del asignaturas tambien.
-        if (asignatura.getProfesores() != null) {
-            //Ya tiene cursos agregados.
-            if (!asignatura.getProfesores().contains(profe)) {
-                asignatura.getProfesores().add(profe);
-            }
-        } else {
-            //El profesor no tiene ningun Curso.
-            ArrayList<Profesor> profesores = new ArrayList<Profesor>();
-            profesores.add(profe);
-            asignatura.setProfesores(profesores);
-        }
-
+        curso = curso.agregarAsignaturaAlCurso(asignatura);
+        cursoService.save(curso);
+        profe = profe.agregarAisgnaturaAlProfesor(asignatura);
+        asignatura = asignatura.agregarProfesorToAsignatura(profe);
         asignaturaService.save(asignatura);
         profesorService.save(profe);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    @DeleteMapping("eliminarAsignatura")
+    
+    @GetMapping("eliminarAsignatura")
     public ResponseEntity<Long> eliminarAsignatura(@RequestParam Long id) {
-        asignaturaService.deleteById(id);
+        Asignatura asignatura = asignaturaService.get(id);
+        asignatura.setIsActive(Boolean.FALSE);
+        asignaturaService.save(asignatura);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -522,22 +443,13 @@ public class ApiController {
 
     @GetMapping("cursos")
     public List<Curso> getCursos() {
-        return cursoService.getAll();
+        return cursoService.getAll(CursoSpecs.isActive()); 
     }
 
     @GetMapping("getCursosDeAlumno")
     public List<Curso> getCursosDeAlumno(@RequestParam Long idAlumno) {
         Alumno alumno = alumnoService.get(idAlumno);
-        if (alumno == null) {
-            throw new Error();
-        }
-
-        if (alumno.getCursos().isEmpty()) {
-            //No hay cursos para mostrar!
-            return null;
-        } else {
-            return alumno.getCursos();
-        }
+        return cursoService.getAll(CursoSpecs.byAlumno(alumno));
     }
 
     @PostMapping("agregarAlumnoACurso")
@@ -547,30 +459,10 @@ public class ApiController {
         if (curso == null || alumno == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if (!curso.getAlumnos().isEmpty()) {
-            if (!curso.getAlumnos().contains(alumno)) {
-                //el alumno no esta en el curso, lo agrego
-                curso.getAlumnos().add(alumno);
-                cursoService.save(curso);
-            }
-        } else {
-            //no hay alumnos en el curso
-            ArrayList<Alumno> alumnos = new ArrayList<>();
-            alumnos.add(alumno);
-            curso.setAlumnos(alumnos);
-            cursoService.save(curso);
-        }
-        if (!alumno.getCursos().isEmpty()) {
-            if (!alumno.getCursos().contains(curso)) {
-                alumno.getCursos().add(curso);
-                alumnoService.save(alumno);
-            }
-        } else{
-            ArrayList<Curso> cursos = new ArrayList<>();
-            cursos.add(curso);
-            alumno.setCursos(cursos);
-            alumnoService.save(alumno);
-        }
+        curso = curso.agregarAlumnoAlCurso(alumno);
+        cursoService.save(curso);
+        alumno = alumno.agregarCursoAlAlumno(curso);
+        alumnoService.save(alumno);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -597,45 +489,13 @@ public class ApiController {
                 continue;
             }
             if (persona.getDocumento().getNumero().equals(documento)) {
-
-                //No lo hago todo junto por si queremos diferneciar en documento encontrado y no encontrado
                 //documento encontrado, valido si la contraseña tambien coincide.
                 //en la base, esta la contraseña cifrada, por ende tengo que cifrar la password del front y comprarla con la del server
-                //System.out.println(persona.getClass());
-                if (persona.getPassword() == null) {
+                if (persona.getPassword() == null){
                     continue;
                 }
                 if (persona.getPassword().equals(cifrarClave(password))) {
-                    char userType = '0'; // 0 para Tutor.
-                    if (persona instanceof Profesor) {
-                        userType = '1'; //1 para Profesor.
-                    }
-
-                    //la contraseña tambien coincide.
-                    //tengo que crear la session.
-                    Sesion sesion = new Sesion();
-                    Documento doc = new Documento();
-                    doc = persona.getDocumento();
-                    sesion.setDocumento(doc);
-                    //Genero el session_id, que el hash que voy a usar para validar
-                    SecureRandom random = new SecureRandom();
-                    byte[] contenedor = new byte[16];
-                    random.nextBytes(contenedor);
-
-                    StringBuffer codigobuilder = new StringBuffer();
-                    for (byte bytes : contenedor) {
-                        codigobuilder.append(String.format("%02x", bytes & 0xff));
-                    }
-                    String codigo = codigobuilder.toString();
-                    codigo = codigo + userType;//concateno en el codigo el tipo de usuario que es.
-                    codigo = codigo.toUpperCase();
-                    sesion.setSession_id(codigo);
-                    Calendar fecha = Calendar.getInstance();
-                    fecha.add(Calendar.DAY_OF_YEAR, 1);
-                    sesion.setExpiracion(fecha);
-                    sesionService.save(sesion);
-                    //devuelvo el session id al usuario para que vaya en la coockie
-                    return codigo;
+                    return this.generateNewSessionForUser(persona); 
                 } else {
                     //Contraseña incorrecta
                     return "wrong_password";
@@ -644,7 +504,38 @@ public class ApiController {
         }
         return "user_not_found";
     }
-
+    
+    private String generateSessionHash(char userType) {
+        //Genero el session_id, que el hash que voy a usar para validar
+            SecureRandom random = new SecureRandom();
+            byte[] contenedor = new byte[16];
+            random.nextBytes(contenedor);
+                    
+            StringBuilder codigobuilder = new StringBuilder();
+            for (byte bytes : contenedor) {
+                codigobuilder.append(String.format("%02x", bytes & 0xff));
+            }
+            String hashCode = codigobuilder.toString();
+            hashCode = hashCode + userType;//concateno en el codigo el tipo de usuario que es.
+            hashCode = hashCode.toUpperCase();
+            
+        return hashCode;
+    }
+    
+    private String generateNewSessionForUser(Persona persona) {
+        char userType = persona.getUserType();
+        Sesion sesion = new Sesion();
+        Documento doc = persona.getDocumento();
+        sesion.setDocumento(doc);
+        String sessionHashCode = this.generateSessionHash(userType);
+        sesion.setSession_id(sessionHashCode);
+        Calendar fecha = Calendar.getInstance();
+        fecha.add(Calendar.DAY_OF_YEAR, 1);
+        sesion.setExpiracion(fecha);
+        sesionService.save(sesion);
+        return sessionHashCode;
+    }
+    
     @PostMapping("eliminarSesion")
     public ResponseEntity<Long> eliminarSesion(@RequestBody String sessionId) {
         //Busco el id de esa sesion para borarla.
@@ -653,9 +544,8 @@ public class ApiController {
         if (listadoSesiones.isEmpty()) {
             //no hay sesiones en la base
             throw new Error();
-        } else {
-            //recorro las sesiones
-
+        } 
+        else {
             for (Sesion sesion : listadoSesiones) {
                 if (sesion.getSession_id().equals(sessionId)) {
                     //Encontre la sesion.
@@ -692,10 +582,9 @@ public class ApiController {
         }
         return null;
     }
-
+    
     @GetMapping("isProfesor")
     public Boolean isProfesor(Long id) {
-        //Return True si es profesor, o Falso si es tutor.}
         List<Persona> personas = new ArrayList<Persona>();
         List<Profesor> profesores = profesorService.getAll();
         List<Tutor> tutores = tutorService.getAll();

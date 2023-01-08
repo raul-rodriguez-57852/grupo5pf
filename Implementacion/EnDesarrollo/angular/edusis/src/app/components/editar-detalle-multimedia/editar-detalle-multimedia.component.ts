@@ -3,7 +3,8 @@ import { DetalleMultimedia } from "src/app/models/detalleMultimedia";
 import { DataTareaService } from "src/app/services/data-tarea.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { DataApiService } from "src/app/services/data-api.service";
-import { NgForm } from "@angular/forms";
+import { NgForm, NG_VALUE_ACCESSOR } from "@angular/forms";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: "app-editar-detalle-multimedia",
@@ -18,10 +19,11 @@ export class EditarDetalleMultimediaComponent implements OnInit {
     linkYoutube: null,
     imagen: null
   };
-  mensaje: string = null;
+
   idTareaRoute = null;
   videoId: string = null;
   files = null;
+  cursoId = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -32,7 +34,6 @@ export class EditarDetalleMultimediaComponent implements OnInit {
 
   ngOnInit() {
     const tag = document.createElement("script");
-
     tag.src = "https://www.youtube.com/iframe_api";
     document.body.appendChild(tag);
 
@@ -40,15 +41,23 @@ export class EditarDetalleMultimediaComponent implements OnInit {
       this.route.snapshot.paramMap.get("tareaId") != null
         ? Number(this.route.snapshot.paramMap.get("tareaId"))
         : null;
+    
+    this.cursoId =
+      this.route.snapshot.paramMap.get("cursoId") != null
+        ? Number(this.route.snapshot.paramMap.get("cursoId"))
+        : null;
     this.get();
   }
 
   get() {
+    console.log("idTareaRoute: " + this.idTareaRoute)
     this.dataTareaService
       .getDetalleMultimediaTarea(this.idTareaRoute)
       .then((res) => {
         if (res !== null) {
           this.detalle = res;
+          console.log(res)
+          this.cursoId = res["tarea"]["asignatura"]["curso"].id;
           this.dataTareaService
             .getImagenDetalle(this.detalle.id.toString())
             .then((res) => {
@@ -58,8 +67,6 @@ export class EditarDetalleMultimediaComponent implements OnInit {
             });
         }
       });
-
-
   }
 
   save(formDetalleMultimedia: NgForm) {
@@ -67,20 +74,35 @@ export class EditarDetalleMultimediaComponent implements OnInit {
     this.dataTareaService
       .guardarDetalleMultimedia(this.detalle)
       .then((respuesta) => {
-        this.mensaje = "Detalle guardado con éxito.";
-        document.getElementById("open-modal").click();
-        //        this.recargar();
+        Swal.fire({
+          title: "Exitos!",
+          text: "Detalle tarea fue guardado con exito!",
+          icon: 'success',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonText: 'Volver al curso',
+          confirmButtonText: 'Agregar Actividades!',
+          reverseButtons: true
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.agregarActividades()
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            this.router.navigate(["curso", { id: this.cursoId}]);
+          }
+        })
       })
       .catch((respuesta) => {
-        this.mensaje = "Error al guardar.";
-        document.getElementById("open-modal").click();
+        Swal.fire(
+          'Error al crear la tarea',
+          "Ey, tranqui, seguro los chicos se alegraron :)",
+          'error'
+        );
       });
   }
 
   vistaPrevia() {
-    if (this.detalle.linkYoutube === null) {
-      this.mensaje = "Ingrese el link que desea visualizar.";
-      document.getElementById("open-modal").click();
+    if (this.detalle.linkYoutube === null || this.detalle.linkYoutube == '') {
+      Swal.fire("Error", "Ingrese el link que desea visualizar.", "error")
       return;
     }
     this.videoId = this.getVideoId(this.detalle.linkYoutube);
@@ -89,7 +111,9 @@ export class EditarDetalleMultimediaComponent implements OnInit {
   agregarActividades() {
     this.router.navigate([
       "editar-detalle-actividad",
-      { tareaId: this.detalle.idTarea },
+      { tareaId: this.detalle.idTarea,
+        cursoId: this.cursoId
+      },
     ]);
   }
 
@@ -110,4 +134,7 @@ export class EditarDetalleMultimediaComponent implements OnInit {
       this.detalle.imagen = e.target.result.toString();
     }
   }
+
 }
+
+

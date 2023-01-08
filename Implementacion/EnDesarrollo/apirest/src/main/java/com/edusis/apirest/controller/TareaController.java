@@ -137,9 +137,11 @@ public class TareaController {
         return tareaService.get(id);
     }
     
-    @DeleteMapping("eliminarTarea")
-    public ResponseEntity<Long> eliminarTarea(@RequestParam Long id) {
-        tareaService.deleteById(id);
+    @GetMapping("eliminarTarea")
+    public ResponseEntity<Long> eliminarTarea(@RequestParam Long tareaId) {
+        Tarea tarea = tareaService.get(tareaId);
+        tarea.setIsActive(java.lang.Boolean.FALSE);
+        tareaService.save(tarea);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
@@ -147,7 +149,15 @@ public class TareaController {
     public List<Tarea> getTareas(@RequestParam Long cursoId) {
         Curso curso = cursoService.get(cursoId);
         List<Asignatura> asignaturas =  asignaturaService.getAll(AsignaturaSpecs.byCurso(curso));
+        List<Tarea> tareas = tareaService.getAll(TareaSpecs.byAsignaturas(asignaturas));
         return tareaService.getAll(TareaSpecs.byAsignaturas(asignaturas));
+    }
+    
+    @GetMapping("getTareaByAsignatura")
+    public List<Tarea> getTareaByAsignatura(@RequestParam Long asignaturaId) {
+        Asignatura asignatura = asignaturaService.get(asignaturaId);
+        List<Tarea> tareas = tareaService.getAll(TareaSpecs.byAsignatura(asignatura));
+        return tareas;
     }
     
     @GetMapping("realizaciones")
@@ -188,7 +198,7 @@ public class TareaController {
         Curso curso = cursoService.get(cursoId);
 //        List<Tarea> tareas = tareaService.getAll(TareaSpecs.byAsignaturas(asignaturas));
         List<Tarea> tareas = getTareas(cursoId);
-        List<Alumno> alumnos = alumnoService.getAll(AlumnoSpecs.byCurso(curso));
+        List<Alumno> alumnos = alumnoService.getAll(AlumnoSpecs.isActive().and(AlumnoSpecs.byCurso(curso)));
         Integer totalAlumnos = alumnos.size();
         List<RealizacionTarea> realizaciones = realizacionTareaService.getAll(RealizacionTareaSpecs.byTareas(tareas));
         JsonArray realizacionesJson = new JsonArray();
@@ -223,7 +233,7 @@ public class TareaController {
         Tarea tarea = tareaService.get(tareaId);
         
         Curso curso = tarea.getAsignatura().getCurso();
-        List<Alumno> alumnos = alumnoService.getAll(AlumnoSpecs.byCurso(curso));
+        List<Alumno> alumnos = alumnoService.getAll(AlumnoSpecs.isActive().and(AlumnoSpecs.byCurso(curso)));
        
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> q = cb.createTupleQuery();
@@ -274,7 +284,7 @@ public class TareaController {
     public List<Alumno> getAlumnosPorCurso(@RequestParam Long cursoId) {
         
         Curso curso = cursoService.get(cursoId);
-        List<Alumno> alumnos = alumnoService.getAll(AlumnoSpecs.byCurso(curso));
+        List<Alumno> alumnos = alumnoService.getAll(AlumnoSpecs.isActive().and(AlumnoSpecs.byCurso(curso)));
         return alumnos;
     
     }
@@ -284,7 +294,7 @@ public class TareaController {
         Tarea tarea = tareaService.get(tareaId);
         
         Curso curso = tarea.getAsignatura().getCurso();
-        List<Alumno> alumnos = alumnoService.getAll(AlumnoSpecs.byCurso(curso));
+        List<Alumno> alumnos = alumnoService.getAll(AlumnoSpecs.isActive().and(AlumnoSpecs.byCurso(curso)));
         
         Map<String,Integer> rangoPuntaje = new HashMap<>(); 
         rangoPuntaje.put("No realizada", 0);
@@ -432,7 +442,7 @@ public class TareaController {
     @GetMapping("imagenDetalle")
     public String getImagenDetalle(@RequestParam Long id) {
         DetalleTareaMultimedia detalle = (DetalleTareaMultimedia) Hibernate.unproxy(detalleTareaMultimediaService.get(id));
-        if(detalle.getImagen() == null){
+        if (detalle.getImagen() == null) {
             return null;
         }
         String imagen = new String(detalle.getImagen(), StandardCharsets.UTF_8);

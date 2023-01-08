@@ -56,5 +56,5 @@ public class CursoDto {
     public void setCreadorId(Long creadorId) {
         this.creadorId = creadorId;
     }
-   
+
 }

@@ -10,13 +10,14 @@ export class TutorAuthGuard implements CanActivate {
 
   constructor(private dataApiService: DataApiService) {
   }
+  //Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree
 
-  canActivate(
+  async canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    state: RouterStateSnapshot) {
+    await this.dataApiService.findUser();
     let userType = this.dataApiService.getUserType();
-    console.log(userType);
-    if (userType !== null && (userType === '0' || userType === '2')) {
+    if (userType !== null && (userType === this.dataApiService.getTutorType() || userType === this.dataApiService.getAlumnoType())) {
       return true;
     }
     return false;

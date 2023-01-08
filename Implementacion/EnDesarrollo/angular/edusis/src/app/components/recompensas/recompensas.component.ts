@@ -12,7 +12,23 @@ import Swal from 'sweetalert2';
 export class RecompensasComponent implements OnInit {
 
   alumnoID: number = null;
-  alumno: Alumno = { id: null, nombre: null, apellido: null, documento: null, tipoDocumento: null, fechaNacimiento: null, avatarUrl: null, passwordEmoji: null, tutorId: null, saldoEstrellas: null, recompensas: null, listRecompensasComprada: null, listRecompensasEquipada: null };
+  alumno: Alumno = {
+    id: null, 
+    nombre: null, 
+    apellido: null, 
+    documento: null, 
+    tipoDocumento: null, 
+    fechaNacimiento: null, 
+    avatarUrl: null, 
+    passwordEmoji: null, 
+    tutorId: null, 
+    saldoEstrellas: null, 
+    mapRecompensas: null, 
+    isActive: true,
+    recompensas: [],
+    listRecompensasComprada: [],
+    listRecompensasEquipada: []
+  };
   addons = [];
   listRecompensasComprada = [];
   listRecompensasEquipada = [];
@@ -27,7 +43,8 @@ export class RecompensasComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("ALUMNO: ", this.alumnoID);
+    console.log('ALUMNO: ', this.alumnoID)
+    console.log('user: ', this.dataApiService.getUsuario())
     if (this.alumnoID != null) {
       this.getAlumno(this.alumnoID)
     }
@@ -103,8 +120,7 @@ export class RecompensasComponent implements OnInit {
 
   async selectAddon(addon: any) {
     // Verificamos si el item esta dentro de la lista de comprados pero no equipados por el alumno
-    if (this.listRecompensasComprada.some(add => add.id === addon.id)) {
-      console.log("equipar");
+    if (this.listRecompensasComprada.includes(addon.id)) {
       // Consultamos si desea equipar
       const { value: respuesta } = await Swal.fire({
         title: '¿Desea equipar el item seleccionado?',
@@ -123,8 +139,7 @@ export class RecompensasComponent implements OnInit {
 
     } else {
       // Verificamos si el item esta dentro de la lista de comprados y equipados por el alumno
-      if (this.listRecompensasEquipada.some(add => add.id === addon.id)) {
-        console.log("desequipar");
+      if (this.listRecompensasEquipada.includes(addon.id)) {
         // Consultamos si desea desequipar
         const { value: respuesta } = await Swal.fire({
           title: '¿Desea desequipar el item seleccionado?',
@@ -144,7 +159,6 @@ export class RecompensasComponent implements OnInit {
         // El addon no fue comprado verificamos si hay saldo suficiente para comprarlo  
       } else {
         if (this.alumno.saldoEstrellas < addon.costo) {
-          console.log("error estrellas insuficientes");
           Swal.fire({
             icon: 'error',
             title: 'Estrellas insuficientes para comprar este item',

@@ -52,5 +52,5 @@ public class DetalleTareaMultimedia extends DetalleTarea {
     public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
-     
+    
 }

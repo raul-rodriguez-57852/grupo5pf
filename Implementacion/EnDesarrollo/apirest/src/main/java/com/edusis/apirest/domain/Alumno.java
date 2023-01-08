@@ -8,9 +8,18 @@ package com.edusis.apirest.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -32,8 +41,8 @@ public class Alumno extends Persona {
     
     @ManyToMany
     @JsonIgnore
-    @JoinTable(name="cursos_alumnos",joinColumns = @JoinColumn(name= "curso_id"),
-            inverseJoinColumns = @JoinColumn(name = "alumno_id"))
+    @JoinTable(name="cursos_alumnos",joinColumns = @JoinColumn(name= "alumno_id"),
+            inverseJoinColumns = @JoinColumn(name = "curso_id"))
     private List<Curso> cursos;
     
     private Integer saldoEstrellas;
@@ -58,7 +67,7 @@ public class Alumno extends Persona {
         return cursos;
     }
 
-    public void setCursos(List<Curso> cursos) {
+    private void setCursos(List<Curso> cursos) {
         this.cursos = cursos;
     }
 
@@ -107,4 +116,26 @@ public class Alumno extends Persona {
         this.recompensas.add(recompensa);
     }
 
+    
+    @Override
+    public char getUserType() {
+        return '0';
+    }
+    
+     /**
+    * @return      the Alumno object itself so it can ve saved by its Service
+    */
+    public Alumno agregarCursoAlAlumno(Curso curso) {
+        if(!this.getCursos().isEmpty()) {
+            if(!this.getCursos().contains(curso)) {
+                this.getCursos().add(curso);
+            }
+        } else {
+            ArrayList<Curso> cursos = new ArrayList<Curso>();
+            cursos.add(curso);
+            this.setCursos(cursos);
+        }
+        return this;
+    }
+    
 }

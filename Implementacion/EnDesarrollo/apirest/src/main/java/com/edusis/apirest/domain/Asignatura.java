@@ -5,10 +5,11 @@
  */
 package com.edusis.apirest.domain;
 
-import com.edusis.apirest.generic.GenericEntity;
+import com.edusis.apirest.generic.SoftDeleteEntity;
 import com.edusis.apirest.utils.AssertUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -25,7 +26,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name= "Asignatura")
-public class Asignatura extends GenericEntity {
+public class Asignatura extends SoftDeleteEntity {
     
     @NotNull
     @ManyToOne
@@ -94,7 +95,7 @@ public class Asignatura extends GenericEntity {
         return profesores;
     }
 
-    public void setProfesores(List<Profesor> profesores) {
+    private void setProfesores(List<Profesor> profesores) {
         this.profesores = profesores;
     }
 
@@ -105,7 +106,22 @@ public class Asignatura extends GenericEntity {
     public void setTareas(List<Tarea> tareas) {
         this.tareas = tareas;
     }
-       
     
+    /**
+    * @param  Profesor a Profesor object that will be added to Asignatura
+    * @return the Asignatura object itself so it can ve saved by its Service
+    */
+    public Asignatura agregarProfesorToAsignatura(Profesor profe) {
+        if(this.getProfesores() != null) {
+            if(!this.getProfesores().contains(profe)) {
+                this.getProfesores().add(profe);
+            }
+        } else {
+            ArrayList<Profesor> profes = new ArrayList<Profesor>();
+            profes.add(profe);
+            this.setProfesores(profes);
+        }
+        return this;
+    }
         
 }

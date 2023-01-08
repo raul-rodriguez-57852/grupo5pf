@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Profesor } from "../../models/profesor";
 import { Tutor } from "../../models/tutor";
-import { NgForm, SelectMultipleControlValueAccessor } from "@angular/forms";
+import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
 import { DataApiService } from "../../services/data-api.service";
 import Swal from "sweetalert2";
@@ -11,13 +11,26 @@ import Swal from "sweetalert2";
   templateUrl: "./registro.component.html",
   styleUrls: ["./registro.component.css"],
 })
+
 export class RegistroComponent implements OnInit {
   profesor: Profesor = new Profesor();
   tutor: Tutor = new Tutor();
-  mensaje: string = null;
   esCuentaTutor = true;
   tiposDoc = [];
   registroExitoso = false;
+  button = document.getElementById('button-container')
+  tutorSwitch = (<HTMLParagraphElement>document.getElementById('Tutor'))
+  profeSwitch = (<HTMLParagraphElement>document.getElementById('Profesor'))
+  buttonTrack = (<HTMLDivElement>document.getElementById('my-button'))
+  where = (<HTMLInputElement>document.getElementById('for-button'))
+  buttonState = true;
+  elemnts = {
+    'InputNombre' : 'div-nombre',
+    'inputApellido' : 'div-apellido',
+    'inputDocumento' : 'div-documento',
+    'inputEmail' : 'div-email',
+    'inputPassword' : 'div-password'
+  };
 
   constructor(private dataApiService: DataApiService, private router: Router) {
     var id: any;
@@ -34,13 +47,51 @@ export class RegistroComponent implements OnInit {
   }
 
   async save(formRegistro: NgForm) {
-    if (this.esCuentaTutor) {
-      await this.guardarTutor();
-    } 
-    else {
-      await this.guardarProfesor();
+    try {
+      this.esCuentaTutor ? this.validateUser(this.tutor) : this.validateUser(this.profesor);
+    } catch (missingElements) {
+      Swal.fire({
+        title: 'Opps :(',
+        icon: 'info',
+        html:
+          '<b>Revisar los siguientes campos: </b>' +
+          '<table style="width:100%">' +
+              '<tr>' +
+              missingElements.join('') +
+              '</tr>' +
+          '</table>'
+      })
+      return;
     }
+    this.esCuentaTutor ? await this.guardarTutor() : await this.guardarProfesor();
+   
     this.registroExitoso ? this.irLogIn() : this.resetForm();
+  }
+
+  changeAccount() {
+    this.tutorSwitch = (<HTMLParagraphElement>document.getElementById('Tutor'))
+    this.profeSwitch = (<HTMLParagraphElement>document.getElementById('Profesor'))
+    this.buttonTrack = (<HTMLDivElement>document.getElementById('my-button'))
+    this.where = (<HTMLInputElement>document.getElementById('for-button'))
+    if (this.buttonState) {
+      document.getElementById("my-button").style.transform = "translateX(100px)"; 
+      this.buttonState = false;
+      this.tutorSwitch.innerText = 'Profesor'
+      this.profeSwitch.innerText = 'Tutor'
+      this.profeSwitch.style.transform = "translateX(-100px)";
+      this.where.value = 'Profesor'
+      this.buttonTrack.style.borderRadius = "0px 20px 20px 0px";
+      
+    } else {
+      document.getElementById("my-button").style.transform = "translateX(0px)";
+      this.buttonState = true;
+      this.tutorSwitch.innerText = 'Tutor'
+      this.profeSwitch.innerText = 'Profesor'
+      this.profeSwitch.style.transform = "translateX(0px)";
+      this.where.value = 'Tutor'
+      this.buttonTrack.style.borderRadius = "20px 0px 0px 20px";
+    }
+    (this.where.value == 'Tutor') ? this.esCuentaTutor = true : this.esCuentaTutor = false;
   }
 
   cambiarTipoCuenta(tipo: string) {
@@ -49,40 +100,36 @@ export class RegistroComponent implements OnInit {
     } else {
       this.esCuentaTutor = false;
     }
-    this.ngOnInit();
   }
 
   recargar(id) {
     this.router.navigate(["registro"], { state: { id: id } });
   }
 
-  irLogIn(){
+  irLogIn() {
     this.router.navigate(['']);
-    }
+  }
   
-  addFocus(id:string ){
-      document.getElementById(id).classList.add('focus');
-      document.getElementById(id).click();
+  addFocus(to: string, from: string = '') {
+      document.getElementById(to).classList.add('focus');
+      document.getElementById(to).click();
   }
 
-  removeFocus(){
+  checkAndGiveFocus(check: string, giveTo: string ) {  
+    var elementTocheck = (<HTMLInputElement>document.getElementById(check));
 
-      if((<HTMLInputElement>document.getElementById('InputNombre')).value == "") {
-          document.getElementById('div-nombre').classList.remove('focus');
-      }
-      if((<HTMLInputElement>document.getElementById('inputApellido')).value == "") {
-          document.getElementById('div-apellido').classList.remove('focus');
-      }  
-      if((<HTMLInputElement>document.getElementById('inputEmail')).value == "") {
-        document.getElementById('div-email').classList.remove('focus');
-      }
-      if((<HTMLInputElement>document.getElementById('inputPassword')).value == "") {
-        document.getElementById('div-password').classList.remove('focus');
-      }   
-      if((<HTMLInputElement>document.getElementById('inputDocumento')).value == "") {
-        document.getElementById('div-documento').classList.remove('focus');
-      } 
+    if(elementTocheck.value == null ||elementTocheck.value === '') {
+      document.getElementById(this.elemnts[check]).classList.remove('focus');
+    }
+    
+    if (giveTo == '') {
+      return;
+    }
+
+    document.getElementById(giveTo).classList.add('focus');
+    document.getElementById(giveTo).click();
   }
+
 
   private switchTipoDocumento(tipo:string) {
     switch (tipo) {
@@ -104,7 +151,7 @@ export class RegistroComponent implements OnInit {
     }
   }
 
-  private  async guardarTutor() {
+  private async guardarTutor() {
     this.switchTipoDocumento(this.tutor.tipoDocumento);
     await this.dataApiService
       .guardarTutor(this.tutor)
@@ -157,11 +204,42 @@ export class RegistroComponent implements OnInit {
   }
 
   private resetForm() {
+    for (let key in this.elemnts) {
+      let value = this.elemnts[key];
+      document.getElementById(value).classList.remove('focus');
+    }
     window.location.reload();
   }
 
   private sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  private validateUser(user: any) {
+    var userType = user instanceof Tutor ? 'tutor' : 'profesor';
+    var missingElements = [];
+    if (user.nombre === undefined || user.nombre == '' || user.nombre == null || !user.nombre.trim()) {
+      
+      missingElements.push('<td> Nombre del ' + userType + '. </td><tr></tr>');
+    }
+    if (user.apellido === undefined ||user.apellido == '' || user.apellido == null || !user.apellido.trim()) {
+      missingElements.push('<td> Apellido del ' + userType + '. </td><tr></tr>');
+    }
+    if (user.documento === undefined || user.documento == '' || user.documento == null || !user.documento.trim() || /\D/.test(user.documento)) {
+      missingElements.push('<td> Documento del ' + userType + '. </td><tr></tr>');
+    }
+    if (user.tipoDocumento === undefined || user.tipoDocumento == '' || user.tipoDocumento == null) {
+      missingElements.push('<td> Tipo de Documento del ' + userType + '. </td><tr></tr>');
+    }
+    if (user.email === undefined || user.email == '' || user.email == null || !user.email.trim()) {
+      missingElements.push('<td> Email del ' + userType + '. </td><tr></tr>');
+    }
+    if (user.password === undefined || user.password == '' || user.password == null || !user.password.trim()) {
+      missingElements.push('<td> Contraseña del ' + userType + '. </td><tr></tr>');
+    }
+    if (missingElements.length > 0) {
+      throw missingElements;
+    }
   }
 
 }

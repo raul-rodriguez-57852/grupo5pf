@@ -15,4 +15,6 @@ export class Alumno {
   recompensas: Recompensa[];
   listRecompensasComprada: any[];
   listRecompensasEquipada: any[];
+  mapRecompensas: Map<Addon, Boolean>;
+  isActive: boolean;
 }

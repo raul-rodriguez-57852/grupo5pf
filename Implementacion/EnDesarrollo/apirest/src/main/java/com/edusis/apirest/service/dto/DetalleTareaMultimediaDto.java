@@ -56,4 +56,5 @@ public class DetalleTareaMultimediaDto {
     public void setImagen(String imagen) {
         this.imagen = imagen;
     }   
+
 }

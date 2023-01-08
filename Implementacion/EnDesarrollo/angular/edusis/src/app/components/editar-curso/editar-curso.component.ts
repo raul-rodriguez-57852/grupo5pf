@@ -3,6 +3,7 @@ import { Curso } from '../../models/curso';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataApiService } from '../../services/data-api.service';
 import { NgForm } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-editar-curso',
@@ -35,7 +36,6 @@ export class EditarCursoComponent implements OnInit {
           this.curso.codigo = emoji.codigo;
             if(emoji.codigo == null)
             {
-              console.log("El codigo no esta generado. Deberia poder generarlo.")
               this.tienecodigo = false;
             }
             else{
@@ -65,16 +65,22 @@ export class EditarCursoComponent implements OnInit {
     }
     else{
       this.curso.creadorId = this.id_profesor;
-      console.log("This is the creator id: ", this.curso.creadorId);
       this.dataApiService.guardarCurso(this.curso).then(
         (respuesta) => {
-          this.mensaje = 'Curso guardado con éxito.';
-          document.getElementById('open-modal').click();
+          Swal.fire(
+            'Hurra!',
+            'Curso guardado con exito!',
+            'success'
+          );
+          this.router.navigate(['cursos']);
         }
       ).catch(
         (respuesta) => {
-          this.mensaje = 'Error al guardar.';
-          document.getElementById('open-modal').click();
+          Swal.fire(
+            'Ups!',
+            'Se produjo un error al guardar el curso :(',
+            'error'
+          );
         }
       );
     }
@@ -91,13 +97,19 @@ export class EditarCursoComponent implements OnInit {
           console.log('Codigo Null');
           this.dataApiService.generarCodigoCurso(this.curso).then(
             (respuesta) => {
-              this.mensaje = 'Codigo generado con éxito.';
-              document.getElementById('open-modal').click();
+              Swal.fire(
+                'Hurra!',
+                'Codigo generado con exito!',
+                'success'
+              );
             }
           ).catch(
             (respuesta) =>{
-              this.mensaje = "Error al generar el codigo!";
-              document.getElementById('open-modal').click();
+              Swal.fire(
+                'Ups!',
+                'Se produjo un error al guardar el curso :(',
+                'error'
+              );
             }
           )
         }
@@ -111,8 +123,11 @@ export class EditarCursoComponent implements OnInit {
           
         ).catch(
           (respuesta) => {
-            this.mensaje = "Error al buscar el curso!";
-            document.getElementById('open-modal').click();
+            Swal.fire(
+              'Ups!',
+              'Se produjo un error al buscar el curso :(',
+              'error'
+            );
           }
         );
         (<HTMLInputElement>document.getElementById('contenedor-codigo')).value = this.curso.codigo;  

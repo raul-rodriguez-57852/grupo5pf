@@ -45,3 +45,11 @@
   font-family: "SpaceKids";
   margin-bottom: 10px;
 }
+
+.fondo {
+  z-index: -1;
+  background-color: #13334c;
+  height: 100%;
+  width: 100%;
+}
+

@@ -6,6 +6,7 @@
 
 package com.edusis.apirest.domain;
 
+import com.edusis.apirest.domain.Profesor;
 import com.edusis.apirest.domain.plantillas.Plantilla;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;

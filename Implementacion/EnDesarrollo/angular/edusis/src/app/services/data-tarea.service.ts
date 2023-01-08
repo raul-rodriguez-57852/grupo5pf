@@ -1,12 +1,5 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Emoji } from "../models/emoji";
-import { Profesor } from "../models/profesor";
-import { Tutor } from "../models/tutor";
-import { Alumno } from "../models/alumno";
-import { PasswordEmoji } from "../models/password-emoji";
-import { Curso } from "../models/curso";
-import { Asignatura } from "../models/asignatura";
 import { Tarea } from "../models/tarea";
 import { DetalleMultimedia } from "../models/detalleMultimedia";
 import { DetalleActividad } from "../models/detalleActividad";
@@ -20,7 +13,7 @@ export class DataTareaService {
   usuario = null;
 
   constructor(private http: HttpClient) {
-    this.urlBase = "http://192.168.0.253:8090/tarea/";
+    this.urlBase = "http://localhost:8090/tarea/";
   }
 
   getTarea(id: string): Promise<any> {
@@ -152,6 +145,22 @@ export class DataTareaService {
   guardarRealizacionTarea(realizacion: Realizacion): Promise<any> {
     return this.http
       .post(this.urlBase + "guardarRealizacionTarea", realizacion)
+      .toPromise();
+  }
+
+  eliminarTarea(tareaId: string): Promise<any> {
+    return this.http
+      .get(this.urlBase + "eliminarTarea", {
+        params: { tareaId: tareaId.toString() },
+      })
+      .toPromise();
+  }
+
+  getTareaByAsignatura(asignaturaId: number): Promise<any> {
+    return this.http
+      .get(this.urlBase + "getTareaByAsignatura", {
+        params: { asignaturaId: asignaturaId.toString() },
+      })
       .toPromise();
   }
 }

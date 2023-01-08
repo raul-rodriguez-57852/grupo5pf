@@ -5,4 +5,5 @@ export class Tutor {
   tipoDocumento: string;
   fechaNacimiento: Date;
   password: String;
+  email: String;
 }

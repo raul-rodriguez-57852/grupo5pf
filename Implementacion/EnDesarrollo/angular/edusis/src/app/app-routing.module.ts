@@ -41,12 +41,14 @@ import { RealizacionCategoriasComponent } from './components/realizacion-categor
 import { CrearActividadVfComponent } from './components/crear-actividad-vf/crear-actividad-vf.component';
 import { VistaPreviaVfComponent } from './components/vista-previa-vf/vista-previa-vf.component';
 import { RealizacionVfComponent } from './components/realizacion-vf/realizacion-vf.component';
+import { MainComponent } from './components/main/main.component';
 
 const routes: Routes = [
 
   // Públicos
+  { path: '', component: MainComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent }, // Aparentemente ya no se utiliza
-  { path: '', component: LoginComponent },
   { path: 'registro', component: RegistroComponent },
   { path: 'inicio-sesion', component: InicioSesionComponent }, // Aparentemente ya no se utiliza
 

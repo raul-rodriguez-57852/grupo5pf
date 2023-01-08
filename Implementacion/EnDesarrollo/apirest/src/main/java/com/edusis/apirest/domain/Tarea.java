@@ -5,7 +5,8 @@
  */
 package com.edusis.apirest.domain;
 
-import com.edusis.apirest.generic.GenericEntity;
+import com.edusis.apirest.domain.Profesor;
+import com.edusis.apirest.generic.SoftDeleteEntity;
 import com.edusis.apirest.utils.AssertUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
@@ -25,7 +26,7 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name = "Tarea")
-public class Tarea extends GenericEntity {
+public class Tarea extends SoftDeleteEntity {
 
     @NotNull
     @ManyToOne
