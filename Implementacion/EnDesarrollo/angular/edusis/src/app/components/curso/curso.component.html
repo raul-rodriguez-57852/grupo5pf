@@ -12,42 +12,25 @@
       >
         Nueva tarea
       </button>
-      <ul class="list-group list-group-flush margin-bottom-16">
-        <li
-          class="list-group-item d-flex justify-content-between align-items-center"
-        >
-          <strong>Tareas</strong>
-          <strong>Opciones</strong>
-        </li>
-        <li
-          *ngFor="let tarea of tareas"
-          class="list-group-item d-flex justify-content-between align-items-center"
-        >
-          <div>{{ tarea.nombre }}</div>
+      <div *ngFor="let tarea of tareas" class="card mb-3">
+        <div class="contenedorImagenCard" (click)="editarTarea(tarea.id)">
           <div
-            class="btn-group btn-group-sm"
-            role="group"
-            aria-label="Basic example"
-          >
-            <button
-            type="button"
-              (click)="editarTarea(tarea.id)"
-              class="btn btn-info"
-            >
-              <i class="fa fa-edit"></i>
-            </button>
-            <button
-              type="button"
-              (click)="eliminarTarea(tarea.id, tarea.nombre)"
-              data-toggle="modal"
-              data-target="#eliminar"
-              class="btn btn-danger"
-            >
-              <i class="fa fa-trash"></i>
-            </button>
+            style="{{tarea.color}}"
+            class="card-img-top imagenCard"
+            alt="Card image cap"
+          ></div>
+          <div class="centered" style="text-transform: uppercase;">{{ tarea.nombre }}</div>
         </div>
-      </li>
-    </ul>
+        <div class="box">
+          <div class="cardText">
+            <p  style="padding: 5px;" class="card-text text-muted">Modifica y gestiona tu tarea: {{tarea.nombre}}</p>
+          </div>
+          <div class="actionButtons btn-group btn-group-sm" role="group">
+            <button type="button" (click)="editarTarea(tarea.id)" class="btn btn-info"><i class="fa fa-edit"></i></button>
+            <button type="button" (click)="eliminarTarea(tarea.id, tarea.nombre)" data-toggle="modal" data-target="#eliminar" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+          </div>
+        </div>
+      </div>
     </div>
     <div *ngIf="!asignaturaSelected" id = 'nuevaAsignatura'>
       <button
@@ -57,46 +40,25 @@
       >
         Nueva asignatura
       </button>
-      <ul class="list-group list-group-flush margin-bottom-16">
-        <li
-          class="list-group-item d-flex justify-content-between align-items-center"
-        >
-          <strong>Asignaturas</strong>
-          <strong>Opciones</strong>
-        </li>
-        <li
-          *ngFor="let asignatura of asignaturas"
-          class="list-group-item d-flex justify-content-between align-items-center"
-          (click)="seleccionarAsignatura(asignatura)"
-        >
-          <div>
-            <img
-              style="height: 31px; margin-right: 10px;"
-              src="{{ asignatura.iconoURL }}"
-            />{{ asignatura.nombre }}
+      <div *ngFor="let asignatura of asignaturas" class="card mb-3">
+        <div class="contenedorImagenCard" (click)="seleccionarAsignatura(asignatura)">
+          <img
+            class="card-img-top imagenCard"
+            src="{{ asignatura.iconoURL }}"
+            alt="Card image cap"
+          />
+          <div class="centered">{{ asignatura.nombre }}</div>
+        </div>
+        <div class="box">
+          <div class="cardText">
+            <p  style="padding: 5px;" class="card-text text-muted">Accede y controla la asignatura: {{asignatura.nombre}}</p>
           </div>
-          <div
-            class="btn-group btn-group-sm"
-            role="group"
-            aria-label="Basic example"
-          >
-            <button
-              type="button"
-              (click)="editar(asignatura.id)"
-              class="btn btn-info"
-            >
-            <i class="fa fa-edit"></i>
-            </button>
-            <button
-              type="button"
-              (click)="eliminar(asignatura.id, asignatura.nombre)"
-              class="btn btn-danger"
-            >
-            <i class="fa fa-trash"></i>
-            </button>
+          <div class="actionButtons btn-group btn-group-sm" role="group">
+            <button type="button" (click)="editar(asignatura.id)" class="btn btn-info"><i class="fa fa-edit"></i></button>
+            <button type="button" (click)="eliminar(asignatura.id, asignatura.nombre)" data-toggle="modal" data-target="#eliminar" class="btn btn-danger"><i class="fa fa-trash"></i></button>
           </div>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
     <button
       (click)="volverACursos()"

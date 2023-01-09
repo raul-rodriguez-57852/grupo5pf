@@ -5,6 +5,7 @@ import { DataTareaService } from 'src/app/services/data-tarea.service';
 import Swal from 'sweetalert2';
 import { Tarea } from 'src/app/models/tarea';
 import { Asignatura } from 'src/app/models/asignatura';
+import { type } from 'os';
 
 @Component({
   selector: 'app-curso',
@@ -52,8 +53,15 @@ export class CursoComponent implements OnInit {
     });
   }
 
-  getAllTareas(asignaturaid: number) {
-    this.dataTareaService.getTareaByAsignatura(asignaturaid).then((tareas) => {
+  async getAllTareas(asignaturaid: number) {
+    const colores = [
+      '#B5D5C5', '#B08BBB', '#ECA869', '#F5F5DC', '#579BB1', '#82AAE3', '#91D8E4',
+    '#FFF6BD', '#FF8E9E', '#ADA2FF' , '#227C70', '#FAEAB1', '#FAAB78', '#FFCAC8']
+    await this.dataTareaService.getTareaByAsignatura(asignaturaid).then((tareas) => {
+      tareas.forEach(tarea => {
+        const random = Math.floor(Math.random() * colores.length);
+        tarea['color'] = 'background-color: ' + colores[random];
+      });
       this.tareas = tareas;
     });
   }
@@ -78,9 +86,9 @@ export class CursoComponent implements OnInit {
     this.router.navigate(['editar-tarea', { cursoId: this.cursoId }]);
   }
 
-  seleccionarAsignatura(asignatura : Asignatura) {
+  async seleccionarAsignatura(asignatura : Asignatura) {
     this.asignaturaSelected = true;
-    this.getAllTareas(asignatura.id)
+    await this.getAllTareas(asignatura.id)
   }
 
   volverACursos() {
@@ -138,4 +146,5 @@ export class CursoComponent implements OnInit {
   recargar() {
     // window.location.reload();
   }
+
 }

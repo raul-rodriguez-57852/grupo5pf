@@ -94,6 +94,10 @@ export class CursosComponent implements OnInit {
     this.router.navigate(['curso', { id }]);
   }
 
+  volverAHome() {
+    this.router.navigate(['home-profesor']);
+  }
+
   recargar() {
   }
 

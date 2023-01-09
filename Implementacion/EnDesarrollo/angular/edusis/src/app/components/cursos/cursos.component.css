@@ -1,4 +1,6 @@
 .contenedorImagenCard {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   height: 150px;
   overflow: hidden;
   position: relative;
@@ -20,4 +22,31 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.card-img-top {
+  height: 100%;
+}
+
+.card {
+  border-radius: 10px;
+}
+
+.actionButtons {
+  max-height: 50px;
+  padding: 9px;
+}
+
+.cardText {
+  height: 50px;
+  padding: 8px;
+  font-size:medium;
+}
+
+.box {
+  height: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-content: space-between;
 }
