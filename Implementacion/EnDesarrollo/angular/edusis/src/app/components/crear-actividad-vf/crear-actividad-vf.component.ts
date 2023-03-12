@@ -69,7 +69,9 @@ export class CrearActividadVfComponent implements OnInit {
           { tareaId: this.idTareaRoute },
         ]);
       } else {
-        window.location.reload();
+        this.router.navigate([
+          "crear-actividad"
+        ]);
       }
     });
 

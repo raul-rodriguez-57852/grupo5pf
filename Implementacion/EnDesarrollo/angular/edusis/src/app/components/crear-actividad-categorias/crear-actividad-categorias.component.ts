@@ -171,6 +171,10 @@ export class CrearActividadCategoriasComponent implements OnInit {
           "editar-detalle-actividad",
           { tareaId: this.idTareaRoute },
         ]);
+      } else {
+        this.router.navigate([
+          "crear-actividad"
+        ]);
       }
     });
 

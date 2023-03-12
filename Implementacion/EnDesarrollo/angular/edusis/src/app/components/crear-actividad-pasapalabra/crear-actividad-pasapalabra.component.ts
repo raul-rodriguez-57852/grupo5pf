@@ -32,7 +32,7 @@ export class CrearActividadPasapalabraComponent implements OnInit {
         : null;
 
     this.plantilla = new PlantillaPasapalabra();
-    let idProfesor = this.dataApiService.getUsuario();  
+    let idProfesor = this.dataApiService.getUsuario();
     this.plantilla.creadorId = idProfesor;
   }
 
@@ -228,14 +228,18 @@ export class CrearActividadPasapalabraComponent implements OnInit {
     this.dataApiService.crearActividadPasapalabra(this.plantilla).then(res => {
       console.log(res);
       /// Si no es nulo this.idTareaRoute significa que se llego a esta pantalla desde la creacion de una tarea. Redirigimos despues de guardar
-      if(this.idTareaRoute != null){
+      if (this.idTareaRoute != null) {
         this.router.navigate([
           "editar-detalle-actividad",
           { tareaId: this.idTareaRoute },
         ]);
+      } else {
+        this.router.navigate([
+          "crear-actividad"
+        ]);
       }
     });
-  
+
   }
 
 }

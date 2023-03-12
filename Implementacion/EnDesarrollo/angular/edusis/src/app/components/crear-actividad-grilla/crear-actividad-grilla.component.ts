@@ -41,7 +41,7 @@ export class CrearActividadGrillaComponent implements OnInit {
         : null;
 
     this.plantilla = new PlantillaGrilla();
-    let idProfesor = this.dataApiService.getUsuario();  
+    let idProfesor = this.dataApiService.getUsuario();
     this.plantilla.creadorId = idProfesor;
 
   }
@@ -60,7 +60,7 @@ export class CrearActividadGrillaComponent implements OnInit {
     reader.onload = (e) => {
       this.imagen = e.target.result;
     }
-  }  
+  }
 
   async addCelda(fila, columna) {
     let inputValue = '';
@@ -94,7 +94,7 @@ export class CrearActividadGrillaComponent implements OnInit {
       if (!celdaGrilla) {
         celdaGrilla = new CeldaGrilla();
         celdaGrilla.fila = fila;
-        celdaGrilla.columna = columna;  
+        celdaGrilla.columna = columna;
       }
       celdaGrilla.valorCorrecto = respuesta;
       if (!celdaEncontrada) {
@@ -121,8 +121,8 @@ export class CrearActividadGrillaComponent implements OnInit {
   actualizar() {
     this.plantilla.cantidadFilas = Number(this.cantidadFilas);
     this.plantilla.cantidadColumnas = Number(this.cantidadColumnas);
-    this.filas = Array.from({length: this.plantilla.cantidadFilas}, (_, i) => i + 1);
-    this.columnas = Array.from({length: this.plantilla.cantidadColumnas}, (_, i) => i + 1);
+    this.filas = Array.from({ length: this.plantilla.cantidadFilas }, (_, i) => i + 1);
+    this.columnas = Array.from({ length: this.plantilla.cantidadColumnas }, (_, i) => i + 1);
     this.celdas = [];
   }
 
@@ -132,14 +132,18 @@ export class CrearActividadGrillaComponent implements OnInit {
     this.dataApiService.crearActividadaGrilla(this.plantilla).then(res => {
       console.log(res);
       /// Si no es nulo this.idTareaRoute significa que se llego a esta pantalla desde la creacion de una tarea. Redirigimos despues de guardar
-      if(this.idTareaRoute != null){
+      if (this.idTareaRoute != null) {
         this.router.navigate([
           "editar-detalle-actividad",
           { tareaId: this.idTareaRoute },
         ]);
+      } else {
+        this.router.navigate([
+          "crear-actividad"
+        ]);
       }
     });
-  
+
   }
 
 }
