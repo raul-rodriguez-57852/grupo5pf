@@ -132,6 +132,10 @@ export class EstadisticasProfesorComponent implements OnInit {
     this.router.navigate(["estadisticas-curso-alumno", { cursoId: this.cursoId }]);
   }
 
+  volver() {
+    this.router.navigate(["home-profesor", {}]);
+  }
+
 
 
 

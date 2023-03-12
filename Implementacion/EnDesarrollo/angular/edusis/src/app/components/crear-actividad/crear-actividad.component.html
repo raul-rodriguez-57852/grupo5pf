@@ -73,6 +73,13 @@
         </div>
       </li>
     </ul>
+    <button
+      *ngIf="!plantillaPreguntaRespuestas"
+      (click)="volver()"
+      class="btn btn-lg btn-block btn-personalizado-txtblanco"
+    >
+      Volver
+    </button>
     <form
       *ngIf="plantillaPreguntaRespuestas && paso === 1"
       name="formActividad"

@@ -229,6 +229,7 @@ export class RealizacionTareaComponent implements OnInit {
           this.mensaje = "Error al guardar.";
           document.getElementById("open-modal").click();
         });
+      this.volver();
 
     }
   }

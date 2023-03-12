@@ -1,55 +1,143 @@
 <section id="cursos" class="margin-top-60">
   <div class="contenedorImagenCard margin-bottom-16">
-    <img class="imagenCard" src="assets/img/empty-classroom-stock-image.jpg" alt="Card image cap">
-    <div class="centered">Mis Cursos</div>  
+    <img
+      class="imagenCard"
+      src="assets/img/empty-classroom-stock-image.jpg"
+      alt="Card image cap"
+    />
+    <div class="centered">Mis Cursos</div>
   </div>
   <div class="container">
-    <button type="button" (click)="crear()" class="btn btn-personalizado btn-lg btn-block margin-bottom-16">Nuevo curso</button>
+    <button
+      type="button"
+      (click)="crear()"
+      class="btn btn-personalizado btn-lg btn-block margin-bottom-16"
+    >
+      Nuevo curso
+    </button>
     <ul class="list-group list-group-flush margin-bottom-16">
-      <li class="list-group-item d-flex justify-content-between align-items-center">
+      <li
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
         <strong>Cursos</strong>
         <strong>Opciones</strong>
       </li>
-      <li *ngFor="let curso of cursos" class="list-group-item d-flex justify-content-between align-items-center">
-        <div (click)="irACurso(curso.id)"><img style="height: 31px; margin-right: 10px;" src="{{ curso.iconoURL }}">{{ curso.nombre }}</div>
-        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-          <button type="button" (click)="generarCodigoCurso(curso.id)" class="btn btn-personalizado-txtblanco" ><i class="fa fa-share-alt"></i></button>
-          <button type="button" (click)="editar(curso.id)" class="btn btn-info"><i class="fa fa-edit"></i></button>
-          <button type="button" (click)="setearId(curso.id)" data-toggle="modal" data-target="#eliminar" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+      <li
+        *ngFor="let curso of cursos"
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <div (click)="irACurso(curso.id)">
+          <img
+            style="height: 31px; margin-right: 10px"
+            src="{{ curso.iconoURL }}"
+          />{{ curso.nombre }}
+        </div>
+        <div
+          class="btn-group btn-group-sm"
+          role="group"
+          aria-label="Basic example"
+        >
+          <button
+            type="button"
+            (click)="generarCodigoCurso(curso.id)"
+            class="btn btn-personalizado-txtblanco"
+          >
+            <i class="fa fa-share-alt"></i>
+          </button>
+          <button type="button" (click)="editar(curso.id)" class="btn btn-info">
+            <i class="fa fa-edit"></i>
+          </button>
+          <button
+            type="button"
+            (click)="setearId(curso.id)"
+            data-toggle="modal"
+            data-target="#eliminar"
+            class="btn btn-danger"
+          >
+            <i class="fa fa-trash"></i>
+          </button>
         </div>
         <!-- Modal -->
-        <div class="modal fade" id="eliminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div
+          class="modal fade"
+          id="eliminar"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">¡Atención!</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
-                ¿Desea eliminar el registro?
-              </div>
+              <div class="modal-body">¿Desea eliminar el registro?</div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" (click)="eliminar()" data-dismiss="modal" class="btn btn-danger">Eliminar</button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  (click)="eliminar()"
+                  data-dismiss="modal"
+                  class="btn btn-danger"
+                >
+                  Eliminar
+                </button>
               </div>
             </div>
           </div>
         </div>
       </li>
     </ul>
+    <button
+      (click)="volver()"
+      class="btn btn-lg btn-block btn-personalizado-txtblanco"
+    >
+      Volver
+    </button>
   </div>
 </section>
 
 <!-- Modal -->
-<button id="open-modal" [hidden]="true" data-toggle="modal" data-target="#informacion">Open Modal</button>
-<div class="modal fade" id="informacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<button
+  id="open-modal"
+  [hidden]="true"
+  data-toggle="modal"
+  data-target="#informacion"
+>
+  Open Modal
+</button>
+<div
+  class="modal fade"
+  id="informacion"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Ludikon</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -57,34 +145,59 @@
         {{ mensaje }}
       </div>
       <div class="modal-footer">
-        <button type="button" data-dismiss="modal" (click)="recargar()" class="btn btn-personalizado">Aceptar</button>
+        <button
+          type="button"
+          data-dismiss="modal"
+          (click)="recargar()"
+          class="btn btn-personalizado"
+        >
+          Aceptar
+        </button>
       </div>
     </div>
   </div>
 
-<!-- Modal CODIGO CURSO -->
-<button id="open-modal-codigo-curso" type="button" [hidden]="true" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Launch demo modal
-</button>
-<!-- Modal -->
-<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+  <!-- Modal CODIGO CURSO -->
+  <button
+    id="open-modal-codigo-curso"
+    type="button"
+    [hidden]="true"
+    class="btn btn-primary"
+    data-toggle="modal"
+    data-target="#exampleModal"
+  >
+    Launch demo modal
+  </button>
+  <!-- Modal -->
+  <div
+    class="modal"
+    id="exampleModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">...</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-

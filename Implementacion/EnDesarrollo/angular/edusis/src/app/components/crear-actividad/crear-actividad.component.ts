@@ -152,4 +152,8 @@ export class CrearActividadComponent implements OnInit {
     }
   }
 
+  volver() {
+    this.router.navigate(["home-profesor", {}]);
+  }
+
 }

@@ -98,6 +98,10 @@ export class RealizacionGrillaComponent {
 
   }
 
+  terminar() {
+    this.final = true;
+  }
+
   volver() {
     this.router.navigate(['crear-actividad']);
   }
