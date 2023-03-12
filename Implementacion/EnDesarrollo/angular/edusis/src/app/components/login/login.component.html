@@ -1,6 +1,4 @@
 <section id="login">
-<!--   <img class="wave" src="/assets/img/wave.png" />
- -->  
   <div class="fondo position-fixed">
   </div>
 
@@ -19,9 +17,8 @@
             <h5>Número de Documento</h5>
             <input
               tabindex="1"
-              (keydown.Tab) = "addFocus('div-password')"
+              (keydown.Tab) = "checkAndGiveFocus('InputDocumento', 'div-password')"
               id="InputDocumento"
-              (blur)="removeFocus()"
               (click)="addFocus('div-dni')"
               type="text"
               class="input focus"
@@ -38,23 +35,28 @@
             <input
               tabindex="2"
               id="inputPassword"
-              (blur)="removeFocus()"
+              (keydown.Tab) = "checkAndGiveFocus('inputPassword', '')"
               (click)="addFocus('div-password')"
               type="password"
-              autocomplete="off"
+              autocomplete="aus"
+              data-lpignore="true"
               class="input focus"
             />
           </div>
         </div>
         <a href="#">¿Olvidaste tu contraseña?</a>
-        <input
+        <br>
+        <button
           tabindex="3"
-          type="submit"
           (click)="login()"
-          class="btn btn-personalizado-inverso"
           value="Iniciar Sesión"
-        />
+        >
+          <span class="sombra"></span>
+          <span class="borde"></span>
+          <span class="front texto">Iniciar sesión</span>
+      </button>
         <div class="form-group m-b-0">
+          <br>
           <div
             class="col-sm-12 text-center"
             style="color: #fff; font-size: 0.9rem"

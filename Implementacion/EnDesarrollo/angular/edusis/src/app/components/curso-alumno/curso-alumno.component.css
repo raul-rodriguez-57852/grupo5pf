@@ -48,9 +48,10 @@
 }
 
 .realizada {
-  background-color: rgb(209, 209, 209);
+  background-color: #13334c;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  color:white;
 }
 
 .rating {
@@ -112,4 +113,44 @@
 }
 .rating-label {
   margin-block-end: 1rem;
+}
+
+.fondo {
+  z-index: -1;
+  background-color: #13334c;
+  height: 100%;
+  width: 100%;
+}
+
+.tareaRealizada {
+  color: #34bf64;
+  padding-top: 8px;
+}
+
+.tareaSinRealizar {
+  color: #b7b8b7;
+  padding-top: 8px;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-container > div {
+  text-align: center;
+}
+
+.fechaVencimiento {
+  padding-right: 1em;
+}
+
+.iconoCalendario {
+  padding-top: 0.25em;
+  padding-left: 1em;
+}
+
+.iconoTareaRealizada {
+  padding-top: 0.25em;
+  padding-left: 1em;
 }

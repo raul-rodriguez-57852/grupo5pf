@@ -11,8 +11,9 @@
 -->    
     <div class="row" style="padding-left: 15px; padding-right: 15px;">
       <div *ngFor="let perfil of perfiles" class="col-6" style="margin-bottom: 10px;" >
-        <div>
-          <img class="imagen-avatar-perfiles" (click)="seleccionarPerfil(perfil)" src="{{ perfil.avatarUrl }}">
+        <div (click)="seleccionarPerfil(perfil)" style="width:100%; padding-bottom: 100%; position:relative;">
+          <img class="imagen-avatar-perfiles" style="z-index: 10;" src="{{ perfil.avatarUrl }}">
+          <img class="imagen-avatar-perfiles-addons" [style.z-index]="addon.tipo.profundidad" *ngFor="let addon of perfil.listRecompensasEquipada" src="{{ addon.iconoURL }}"/>      
         </div>
         <div class="nombre" style="padding-top: 10px;">{{ perfil.nombre }}</div>
       </div>
@@ -20,9 +21,10 @@
   </div>
   <div class="container" style="padding-top: 90px;" *ngIf="perfilSeleccionado != null">
     <div class="row">
-      <div class="col-sm-12 d-flex justify-content-center" style="margin-bottom: 10px;" >
-        <img class="imagen-avatar" src="{{ perfilSeleccionado.avatarUrl }}">
-      </div>
+      <div class="col-sm-12 d-flex justify-content-center" style="height: 140px; margin-bottom: 10px" >
+        <img class="imagen-avatar" style="z-index: 10;" src="{{ perfilSeleccionado.avatarUrl }}" />
+        <img class="imagen-avatar-addons" [style.z-index]="addon.tipo.profundidad" *ngFor="let addon of perfilSeleccionado.listRecompensasEquipada" src="{{ addon.iconoURL }}"/>  
+        </div>
       <div class="col-sm-12 d-flex justify-content-center" >
         <div class="nombre">{{ perfilSeleccionado.nombre }}</div>
       </div>
@@ -48,24 +50,3 @@
     <button (click)="volverAPerfiles()" class="btn btn-lg btn-block btn-personalizado-txtblanco">Volver</button>
   </div>
 </section>
-
-<!-- Modal -->
-<button id="open-modal" [hidden]="true" data-toggle="modal" data-target="#informacion">Open Modal</button>
-<div class="modal fade" id="informacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Ludikon</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        {{ mensaje }}
-      </div>
-      <div class="modal-footer">
-        <button type="button" data-dismiss="modal" class="btn btn-personalizado">Aceptar</button>
-      </div>
-    </div>
-  </div>
-</div>

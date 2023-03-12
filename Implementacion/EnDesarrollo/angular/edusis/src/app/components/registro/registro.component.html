@@ -4,38 +4,28 @@
     <div class="fondo position-fixed">
     </div>
     
-    <div class="container" style="padding-top: 90px;">      
-      <ng-container *ngIf="!esCuentaTutor">
-        <div>
-          <img
-          style="max-width: 100%; max-height: 290px; padding: 20px"
+    <div class="container text-center" style="padding-top: 30px;">      
+      <ng-container style="height:250px" >
+        <div style="height:250px">
+          <img *ngIf="!esCuentaTutor"
           src="/assets/img/profesor.png"
         />
-        </div>
-      </ng-container>
-      <ng-container *ngIf="esCuentaTutor">
-        <div>
-          <img
-          style="max-width: 100%; max-height: 290px; padding: 20px"
+        <img *ngIf="esCuentaTutor"
           src="/assets/img/tutorConChicos.png"
         />
         </div>
       </ng-container>
-     
-      <div  class="text-center" style="color: white;">
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="esCuentaTutor" (click)="cambiarTipoCuenta('0')" id="flexRadioDefault2" checked>
-          <label class="form-check-label" for="flexRadioDefault2">
-            Registrarme como tutor
-          </label>
+      <ng-container>
+        <div class="tipoCuenta">
+          <div class="button" id='button-container'>
+            <div id='my-button' class="button-element">
+              <p id='Tutor' (click) = "changeAccount()">Tutor</p>
+            </div>
+          <p id='Profesor' (click) = "changeAccount()">Profesor</p>
+          </div>
+          <label>Preffered Contact method: <input id='for-button' type="text" name="method" value='Tutor' /></label>
         </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="esCuentaTutor" (click)="cambiarTipoCuenta('1')" id="flexRadioDefault1">
-          <label class="form-check-label" for="flexRadioDefault1">
-            Registrarme como docente
-          </label>
-        </div>
-      </div>
+      </ng-container>
       <div class="login-content" style="justify-content: center">
         
         <form name="formRegistro" #formRegistro="ngForm" (ngSubmit)="save(formRegistro)">
@@ -49,8 +39,8 @@
               <input
                 tabindex="1"
                 id="InputNombre"
-                (blur)="removeFocus()"
                 (click)="addFocus('div-nombre')"
+                (keydown.Tab) = "checkAndGiveFocus('InputNombre', 'div-apellido')"
                 type="text"
                 class="input focus"
                 autocomplete="off"
@@ -71,8 +61,8 @@
               <input
                 tabindex="2"
                 id="inputApellido"
-                (blur)="removeFocus()"
                 (click)="addFocus('div-apellido')"
+                (keydown.Tab) = "checkAndGiveFocus('inputApellido', 'div-documento')"
                 type="text"
                 class="input focus"
                 autocomplete="off"
@@ -112,6 +102,7 @@
                 <div class="div">
                   <h5>Documento</h5>
                   <input
+                  tabindex="3"
                   [ngModel]="esCuentaTutor ? tutor.documento : profesor.documento"
                   (ngModelChange)="
                     esCuentaTutor
@@ -120,8 +111,8 @@
                   "
                   type="tel"
                   id="inputDocumento"
-                  (blur)="removeFocus()"
                   (click)="addFocus('div-documento')"
+                  (keydown.Tab) = "checkAndGiveFocus('inputDocumento', 'div-email')"
                   class="input focus"
                   required
                   autocomplete="off"
@@ -139,12 +130,14 @@
             <div class="div">
               <h5>Email</h5>
               <input
-                tabindex="2"
-                (blur)="removeFocus()"
+                tabindex="4"
                 (click)="addFocus('div-email')"
+                (keydown.Tab) = "checkAndGiveFocus('inputEmail', 'div-password')"
                 id="inputEmail"
                 type="text"
                 class="input focus"
+                [ngModel]="esCuentaTutor ? tutor.email : profesor.email"
+                (ngModelChange)="esCuentaTutor? (tutor.email = $event): (profesor.email = $event)"
                 name="email"
                 autocomplete="off"
               />
@@ -157,10 +150,10 @@
             <div class="div">
               <h5>Contraseña</h5>
               <input
-                tabindex="2"
+                tabindex="5"
                 id="inputPassword"
-                (blur)="removeFocus()"
                 (click)="addFocus('div-password')"
+                (keydown.Tab) = "checkAndGiveFocus('inputPassword', '')"
                 type="password"
                 class="input focus"
                 [ngModel]="esCuentaTutor ? tutor.password : profesor.password"
@@ -171,7 +164,7 @@
             </div>
           </div>
           <input
-          tabindex="3"
+          tabindex="6"
           type="submit"
           class="btn btn-personalizado-inverso"
           value="Registrarme"

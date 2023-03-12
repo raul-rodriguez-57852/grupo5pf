@@ -12,7 +12,23 @@ import Swal from 'sweetalert2';
 export class RecompensasComponent implements OnInit {
 
   alumnoID: number = null;
-  alumno: Alumno = { id: null, nombre: null, apellido: null, documento: null, tipoDocumento: null, fechaNacimiento: null, avatarUrl: null, passwordEmoji: null, tutorId: null, saldoEstrellas: null, mapRecompensas: null };
+  alumno: Alumno = {
+    id: null, 
+    nombre: null, 
+    apellido: null, 
+    documento: null, 
+    tipoDocumento: null, 
+    fechaNacimiento: null, 
+    avatarUrl: null, 
+    passwordEmoji: null, 
+    tutorId: null, 
+    saldoEstrellas: null, 
+    mapRecompensas: null, 
+    isActive: true,
+    recompensas: [],
+    listRecompensasComprada: [],
+    listRecompensasEquipada: []
+  };
   addons = [];
   listRecompensasComprada = [];
   listRecompensasEquipada = [];
@@ -27,6 +43,8 @@ export class RecompensasComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('ALUMNO: ', this.alumnoID)
+    console.log('user: ', this.dataApiService.getUsuario())
     if (this.alumnoID != null) {
       this.getAlumno(this.alumnoID)
     }
@@ -50,7 +68,7 @@ export class RecompensasComponent implements OnInit {
         this.alumno.passwordEmoji = respuesta.passwordEmoji;
         this.alumno.tutorId = respuesta.tutorId;
         this.alumno.saldoEstrellas = respuesta.saldoEstrellas;
-        this.alumno.mapRecompensas = respuesta.mapRecompensas;
+        this.alumno.recompensas = respuesta.recompensas;
 
       }
     )
@@ -77,27 +95,32 @@ export class RecompensasComponent implements OnInit {
   actualizarAddons() {
     this.listRecompensasComprada = [];
     this.listRecompensasEquipada = [];
-    this.dataApiService.getMapRecompensasAlumno(this.alumnoID.toString()).then(
+    this.dataApiService.getRecompensasAlumno(this.alumnoID.toString()).then(
       (respuesta) => {
         let map = respuesta;
-        map.forEach(addon => {
-          if (addon.boolean) {
-            this.listRecompensasEquipada.push(addon.id);
+        map.forEach(recompensa => {
+          if (recompensa.equipado) {
+            this.listRecompensasEquipada.push(recompensa.addon);
           } else {
-            this.listRecompensasComprada.push(addon.id);
+            this.listRecompensasComprada.push(recompensa.addon);
           }
         });
       }
     )
+  }
 
-    this.getAlumno(this.alumnoID);
+  isComprado(addon) {
+    return this.listRecompensasComprada.some(add => add.id === addon.id)
+  }
+
+  isEquipado(addon) {
+    return this.listRecompensasEquipada.some(add => add.id === addon.id)
   }
 
 
   async selectAddon(addon: any) {
     // Verificamos si el item esta dentro de la lista de comprados pero no equipados por el alumno
     if (this.listRecompensasComprada.includes(addon.id)) {
-      console.log("equipar");
       // Consultamos si desea equipar
       const { value: respuesta } = await Swal.fire({
         title: '¿Desea equipar el item seleccionado?',
@@ -117,7 +140,6 @@ export class RecompensasComponent implements OnInit {
     } else {
       // Verificamos si el item esta dentro de la lista de comprados y equipados por el alumno
       if (this.listRecompensasEquipada.includes(addon.id)) {
-        console.log("desequipar");
         // Consultamos si desea desequipar
         const { value: respuesta } = await Swal.fire({
           title: '¿Desea desequipar el item seleccionado?',
@@ -137,7 +159,6 @@ export class RecompensasComponent implements OnInit {
         // El addon no fue comprado verificamos si hay saldo suficiente para comprarlo  
       } else {
         if (this.alumno.saldoEstrellas < addon.costo) {
-          console.log("error estrellas insuficientes");
           Swal.fire({
             icon: 'error',
             title: 'Estrellas insuficientes para comprar este item',

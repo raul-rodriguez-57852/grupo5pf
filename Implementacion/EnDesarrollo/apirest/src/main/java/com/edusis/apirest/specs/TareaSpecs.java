@@ -19,12 +19,16 @@ public class TareaSpecs {
     
     private static final QTarea T = QTarea.tarea;
     
+    public static BooleanExpression isActive() {
+        return T.isActive.eq(Boolean.TRUE);
+    }
+    
     public static BooleanExpression byAsignatura(Asignatura asignatura){
-        return T.asignatura.eq(asignatura);
+        return T.asignatura.eq(asignatura).and(T.isActive.eq(Boolean.TRUE));
     }
     
     public static BooleanExpression byAsignaturas(List<Asignatura> asignaturas){
-        return T.asignatura.in(asignaturas);
+        return T.asignatura.in(asignaturas).and(T.isActive.eq(Boolean.TRUE));
     }
     
     public static OrderSpecifier byFechaDesc(){

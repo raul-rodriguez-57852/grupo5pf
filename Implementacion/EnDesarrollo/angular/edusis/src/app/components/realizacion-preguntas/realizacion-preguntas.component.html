@@ -1,8 +1,9 @@
 <section id="preguntas" class="margin-top-90">
+  <div class="fondo position-fixed"></div>
   <div class="container">
     <div *ngIf="preguntaActual && !revision && !final">
-      <div class="text-right">
-        <h1 style="color: #13334c" *ngIf="timeLeft > 5">
+      <div class="text-center">
+        <h1 style="color: #c0def6" *ngIf="timeLeft > 5">
           {{ timeLeft }} <i class="fa fa-clock-o"></i>
         </h1>
         <h1 style="color: red" *ngIf="timeLeft <= 5">
@@ -14,12 +15,12 @@
         class="respuesta"
         *ngFor="let respuesta of preguntaActual.respuestas"
       >
-      <button type="button" (click)="opcion(respuesta)" class="btn btn-block btn-personalizado">{{ respuesta.respuesta }}</button>
+      <button type="button" (click)="opcion(respuesta)" class="btn btn-block btn-personalizado-inverso">{{ respuesta.respuesta }}</button>
     </div>
     </div>
     <div *ngIf="revision">
-      <div class="text-right">
-        <h1 style="color: #13334c" *ngIf="timeLeft > 5">
+      <div class="text-center">
+        <h1 style="color: #c0def6" *ngIf="timeLeft > 5">
           {{ timeLeft }} <i class="fa fa-clock-o"></i>
         </h1>
         <h1 style="color: red" *ngIf="timeLeft <= 5">
@@ -45,22 +46,22 @@
       <button
         type="button"
         (click)="continuar()"
-        class="btn btn-lg btn-block btn-personalizado"
+        class="btn btn-lg btn-block btn-personalizado-inverso"
       >
         Continuar
       </button>
     </div>
     <div *ngIf="final">
       <div class="text-center">
-        <h3 style="color: #13334c">Respuestas correctas:</h3>
-        <h3 style="color: #13334c">
+        <h3 style="color: #c0def6">Respuestas correctas:</h3>
+        <h3 style="color: #c0def6">
           {{ respuestasCorrectas }} / {{ cantidadPreguntas }}
         </h3>
       </div>
       <button
         type="button"
         (click)="finalizar()"
-        class="btn btn-lg btn-block btn-personalizado"
+        class="btn btn-lg btn-block btn-personalizado-inverso"
       >
         Finalizar
       </button>

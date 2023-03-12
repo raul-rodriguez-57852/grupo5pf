@@ -20,7 +20,6 @@ public class AsignaturaDto {
     private Long cursoId;
     private String iconoURL;
     private Long creadorId;
-    private List<Profesor> profesores;
     
     public Long getId() {
         return id;
@@ -61,15 +60,4 @@ public class AsignaturaDto {
     public void setIconoURL(String iconoURL) {
         this.iconoURL = iconoURL;
     }
-
-    public List<Profesor> getProfesores() {
-        return profesores;
-    }
-
-    public void setProfesores(List<Profesor> profesores) {
-        this.profesores = profesores;
-    }
-    
-    
-    
 }

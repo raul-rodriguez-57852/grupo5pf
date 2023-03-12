@@ -15,28 +15,22 @@
     >
       Nuevo curso
     </button>
-    <ul class="list-group list-group-flush margin-bottom-16">
-      <li
-        class="list-group-item d-flex justify-content-between align-items-center"
-      >
-        <strong>Cursos</strong>
-        <strong>Opciones</strong>
-      </li>
-      <li
-        *ngFor="let curso of cursos"
-        class="list-group-item d-flex justify-content-between align-items-center"
-      >
-        <div (click)="irACurso(curso.id)">
-          <img
-            style="height: 31px; margin-right: 10px"
-            src="{{ curso.iconoURL }}"
-          />{{ curso.nombre }}
+    <div *ngFor="let curso of cursos" class="card mb-3">
+      <div class="contenedorImagenCard" (click)="irACurso(curso.id)">
+        <img
+          class="card-img-top imagenCard"
+          src="{{ curso.iconoURL }}"
+          alt="Card image cap"
+        />
+        <div class="centered">{{ curso.nombre }}</div>
+      </div>
+      <div class="box">
+        <div class="cardText">
+          <p style="padding: 5px" class="card-text text-muted">
+            Accede y controla a {{ curso.nombre }}
+          </p>
         </div>
-        <div
-          class="btn-group btn-group-sm"
-          role="group"
-          aria-label="Basic example"
-        >
+        <div class="actionButtons btn-group btn-group-sm" role="group">
           <button
             type="button"
             (click)="generarCodigoCurso(curso.id)"
@@ -49,7 +43,7 @@
           </button>
           <button
             type="button"
-            (click)="setearId(curso.id)"
+            (click)="eliminar(curso.id, curso.nombre)"
             data-toggle="modal"
             data-target="#eliminar"
             class="btn btn-danger"
@@ -57,147 +51,13 @@
             <i class="fa fa-trash"></i>
           </button>
         </div>
-        <!-- Modal -->
-        <div
-          class="modal fade"
-          id="eliminar"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">¡Atención!</h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">¿Desea eliminar el registro?</div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="button"
-                  (click)="eliminar()"
-                  data-dismiss="modal"
-                  class="btn btn-danger"
-                >
-                  Eliminar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-    </ul>
+      </div>
+    </div>
     <button
-      (click)="volver()"
+      (click)="volverAHome()"
       class="btn btn-lg btn-block btn-personalizado-txtblanco"
     >
       Volver
     </button>
   </div>
 </section>
-
-<!-- Modal -->
-<button
-  id="open-modal"
-  [hidden]="true"
-  data-toggle="modal"
-  data-target="#informacion"
->
-  Open Modal
-</button>
-<div
-  class="modal fade"
-  id="informacion"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Ludikon</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        {{ mensaje }}
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          data-dismiss="modal"
-          (click)="recargar()"
-          class="btn btn-personalizado"
-        >
-          Aceptar
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal CODIGO CURSO -->
-  <button
-    id="open-modal-codigo-curso"
-    type="button"
-    [hidden]="true"
-    class="btn btn-primary"
-    data-toggle="modal"
-    data-target="#exampleModal"
-  >
-    Launch demo modal
-  </button>
-  <!-- Modal -->
-  <div
-    class="modal"
-    id="exampleModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">...</div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Close
-          </button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>

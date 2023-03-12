@@ -22,11 +22,13 @@ export class DataApiService {
   urlBase: string;
   urlTarea: string;
   private usuario = null;
-  private userType = null; //0 si es tutor e 1 si es profesor y 2 si es alumno.
-
+  private userType = null;
+  studentCookie = 'studentID';
+  
 
   constructor(private http: HttpClient) {
-    this.urlBase = 'http://localhost:8090/api/';
+    this.urlBase = "http://localhost:8090/api/";
+    this.findUser();
   }
 
   public getTutorType() {
@@ -55,6 +57,37 @@ export class DataApiService {
     this.userType = type;
   }
 
+  //####### USER REDIRECTION ########
+  public async findUser() {
+    var session_id = this.getCookie("SessionCookie");
+    if(!session_id) {
+      return false;
+    }
+    var userType = session_id.slice(session_id.length - 1);
+    var user_id;
+    await this.validarSession(session_id).then(
+      (respuesta) => {
+        user_id = respuesta;
+      }
+    );
+    if(!user_id) {
+        return false;
+    }
+    else{
+        //busco el usuario loggeado!
+      var userID = this.getUsuario() ? this.getUsuario(): user_id;
+      var userTYPE = this.getUserType() ? this.getUserType(): userType;
+      if(userTYPE == this.getTutorType()) {
+        var alumnoID = this.getCookie(this.studentCookie);
+        if (alumnoID) {
+          this.setUser(alumnoID, this.getAlumnoType());
+          return true;
+        }
+      }
+      this.setUser(userID , userTYPE);
+      return true;
+      }
+  }
 
   //#######     EMOJI      #########  
 
@@ -149,10 +182,8 @@ export class DataApiService {
   }
 
   eliminarAlumno(alumnoId: string): Promise<any> {
-    return this.http.delete(this.urlBase + 'eliminarAlumno', { params: { alumnoId } }).toPromise();
+    return this.http.get(this.urlBase + 'eliminarAlumno', { params: { alumnoId } }).toPromise();
   }
-
-
 
 
   //#######     CURSO      #########  
@@ -172,6 +203,10 @@ export class DataApiService {
 
   guardarCurso(cursoDto: Curso): Promise<any> {
     return this.http.post(this.urlBase + 'guardarCurso', cursoDto).toPromise();
+  }
+
+  eliminarCurso(cursoId: string): Promise<any> {
+    return this.http.get(this.urlBase + 'eliminarCurso', { params: { cursoId } }).toPromise();
   }
 
   generarCodigoCurso(curso: Curso): Promise<any> {
@@ -217,6 +252,10 @@ export class DataApiService {
         params: { cursoId: cursoId.toString(), creadorId: creadorId.toString() },
       })
       .toPromise();
+  }
+
+  eliminarAsignatura(id: string): Promise<any> {
+    return this.http.get(this.urlBase + 'eliminarAsignatura', { params: { id } }).toPromise();
   }
   //#######     SESSION      ######### 
 
@@ -275,9 +314,10 @@ export class DataApiService {
     date.setTime(date.getTime() + (-1 * 24 * 60 * 60 * 1000));
     //Seteo la coockie.
     document.cookie = name + "=; expires= " + date.toUTCString() + "; path=/";
-    //ahora la elimino del servidor.
-    this.setUser(null, null);
-
+    if ( name == 'sessionCookie') {
+      //ahora saco al user.
+      this.setUser(null, null);
+    }
   }
 
   getActividades(): Promise<any> {
@@ -342,8 +382,8 @@ export class DataApiService {
     return this.http.post(this.urlBase + 'equiparDesequiparAddon', postData).toPromise();
   }
 
-  getMapRecompensasAlumno(idAlumno: string): Promise<any> {
-    return this.http.get(this.urlBase + 'mapRecompensasAlumno', { params: { idAlumno } }).toPromise();
+  getRecompensasAlumno(idAlumno: string): Promise<any> {
+    return this.http.get(this.urlBase + 'recompensasAlumno', { params: { idAlumno } }).toPromise();
   }
 
 }

@@ -8,8 +8,10 @@ package com.edusis.apirest.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -27,7 +29,6 @@ import javax.persistence.OneToOne;
 @DiscriminatorValue(value=Persona.DTYPE_ALUMNO)
 public class Alumno extends Persona {
 
-    
     @JsonIgnore
     @ManyToOne
     private Tutor tutor;
@@ -40,14 +41,15 @@ public class Alumno extends Persona {
     
     @ManyToMany
     @JsonIgnore
-    @JoinTable(name="cursos_alumnos",joinColumns = @JoinColumn(name= "curso_id"),
-            inverseJoinColumns = @JoinColumn(name = "alumno_id"))
+    @JoinTable(name="cursos_alumnos",joinColumns = @JoinColumn(name= "alumno_id"),
+            inverseJoinColumns = @JoinColumn(name = "curso_id"))
     private List<Curso> cursos;
     
     private Integer saldoEstrellas;
-    
-    private HashMap<Addon,Boolean> mapRecompensas;
-    
+
+    @OneToMany(mappedBy = "alumno")
+    private List<RecompensaAlumno> recompensas;
+
     // CUSTOM
     
     public Integer sumarEstrellas(Integer estrellas){
@@ -65,7 +67,7 @@ public class Alumno extends Persona {
         return cursos;
     }
 
-    public void setCursos(List<Curso> cursos) {
+    private void setCursos(List<Curso> cursos) {
         this.cursos = cursos;
     }
 
@@ -102,12 +104,38 @@ public class Alumno extends Persona {
         this.saldoEstrellas = saldoEstrellas;
     }
 
-    public HashMap<Addon, Boolean> getMapRecompensas() {
-        return mapRecompensas;
+    public List<RecompensaAlumno> getRecompensas() {
+        return recompensas;
     }
 
-    public void setMapRecompensas(HashMap<Addon, Boolean> mapRecompensas) {
-        this.mapRecompensas = mapRecompensas;
+    public void setRecompensas(List<RecompensaAlumno> recompensas) {
+        this.recompensas = recompensas;
+    }
+
+    public void addRecompensa(RecompensaAlumno recompensa) {
+        this.recompensas.add(recompensa);
+    }
+
+    
+    @Override
+    public char getUserType() {
+        return '0';
+    }
+    
+     /**
+    * @return      the Alumno object itself so it can ve saved by its Service
+    */
+    public Alumno agregarCursoAlAlumno(Curso curso) {
+        if(!this.getCursos().isEmpty()) {
+            if(!this.getCursos().contains(curso)) {
+                this.getCursos().add(curso);
+            }
+        } else {
+            ArrayList<Curso> cursos = new ArrayList<Curso>();
+            cursos.add(curso);
+            this.setCursos(cursos);
+        }
+        return this;
     }
     
 }

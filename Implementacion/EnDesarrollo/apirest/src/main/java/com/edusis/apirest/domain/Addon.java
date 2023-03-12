@@ -31,11 +31,15 @@ public class Addon extends GenericEntity {
     @NotNull
     private Integer costo;
     
+    @NotNull
+    private TipoAddon tipo;
+    
     // GETTERS && SETTERS
 
     public String getNombre() {
         return nombre;
     }
+
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -56,7 +60,15 @@ public class Addon extends GenericEntity {
     public void setCosto(Integer costo) {
         this.costo = costo;
     }
-    
+
+    public TipoAddon getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoAddon tipo) {
+        this.tipo = tipo;
+    }
+ 
     @Override
     public int hashCode() {
         return getId().hashCode();

@@ -7,6 +7,7 @@
 package com.edusis.apirest.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -24,14 +25,46 @@ public class Tutor extends Persona {
     @OneToMany(mappedBy = "tutor")
     private List<Alumno> alumnos;
     
+    private String email;
+    
     /////// GETTERS AND SETTERS ///////
+    
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    public String getEmail() {
+        return this.email;
+    }
 
     public List<Alumno> getAlumnos() {
         return alumnos;
     }
 
-    public void setAlumnos(List<Alumno> alumnos) {
+    private void setAlumnos(List<Alumno> alumnos) {
         this.alumnos = alumnos;
+    }
+
+    @Override
+    public char getUserType() {
+        return '0';
+    }
+    
+    /**
+    * @param  Asignatura a Asignatura object that will be added to Profesor
+    * @return Profesor object itself so it can ve saved by its Service
+    */
+    public Tutor agregarAlumnosAlTutor(Alumno alumno) {
+        if(!this.getAlumnos().isEmpty()) {
+            if(!this.getAlumnos().contains(alumno)) {
+                this.getAlumnos().add(alumno);
+            }
+        } else {
+            ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
+            alumnos.add(alumno);
+            this.setAlumnos(alumnos);
+        }
+        return this;
     }
     
     

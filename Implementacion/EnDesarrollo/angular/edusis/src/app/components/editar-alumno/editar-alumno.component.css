@@ -38,3 +38,24 @@
   outline: none !important;
   box-shadow: none;
 }
+
+.fondo {
+  z-index: -1;
+  background-color: #13334c;
+  height: 100%;
+  width: 100%;
+}
+
+.textoPrincipal {
+  color: #f5db77
+}
+
+.btn-info {
+  transition: transform 0.2s ease;
+  box-shadow: 0 6px 0 #118091;
+}
+
+.btn-info:active {
+  box-shadow: none;
+  transform: translateY(6px);
+}

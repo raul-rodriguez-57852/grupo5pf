@@ -132,22 +132,14 @@ export class EstadisticasCursoAlumnoComponent implements OnInit {
 
       }
     );
-
-
-
   }
 
   volverATareas() {
-
     this.router.navigate(["estadisticas-profesor", { cursoId: this.cursoId }]);
   }
 
   volverALista() {
     this.alumnoSelected = false;
   }
-
-
-
-
 
 }

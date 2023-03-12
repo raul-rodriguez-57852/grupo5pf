@@ -19,10 +19,14 @@ public class AsignaturaSpecs {
     private static final QAsignatura A = QAsignatura.asignatura;
     
     public static BooleanExpression byCurso(Curso curso){
-        return A.curso.eq(curso);
+        return A.curso.eq(curso).and(A.isActive.eq(Boolean.TRUE));
     }
     
     public static BooleanExpression byCreador(Profesor profe){
-        return A.creador.eq(profe);
+        return A.creador.eq(profe).and(A.isActive.eq(Boolean.TRUE));
+    }
+    
+    public static BooleanExpression isActive() {
+        return A.isActive.eq(Boolean.TRUE);
     }
 }

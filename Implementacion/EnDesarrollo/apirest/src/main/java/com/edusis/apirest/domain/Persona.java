@@ -6,7 +6,7 @@
 
 package com.edusis.apirest.domain;
 
-import com.edusis.apirest.generic.GenericEntity;
+import com.edusis.apirest.generic.SoftDeleteEntity;
 import com.edusis.apirest.utils.AssertUtils;
 import com.sun.istack.NotNull;
 import java.util.Calendar;
@@ -29,7 +29,7 @@ import javax.persistence.TemporalType;
 @Table(name="Persona")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
-public abstract class Persona extends GenericEntity {
+public abstract class Persona extends SoftDeleteEntity {
     
     public static final String DTYPE_PROFESOR = "PROFESOR";
     public static final String DTYPE_ALUMNO = "ALUMNO";
@@ -110,6 +110,8 @@ public abstract class Persona extends GenericEntity {
     public void setFechaNacimiento(Calendar fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
+    
+    public abstract char getUserType();
     
     public void validar(){
         AssertUtils.notNull(nombre, "El nombre no puede ser nulo");

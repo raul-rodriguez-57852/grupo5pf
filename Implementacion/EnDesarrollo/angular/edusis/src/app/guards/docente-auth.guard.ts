@@ -12,11 +12,12 @@ export class DocenteAuthGuard implements CanActivate {
   constructor(private dataApiService: DataApiService) {
   }
 
-  canActivate(
+  async canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    state: RouterStateSnapshot) {
+    await this.dataApiService.findUser();
     let userType = this.dataApiService.getUserType();
-    if (userType !== null && userType === '1') {
+    if (userType !== null && userType === this.dataApiService.getProfesorType()) {
       return true;
     }
     return false;

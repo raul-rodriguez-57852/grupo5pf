@@ -1,4 +1,4 @@
-import { ThrowStmt } from '@angular/compiler';
+
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataApiService } from '../../services/data-api.service';
@@ -31,11 +31,16 @@ export class NavbarComponent implements OnInit {
     this.user_logged = false;
     this.esTutor = false;
     this.esProfesor = false;
-    this.router.navigate(['']);
+    this.dataApiService.deleteCookie(this.dataApiService.studentCookie);
+    this.router.navigate(['login']);
+  }
+
+  irAPerfiles() {
+    this.dataApiService.deleteCookie(this.dataApiService.studentCookie);
+    this.router.navigate(['perfiles'])
   }
     
   async recargar() {
-    
     //Busco en cookies, para ver si estsa el usuario loggeado, si esta, agarro sus datos, 
     //Si no esta, lo mando a loggearse.
     var session_id = this.dataApiService.getCookie("SessionCookie");
@@ -59,15 +64,17 @@ export class NavbarComponent implements OnInit {
       }
       else{
         //busco el usuario loggeado!
-        this.dataApiService.setUser(user_id,userType);
-        if (userType == '0' ){
-            // es tutor.
+        var userID = this.dataApiService.getUsuario() ? this.dataApiService.getUsuario(): user_id;
+        var userTYPE = this.dataApiService.getUserType() ? this.dataApiService.getUserType(): userType;
+        this.dataApiService.setUser(userID , userTYPE);
+        if (userType == this.dataApiService.getTutorType() ) {
             this.esTutor = true;
             await this.dataApiService.getTutor(user_id).then(
               (respuesta) => {
                 this.nombre_usuario = respuesta.nombre;
               }
             );
+            //this.router.navigate(['perfiles']);
         }
         else{
             //es Profesor
@@ -77,6 +84,7 @@ export class NavbarComponent implements OnInit {
                 this.nombre_usuario = respuesta.nombre;
               }
             );
+            //this.router.navigate(['home-profesor']);
             }
       }
   }

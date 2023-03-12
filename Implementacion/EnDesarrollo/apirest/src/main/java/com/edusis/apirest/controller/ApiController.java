@@ -5,21 +5,12 @@
  */
 package com.edusis.apirest.controller;
 
-import com.edusis.apirest.domain.Addon;
-import com.edusis.apirest.domain.Alumno;
-import com.edusis.apirest.domain.Asignatura;
-import com.edusis.apirest.domain.Curso;
-import com.edusis.apirest.domain.Documento;
-import com.edusis.apirest.domain.Emoji;
-import com.edusis.apirest.domain.PasswordEmoji;
-import com.edusis.apirest.domain.Persona;
+import com.edusis.apirest.domain.*;
 import com.edusis.apirest.domain.plantillas.Plantilla;
 import com.edusis.apirest.domain.plantillas.PlantillaPasapalabra;
 import com.edusis.apirest.domain.plantillas.PlantillaPreguntas;
 import com.edusis.apirest.domain.plantillas.Pregunta;
 import com.edusis.apirest.domain.plantillas.PreguntaPasapalabra;
-import com.edusis.apirest.domain.Profesor;
-import com.edusis.apirest.domain.Sesion;
 import com.edusis.apirest.domain.plantillas.Respuesta;
 import com.edusis.apirest.domain.TipoDocumento;
 import com.edusis.apirest.domain.Tutor;
@@ -30,20 +21,7 @@ import com.edusis.apirest.domain.plantillas.PlantillaGrilla;
 import com.edusis.apirest.domain.plantillas.PlantillaVF;
 import com.edusis.apirest.domain.plantillas.PreguntaVF;
 import com.edusis.apirest.domain.plantillas.RespuestaCategoria;
-import com.edusis.apirest.service.AddonService;
-import com.edusis.apirest.service.AlumnoService;
-import com.edusis.apirest.service.AsignaturaService;
-import com.edusis.apirest.service.CursoService;
-import com.edusis.apirest.service.EmojiService;
-import com.edusis.apirest.service.PlantillaCategoriasService;
-import com.edusis.apirest.service.PlantillaGrillaService;
-import com.edusis.apirest.service.PlantillaPasapalabraService;
-import com.edusis.apirest.service.PlantillaPreguntasService;
-import com.edusis.apirest.service.PlantillaService;
-import com.edusis.apirest.service.PlantillaVFService;
-import com.edusis.apirest.service.ProfesorService;
-import com.edusis.apirest.service.SesionService;
-import com.edusis.apirest.service.TutorService;
+import com.edusis.apirest.service.*;
 import com.edusis.apirest.service.dto.AlumnoDto;
 import com.edusis.apirest.service.dto.AsignaturaDto;
 import com.edusis.apirest.service.dto.CategoriaDto;
@@ -61,11 +39,10 @@ import com.edusis.apirest.service.dto.PreguntaVFDto;
 import com.edusis.apirest.service.dto.ProfesorDto;
 import com.edusis.apirest.service.dto.TutorDto;
 import com.edusis.apirest.specs.AlumnoSpecs;
+import com.edusis.apirest.specs.CursoSpecs;
 import com.edusis.apirest.specs.AsignaturaSpecs;
 import com.edusis.apirest.specs.PlantillaSpecs;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.nio.charset.StandardCharsets;
@@ -73,6 +50,15 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,6 +126,9 @@ public class ApiController {
     @Autowired
     private AddonService addonService;
 
+    @Autowired
+    private RecompensaAlumnoService recompensaAlumnoService;
+
     @PostMapping("guardarEmoji")
     public ResponseEntity<Long> guardarEmoji(@RequestBody EmojiDto emojiDto) {
         Emoji emoji = emojiDto.getId() != null ? emojiService.get(emojiDto.getId()) : new Emoji();
@@ -167,8 +156,7 @@ public class ApiController {
     @GetMapping("getCursosByProfesor")
     public List<Curso> getCursosByProfesor(@RequestParam Long id) {
         Profesor profe = profesorService.get(id);
-        //Recursion.
-        return profe.getCursos();
+        return cursoService.getAll(CursoSpecs.byProfesor(profe));
     }
 
     @GetMapping("asignatura")
@@ -187,6 +175,7 @@ public class ApiController {
         Profesor profesor = profesorDto.getId() != null ? profesorService.get(profesorDto.getId()) : new Profesor();
         profesor.setNombre(profesorDto.getNombre());
         profesor.setApellido(profesorDto.getApellido());
+        profesor.setEmail(profesorDto.getEmail());
         profesor.setDocumento(new Documento(profesorDto.getTipoDocumento(), profesorDto.getDocumento()));
         profesor.setFechaNacimiento(profesorDto.getFechaNacimiento());
         //obtengo la password del profesor, la cifro, y la almaceno en la base.
@@ -216,6 +205,7 @@ public class ApiController {
         Tutor tutor = tutorDto.getId() != null ? tutorService.get(tutorDto.getId()) : new Tutor();
         tutor.setNombre(tutorDto.getNombre());
         tutor.setApellido(tutorDto.getApellido());
+        tutor.setEmail(tutorDto.getEmail());
         tutor.setDocumento(new Documento(tutorDto.getTipoDocumento(), tutorDto.getDocumento()));
         tutor.setFechaNacimiento(tutorDto.getFechaNacimiento());
         //Seteamos la password del tutor, nunca la password estara almacenada en crudo, siempre cifrada.
@@ -243,10 +233,6 @@ public class ApiController {
 
     @DeleteMapping("eliminarTutor")
     public ResponseEntity<Long> eliminarTutor(@RequestParam Long id) {
-        /*Tutor tutor = tutorService.get(id);
-        if (tutor != null) {
-            tutorService.delete(tutor);
-        }*/
         tutorService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -260,10 +246,20 @@ public class ApiController {
         }
         return lista;
     }
-
-    @DeleteMapping("eliminarAlumno")
+    
+    @GetMapping("eliminarAlumno")
     public ResponseEntity<Long> eliminarAlumno(@RequestParam Long alumnoId) {
-        alumnoService.deleteById(alumnoId);
+        Alumno alumno = alumnoService.get(alumnoId);
+        alumno.setIsActive(Boolean.FALSE);
+        alumnoService.save(alumno);   
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @GetMapping("eliminarCurso")
+    public ResponseEntity<Long> eliminarCurso(@RequestParam Long cursoId) {
+        Curso curso = cursoService.get(cursoId);
+        curso.setIsActive(Boolean.FALSE);
+        cursoService.save(curso);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -288,43 +284,18 @@ public class ApiController {
 
         alumno.setSaldoEstrellas(alumnoDto.getSaldoEstrellas());
 
-        String jsonInput = alumnoDto.getMapRecompensas();
-        if (jsonInput != null) {
-            TypeReference<HashMap<Addon, Boolean>> typeRef
-                    = new TypeReference<HashMap<Addon, Boolean>>() {
-            };
-            ObjectMapper mapper = new ObjectMapper();
-            HashMap<Addon, Boolean> map = mapper.readValue(jsonInput, typeRef);
-            alumno.setMapRecompensas(map);
-        } else {
-            alumno.setMapRecompensas(new HashMap<Addon, Boolean>());
-        }
-
         Long tutor = alumnoDto.getTutorId();
         Tutor esteTutor = tutorService.get(tutor);
         alumno.setTutor(esteTutor);
-
-        if (esteTutor.getAlumnos().size() != 0) {
-            //El tutor ya posee alumnos asignados.
-            if (!esteTutor.getAlumnos().contains(alumno)) {
-                esteTutor.getAlumnos().add(alumno);
-                tutorService.save(esteTutor);
-            }
-        } else {
-            //El tutor no posee ningun alumno asignado
-            ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
-            alumnos.add(alumno);
-            esteTutor.setAlumnos(alumnos);
-            tutorService.save(esteTutor);
-        }
-
+        esteTutor = esteTutor.agregarAlumnosAlTutor(alumno);
+        tutorService.save(esteTutor);
         alumnoService.save(alumno);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("alumnos")
     public List<Alumno> getAlumnos() {
-        return alumnoService.getAll();
+        return alumnoService.getAll(AlumnoSpecs.isActive());
     }
 
     @GetMapping("alumno")
@@ -372,7 +343,6 @@ public class ApiController {
             //Ya tiene cursos agregados.
             if (!profe.getCursos().contains(curso)) {
                 profe.getCursos().add(curso);
-
             }
         } else {
             //El profesor no tiene ningun Curso.
@@ -386,95 +356,44 @@ public class ApiController {
     }
 
     @PostMapping("generarCodigoCurso")
-    public Curso generarCodigoCurso(@RequestBody CursoDto cursoDto) throws NoSuchAlgorithmException {
+    public Curso generarCodigoCurso(@RequestBody CursoDto cursoDto) {
+        //way to get every codigo from cursos.
+        //List<String> listado_codigos = listado_cursos.stream().map(x -> x.getCodigo()).collect(Collectors.toList());
         Curso curso = cursoService.get(cursoDto.getId());
-        if (curso.getCodigo() != null) {
-            //Ya tiene codigo asignado
-        } else {
-            try {
-                String identificador = cursoDto.getId().toString() + cursoDto.getNombre();
-                MessageDigest md5 = MessageDigest.getInstance("MD5");
-                byte[] byteMessage = identificador.getBytes("UTF-8");
-                byte[] digested = md5.digest(byteMessage);
-                StringBuffer codigobuilder = new StringBuffer();
-                for (byte bytes : digested) {
-                    codigobuilder.append(String.format("%02x", bytes & 0xff));
-                }
-                String codigo = codigobuilder.toString();
-                codigo = codigo.toUpperCase();
-                int largo = codigo.length();
-                codigo = codigo.substring(0, Math.min(largo, 8));
-                //listo todos los cursos
-                List<Curso> listado_cursos = (ArrayList<Curso>) cursoService.getAll();
-                //Listro los codigos de todos los cursos
-                //checkeo que no sea null la lista, si es null asigno codigo directamente
-                if (listado_cursos.size() == 1) {
-                    //No hay cursos por ahora solo este
-                    curso.setCodigo(codigo);
-
-                } else {
-                    List<String> listado_codigos = listado_cursos.stream().map(x -> x.getCodigo()).collect(Collectors.toList());
-
-                    //Este es el codigo que quiero insertar en el nuevo curso
-                    Random r = new Random();
-                    boolean contiene = true;
-                    boolean changes_made_to_codigo = false;
-                    while (contiene) {
-                        for (String cod_existente : listado_codigos) {
-                            //Recorro cada codigo del listado de codigos obtenido arriba
-                            if (codigo.equals(cod_existente)) {
-                                //Existe un codigo existente, entonces lo cambio al nuevo
-                                StringBuilder my_codigo = new StringBuilder(codigo);
-                                char c = (char) (r.nextInt(26) + 'a');
-                                //modifico en la posicion 3 por la letra aleatoria de la variable c
-                                my_codigo.setCharAt(3, c);
-                                //Ahora el codigo que quiero agregar esta cambiado
-                                codigo = my_codigo.toString();
-                                changes_made_to_codigo = true;
-                            }
-                        }
-                        //Si yo hice cambios en mi codigo, tengo que validar que este nuevo codigo que obtuve, tampoco este dentro de la lista
-                        if (!changes_made_to_codigo) {
-                            //Recorri todo el listado de codigos, y no hice ningun cambio, osea que no se encontro el mismo codigo
-                            //corto el ciclo.
-                            contiene = false;
-                        } else {
-                            //Si realize cambios, entonces debo seguir iterando para chequear el codigo cambiado
-                            //apago el flag de cambios para que no sea ciclico
-                            changes_made_to_codigo = false;
-                        }
-                    }
-                    //Asigno el codgio al curso.
-                    curso.setCodigo(codigo);
-
-                }
-                cursoService.save(curso);
-            } catch (java.io.UnsupportedEncodingException e) {
-                System.err.println("Error, MD5 no es un algoritmo de encriptacion correcto para MessageDigest (ApiContrller) trying setCodigo");
-            } catch (NoSuchAlgorithmException er) {
-                System.err.println("Error, MD5 no es un algoritmo de encriptacion correcto para MessageDigest");
-            }
+        if(curso.getCodigo() != null) {
+            return curso;
         }
+        String codigo = this.getRandomHexNumber(5);
+        // no vale la pena validar si este codigo se repite ya que hay 0.02e-10 chances de que se repita jsjsj 
+        curso.setCodigo(codigo);
+        cursoService.save(curso);
         return curso;
     }
-
+    
+    private String getRandomHexNumber(int cantidadNumeros) {
+        Random r = new Random();
+        StringBuffer sb = new StringBuffer();
+        while(sb.length() < cantidadNumeros){
+            sb.append(Integer.toHexString(r.nextInt()));
+        }
+        String result = sb.toString().substring(0, cantidadNumeros);
+        return result.toUpperCase();
+    }    
+    
     @GetMapping("buscarCursoPorCodigo")
-    public Long buscarCursoPorCodigo(@RequestParam String codigo) {
-        //param: codigo --> Codigo del curso a buscar
-        //return value "-1" --> Curso no encontrado o error en la busqueda
-        //return value int != -1 --> es el id del curso a inscribirme
-
-        //Consigo todos los cursos
+    public Object buscarCursoPorCodigo(@RequestParam String codigo) {
         List<Curso> listado_cursos = (ArrayList<Curso>) cursoService.getAll();
         if (listado_cursos.isEmpty()) {
             //No hay cursos creados por ahora, por ende devuelvo -1
             return Long.valueOf(-1);
         } else {
             for (Curso curso : listado_cursos) {
-                if (curso.getCodigo() != null && curso.getCodigo().equals(codigo)) {
-                    //Encontre el curso con ese codigo.
-                    //devuelvo su id
-                    return curso.getId();
+                if (curso.getCodigo() != null) {
+                    if (curso.getCodigo().equals(codigo)) {
+                    }
+                }
+                if (curso.getCodigo() != null && curso.getCodigo().equals(codigo) && curso.getIsActive()) {
+                    return curso;
                 }
             }
             //no encontre ningun curso con dicho codigo. devuelvo -1
@@ -492,51 +411,20 @@ public class ApiController {
         Curso curso = cursoService.get(asignaturaDto.getCursoId());
         asignatura.setCurso(curso);
         asignatura.validar();
-        //Guardamos la asignatura en la entidad curso.
-        if (curso.getAsignaturas() != null) {
-            if (!curso.getAsignaturas().contains(asignatura)) {
-                curso.getAsignaturas().add(asignatura);
-                cursoService.save(curso);
-            }
-        } else {
-            ArrayList<Asignatura> asignaturas = new ArrayList<Asignatura>();
-            asignaturas.add(asignatura);
-            curso.setAsignaturas(asignaturas);
-            cursoService.save(curso);
-        }
-        //Guardamos la asignatura en la entidad Profesor.
-        if (profe.getAsignaturas() != null) {
-            if (!profe.getAsignaturas().contains(asignatura)) {
-                profe.getAsignaturas().add(asignatura);
-
-            }
-        } else {
-            ArrayList<Asignatura> asignaturas = new ArrayList<Asignatura>();
-            asignaturas.add(asignatura);
-            profe.setAsignaturas(asignaturas);
-        }
-
-        //Hay que guardar el profesor en el lado del asignaturas tambien.
-        if (asignatura.getProfesores() != null) {
-            //Ya tiene cursos agregados.
-            if (!asignatura.getProfesores().contains(profe)) {
-                asignatura.getProfesores().add(profe);
-            }
-        } else {
-            //El profesor no tiene ningun Curso.
-            ArrayList<Profesor> profesores = new ArrayList<Profesor>();
-            profesores.add(profe);
-            asignatura.setProfesores(profesores);
-        }
-
+        curso = curso.agregarAsignaturaAlCurso(asignatura);
+        cursoService.save(curso);
+        profe = profe.agregarAisgnaturaAlProfesor(asignatura);
+        asignatura = asignatura.agregarProfesorToAsignatura(profe);
         asignaturaService.save(asignatura);
         profesorService.save(profe);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    @DeleteMapping("eliminarAsignatura")
+    
+    @GetMapping("eliminarAsignatura")
     public ResponseEntity<Long> eliminarAsignatura(@RequestParam Long id) {
-        asignaturaService.deleteById(id);
+        Asignatura asignatura = asignaturaService.get(id);
+        asignatura.setIsActive(Boolean.FALSE);
+        asignaturaService.save(asignatura);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -544,7 +432,6 @@ public class ApiController {
     public List<Asignatura> getAsignaturas(@RequestParam Long cursoId) {
         Curso curso = cursoService.get(cursoId);
         return asignaturaService.getAll(AsignaturaSpecs.byCurso(curso));
-
     }
 
     @GetMapping("asignaturasByCreador")
@@ -552,27 +439,17 @@ public class ApiController {
         Curso curso = cursoService.get(cursoId);
         Profesor profe = profesorService.get(creadorId);
         return asignaturaService.getAll(AsignaturaSpecs.byCurso(curso).and(AsignaturaSpecs.byCreador(profe)));
-
     }
 
     @GetMapping("cursos")
     public List<Curso> getCursos() {
-        return cursoService.getAll();
+        return cursoService.getAll(CursoSpecs.isActive()); 
     }
 
     @GetMapping("getCursosDeAlumno")
     public List<Curso> getCursosDeAlumno(@RequestParam Long idAlumno) {
         Alumno alumno = alumnoService.get(idAlumno);
-        if (alumno == null) {
-            throw new Error();
-        }
-
-        if (alumno.getCursos().isEmpty()) {
-            //No hay cursos para mostrar!
-            return null;
-        } else {
-            return alumno.getCursos();
-        }
+        return cursoService.getAll(CursoSpecs.byAlumno(alumno));
     }
 
     @PostMapping("agregarAlumnoACurso")
@@ -582,30 +459,10 @@ public class ApiController {
         if (curso == null || alumno == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if (!curso.getAlumnos().isEmpty()) {
-            if (!curso.getAlumnos().contains(alumno)) {
-                //el alumno no esta en el curso, lo agrego
-                curso.getAlumnos().add(alumno);
-                cursoService.save(curso);
-            }
-        } else {
-            //no hay alumnos en el curso
-            ArrayList<Alumno> alumnos = new ArrayList<>();
-            alumnos.add(alumno);
-            curso.setAlumnos(alumnos);
-            cursoService.save(curso);
-        }
-        if (!alumno.getCursos().isEmpty()) {
-            if (!alumno.getCursos().contains(curso)) {
-                alumno.getCursos().add(curso);
-                alumnoService.save(alumno);
-            }
-        } else{
-            ArrayList<Curso> cursos = new ArrayList<>();
-            cursos.add(curso);
-            alumno.setCursos(cursos);
-            alumnoService.save(alumno);
-        }
+        curso = curso.agregarAlumnoAlCurso(alumno);
+        cursoService.save(curso);
+        alumno = alumno.agregarCursoAlAlumno(curso);
+        alumnoService.save(alumno);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -632,45 +489,13 @@ public class ApiController {
                 continue;
             }
             if (persona.getDocumento().getNumero().equals(documento)) {
-
-                //No lo hago todo junto por si queremos diferneciar en documento encontrado y no encontrado
                 //documento encontrado, valido si la contraseña tambien coincide.
                 //en la base, esta la contraseña cifrada, por ende tengo que cifrar la password del front y comprarla con la del server
-                //System.out.println(persona.getClass());
-                if (persona.getPassword() == null) {
+                if (persona.getPassword() == null){
                     continue;
                 }
                 if (persona.getPassword().equals(cifrarClave(password))) {
-                    char userType = '0'; // 0 para Tutor.
-                    if (persona instanceof Profesor) {
-                        userType = '1'; //1 para Profesor.
-                    }
-
-                    //la contraseña tambien coincide.
-                    //tengo que crear la session.
-                    Sesion sesion = new Sesion();
-                    Documento doc = new Documento();
-                    doc = persona.getDocumento();
-                    sesion.setDocumento(doc);
-                    //Genero el session_id, que el hash que voy a usar para validar
-                    SecureRandom random = new SecureRandom();
-                    byte[] contenedor = new byte[16];
-                    random.nextBytes(contenedor);
-
-                    StringBuffer codigobuilder = new StringBuffer();
-                    for (byte bytes : contenedor) {
-                        codigobuilder.append(String.format("%02x", bytes & 0xff));
-                    }
-                    String codigo = codigobuilder.toString();
-                    codigo = codigo + userType;//concateno en el codigo el tipo de usuario que es.
-                    codigo = codigo.toUpperCase();
-                    sesion.setSession_id(codigo);
-                    Calendar fecha = Calendar.getInstance();
-                    fecha.add(Calendar.DAY_OF_YEAR, 1);
-                    sesion.setExpiracion(fecha);
-                    sesionService.save(sesion);
-                    //devuelvo el session id al usuario para que vaya en la coockie
-                    return codigo;
+                    return this.generateNewSessionForUser(persona); 
                 } else {
                     //Contraseña incorrecta
                     return "wrong_password";
@@ -679,7 +504,38 @@ public class ApiController {
         }
         return "user_not_found";
     }
-
+    
+    private String generateSessionHash(char userType) {
+        //Genero el session_id, que el hash que voy a usar para validar
+            SecureRandom random = new SecureRandom();
+            byte[] contenedor = new byte[16];
+            random.nextBytes(contenedor);
+                    
+            StringBuilder codigobuilder = new StringBuilder();
+            for (byte bytes : contenedor) {
+                codigobuilder.append(String.format("%02x", bytes & 0xff));
+            }
+            String hashCode = codigobuilder.toString();
+            hashCode = hashCode + userType;//concateno en el codigo el tipo de usuario que es.
+            hashCode = hashCode.toUpperCase();
+            
+        return hashCode;
+    }
+    
+    private String generateNewSessionForUser(Persona persona) {
+        char userType = persona.getUserType();
+        Sesion sesion = new Sesion();
+        Documento doc = persona.getDocumento();
+        sesion.setDocumento(doc);
+        String sessionHashCode = this.generateSessionHash(userType);
+        sesion.setSession_id(sessionHashCode);
+        Calendar fecha = Calendar.getInstance();
+        fecha.add(Calendar.DAY_OF_YEAR, 1);
+        sesion.setExpiracion(fecha);
+        sesionService.save(sesion);
+        return sessionHashCode;
+    }
+    
     @PostMapping("eliminarSesion")
     public ResponseEntity<Long> eliminarSesion(@RequestBody String sessionId) {
         //Busco el id de esa sesion para borarla.
@@ -688,9 +544,8 @@ public class ApiController {
         if (listadoSesiones.isEmpty()) {
             //no hay sesiones en la base
             throw new Error();
-        } else {
-            //recorro las sesiones
-
+        } 
+        else {
             for (Sesion sesion : listadoSesiones) {
                 if (sesion.getSession_id().equals(sessionId)) {
                     //Encontre la sesion.
@@ -727,10 +582,9 @@ public class ApiController {
         }
         return null;
     }
-
+    
     @GetMapping("isProfesor")
     public Boolean isProfesor(Long id) {
-        //Return True si es profesor, o Falso si es tutor.}
         List<Persona> personas = new ArrayList<Persona>();
         List<Profesor> profesores = profesorService.getAll();
         List<Tutor> tutores = tutorService.getAll();
@@ -993,10 +847,35 @@ public class ApiController {
     
     @PostMapping("cargarAddons")
     public ResponseEntity<Long> cargarAddons() {
-        for (int i = 1; i < 8; i++) {
+        for (int i = 1; i < 4; i++) {
             Addon addon = new Addon();
             addon.setNombre(String.valueOf(i));
-            addon.setIconoURL("assets/img/emojis/" + i + ".png");
+            addon.setIconoURL("assets/img/addons/anteojos-" + i + ".png");
+            addon.setTipo(TipoAddon.ANTEOJOS);
+            addon.setCosto(i * 2);
+            addonService.save(addon);
+        }
+        for (int i = 1; i < 7; i++) {
+            Addon addon = new Addon();
+            addon.setNombre(String.valueOf(i));
+            addon.setIconoURL("assets/img/addons/casaca-" + i + ".png");
+            addon.setTipo(TipoAddon.CAMISETA);
+            addon.setCosto(i * 2);
+            addonService.save(addon);
+        }
+        for (int i = 1; i < 7; i++) {
+            Addon addon = new Addon();
+            addon.setNombre(String.valueOf(i));
+            addon.setIconoURL("assets/img/addons/fondo-" + i + ".png");
+            addon.setTipo(TipoAddon.FONDO);
+            addon.setCosto(i * 2);
+            addonService.save(addon);
+        }
+        for (int i = 1; i < 4; i++) {
+            Addon addon = new Addon();
+            addon.setNombre(String.valueOf(i));
+            addon.setIconoURL("assets/img/addons/gorra-" + i + ".png");
+            addon.setTipo(TipoAddon.SOMBRERO);
             addon.setCosto(i * 2);
             addonService.save(addon);
         }
@@ -1010,19 +889,24 @@ public class ApiController {
 
     @PostMapping("comprarAddon")
     public ResponseEntity<Long> comprarAddon(@RequestParam Long idAlumno, @RequestParam Long idAddon) {
+        // TODO CHEQUEAR QUE EL ADDON NO ESTÉ PREVIAMENTE COMPRADO, NO SEAMOS RANCIOS, LAS VALIDACIONES VAN EN EL BACK!!
         Alumno alumno = alumnoService.get(idAlumno);
         alumno = Hibernate.unproxy(alumno, Alumno.class);
         Addon addon = addonService.get(idAddon);
         addon = Hibernate.unproxy(addon, Addon.class);
 
         if (alumno.getSaldoEstrellas() < addon.getCosto()) {
-            throw new Error("Saldo insuficiende de estrellas");
+            throw new Error("Saldo insuficiente de estrellas");
         }
 
-        if (alumno.getMapRecompensas() == null) {
-            alumno.setMapRecompensas(new HashMap<>());
-        }
-        alumno.getMapRecompensas().put(addon, true);
+        deshabilitarAddonMismoTipo(alumno, addon);
+        RecompensaAlumno recompensaAlumno = new RecompensaAlumno();
+        recompensaAlumno.setAddon(addon);
+        recompensaAlumno.setEquipado(true);
+        recompensaAlumno.setAlumno(alumno);
+        recompensaAlumnoService.save(recompensaAlumno);
+
+        alumno.addRecompensa(recompensaAlumno);
         alumno.setSaldoEstrellas(alumno.getSaldoEstrellas() - addon.getCosto());
 
         alumnoService.save(alumno);
@@ -1032,34 +916,42 @@ public class ApiController {
 
     @PostMapping("equiparDesequiparAddon")
     public ResponseEntity<Long> equiparDesequiparAddon(@RequestParam Long idAlumno, @RequestParam Long idAddon) {
-        Alumno alumno = alumnoService.get(idAlumno);
-        alumno = Hibernate.unproxy(alumno, Alumno.class);
-        Addon addon = addonService.get(idAddon);
-        addon = Hibernate.unproxy(addon, Addon.class);
+        final Alumno alumno = Hibernate.unproxy(alumnoService.get(idAlumno), Alumno.class);
+        final Addon addon = Hibernate.unproxy(addonService.get(idAddon), Addon.class);
 
-        if (alumno.getMapRecompensas() == null || !alumno.getMapRecompensas().containsKey(addon)) {
-            throw new Error("El addon no ha sido comprado aun");
+        if (alumno.getRecompensas() == null) {
+            throw new Error("El addon no ha sido comprado aún");
         }
 
-        alumno.getMapRecompensas().put(addon, !alumno.getMapRecompensas().get(addon));
+        RecompensaAlumno recompensa = alumno.getRecompensas()
+                .stream()
+                .filter(r -> r.getAddon().getId().equals(addon.getId()))
+                .findFirst()
+                .orElseThrow(() -> new Error("El addon no ha sido comprado aún"));
 
-        alumnoService.save(alumno);
+        if (!recompensa.getEquipado()) {
+            deshabilitarAddonMismoTipo(alumno, addon);
+        }
+        recompensa.setEquipado(!recompensa.getEquipado());
+
+        recompensaAlumnoService.save(recompensa);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("mapRecompensasAlumno")
+    @GetMapping("recompensasAlumno")
     @ResponseBody
-    public String getMapRecompensasAlumno(@RequestParam Long idAlumno) {
-        Alumno alumno = alumnoService.get(idAlumno);
-        JsonArray recompensasJson = new JsonArray();
-        for (Map.Entry<Addon, Boolean> entry : alumno.getMapRecompensas().entrySet()) {
-            JsonObject p = new JsonObject();
-            p.addProperty("id", entry.getKey().getId());
-            p.addProperty("boolean", entry.getValue());
-            recompensasJson.add(p);
-        }
-        return recompensasJson.toString();
+    public ResponseEntity<?> getRecompensasAlumno(@RequestParam Long idAlumno) {
+        Alumno alumno = Hibernate.unproxy(alumnoService.get(idAlumno), Alumno.class);
+        return new ResponseEntity<>(alumno.getRecompensas(), HttpStatus.OK);
+    }
+
+    private void deshabilitarAddonMismoTipo(Alumno alumno, Addon addon) {
+        alumno.getRecompensas()
+                .stream()
+                .filter(r -> r.getAddon().getTipo().equals(addon.getTipo()) && r.getEquipado())
+                .findFirst()
+                .ifPresent(r -> r.setEquipado(false));
     }
 
 }

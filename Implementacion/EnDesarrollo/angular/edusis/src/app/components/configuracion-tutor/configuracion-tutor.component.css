@@ -28,18 +28,67 @@
     padding: 10px;
     background-color: white;
   }
-  
-  body {
-    z-index: -1;
-    background-color: #13334c;
-    height: 100%;
-    width: 100%;
-  }
 
   .texto-principal {
     font-family: "LemonYellow";
     text-align: center;
     font-size: xx-large;
     margin-bottom: 20px;
+    color: #f5db77; 
+  }
+
+  .listAlumnos{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2em;
+  }
+
+  .fondo {
+    z-index: -1;
+    background-color: #13334c;
+    height: 100%;
+    width: 100%;
+  }
+
+  .fondoTabla { 
+    background-color: #13334c;
     color: #f5db77;
+  }
+
+  #chartEstadisticas {
+    padding-top: 10%;
+    padding-right: 10%;
+    padding-bottom: 10%;
+    padding-left: 10%;
+  }
+
+  .btn-info {
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 0 #127f90
+  }
+
+  .btn-info:active {
+    box-shadow: none;
+	  transform: translateY(4px);
+  }
+
+  .btn-success {
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 0 #1e7933
+  }
+
+  .btn-success:active {
+    box-shadow: none;
+	  transform: translateY(4px);
+  }
+
+  .btn-danger {
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 0 #a92835
+  }
+
+  .btn-danger:active {
+    box-shadow: none;
+	  transform: translateY(4px);
   }

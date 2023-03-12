@@ -38,9 +38,8 @@
 }
 
 .bottom {
-  position: absolute;
   bottom: 50px;
-  width: 90%;
+  width: 100%;
 }
 
 /* Draggable*/

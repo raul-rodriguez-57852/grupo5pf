@@ -5,22 +5,20 @@
  */
 package com.edusis.apirest.domain;
 
-import com.edusis.apirest.generic.GenericEntity;
+import com.edusis.apirest.generic.SoftDeleteEntity;
 import com.edusis.apirest.utils.AssertUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.CascadeType;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import static org.hibernate.engine.internal.Cascade.cascade;
 
 
 
@@ -31,7 +29,7 @@ import static org.hibernate.engine.internal.Cascade.cascade;
 
 @Entity
 @Table(name="Curso")
-public class Curso extends GenericEntity{
+public class Curso extends SoftDeleteEntity {
     
     @NotNull
     private String nombre;
@@ -84,8 +82,7 @@ public class Curso extends GenericEntity{
         return asignaturas;
     }
     
-    
-    public void setAsignaturas(List<Asignatura> asignaturas) {
+    private void setAsignaturas(List<Asignatura> asignaturas) {
         this.asignaturas = asignaturas;
     }
     
@@ -117,7 +114,7 @@ public class Curso extends GenericEntity{
         return profesores;
     }
 
-    public void setProfesores(List<Profesor> profesores) {
+    private void setProfesores(List<Profesor> profesores) {
         this.profesores = profesores;
     }
 
@@ -125,8 +122,59 @@ public class Curso extends GenericEntity{
         return alumnos;
     }
 
-    public void setAlumnos(List<Alumno> alumnos) {
+    private void setAlumnos(List<Alumno> alumnos) {
         this.alumnos = alumnos;
+    }
+    
+    /**
+    * @param  Alumno an Alumno object that will be added to Curso
+    * @return      the Curso object itself so it can ve saved by its Service
+    */
+    public Curso agregarAlumnoAlCurso(Alumno alumno) {
+        if(!this.alumnos.isEmpty()) {
+            if(!this.getAlumnos().contains(alumno)) {
+                this.getAlumnos().add(alumno);
+            }
+        } else {
+            ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
+            alumnos.add(alumno);
+            this.setAlumnos(alumnos);
+        }
+        return this;
+    }
+    
+    /**
+    * @param  Profesor a Profesor object that will be added to Curso
+    * @return      the Curso object itself so it can ve saved by its Service
+    */
+    public Curso agregarProfesorAlCurso(Profesor profe) {
+        if(!this.profesores.isEmpty()) {
+            if(!this.getProfesores().contains(profe)) {
+                this.getProfesores().add(profe);
+            }
+        } else {
+            ArrayList<Profesor> profes = new ArrayList<Profesor>();
+            profes.add(profe);
+            this.setProfesores(profes);
+        }
+        return this;
+    }
+    
+    /**
+    * @param  Asignatura a Asignatura object that will be added to Curso
+    * @return      the Curso object itself so it can ve saved by its Service
+    */
+    public Curso agregarAsignaturaAlCurso(Asignatura asignatura) {
+        if(!this.getAsignaturas().isEmpty()) {
+            if(!this.getAsignaturas().contains(asignatura)) {
+                this.getAsignaturas().add(asignatura); 
+            }
+        } else {
+            ArrayList<Asignatura> asignaturas = new ArrayList<Asignatura>();
+            asignaturas.add(asignatura);
+            this.setAsignaturas(asignaturas);
+        }
+        return this;
     }
     
 }

@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DataApiService } from '../../services/data-api.service';
 import { DataTareaService } from 'src/app/services/data-tarea.service';
+import Swal from 'sweetalert2';
+import { Tarea } from 'src/app/models/tarea';
+import { Asignatura } from 'src/app/models/asignatura';
+import { type } from 'os';
 
 @Component({
   selector: 'app-curso',
@@ -15,8 +19,8 @@ export class CursoComponent implements OnInit {
   asignaturas = [];
   tareas = [];
   id: number;
-  mensaje: string;
   codigo: string;
+  asignaturaSelected = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -33,26 +37,32 @@ export class CursoComponent implements OnInit {
         
     this.get();
     
-    this.getAll();
-   
+    this.getAllAsignaturas();
   }
 
   get() {
-    
     this.dataApiService.getCurso(this.cursoId).then((res) => {
       this.nombre = res.nombre;
       this.urlImagen = res.iconoURL;
     });
   }
 
-  getAll() {
+  getAllAsignaturas() {
     this.dataApiService.getAsignaturas(this.cursoId).then((asignaturas) => {
       this.asignaturas = asignaturas;
-      console.log(this.asignaturas);
     });
-    this.dataTareaService.getTareas(this.cursoId).then((tareas) => {
+  }
+
+  async getAllTareas(asignaturaid: number) {
+    const colores = [
+      '#B5D5C5', '#B08BBB', '#ECA869', '#F5F5DC', '#579BB1', '#82AAE3', '#91D8E4',
+    '#FFF6BD', '#FF8E9E', '#ADA2FF' , '#227C70', '#FAEAB1', '#FAAB78', '#FFCAC8']
+    await this.dataTareaService.getTareaByAsignatura(asignaturaid).then((tareas) => {
+      tareas.forEach(tarea => {
+        const random = Math.floor(Math.random() * colores.length);
+        tarea['color'] = 'background-color: ' + colores[random];
+      });
       this.tareas = tareas;
-      console.log(this.tareas);
     });
   }
 
@@ -76,20 +86,65 @@ export class CursoComponent implements OnInit {
     this.router.navigate(['editar-tarea', { cursoId: this.cursoId }]);
   }
 
-  eliminar() {
-    /*this.dataApiService.elimi(this.id.toString()).then(
-      (respuesta) => {
-        this.recargar();
+  async seleccionarAsignatura(asignatura : Asignatura) {
+    this.asignaturaSelected = true;
+    await this.getAllTareas(asignatura.id)
+  }
+
+  volverACursos() {
+    if (this.asignaturaSelected) {
+      this.asignaturaSelected = false
+    } else {
+      this.router.navigate(['cursos']);
+    }
+  }
+
+  eliminar(id: string, asignaturaNombre: string) {
+    Swal.fire({
+      title: 'Desea eliminar la  asignatura ' + asignaturaNombre + '?',
+      text: "No podras volver atras si deseas eliminar a " + asignaturaNombre,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        this.dataApiService.eliminarAsignatura(id);
+        Swal.fire(
+          'Asignatura Eliminada Excitosamente!',
+          asignaturaNombre + ' ha sido eliminada',
+          'success'
+        );
+        this.getAllAsignaturas();
       }
-    ).catch(
-      (respuesta) => {
-        this.mensaje = 'Error al eliminar el curso.';
-        document.getElementById('open-modal').click();
+    })
+  }
+
+  eliminarTarea(tareaId: string, tareaNombre: string) {
+    Swal.fire({
+      title: 'Desea eliminar la  tarea ' + tareaNombre + '?',
+      text: "No podras volver atras si deseas eliminar a " + tareaNombre,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        this.dataTareaService.eliminarTarea(tareaId.toString());
+        Swal.fire(
+          'Tarea Eliminada Excitosamente!',
+          tareaNombre + ' ha sido eliminada',
+          'success'
+        );
+        this.getAllAsignaturas();
       }
-    );*/
+    })
   }
 
   recargar() {
     // window.location.reload();
   }
+
 }

@@ -5,6 +5,7 @@
  */
 package com.edusis.apirest.domain;
 
+import com.edusis.apirest.domain.Documento;
 import com.edusis.apirest.generic.GenericEntity;
 import com.sun.istack.NotNull;
 import java.util.Calendar;

@@ -1,10 +1,8 @@
-import { Component, OnInit, ElementRef, SystemJsNgModuleLoader } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { DataApiService } from '../../services/data-api.service';
 import { Router, UrlHandlingStrategy, ActivatedRoute } from '@angular/router';
-import { CompileStylesheetMetadata } from '@angular/compiler';
 import { element, Session } from 'protractor';
 import { read } from 'fs';
-import { Variable } from '@angular/compiler/src/render3/r3_ast';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -17,6 +15,10 @@ export class LoginComponent implements OnInit{
 
     mensaje: String;  
     retrived_id: string;
+    elemnts = {
+        'InputDocumento' : 'div-dni',
+        'inputPassword' : 'div-password'
+      };
       
     constructor( private dataApiService: DataApiService,private elementRef: ElementRef,private router: Router,private route: ActivatedRoute) {}
 
@@ -43,16 +45,22 @@ export class LoginComponent implements OnInit{
     
     addFocus(id:string ) {
         document.getElementById(id).classList.add('focus');
-        document.getElementById(id).click();
+        (<HTMLDivElement>document.getElementById(id)).click();
     }
 
-    removeFocus() {
-        if((<HTMLInputElement>document.getElementById('InputDocumento')).value == ""){
-            document.getElementById('div-dni').classList.remove('focus');
+    checkAndGiveFocus(check: string, giveTo: string ) {  
+        var elementTocheck = (<HTMLInputElement>document.getElementById(check));
+    
+        if(elementTocheck.value == null ||elementTocheck.value === '') {
+          document.getElementById(this.elemnts[check]).classList.remove('focus');
         }
-        if((<HTMLInputElement>document.getElementById('inputPassword')).value == ""){
-            document.getElementById('div-password').classList.remove('focus');
-        }  
+        
+        if (giveTo == '') {
+          return;
+        }
+    
+        document.getElementById(giveTo).classList.add('focus');
+        document.getElementById(giveTo).click();
     }
 
     async login() {
@@ -91,7 +99,11 @@ export class LoginComponent implements OnInit{
                     title: 'El usuario y/o contraseña es incorrecto.',
                     showConfirmButton: false,
                     timer: 1500
-                  })
+                  });
+                  (<HTMLInputElement>document.getElementById('InputDocumento')).value = null;
+                  (<HTMLInputElement>document.getElementById('inputPassword')).value = null;
+                  document.getElementById('div-password').classList.remove('focus');
+                  document.getElementById('div-dni').classList.remove('focus');
             }
         }
         var user_found

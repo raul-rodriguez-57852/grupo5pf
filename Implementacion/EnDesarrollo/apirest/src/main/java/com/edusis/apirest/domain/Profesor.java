@@ -6,7 +6,10 @@
 
 package com.edusis.apirest.domain;
 
+import com.edusis.apirest.domain.Asignatura;
+import com.edusis.apirest.domain.Curso;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -33,6 +36,16 @@ public class Profesor extends Persona {
     @JoinTable(name="asignaturas_profesores",joinColumns = @JoinColumn(name= "profesor_id"),
             inverseJoinColumns = @JoinColumn(name = "asignatura_id"))
     private List<Asignatura> asignaturas;
+    
+    private String email;
+    
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    public String getEmail() {
+        return this.email;
+    }
 
     public List<Curso> getCursos() {
         return cursos;
@@ -46,8 +59,30 @@ public class Profesor extends Persona {
         return asignaturas;
     }
 
-    public void setAsignaturas(List<Asignatura> asignaturas) {
+    private void setAsignaturas(List<Asignatura> asignaturas) {
         this.asignaturas = asignaturas;
+    }
+
+    @Override
+    public char getUserType() {
+        return '1';
+    }
+    
+    /**
+    * @param  Asignatura a Asignatura object that will be added to Profesor
+    * @return Profesor object itself so it can ve saved by its Service
+    */
+    public Profesor agregarAisgnaturaAlProfesor(Asignatura asignatura) {
+        if(!this.getAsignaturas().isEmpty()) {
+            if(!this.getAsignaturas().contains(asignatura)) {
+                this.getAsignaturas().add(asignatura);
+            }
+        } else {
+            ArrayList<Asignatura> asignaturas = new ArrayList<Asignatura>();
+            asignaturas.add(asignatura);
+            this.setAsignaturas(asignaturas);
+        }
+        return this;
     }
 
     

@@ -7,7 +7,6 @@ package com.edusis.apirest.service.dto;
 
 import com.edusis.apirest.domain.Asignatura;
 import com.edusis.apirest.domain.Curso;
-import com.edusis.apirest.domain.Documento;
 import com.edusis.apirest.domain.TipoDocumento;
 import java.util.Calendar;
 import java.util.List;
@@ -25,7 +24,24 @@ public class ProfesorDto {
     private TipoDocumento tipoDocumento;
     private Calendar fechaNacimiento;
     private String password;
+    private String email;
+    
+    public String getEmail() {
+        return email;
+    }
+    
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -72,14 +88,6 @@ public class ProfesorDto {
 
     public void setFechaNacimiento(Calendar fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
     
 }

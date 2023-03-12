@@ -1,4 +1,5 @@
 <section id="curso" class="margin-top-60">
+  <div class="fondo position-fixed"></div>
   <div class="foto-principal margin-bottom-16">
     <img class="imagenCard" src="{{ urlImagen }}" alt="Card image cap" />
     <div class="centered">{{ nombre }}</div>
@@ -35,38 +36,17 @@
           <div class="centered">{{ tarea.asignatura }}</div>
         </div>
         <div
-          [ngClass]="
-            tarea.puntaje == null ? 'card-body' : 'card-body realizada'
-          "
-        >
-          <div class="row align-items-center mb-2 d-flex">
-            <div class="col-8">
-              <h5 class="d-flex align-items-center mb-0">
+          [ngClass]="tarea.puntaje == null ? 'card-body' : 'card-body realizada'">
+
+          <div class="flex-container">
+              <div class="tareaNombre">
                 <h5 class="card-title">{{ tarea.nombre }}</h5>
-              </h5>
-            </div>
-            <div class="col-4 text-right">
-              <span
-                >{{ tarea.fechaLimite | date: "dd/MM/yyyy"
-                }}<i class="fa fa-calendar"></i
-              ></span>
-            </div>
+              </div>
+              <div class="fechaVencimiento flex-container">
+                <span>{{ tarea.fechaLimite | date: "dd/MM/yyyy"}}</span>
+                <i class="fa fa-calendar iconoCalendario"></i>
+              </div>
           </div>
-          <!--           <div
-            class="progress margin-bottom-16"
-            [hidden]="tarea.puntaje == null"
-          >
-            <div
-              class="progress-bar progress-bar-striped bg-success"
-              role="progressbar"
-              style="width: {{ tarea.puntaje }}%"
-              [attr.aria-valuenow]="tarea.puntaje"
-              aria-valuemin="0"
-              aria-valuemax="100"
-            >
-              {{ tarea.puntaje }}%
-            </div>
-          </div> -->
           <label class="rating-label">
             <input
               class="rating"
@@ -78,20 +58,30 @@
               value="{{ tarea.puntaje / 20 }}"
             />
           </label>
-          <button
-            type="button"
-            *ngIf="!tarea.puntaje"
-            class="btn btn-personalizado-txtblanco"
-          >
-            Iniciar tarea
-          </button>
-          <button
-            type="button"
-            *ngIf="tarea.puntaje"
-            class="btn btn-personalizado-txtblanco"
-          >
-            Reintentar tarea
-          </button>
+          <div id="botonTareaYLabel"> 
+            <div id="tareaSinRealizar" *ngIf="!tarea.puntaje">
+              <div class="flex-container">
+                <div class="botonTarea">
+                  <button type="button" class="btn btn-personalizado-inverso">Iniciar tarea</button>
+                </div>
+                <div class="tareaSinRealizar flex-container">
+                  <span>Vence: {{ tarea.fechaLimite | date: "dd/MM/yyyy"}}</span>
+                  <i class="fa fa-calendar iconoCalendario"></i>
+                </div>
+            </div>
+            </div>
+            <div id="tareaRealizada" *ngIf="tarea.puntaje">
+              <div class="flex-container">
+                <div class="botonTarea">
+                  <button type="button" class="btn btn-personalizado-inverso">Reintentar tarea</button>
+                </div>
+                <div class="tareaRealizada flex-container">
+                  <span>Tarea realizada</span>
+                  <i class="fa fa-light fa-check iconoTareaRealizada"></i>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -116,7 +106,7 @@
   </div>
   <button
     (click)="volverACursos()"
-    class="btn btn-lg btn-block btn-personalizado-txtblanco"
+    class="btn btn-lg btn-block btn-personalizado-inverso"
   >
     Volver
   </button>

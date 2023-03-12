@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './crear-actividad.component.html',
   styleUrls: ['./crear-actividad.component.css']
 })
+
 export class CrearActividadComponent implements OnInit {
 
   plantillaPreguntaRespuestas = false;
@@ -37,7 +38,6 @@ export class CrearActividadComponent implements OnInit {
     let idProfesor = this.dataApiService.getUsuario();
     this.dataApiService.getActividadesByProfesor(idProfesor).then(res => {
       this.actividades = res;
-      console.log(this.actividades);
     });
   }
 
@@ -107,7 +107,6 @@ export class CrearActividadComponent implements OnInit {
   save(formActividad2: NgForm) {
     this.agregarOtra();
     this.dataApiService.crearActividadPreguntas(this.plantilla).then(res => {
-      console.log(res);
       /// Si no es nulo this.idTareaRoute significa que se llego a esta pantalla desde la creacion de una tarea. Redirigimos despues de guardar
       if (this.idTareaRoute != null) {
         this.router.navigate([
@@ -124,9 +123,7 @@ export class CrearActividadComponent implements OnInit {
 
   agregarOtra() {
     this.plantilla.preguntasDto.push(this.pregunta);
-    console.log('ANTES', this.plantilla);
     this.pregunta = new Pregunta();
-    console.log('DESPUÉS', this.plantilla);
   }
 
   vistaPrevia(actividad: any) {

@@ -4,235 +4,67 @@
     <div class="centered">{{ nombre }}</div>  
   </div>
   <div class="container">
-    <button
-      type="button"
-      (click)="crearTarea()"
-      class="btn btn-personalizado btn-lg btn-block margin-bottom-16"
-    >
-      Nueva tarea
-    </button>
-    <ul class="list-group list-group-flush margin-bottom-16">
-      <li
-        class="list-group-item d-flex justify-content-between align-items-center"
+    <div *ngIf="asignaturaSelected" id="nuevaTarea">
+      <button
+        type="button"
+        (click)="crearTarea()"
+        class="btn btn-personalizado btn-lg btn-block margin-bottom-16"
       >
-        <strong>Tareas</strong>
-        <strong>Opciones</strong>
-      </li>
-      <li
-        *ngFor="let tarea of tareas"
-        class="list-group-item d-flex justify-content-between align-items-center"
-      >
-        <div>
-          {{ tarea.nombre }}
+        Nueva tarea
+      </button>
+      <div *ngFor="let tarea of tareas" class="card mb-3">
+        <div class="contenedorImagenCard" (click)="editarTarea(tarea.id)">
+          <div
+            style="{{tarea.color}}"
+            class="card-img-top imagenCard"
+            alt="Card image cap"
+          ></div>
+          <div class="centered" style="text-transform: uppercase;">{{ tarea.nombre }}</div>
         </div>
-        <div
-          class="btn-group btn-group-sm"
-          role="group"
-          aria-label="Basic example"
-        >
-          <button
-            type="button"
-            (click)="editarTarea(tarea.id)"
-            class="btn btn-info"
-          >
-            <i class="fa fa-edit"></i>
-          </button>
-          <button
-            type="button"
-            (click)="setearId(tarea.id)"
-            data-toggle="modal"
-            data-target="#eliminar"
-            class="btn btn-danger"
-          >
-            <i class="fa fa-trash"></i>
-          </button>
-        </div>
-        <!-- Modal -->
-        <div
-          class="modal fade"
-          id="eliminar"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">¡Atención!</h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                ¿Desea eliminar el registro?
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="button"
-                  (click)="eliminar()"
-                  data-dismiss="modal"
-                  class="btn btn-danger"
-                >
-                  Eliminar
-                </button>
-              </div>
-            </div>
+        <div class="box">
+          <div class="cardText">
+            <p  style="padding: 5px;" class="card-text text-muted">Modifica y gestiona tu tarea: {{tarea.nombre}}</p>
+          </div>
+          <div class="actionButtons btn-group btn-group-sm" role="group">
+            <button type="button" (click)="editarTarea(tarea.id)" class="btn btn-info"><i class="fa fa-edit"></i></button>
+            <button type="button" (click)="eliminarTarea(tarea.id, tarea.nombre)" data-toggle="modal" data-target="#eliminar" class="btn btn-danger"><i class="fa fa-trash"></i></button>
           </div>
         </div>
-      </li>
-    </ul>
-    <button
-      type="button"
-      (click)="crearAsignatura()"
-      class="btn btn-personalizado btn-lg btn-block margin-bottom-16"
-    >
-      Nueva asignatura
-    </button>
-    <ul class="list-group list-group-flush margin-bottom-16">
-      <li
-        class="list-group-item d-flex justify-content-between align-items-center"
-      >
-        <strong>Asignatura</strong>
-        <strong>Opciones</strong>
-      </li>
-      <li
-        *ngFor="let asignatura of asignaturas"
-        class="list-group-item d-flex justify-content-between align-items-center"
-      >
-        <div>
-          <img
-            style="height: 31px; margin-right: 10px;"
-            src="{{ asignatura.iconoURL }}"
-          />{{ asignatura.nombre }}
-        </div>
-        <div
-          class="btn-group btn-group-sm"
-          role="group"
-          aria-label="Basic example"
-        >
-          <button
-            type="button"
-            (click)="editar(asignatura.id)"
-            class="btn btn-info"
-          >
-            <i class="fa fa-edit"></i>
-          </button>
-          <button
-            type="button"
-            (click)="setearId(asignatura.id)"
-            data-toggle="modal"
-            data-target="#eliminar"
-            class="btn btn-danger"
-          >
-            <i class="fa fa-trash"></i>
-          </button>
-        </div>
-        <!-- Modal -->
-        <div
-          class="modal fade"
-          id="eliminar"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">¡Atención!</h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                ¿Desea eliminar el registro?
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="button"
-                  (click)="eliminar()"
-                  data-dismiss="modal"
-                  class="btn btn-danger"
-                >
-                  Eliminar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </li>
-    </ul>
-  </div>
-</section>
-
-<!-- Modal -->
-<button
-  id="open-modal"
-  [hidden]="true"
-  data-toggle="modal"
-  data-target="#informacion"
->
-  Open Modal
-</button>
-<div
-  class="modal fade"
-  id="informacion"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Ludikon</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        {{ mensaje }}
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          data-dismiss="modal"
-          (click)="recargar()"
-          class="btn btn-personalizado"
-        >
-          Aceptar
-        </button>
       </div>
     </div>
+    <div *ngIf="!asignaturaSelected" id = 'nuevaAsignatura'>
+      <button
+        type="button"
+        (click)="crearAsignatura()"
+        class="btn btn-personalizado btn-lg btn-block margin-bottom-16"
+      >
+        Nueva asignatura
+      </button>
+      <div *ngFor="let asignatura of asignaturas" class="card mb-3">
+        <div class="contenedorImagenCard" (click)="seleccionarAsignatura(asignatura)">
+          <img
+            class="card-img-top imagenCard"
+            src="{{ asignatura.iconoURL }}"
+            alt="Card image cap"
+          />
+          <div class="centered">{{ asignatura.nombre }}</div>
+        </div>
+        <div class="box">
+          <div class="cardText">
+            <p  style="padding: 5px;" class="card-text text-muted">Accede y controla la asignatura: {{asignatura.nombre}}</p>
+          </div>
+          <div class="actionButtons btn-group btn-group-sm" role="group">
+            <button type="button" (click)="editar(asignatura.id)" class="btn btn-info"><i class="fa fa-edit"></i></button>
+            <button type="button" (click)="eliminar(asignatura.id, asignatura.nombre)" data-toggle="modal" data-target="#eliminar" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button
+      (click)="volverACursos()"
+      class="btn btn-lg btn-block btn-personalizado-txtblanco"
+    >
+      Volver
+    </button>
   </div>
-</div>
+</section>

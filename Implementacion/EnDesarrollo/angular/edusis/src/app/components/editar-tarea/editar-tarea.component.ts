@@ -5,8 +5,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { DataTareaService } from "src/app/services/data-tarea.service";
 import { NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from "@angular/forms";
-
-
+import Swal from 'sweetalert2';
 
 /**
  * This Service handles how the date is rendered and parsed from keyboard i.e. in the bound input field.
@@ -42,6 +41,7 @@ import { NgForm } from "@angular/forms";
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
   ]
 })
+
 export class EditarTareaComponent implements OnInit {
   tarea: Tarea = {
     id: null,
@@ -90,44 +90,54 @@ export class EditarTareaComponent implements OnInit {
   getAsignaturas() {
     this.dataApiService.getAsignaturas(this.cursoId).then((respuesta) => {
       this.asignaturas = respuesta;
-      console.log(this.asignaturas);
     });
   }
 
   save(formTarea: NgForm) {
-    //this.tarea.creadorId = this.dataApiService.usuario.id;
     if (this.tarea.asignaturaId == null) {
-      this.mensaje = "Error al guardar. Debe seleccionar una asignatura.";
-      document.getElementById("open-modal").click();
+      Swal.fire("Error al guardar.", "Recuerde seleccionar una asignatura", "error")
       return;
     }
-    /////////////////////////////////////// ACA OBTENER ID DEL USUARIO LOGUEADO  //////////////////////////////////////
     this.tarea.creadorId = this.dataApiService.getUsuario();
-    /////////////////////////////////////// ACA OBTENER ID DEL USUARIO LOGUEADO  //////////////////////////////////////
     this.dataTareaService
       .guardarTarea(this.tarea)
       .then((respuesta) => {
         this.tarea.id = respuesta;
-        this.mensaje = "Tarea guardada con éxito.";
-        document.getElementById("open-modal").click();
-        //        this.recargar();
+        Swal.fire({
+          title: "Hurra!",
+          text: "La tarea '" + this.tarea.nombre + "' fue creada con exito!",
+          icon: 'success',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonText: 'Volver al curso',
+          confirmButtonText: 'Agregar descripcion',
+          reverseButtons: true
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigate(["editar-detalle-multimedia", { tareaId: this.tarea.id, cursoId: this.cursoId }]);
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            this.router.navigate(["curso", { id: this.cursoId}]);
+          }
+        })
       })
       .catch((respuesta) => {
-        this.mensaje = "Error al guardar.";
-        document.getElementById("open-modal").click();
+        Swal.fire(
+          'Error al crear la tarea',
+          "Ey, tranqui, seguro los chicos se alegraron :)",
+          'error'
+        );
       });
   }
 
   agregarDetalle() {
     this.router.navigate([
       "editar-detalle-multimedia",
-      { tareaId: this.tarea.id },
+      { tareaId: this.tarea.id }
     ]);
   }
 
   select(model){  
     this.tarea.fechaLimite = new Date(model.year,model.month-1,model.day);
-
   }
 
   fromModel(value: string | null): NgbDateStruct | null {
@@ -141,9 +151,4 @@ export class EditarTareaComponent implements OnInit {
     }
     return null;
   }
-
-
-
-  
-
 }

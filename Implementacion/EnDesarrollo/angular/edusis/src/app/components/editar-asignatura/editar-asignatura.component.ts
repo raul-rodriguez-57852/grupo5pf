@@ -3,16 +3,17 @@ import { Asignatura } from '../../models/asignatura';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataApiService } from '../../services/data-api.service';
 import { NgForm } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-editar-asignatura',
   templateUrl: './editar-asignatura.component.html',
   styleUrls: ['./editar-asignatura.component.css']
 })
+
 export class EditarAsignaturaComponent implements OnInit {
 
   asignatura: Asignatura = { id: null, nombre: null, iconoURL: null, creadorId: null, cursoId: null };
-  mensaje: string = null;
 
   constructor(
     private router: Router,
@@ -26,30 +27,36 @@ export class EditarAsignaturaComponent implements OnInit {
     this.asignatura.id = this.route.snapshot.paramMap.get('id') != null ? Number(this.route.snapshot.paramMap.get('id')) : null;
     if (this.asignatura.id != null) {
       this.dataApiService.getAsignatura(this.asignatura.id.toString()).then(
-        (emoji) => {
-          this.asignatura.nombre = emoji.nombre;
-          this.asignatura.iconoURL = emoji.iconoURL;
+        (asignatura) => {
+          this.asignatura.nombre = asignatura.nombre;
+          this.asignatura.iconoURL = asignatura.iconoURL;
+          this.asignatura.cursoId = asignatura.curso.id;
+          this.asignatura.creadorId = asignatura.creador.id;
         }
       );
     }
   }
 
   save(formAsignatura: NgForm) {
-    //this.asignatura.creadorId = this.dataApiService.usuario.id;
     this.asignatura.creadorId = this.dataApiService.getUsuario();
-    console.log("user saved = ",this.dataApiService.getUsuario());
     this.dataApiService.guardarAsignatura(this.asignatura).then(
       (respuesta) => {
-        this.mensaje = 'Asignatura guardada con éxito.';
-        document.getElementById('open-modal').click();
-//        this.recargar();
+        Swal.fire(
+          'Hurra!',
+          'Asignatuda guardada con exito!',
+          'success'
+        );
       }
     ).catch(
       (respuesta) => {
-        this.mensaje = 'Error al guardar.';
-        document.getElementById('open-modal').click();
+        Swal.fire(
+          'Upss',
+          'Error al guardar la asignatura :(',
+          'error'
+      );
       }
     );
+    this.recargar();
   }
 
   recargar() {

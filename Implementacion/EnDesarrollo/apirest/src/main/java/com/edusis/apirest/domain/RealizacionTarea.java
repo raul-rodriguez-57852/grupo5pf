@@ -6,6 +6,7 @@
 
 package com.edusis.apirest.domain;
 
+import com.edusis.apirest.domain.Alumno;
 import com.edusis.apirest.generic.GenericEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataApiService } from '../../services/data-api.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cursos',
@@ -14,8 +15,6 @@ export class CursosComponent implements OnInit {
   id_profesor = null;
 
   id: number;
-  mensaje: string;
-
 
   constructor(
     private router: Router,
@@ -27,22 +26,15 @@ export class CursosComponent implements OnInit {
     if (this.id_profesor == null || this.dataApiService.getUserType() != this.dataApiService.getProfesorType()) {
       this.router.navigate(['login']);
     }
-
     this.getAll();
-
   }
 
   async getAll() {
-    console.log("ID PROFESOR: ", this.id_profesor)
-
     await this.dataApiService.getCursosByProfesor(this.id_profesor).then(
       (cursos) => {
         this.cursos = cursos;
-
-
       }
     );
-    console.log('CURSOS DEL PROFESOR: ', this.dataApiService.getUsuario(), ' : ', this.cursos);
   }
 
   editar(id: number) {
@@ -58,7 +50,6 @@ export class CursosComponent implements OnInit {
   }
 
   async generarCodigoCurso(id: number) {
-    console.log('ID = ', id);
     await this.dataApiService.getCurso(id.toString()).then(
       (curso) => {
         this.curso = curso;
@@ -66,25 +57,52 @@ export class CursosComponent implements OnInit {
     );
 
     if (this.curso.codigo === null) {
-      //console.log('Codigo Null');
       await this.dataApiService.generarCodigoCurso(this.curso).then(
         (respuesta) => {
           //obtengo el curso actualizaco ya con el codigo.
           this.curso = respuesta;
         }
-      ).catch((respuesta) => {
-        this.mensaje = "Error al generar Codigo.";
-        document.getElementById("open-modal").click();
-      });
+      );
     }
-    console.log('CODIGO DE INVITACION! = ', this.curso.codigo);
     this.copiarTexto(this.curso.codigo.toString());
+  }
+
+  eliminar(cursoId: number, cursoNombre: string) {
+    Swal.fire({
+      title: 'Desea eliminar al curso:  ' + cursoNombre + '?',
+      text: "El curso y toda su informacion se borrara, esta seguro?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dataApiService.eliminarCurso(cursoId.toString());
+        Swal.fire(
+          'Curso Eliminado Excitosamente!',
+          cursoNombre + ' ha sido eliminado',
+          'success'
+        );
+        this.getAll();
+      }
+    })
+  }
+
+  irACurso(id: number) {
+    this.router.navigate(['curso', { id }]);
+  }
+
+  volverAHome() {
+    this.router.navigate(['home-profesor']);
+  }
+
+  recargar() {
   }
 
   copiarTexto(texto: string) {
     //the text that is to be copied to the clipboard
     var theText = texto;
-
     //create our hidden div element
     var hiddenCopy = document.createElement('div');
     //set the innerHTML of the div
@@ -92,7 +110,6 @@ export class CursosComponent implements OnInit {
     //set the position to be absolute and off the screen
     hiddenCopy.style.position = 'absolute';
     hiddenCopy.style.left = '-9999px';
-
     //check and see if the user had a text selection range
     var currentRange;
     if (document.getSelection().rangeCount > 0) {
@@ -100,12 +117,10 @@ export class CursosComponent implements OnInit {
       currentRange = document.getSelection().getRangeAt(0);
       //remove the current selection
       window.getSelection().removeRange(currentRange);
-    }
-    else {
+    } else {
       //they didn't have anything selected
       currentRange = false;
     }
-
     //append the div to the body
     document.body.appendChild(hiddenCopy);
     //create a selection range
@@ -114,13 +129,11 @@ export class CursosComponent implements OnInit {
     CopyRange.selectNode(hiddenCopy);
     //add the copy range
     window.getSelection().addRange(CopyRange);
-
     //since not all browsers support this, use a try block
     try {
       //copy the text
       document.execCommand('copy');
-    }
-    catch (err) {
+    } catch (err) {
       window.alert("Your Browser Doesn't support this! Error : " + err);
     }
     //remove the selection range (Chrome throws a warning if we don't.)
@@ -131,24 +144,11 @@ export class CursosComponent implements OnInit {
     if (currentRange) {
       window.getSelection().addRange(currentRange);
     }
-    alert("Codigo de invitacion copiado en portapapeles \nCodigo: " + texto);
+    Swal.fire(
+      "Codigo de invitacion copiado!",
+      "Codigo: " + texto,
+      "success"
+    )
   }
-
-
-  eliminar() {
-  }
-
-  irACurso(id: number) {
-    this.router.navigate(['curso', { id }]);
-  }
-
-  recargar() {
-  }
-
-  volver() {
-    this.router.navigate(["home-profesor", {}]);
-  }
-
-
 
 }

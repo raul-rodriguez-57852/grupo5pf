@@ -19,8 +19,12 @@ public class AlumnoSpecs {
     
     private static final QAlumno A = QAlumno.alumno;
     
+    public static BooleanExpression isActive() {
+        return A.isActive.eq(Boolean.TRUE);
+    }
+    
     public static BooleanExpression byTutor(Tutor tutor){
-        return A.tutor.eq(tutor);
+        return A.tutor.eq(tutor).and(A.isActive.eq(Boolean.TRUE));
     }
     
     public static BooleanExpression byCurso(Curso curso){
@@ -29,5 +33,4 @@ public class AlumnoSpecs {
 
 
 } 
-
     

@@ -1,7 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { HomeComponent } from "./components/home/home.component";
@@ -54,7 +53,7 @@ import { RealizacionCategoriasComponent } from './components/realizacion-categor
 import { CrearActividadVfComponent } from './components/crear-actividad-vf/crear-actividad-vf.component';
 import { VistaPreviaVfComponent } from './components/vista-previa-vf/vista-previa-vf.component';
 import { RealizacionVfComponent } from './components/realizacion-vf/realizacion-vf.component';
-
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
@@ -117,6 +116,7 @@ import { RealizacionVfComponent } from './components/realizacion-vf/realizacion-
     MDBBootstrapModule.forRoot(),
     ReactiveFormsModule,
     NgDragDropModule.forRoot(),
+    CommonModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }

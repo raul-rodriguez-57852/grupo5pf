@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DetalleActividad } from 'src/app/models/detalleActividad';
 import { DataApiService } from 'src/app/services/data-api.service';
 import { DataTareaService } from 'src/app/services/data-tarea.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-editar-detalle-actividad',
@@ -14,7 +15,7 @@ export class EditarDetalleActividadComponent implements OnInit {
   actividadesSelected = [];
   actividades = [];
   selectedActividad = null;
-  mensaje: string;
+  cursoId = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,6 +31,10 @@ export class EditarDetalleActividadComponent implements OnInit {
         : null;
     this.getAll();
     this.checkRepetidos();
+    this.cursoId =
+      this.route.snapshot.paramMap.get('cursoId') != null
+        ? Number(this.route.snapshot.paramMap.get('cursoId'))
+        : null;
   }
 
   getAll() {
@@ -70,7 +75,6 @@ export class EditarDetalleActividadComponent implements OnInit {
   }
 
   onChangeObj(newObj) {
-    console.log(newObj);
     this.selectedActividad = newObj;
     this.actividadesSelected.push(this.selectedActividad);
     for (let index = 0; index < this.actividades.length; index++) {
@@ -89,25 +93,26 @@ export class EditarDetalleActividadComponent implements OnInit {
       detalles.push(detalle);
     });
 
+    if (detalles.length == 0) {
+      Swal.fire("Opps", "Debes registrar una actividad antes de guardar!", "warning")
+      return;
+    }
+
     this.dataTareaService
       .guardarDetallesActividad(detalles)
       .then((respuesta) => {
-        this.mensaje = 'Detalles guardados con éxito.';
-        document.getElementById('open-modal').click();
-        //        this.recargar();
+        Swal.fire("Exitos!", "Actividad guardada con exito!", "success")
+        this.router.navigate(["curso", { id: this.cursoId}]);
       })
       .catch((respuesta) => {
-        this.mensaje = 'Error al guardar.';
-        document.getElementById('open-modal').click();
+        Swal.fire("Error!", "Se produjo un error al guardar la actividad", "error")
       });
   }
 
   nuevaActividad() {
-
     this.router.navigate([
       "crear-actividad",
       { tareaId: this.idTareaRoute },
     ]);
-
   }
 }
