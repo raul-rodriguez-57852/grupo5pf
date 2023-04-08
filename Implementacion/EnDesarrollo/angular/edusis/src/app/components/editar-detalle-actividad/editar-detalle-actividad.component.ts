@@ -22,7 +22,7 @@ export class EditarDetalleActividadComponent implements OnInit {
     private router: Router,
     private dataApiService: DataApiService,
     private dataTareaService: DataTareaService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.idTareaRoute =
@@ -45,8 +45,8 @@ export class EditarDetalleActividadComponent implements OnInit {
           this.actividadesSelected.push(element.plantilla);
         });
       });
-     
-    let idProfesor = this.dataApiService.getUsuario();  
+
+    let idProfesor = this.dataApiService.getUsuario();
     this.dataApiService.getActividadesByProfesor(idProfesor).then((res) => {
       this.actividades = res;
     });
@@ -102,7 +102,7 @@ export class EditarDetalleActividadComponent implements OnInit {
       .guardarDetallesActividad(detalles)
       .then((respuesta) => {
         Swal.fire("Exitos!", "Actividad guardada con exito!", "success")
-        this.router.navigate(["curso", { id: this.cursoId}]);
+        this.router.navigate(["curso", { id: this.cursoId }]);
       })
       .catch((respuesta) => {
         Swal.fire("Error!", "Se produjo un error al guardar la actividad", "error")
@@ -112,7 +112,7 @@ export class EditarDetalleActividadComponent implements OnInit {
   nuevaActividad() {
     this.router.navigate([
       "crear-actividad",
-      { tareaId: this.idTareaRoute },
+      { tareaId: this.idTareaRoute, cursoId: this.cursoId },
     ]);
   }
 }

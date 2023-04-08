@@ -21,6 +21,7 @@ export class CrearActividadComponent implements OnInit {
   plantilla: PlantillaPreguntas;
   actividades = null;
   idTareaRoute = null;
+  idCursoRoute = null;
 
   constructor(
     private dataApiService: DataApiService,
@@ -32,6 +33,10 @@ export class CrearActividadComponent implements OnInit {
     this.idTareaRoute =
       this.route.snapshot.paramMap.get('tareaId') != null
         ? Number(this.route.snapshot.paramMap.get('tareaId'))
+        : null;
+    this.idCursoRoute =
+      this.route.snapshot.paramMap.get('cursoId') != null
+        ? Number(this.route.snapshot.paramMap.get('cursoId'))
         : null;
 
 
@@ -52,7 +57,7 @@ export class CrearActividadComponent implements OnInit {
     if (this.idTareaRoute != null) {
       this.router.navigate([
         "crear-actividad-pasapalabra",
-        { tareaId: this.idTareaRoute },
+        { tareaId: this.idTareaRoute, cursoId: this.idCursoRoute },
       ]);
     } else {
       this.router.navigate(['crear-actividad-pasapalabra']);
@@ -64,7 +69,7 @@ export class CrearActividadComponent implements OnInit {
     if (this.idTareaRoute != null) {
       this.router.navigate([
         "crear-actividad-grilla",
-        { tareaId: this.idTareaRoute },
+        { tareaId: this.idTareaRoute, cursoId: this.idCursoRoute },
       ]);
     } else {
       this.router.navigate(['crear-actividad-grilla']);
@@ -76,7 +81,7 @@ export class CrearActividadComponent implements OnInit {
     if (this.idTareaRoute != null) {
       this.router.navigate([
         "crear-actividad-categorias",
-        { tareaId: this.idTareaRoute },
+        { tareaId: this.idTareaRoute, cursoId: this.idCursoRoute },
       ]);
     } else {
       this.router.navigate(['crear-actividad-categorias']);
@@ -88,7 +93,7 @@ export class CrearActividadComponent implements OnInit {
     if (this.idTareaRoute != null) {
       this.router.navigate([
         "crear-actividad-vf",
-        { tareaId: this.idTareaRoute },
+        { tareaId: this.idTareaRoute, cursoId: this.idCursoRoute },
       ]);
     } else {
       this.router.navigate(['crear-actividad-vf']);
@@ -111,7 +116,7 @@ export class CrearActividadComponent implements OnInit {
       if (this.idTareaRoute != null) {
         this.router.navigate([
           "editar-detalle-actividad",
-          { tareaId: this.idTareaRoute },
+          { tareaId: this.idTareaRoute, cursoId: this.idCursoRoute },
         ]);
       } else {
         window.location.reload();

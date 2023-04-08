@@ -20,6 +20,7 @@ export class CrearActividadVfComponent implements OnInit {
   pregunta: PreguntaVF;
   plantilla: PlantillaVF;
   idTareaRoute = null;
+  idCursoRoute = null;
 
 
   constructor(
@@ -33,6 +34,10 @@ export class CrearActividadVfComponent implements OnInit {
     this.idTareaRoute =
       this.route.snapshot.paramMap.get('tareaId') != null
         ? Number(this.route.snapshot.paramMap.get('tareaId'))
+        : null;
+    this.idCursoRoute =
+      this.route.snapshot.paramMap.get('cursoId') != null
+        ? Number(this.route.snapshot.paramMap.get('cursoId'))
         : null;
 
     this.plantilla = new PlantillaVF();
@@ -66,7 +71,7 @@ export class CrearActividadVfComponent implements OnInit {
       if (this.idTareaRoute != null) {
         this.router.navigate([
           "editar-detalle-actividad",
-          { tareaId: this.idTareaRoute },
+          { tareaId: this.idTareaRoute, cursoId: this.idCursoRoute },
         ]);
       } else {
         this.router.navigate([
