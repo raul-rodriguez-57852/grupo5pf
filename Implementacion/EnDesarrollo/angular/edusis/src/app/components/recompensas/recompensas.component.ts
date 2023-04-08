@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Addon } from 'src/app/models/addon';
 import { Alumno } from 'src/app/models/alumno';
 import { DataApiService } from 'src/app/services/data-api.service';
 import Swal from 'sweetalert2';
@@ -13,25 +14,25 @@ export class RecompensasComponent implements OnInit {
 
   alumnoID: number = null;
   alumno: Alumno = {
-    id: null, 
-    nombre: null, 
-    apellido: null, 
-    documento: null, 
-    tipoDocumento: null, 
-    fechaNacimiento: null, 
-    avatarUrl: null, 
-    passwordEmoji: null, 
-    tutorId: null, 
-    saldoEstrellas: null, 
-    mapRecompensas: null, 
+    id: null,
+    nombre: null,
+    apellido: null,
+    documento: null,
+    tipoDocumento: null,
+    fechaNacimiento: null,
+    avatarUrl: null,
+    passwordEmoji: null,
+    tutorId: null,
+    saldoEstrellas: null,
+    mapRecompensas: null,
     isActive: true,
     recompensas: [],
     listRecompensasComprada: [],
     listRecompensasEquipada: []
   };
   addons = [];
-  listRecompensasComprada = [];
-  listRecompensasEquipada = [];
+  listRecompensasComprada: Addon[] = [];
+  listRecompensasEquipada: Addon[] = [];
 
   constructor(private dataApiService: DataApiService, private router: Router, private route: ActivatedRoute) {
     // Las siguientes tres lineas son para que recargue, sino al ser la misma pagina no recarga
@@ -120,7 +121,7 @@ export class RecompensasComponent implements OnInit {
 
   async selectAddon(addon: any) {
     // Verificamos si el item esta dentro de la lista de comprados pero no equipados por el alumno
-    if (this.listRecompensasComprada.includes(addon.id)) {
+    if (this.isComprado(addon)) {
       // Consultamos si desea equipar
       const { value: respuesta } = await Swal.fire({
         title: '¿Desea equipar el item seleccionado?',
@@ -139,7 +140,7 @@ export class RecompensasComponent implements OnInit {
 
     } else {
       // Verificamos si el item esta dentro de la lista de comprados y equipados por el alumno
-      if (this.listRecompensasEquipada.includes(addon.id)) {
+      if (this.isEquipado(addon)) {
         // Consultamos si desea desequipar
         const { value: respuesta } = await Swal.fire({
           title: '¿Desea desequipar el item seleccionado?',

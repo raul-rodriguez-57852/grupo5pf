@@ -3,10 +3,10 @@
     overflow: hidden;
     position: relative;
     text-align: center;
-    color: white;
+    color: black;
   }
   
-  .casa {
+  .recuadro {
     height: 100px;
     position: sticky;
     bottom: 20px;
@@ -21,12 +21,39 @@
   
   .centered {
     font-size: x-large;
-    text-shadow: 3px 3px 5px black;
+    text-shadow:
+      -1px -1px 0 #fff,
+      1px -1px 0 #fff,
+      -1px 1px 0 #fff,
+      1px 1px 0 #fff;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
   }
+
+  .top {
+    font-size: x-large;
+    text-shadow:
+      -1px -1px 0 #fff,
+      1px -1px 0 #fff,
+      -1px 1px 0 #fff,
+      1px 1px 0 #fff;
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .lowRow {
+    height: 100px;
+    width: calc(100% - (2 * (1em + 1vw)));
+    position: fixed;
+    margin: calc(1vw + 1rem);
+    bottom: 0;
+    left: 0;
+  }
+
   
   /* Draggable*/
   

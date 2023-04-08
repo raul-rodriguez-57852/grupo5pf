@@ -22,7 +22,7 @@
     <div
       *ngFor="
         let tarea of tareasFiltradas
-          | slice: (page - 1) * pageSize:page * pageSize
+          | slice : (page - 1) * pageSize : page * pageSize
       "
     >
       <!--| callback: filterMateria -->
@@ -36,16 +36,18 @@
           <div class="centered">{{ tarea.asignatura }}</div>
         </div>
         <div
-          [ngClass]="tarea.puntaje == null ? 'card-body' : 'card-body realizada'">
-
+          [ngClass]="
+            tarea.puntaje == null ? 'card-body' : 'card-body realizada'
+          "
+        >
           <div class="flex-container">
-              <div class="tareaNombre">
-                <h5 class="card-title">{{ tarea.nombre }}</h5>
-              </div>
-              <div class="fechaVencimiento flex-container">
-                <span>{{ tarea.fechaLimite | date: "dd/MM/yyyy"}}</span>
-                <i class="fa fa-calendar iconoCalendario"></i>
-              </div>
+            <div class="tareaNombre">
+              <h5 class="card-title">{{ tarea.nombre }}</h5>
+            </div>
+            <div class="fechaVencimiento flex-container">
+              <span>{{ tarea.fechaLimite | date : "dd/MM/yyyy" }}</span>
+              <i class="fa fa-calendar iconoCalendario"></i>
+            </div>
           </div>
           <label class="rating-label">
             <input
@@ -58,22 +60,28 @@
               value="{{ tarea.puntaje / 20 }}"
             />
           </label>
-          <div id="botonTareaYLabel"> 
+          <div id="botonTareaYLabel">
             <div id="tareaSinRealizar" *ngIf="!tarea.puntaje">
               <div class="flex-container">
                 <div class="botonTarea">
-                  <button type="button" class="btn btn-personalizado-inverso">Iniciar tarea</button>
+                  <button type="button" class="btn btn-personalizado-inverso">
+                    Iniciar tarea
+                  </button>
                 </div>
                 <div class="tareaSinRealizar flex-container">
-                  <span>Vence: {{ tarea.fechaLimite | date: "dd/MM/yyyy"}}</span>
+                  <span
+                    >Vence: {{ tarea.fechaLimite | date : "dd/MM/yyyy" }}</span
+                  >
                   <i class="fa fa-calendar iconoCalendario"></i>
                 </div>
-            </div>
+              </div>
             </div>
             <div id="tareaRealizada" *ngIf="tarea.puntaje">
               <div class="flex-container">
                 <div class="botonTarea">
-                  <button type="button" class="btn btn-personalizado-inverso">Reintentar tarea</button>
+                  <button type="button" class="btn btn-personalizado-inverso">
+                    Reintentar tarea
+                  </button>
                 </div>
                 <div class="tareaRealizada flex-container">
                   <span>Tarea realizada</span>
@@ -102,14 +110,14 @@
       class="d-flex justify-content-center"
     >
     </ngb-pagination>
+    <button
+      (click)="volverACursos()"
+      class="btn btn-lg btn-block btn-personalizado-inverso"
+    >
+      Volver
+    </button>
     <!--       </ul> -->
   </div>
-  <button
-    (click)="volverACursos()"
-    class="btn btn-lg btn-block btn-personalizado-inverso"
-  >
-    Volver
-  </button>
 </section>
 
 <!-- Modal -->

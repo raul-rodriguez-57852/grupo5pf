@@ -3,12 +3,19 @@
   <div class="container" style="padding-top: 90px">
     <div
       class="col-sm-12 d-flex justify-content-center"
-      style="margin-bottom: 10px; height: 180px;"
+      style="margin-bottom: 10px; height: 180px"
     >
-
-      <img class="imagen-avatar" style="z-index: 10;" src="{{ alumno.avatarUrl }}" />
-      <img class="imagen-avatar-addons" [style.z-index]="addon.tipo.profundidad" *ngFor="let addon of listRecompensasEquipada" src="{{ addon.iconoURL }}"/>  
-
+      <img
+        class="imagen-avatar"
+        style="z-index: 10"
+        src="{{ alumno.avatarUrl }}"
+      />
+      <img
+        class="imagen-avatar-addons"
+        [style.z-index]="addon.tipo.profundidad"
+        *ngFor="let addon of listRecompensasEquipada"
+        src="{{ addon.iconoURL }}"
+      />
     </div>
     <div class="col-sm-12 d-flex justify-content-center">
       <div class="nombre">
@@ -60,7 +67,7 @@
       </div>
     </div>
   </div>
-  <!-- <button type="button" (click)="cargarAddons()" class="btn btn-lg btn-light">
+  <button type="button" (click)="cargarAddons()" class="btn btn-lg btn-light">
     Cargar addons
-  </button> -->
+  </button>
 </section>
