@@ -11,7 +11,6 @@ import com.edusis.apirest.service.AddonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 /**
@@ -27,12 +26,38 @@ public class CargaInicialUtils implements ApplicationListener<ApplicationReadyEv
     @Override
     public void onApplicationEvent(final ApplicationReadyEvent event) {
         if (addonService.getAll().size() < 1) {
-            Addon addon = new Addon();
-            addon.setNombre("Camiseta Boca");
-            addon.setCosto(5);
-            addon.setTipo(TipoAddon.CAMISETA);
-            addonService.save(addon);
-            System.out.println("Addons cargados");
+            for (int i = 1; i < 4; i++) {
+                Addon addon = new Addon();
+                addon.setNombre(String.valueOf(i));
+                addon.setIconoURL("assets/img/addons/anteojos-" + i + ".png");
+                addon.setTipo(TipoAddon.ANTEOJOS);
+                addon.setCosto(i * 2);
+                addonService.save(addon);
+            }
+            for (int i = 1; i < 7; i++) {
+                Addon addon = new Addon();
+                addon.setNombre(String.valueOf(i));
+                addon.setIconoURL("assets/img/addons/casaca-" + i + ".png");
+                addon.setTipo(TipoAddon.CAMISETA);
+                addon.setCosto(i * 2);
+                addonService.save(addon);
+            }
+            for (int i = 1; i < 7; i++) {
+                Addon addon = new Addon();
+                addon.setNombre(String.valueOf(i));
+                addon.setIconoURL("assets/img/addons/fondo-" + i + ".png");
+                addon.setTipo(TipoAddon.FONDO);
+                addon.setCosto(i * 2);
+                addonService.save(addon);
+            }
+            for (int i = 1; i < 4; i++) {
+                Addon addon = new Addon();
+                addon.setNombre(String.valueOf(i));
+                addon.setIconoURL("assets/img/addons/gorra-" + i + ".png");
+                addon.setTipo(TipoAddon.SOMBRERO);
+                addon.setCosto(i * 2);
+                addonService.save(addon);
+            }
         }
     }
     

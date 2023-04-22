@@ -49,17 +49,12 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.*;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
-import java.util.Set;
-import java.util.stream.Collectors;
+
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -149,14 +144,30 @@ public class ApiController {
     }
 
     @GetMapping("curso")
-    public Curso getCurso(@RequestParam Long id) {
-        return cursoService.get(id);
+    public CursoDto getCurso(@RequestParam Long id) {
+        Curso curso = cursoService.get(id);
+        CursoDto cursoDto = new CursoDto();
+        cursoDto.setId(curso.getId());
+        cursoDto.setNombre(curso.getNombre());
+        cursoDto.setCreadorId(curso.getCreador().getId());
+        cursoDto.setImagen(new String(curso.getImagen(), StandardCharsets.UTF_8));
+        return cursoDto;
     }
 
     @GetMapping("getCursosByProfesor")
-    public List<Curso> getCursosByProfesor(@RequestParam Long id) {
+    public List<CursoDto> getCursosByProfesor(@RequestParam Long id) {
         Profesor profe = profesorService.get(id);
-        return cursoService.getAll(CursoSpecs.byProfesor(profe));
+        List<Curso> cursos = cursoService.getAll(CursoSpecs.byProfesor(profe));
+        List<CursoDto> cursosDto = new ArrayList<>();
+        cursos.forEach(curso -> {
+            CursoDto cursoDto = new CursoDto();
+            cursoDto.setId(curso.getId());
+            cursoDto.setNombre(curso.getNombre());
+            cursoDto.setCreadorId(curso.getCreador().getId());
+            cursoDto.setImagen(new String(curso.getImagen(), StandardCharsets.UTF_8));
+            cursosDto.add(cursoDto);
+        });
+        return cursosDto;
     }
 
     @GetMapping("asignatura")
@@ -333,7 +344,7 @@ public class ApiController {
     public ResponseEntity<Long> guardarCurso(@RequestBody CursoDto cursoDto) {
         Curso curso = cursoDto.getId() != null ? cursoService.get(cursoDto.getId()) : new Curso();
         curso.setNombre(cursoDto.getNombre());
-        curso.setIconoURL(cursoDto.getIconoURL());
+        curso.setImagen(cursoDto.getImagen().getBytes());
         Profesor profe = profesorService.get(cursoDto.getCreadorId());
         curso.setCreador(profe);
         curso.setCodigo(null);
@@ -842,43 +853,6 @@ public class ApiController {
         plantilla.setPuntajeMaximo(plantilla.getPreguntas().size());
         plantilla.validar();
         plantillaVFService.save(plantilla);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-    
-    @PostMapping("cargarAddons")
-    public ResponseEntity<Long> cargarAddons() {
-        for (int i = 1; i < 4; i++) {
-            Addon addon = new Addon();
-            addon.setNombre(String.valueOf(i));
-            addon.setIconoURL("assets/img/addons/anteojos-" + i + ".png");
-            addon.setTipo(TipoAddon.ANTEOJOS);
-            addon.setCosto(i * 2);
-            addonService.save(addon);
-        }
-        for (int i = 1; i < 7; i++) {
-            Addon addon = new Addon();
-            addon.setNombre(String.valueOf(i));
-            addon.setIconoURL("assets/img/addons/casaca-" + i + ".png");
-            addon.setTipo(TipoAddon.CAMISETA);
-            addon.setCosto(i * 2);
-            addonService.save(addon);
-        }
-        for (int i = 1; i < 7; i++) {
-            Addon addon = new Addon();
-            addon.setNombre(String.valueOf(i));
-            addon.setIconoURL("assets/img/addons/fondo-" + i + ".png");
-            addon.setTipo(TipoAddon.FONDO);
-            addon.setCosto(i * 2);
-            addonService.save(addon);
-        }
-        for (int i = 1; i < 4; i++) {
-            Addon addon = new Addon();
-            addon.setNombre(String.valueOf(i));
-            addon.setIconoURL("assets/img/addons/gorra-" + i + ".png");
-            addon.setTipo(TipoAddon.SOMBRERO);
-            addon.setCosto(i * 2);
-            addonService.save(addon);
-        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -13,7 +13,7 @@ public class CursoDto {
     
     private Long id;
     private String nombre;
-    private String iconoURL;
+    private String imagen;
     private Long creadorId;
     private String codigo;
 
@@ -41,12 +41,12 @@ public class CursoDto {
         this.nombre = nombre;
     }
 
-    public String getIconoURL() {
-        return iconoURL;
+    public String getImagen() {
+        return imagen;
     }
 
-    public void setIconoURL(String iconoURL) {
-        this.iconoURL = iconoURL;
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     public Long getCreadorId() {
