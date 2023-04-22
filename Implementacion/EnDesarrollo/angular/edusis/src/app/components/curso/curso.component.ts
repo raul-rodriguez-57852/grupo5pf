@@ -110,9 +110,9 @@ export class CursoComponent implements OnInit {
       confirmButtonText: 'Si!'
     }).then(async (result) => {
       if (result.isConfirmed) {
-        this.dataApiService.eliminarAsignatura(id);
+        await this.dataApiService.eliminarAsignatura(id);
         Swal.fire(
-          'Asignatura Eliminada Excitosamente!',
+          'Asignatura Eliminada exitosamente!',
           asignaturaNombre + ' ha sido eliminada',
           'success'
         );
@@ -134,7 +134,7 @@ export class CursoComponent implements OnInit {
       if (result.isConfirmed) {
         this.dataTareaService.eliminarTarea(tareaId.toString());
         Swal.fire(
-          'Tarea Eliminada Excitosamente!',
+          'Tarea Eliminada exitosamente!',
           tareaNombre + ' ha sido eliminada',
           'success'
         );

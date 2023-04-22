@@ -217,7 +217,7 @@ import { DataTareaService } from 'src/app/services/data-tarea.service';
         if (result.isConfirmed) {
           this.dataApiService.eliminarAlumno(alumnoId);
           Swal.fire(
-            'Alumno Eliminado Excitosamente!',
+            'Alumno Eliminado exitosamente!',
             alumnoNombre + ' ha sido eliminado',
             'success'
           );

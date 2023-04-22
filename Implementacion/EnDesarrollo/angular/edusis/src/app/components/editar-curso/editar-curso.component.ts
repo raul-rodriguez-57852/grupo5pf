@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataApiService } from '../../services/data-api.service';
 import { NgForm } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-editar-curso',
@@ -23,7 +24,8 @@ export class EditarCursoComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private dataApiService: DataApiService
+    private dataApiService: DataApiService,
+    private clipboard: Clipboard
   ) { }
 
   ngOnInit() {
@@ -143,62 +145,12 @@ export class EditarCursoComponent implements OnInit {
         (<HTMLInputElement>document.getElementById('contenedor-codigo')).value = this.curso.codigo;  
   }
     
-  copiarTexto(estecurso: Curso){
-      //El texto que va a ser copiado al portapapeles
-      var theText = estecurso.codigo.toString();
-
-      //creo un div vacio
-      var hiddenCopy = document.createElement('div');
-      //seteo el innerHTML del div
-      hiddenCopy.innerHTML = theText;
-      //seteo la position para que sea absolute & afuera de la pantalla
-      hiddenCopy.style.position = 'absolute';
-      hiddenCopy.style.left = '-9999px';
-
-      //checko si el usuario tiene algun rango ya previo de seleccion
-      var currentRange;
-      if(document.getSelection().rangeCount > 0)
-      {
-          //lo tiene, entonces lo guardo
-          currentRange = document.getSelection().getRangeAt(0);
-          //elimino la seleccion que tiene 
-          window.getSelection().removeRange(currentRange);
-      }
-      else
-      {
-          //No habia nada seleccionado
-         currentRange = false;
-      }
-
-    //agrego el div al body
-    document.body.appendChild(hiddenCopy);
-    //creo un nuevo rango de seleccion
-    var CopyRange = document.createRange();
-    //seteo el rango al div
-    CopyRange.selectNode(hiddenCopy);
-    //agrego el copyRange
-    window.getSelection().addRange(CopyRange);
-
-    //uso try porque no todos lo navegadores lo soportan
-    try
-    {
-          //copio el texto
-          document.execCommand('copy');
-    }
-    catch(err)
-    {
-        window.alert("Your Browser Doesn't support this! Error : " + err);
-    }
-    //elimino el rango de seleccion
-    window.getSelection().removeRange(CopyRange);
-    //elimino el  hidden div
-    document.body.removeChild(hiddenCopy);
-    //devuelvo el rango de seleccion viejo
-    if(currentRange)
-    {
-          window.getSelection().addRange(currentRange);
-    }
-    alert("Codigo de invitacion copiado en portapapeles \nCodigo: " + estecurso.codigo.toString());
-}
-
+  copiarTexto(texto: string) {
+    this.clipboard.copy(texto);
+    Swal.fire(
+      "¡Código de invitación copiado!",
+      "Código: " + texto,
+      "success"
+    )
+  }
 }

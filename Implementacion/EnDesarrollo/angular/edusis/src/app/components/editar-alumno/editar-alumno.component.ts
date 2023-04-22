@@ -150,7 +150,7 @@ export class EditarAlumnoComponent implements OnInit {
       (respuesta) => {
         Swal.fire(
           this.alumno.nombre,
-          'Creado con exito! :)',
+          '¡Bienvenido!',
           'success'
         );
         this.dataApiService.setUser(idtutor, this.dataApiService.getTutorType());

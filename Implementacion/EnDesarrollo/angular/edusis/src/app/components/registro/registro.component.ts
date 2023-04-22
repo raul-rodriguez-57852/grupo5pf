@@ -159,7 +159,7 @@ export class RegistroComponent implements OnInit {
         Swal.fire({
           position: 'center',
           icon: 'success',
-          title: 'Tutor creado con exito!',
+          title: '¡Tutor creado con éxito!',
           showConfirmButton: false,
           timer: 1500
         })
@@ -185,7 +185,7 @@ export class RegistroComponent implements OnInit {
         Swal.fire({
           position: 'center',
           icon: 'success',
-          title: 'Profesor creado con exito!',
+          title: '¡Profesor creado con éxito!',
           showConfirmButton: false,
           timer: 1500
         })

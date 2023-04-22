@@ -1,7 +1,7 @@
 export class Asignatura {
   id: number;
   nombre: string;
-  iconoURL: string;
+  imagen: string;
   creadorId: number;
   cursoId: number;
 }

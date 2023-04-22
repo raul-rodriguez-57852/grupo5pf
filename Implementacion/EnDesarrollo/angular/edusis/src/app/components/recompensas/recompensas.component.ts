@@ -84,15 +84,6 @@ export class RecompensasComponent implements OnInit {
 
   }
 
-  cargarAddons() {
-    this.dataApiService.cargarAddons().then(
-      (respuesta) => {
-        console.log(respuesta);
-
-      });
-
-  }
-
   actualizarAddons() {
     this.listRecompensasComprada = [];
     this.listRecompensasEquipada = [];

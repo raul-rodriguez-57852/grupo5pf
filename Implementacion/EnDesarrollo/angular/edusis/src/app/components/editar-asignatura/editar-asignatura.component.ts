@@ -13,12 +13,14 @@ import Swal from 'sweetalert2';
 
 export class EditarAsignaturaComponent implements OnInit {
 
-  asignatura: Asignatura = { id: null, nombre: null, iconoURL: null, creadorId: null, cursoId: null };
+  asignatura: Asignatura = { id: null, nombre: null, imagen: null, creadorId: null, cursoId: null };
+  files = null;
+  imagen = null;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private dataApiService: DataApiService
+    private dataApiService: DataApiService,
   ) { }
 
   ngOnInit() {
@@ -29,21 +31,31 @@ export class EditarAsignaturaComponent implements OnInit {
       this.dataApiService.getAsignatura(this.asignatura.id.toString()).then(
         (asignatura) => {
           this.asignatura.nombre = asignatura.nombre;
-          this.asignatura.iconoURL = asignatura.iconoURL;
-          this.asignatura.cursoId = asignatura.curso.id;
-          this.asignatura.creadorId = asignatura.creador.id;
+          this.asignatura.imagen = asignatura.imagen;
+          this.asignatura.cursoId = asignatura.cursoId;
+          this.asignatura.creadorId = asignatura.creadorId;
         }
       );
     }
   }
 
-  save(formAsignatura: NgForm) {
+  onFileChanged(event: any) {
+    this.files = event.target.files;
+    const reader = new FileReader();
+    reader.readAsDataURL(this.files[0]);
+    reader.onload = (e) => {
+      this.imagen = e.target.result;
+      this.asignatura.imagen = this.imagen;
+    }
+  }
+
+  async save(formAsignatura: NgForm) {
     this.asignatura.creadorId = this.dataApiService.getUsuario();
-    this.dataApiService.guardarAsignatura(this.asignatura).then(
+    await this.dataApiService.guardarAsignatura(this.asignatura).then(
       (respuesta) => {
         Swal.fire(
           'Hurra!',
-          'Asignatuda guardada con exito!',
+          '¡Asignatura guardada con éxito!',
           'success'
         );
       }

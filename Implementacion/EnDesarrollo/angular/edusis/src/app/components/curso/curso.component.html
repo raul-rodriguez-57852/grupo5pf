@@ -44,14 +44,16 @@
         <div class="contenedorImagenCard" (click)="seleccionarAsignatura(asignatura)">
           <img
             class="card-img-top imagenCard"
-            src="{{ asignatura.iconoURL }}"
+            src="{{ asignatura.imagen }}"
             alt="Card image cap"
           />
           <div class="centered">{{ asignatura.nombre }}</div>
         </div>
-        <div class="box">
+        <div class="box" style="margin-bottom: 5px;">
           <div class="cardText">
-            <p  style="padding: 5px;" class="card-text text-muted">Accede y controla la asignatura: {{asignatura.nombre}}</p>
+            <p style="padding: 5px; padding-top:7px;" class="card-text text-muted">
+              Opciones
+            </p>
           </div>
           <div class="actionButtons btn-group btn-group-sm" role="group">
             <button type="button" (click)="editar(asignatura.id)" class="btn btn-info"><i class="fa fa-edit"></i></button>

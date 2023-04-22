@@ -27,7 +27,7 @@ export class DataApiService {
   
 
   constructor(private http: HttpClient) {
-    this.urlBase = "http://localhost:8090/api/";
+    this.urlBase = "http://192.168.0.253:8090/api/";
     this.findUser();
   }
 
@@ -358,10 +358,6 @@ export class DataApiService {
 
   crearActividadVF(plantilla: PlantillaVF): Promise<any> {
     return this.http.post(this.urlBase + 'crearActividadVF', plantilla).toPromise();
-  }
-
-  cargarAddons(): Promise<any> {
-    return this.http.post(this.urlBase + 'cargarAddons', null).toPromise();
   }
 
   getAddons(): Promise<any> {
