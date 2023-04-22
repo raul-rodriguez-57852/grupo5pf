@@ -6,8 +6,10 @@
 package com.edusis.apirest.utils;
 
 import com.edusis.apirest.domain.Addon;
+import com.edusis.apirest.domain.Emoji;
 import com.edusis.apirest.domain.TipoAddon;
 import com.edusis.apirest.service.AddonService;
+import com.edusis.apirest.service.EmojiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
@@ -22,7 +24,9 @@ public class CargaInicialUtils implements ApplicationListener<ApplicationReadyEv
     
     @Autowired
     private AddonService addonService;
-    
+    @Autowired
+    private EmojiService emojiService;
+
     @Override
     public void onApplicationEvent(final ApplicationReadyEvent event) {
         if (addonService.getAll().size() < 1) {
@@ -59,6 +63,15 @@ public class CargaInicialUtils implements ApplicationListener<ApplicationReadyEv
                 addonService.save(addon);
             }
         }
+        if (emojiService.getAll().size() < 1) {
+            for (int i = 1; i < 9; i++) {
+                Emoji emoji = new Emoji();
+                emoji.setNombre(String.valueOf(i));
+                emoji.setIconoURL("assets/img/emojis/" + i + ".png");
+                emojiService.save(emoji);
+            }
+        }
+
     }
     
 }

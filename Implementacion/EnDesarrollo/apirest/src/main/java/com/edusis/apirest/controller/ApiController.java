@@ -151,6 +151,7 @@ public class ApiController {
         cursoDto.setNombre(curso.getNombre());
         cursoDto.setCreadorId(curso.getCreador().getId());
         cursoDto.setImagen(new String(curso.getImagen(), StandardCharsets.UTF_8));
+        cursoDto.setCodigo(curso.getCodigo());
         return cursoDto;
     }
 
@@ -165,6 +166,7 @@ public class ApiController {
             cursoDto.setNombre(curso.getNombre());
             cursoDto.setCreadorId(curso.getCreador().getId());
             cursoDto.setImagen(new String(curso.getImagen(), StandardCharsets.UTF_8));
+            cursoDto.setCodigo(curso.getCodigo());
             cursosDto.add(cursoDto);
         });
         return cursosDto;
