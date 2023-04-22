@@ -122,7 +122,7 @@ public class Curso extends SoftDeleteEntity {
     }
     
     /**
-    * @param  Alumno an Alumno object that will be added to Curso
+    * @param alumno an Alumno object that will be added to Curso
     * @return      the Curso object itself so it can ve saved by its Service
     */
     public Curso agregarAlumnoAlCurso(Alumno alumno) {
@@ -139,7 +139,7 @@ public class Curso extends SoftDeleteEntity {
     }
     
     /**
-    * @param  Profesor a Profesor object that will be added to Curso
+    * @param profe a Profesor object that will be added to Curso
     * @return      the Curso object itself so it can ve saved by its Service
     */
     public Curso agregarProfesorAlCurso(Profesor profe) {
@@ -156,7 +156,7 @@ public class Curso extends SoftDeleteEntity {
     }
     
     /**
-    * @param  Asignatura a Asignatura object that will be added to Curso
+    * @param asignatura an Asignatura object that will be added to Curso
     * @return      the Curso object itself so it can ve saved by its Service
     */
     public Curso agregarAsignaturaAlCurso(Asignatura asignatura) {
