@@ -216,8 +216,13 @@ public class TareaController {
                     }
                 }
             }
-            float porcentaje = alumnosRealizado * 100 / totalAlumnos;
-                    
+            float porcentaje;
+            try {
+                porcentaje = alumnosRealizado * 100 / totalAlumnos;
+            } catch (ArithmeticException exception) {
+                porcentaje = 0;
+            }
+
             p.addProperty("porcentajeRealizacion", porcentaje);
             Long fechaLimite = tarea.getFechaLimite() == null ? null: tarea.getFechaLimite().getTimeInMillis();
             p.addProperty("fechaLimite",fechaLimite);
