@@ -11,13 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -35,9 +29,11 @@ public class Asignatura extends SoftDeleteEntity {
     
     @NotNull
     private String nombre;
-    
-    private String iconoURL;
-    
+
+    @JsonIgnore
+    @Lob
+    private byte[] imagen;
+
     @NotNull
     @ManyToOne
     private Profesor creador;
@@ -83,12 +79,12 @@ public class Asignatura extends SoftDeleteEntity {
         this.nombre = nombre;
     }
 
-    public String getIconoURL() {
-        return iconoURL;
+    public byte[] getImagen() {
+        return imagen;
     }
 
-    public void setIconoURL(String iconoURL) {
-        this.iconoURL = iconoURL;
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
     }
 
     public List<Profesor> getProfesores() {
@@ -108,7 +104,7 @@ public class Asignatura extends SoftDeleteEntity {
     }
     
     /**
-    * @param  Profesor a Profesor object that will be added to Asignatura
+    * @param profe a Profesor object that will be added to Asignatura
     * @return the Asignatura object itself so it can ve saved by its Service
     */
     public Asignatura agregarProfesorToAsignatura(Profesor profe) {

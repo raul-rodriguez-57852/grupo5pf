@@ -5,10 +5,6 @@
  */
 package com.edusis.apirest.service.dto;
 
-import com.edusis.apirest.domain.Curso;
-import com.edusis.apirest.domain.Profesor;
-import java.util.List;
-
 /**
  *
  * @author Manuel
@@ -18,7 +14,7 @@ public class AsignaturaDto {
     private Long id;
     private String nombre;
     private Long cursoId;
-    private String iconoURL;
+    private String imagen;
     private Long creadorId;
     
     public Long getId() {
@@ -53,11 +49,11 @@ public class AsignaturaDto {
         this.creadorId = creadorId;
     }
 
-    public String getIconoURL() {
-        return iconoURL;
+    public String getImagen() {
+        return imagen;
     }
 
-    public void setIconoURL(String iconoURL) {
-        this.iconoURL = iconoURL;
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 }

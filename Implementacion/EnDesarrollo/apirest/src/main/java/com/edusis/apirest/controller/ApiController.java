@@ -173,8 +173,15 @@ public class ApiController {
     }
 
     @GetMapping("asignatura")
-    public Asignatura getAsignatura(@RequestParam Long id) {
-        return asignaturaService.get(id);
+    public AsignaturaDto getAsignatura(@RequestParam Long id) {
+        Asignatura asignatura = asignaturaService.get(id);
+        AsignaturaDto asignaturaDto = new AsignaturaDto();
+        asignaturaDto.setId(asignatura.getId());
+        asignaturaDto.setNombre(asignatura.getNombre());
+        asignaturaDto.setCreadorId(asignatura.getCreador().getId());
+        asignaturaDto.setCursoId(asignatura.getCurso().getId());
+        asignaturaDto.setImagen(new String(asignatura.getImagen(), StandardCharsets.UTF_8));
+        return asignaturaDto;
     }
 
     @DeleteMapping("eliminarEmoji")
@@ -418,7 +425,7 @@ public class ApiController {
     public ResponseEntity<Long> guardarAsignatura(@RequestBody AsignaturaDto asignaturaDto) {
         Asignatura asignatura = asignaturaDto.getId() != null ? asignaturaService.get(asignaturaDto.getId()) : new Asignatura();
         asignatura.setNombre(asignaturaDto.getNombre());
-        asignatura.setIconoURL(asignaturaDto.getIconoURL());
+        asignatura.setImagen(asignaturaDto.getImagen().getBytes());
         Profesor profe = profesorService.get(asignaturaDto.getCreadorId());
         asignatura.setCreador(profe);
         Curso curso = cursoService.get(asignaturaDto.getCursoId());
@@ -442,16 +449,39 @@ public class ApiController {
     }
 
     @GetMapping("asignaturas")
-    public List<Asignatura> getAsignaturas(@RequestParam Long cursoId) {
+    public List<AsignaturaDto> getAsignaturas(@RequestParam Long cursoId) {
         Curso curso = cursoService.get(cursoId);
-        return asignaturaService.getAll(AsignaturaSpecs.byCurso(curso));
+        List<Asignatura> asignaturas = asignaturaService.getAll(AsignaturaSpecs.byCurso(curso));
+        List<AsignaturaDto> asignaturasDto = new ArrayList<>();
+        asignaturas.forEach(asignatura -> {
+            AsignaturaDto asignaturaDto = new AsignaturaDto();
+            asignaturaDto.setId(asignatura.getId());
+            asignaturaDto.setNombre(asignatura.getNombre());
+            asignaturaDto.setCreadorId(asignatura.getCreador().getId());
+            asignaturaDto.setCursoId(asignatura.getCurso().getId());
+            asignaturaDto.setImagen(new String(asignatura.getImagen(), StandardCharsets.UTF_8));
+            asignaturasDto.add(asignaturaDto);
+        });
+        return asignaturasDto;
     }
 
     @GetMapping("asignaturasByCreador")
-    public List<Asignatura> getAsignaturasByCreador(@RequestParam Long cursoId, @RequestParam Long creadorId) {
+    public List<AsignaturaDto> getAsignaturasByCreador(@RequestParam Long cursoId, @RequestParam Long creadorId) {
         Curso curso = cursoService.get(cursoId);
         Profesor profe = profesorService.get(creadorId);
-        return asignaturaService.getAll(AsignaturaSpecs.byCurso(curso).and(AsignaturaSpecs.byCreador(profe)));
+        List<Asignatura> asignaturas = asignaturaService.getAll(AsignaturaSpecs.byCurso(curso).and(AsignaturaSpecs.byCreador(profe)));
+        List<AsignaturaDto> asignaturasDto = new ArrayList<>();
+        asignaturas.forEach(asignatura -> {
+            AsignaturaDto asignaturaDto = new AsignaturaDto();
+            asignaturaDto.setId(asignatura.getId());
+            asignaturaDto.setNombre(asignatura.getNombre());
+            asignaturaDto.setCreadorId(asignatura.getCreador().getId());
+            asignaturaDto.setCursoId(asignatura.getCurso().getId());
+            asignaturaDto.setImagen(new String(asignatura.getImagen(), StandardCharsets.UTF_8));
+            asignaturasDto.add(asignaturaDto);
+        });
+        return asignaturasDto;
+
     }
 
     @GetMapping("cursos")
