@@ -1,0 +1,25 @@
+/* Hide the original input file element 
+input[type="file"] {
+  display: none;
+}*/
+
+input[type=file]::file-selector-button {
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  background-color: #13334c  !important;
+  box-shadow: 0 6px 0 #061e31;
+  color: #ffffff;
+}
+
+input[type=file]::file-selector-button:hover {
+  background-color: #204d70 !important;
+  color: #ffffff !important;
+}
+
+input[type='file'] {
+  width: 100%;
+  overflow:hidden;
+  color: transparent;
+}

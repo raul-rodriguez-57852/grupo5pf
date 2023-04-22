@@ -60,7 +60,7 @@ export class CursoComponent implements OnInit {
     await this.dataTareaService.getTareaByAsignatura(asignaturaid).then((tareas) => {
       tareas.forEach(tarea => {
         const random = Math.floor(Math.random() * colores.length);
-        tarea['color'] = 'background-color: ' + colores[random];
+        tarea['color'] = colores[random];
       });
       this.tareas = tareas;
     });

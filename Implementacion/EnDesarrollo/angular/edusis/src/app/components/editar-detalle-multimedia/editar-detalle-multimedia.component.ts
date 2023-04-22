@@ -74,22 +74,7 @@ export class EditarDetalleMultimediaComponent implements OnInit {
     this.dataTareaService
       .guardarDetalleMultimedia(this.detalle)
       .then((respuesta) => {
-        Swal.fire({
-          title: "Exitos!",
-          text: "Detalle tarea fue guardado con exito!",
-          icon: 'success',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonText: 'Volver al curso',
-          confirmButtonText: 'Agregar Actividades!',
-          reverseButtons: true
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.agregarActividades()
-          } else if (result.dismiss === Swal.DismissReason.cancel) {
-            this.router.navigate(["curso", { id: this.cursoId}]);
-          }
-        })
+        this.agregarActividades()
       })
       .catch((respuesta) => {
         Swal.fire(
@@ -118,12 +103,17 @@ export class EditarDetalleMultimediaComponent implements OnInit {
   }
 
   getVideoId(link: string): string {
-    var video_id = link.split("v=")[1];
-    var ampersandPosition = video_id.indexOf("&");
-    if (ampersandPosition != -1) {
-      video_id = video_id.substring(0, ampersandPosition);
+    if (link.includes("youtu.be")) {
+      var video_id = link.split(".be/")[1];
+      return video_id;
+    } else {
+      var video_id = link.split("v=")[1];
+      var ampersandPosition = video_id.indexOf("&");
+      if (ampersandPosition != -1) {
+        video_id = video_id.substring(0, ampersandPosition);
+      }
+      return video_id;  
     }
-    return video_id;
   }
 
   onFileChanged(event: any) {

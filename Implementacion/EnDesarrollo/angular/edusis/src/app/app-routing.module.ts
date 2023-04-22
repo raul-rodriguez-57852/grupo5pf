@@ -99,7 +99,8 @@ const routes: Routes = [
 @NgModule({
   // este cambio es para que recargue la página si recibe la misma
   imports: [RouterModule.forRoot(routes, {
-    onSameUrlNavigation: 'reload'
+    onSameUrlNavigation: 'reload',
+    scrollPositionRestoration: 'top'
   })],
   exports: [RouterModule],
 })

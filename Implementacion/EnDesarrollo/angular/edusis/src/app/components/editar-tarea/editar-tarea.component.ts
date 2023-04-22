@@ -103,22 +103,7 @@ export class EditarTareaComponent implements OnInit {
       .guardarTarea(this.tarea)
       .then((respuesta) => {
         this.tarea.id = respuesta;
-        Swal.fire({
-          title: "Hurra!",
-          text: "La tarea '" + this.tarea.nombre + "' fue creada con exito!",
-          icon: 'success',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonText: 'Volver al curso',
-          confirmButtonText: 'Agregar descripcion',
-          reverseButtons: true
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.router.navigate(["editar-detalle-multimedia", { tareaId: this.tarea.id, cursoId: this.cursoId }]);
-          } else if (result.dismiss === Swal.DismissReason.cancel) {
-            this.router.navigate(["curso", { id: this.cursoId}]);
-          }
-        })
+        this.router.navigate(["editar-detalle-multimedia", { tareaId: this.tarea.id, cursoId: this.cursoId }]);
       })
       .catch((respuesta) => {
         Swal.fire(

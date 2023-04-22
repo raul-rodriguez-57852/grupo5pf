@@ -1,4 +1,4 @@
-<section id="estadisticas" class="margin-top-60">
+<section id="estadisticas" class="margin-top-60 margin-bottom-16">
   <div class="contenedorImagenCard margin-bottom-16">
     <img class="imagenCard" src="{{imageToShow}}" alt="Card image cap" />
     <div *ngIf="cursoSelected" class="centered">Estadisticas de {{ nombreCurso }}</div>
@@ -10,7 +10,6 @@
         class="list-group-item d-flex justify-content-between align-items-center"
       >
         <strong>Cursos</strong>
-        <strong>Opciones</strong>
       </li>
       <li
         *ngFor="let curso of cursos"
@@ -19,7 +18,7 @@
         <div (click)="selectCurso(curso.id)">
           <img
             style="height: 31px; margin-right: 10px"
-            src="{{ curso.iconoURL }}"
+            src="{{ curso.imagen }}"
           />{{ curso.nombre }}
         </div>
         <!-- <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
@@ -40,7 +39,7 @@
   <!--          Curso seleccionado      -->
   <div class="container" *ngIf="cursoSelected">
     <div class="row align-items-center mb-2 d-flex">
-      <div class="col-6">
+      <div class="col-7">
         <h5 class="d-flex align-items-center mb-0">
           <select
             [(ngModel)]="asignaturaFiltro"
@@ -59,13 +58,12 @@
           </select>
         </h5>
       </div>
-      <div class="col-1 text-right"></div>
       <div class="col-5 text-right">
         <button
           (click)="irAEstadisticasPorAlumno()"
-          class="btn btn-lg btn-block btn-personalizado"
+          class="btn btn-lg btn-block btn-personalizado without-shadow"
         >
-          Por Alumno
+          <p style="margin-bottom:0px; font-size: small;">Por Alumno</p>
         </button>
       </div>
     </div>
@@ -87,16 +85,16 @@
         </div>
         <div class="card-body">
           <div class="row align-items-center mb-2 d-flex">
-            <div class="col-8">
+            <div class="col-12">
               <h5 class="d-flex align-items-center mb-0">
-                <h5 class="card-title">{{ tarea.nombre }}</h5>
+                <h5 style="margin-bottom:0px;" class="card-title">{{ tarea.nombre }}</h5>
               </h5>
             </div>
-            <div class="col-4 text-right">
+            <div style="padding-top:0px;" class="col-12">
               <span
-                >{{ tarea.fechaLimite | date: "dd/MM/yyyy"
-                }}<i class="fa fa-calendar"></i
-              ></span>
+                ><i class="fa fa-calendar"></i
+                  > {{ tarea.fechaLimite | date: "dd/MM/yyyy"
+                }}</span>
             </div>
           </div>
 

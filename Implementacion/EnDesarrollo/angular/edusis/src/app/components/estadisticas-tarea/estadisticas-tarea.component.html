@@ -1,11 +1,11 @@
-<section id="estadisticas" class="margin-top-60">
+<section id="estadisticas" class="margin-top-60 margin-bottom-16">
   <div class="contenedorImagenCard margin-bottom-16">
     <img class="imagenCard" src="assets/img/stats.jpg" alt="Card image cap" />
     <div class="centered">Estadisticas</div>
   </div>
   <div class="container" *ngIf="!estadisticasSelected">
     <div class="row align-items-center mb-2 d-flex">
-      <div class="col-6">
+      <div class="col-7">
         <h5 class="d-flex align-items-center mb-0">
           <input
             type="text"
@@ -18,14 +18,13 @@
           />
         </h5>
       </div>
-      <div class="col-1 text-right"></div>
       <div class="col-5 text-right">
         <button
           (click)="irAEstadisticas()"
-          class="btn btn-lg btn-block btn-personalizado"
+          class="btn btn-lg btn-block btn-personalizado without-shadow"
         >
-          Generales
-        </button>
+        <p style="margin-bottom:0px; font-size: small;">Generales</p>
+      </button>
       </div>
     </div>
 

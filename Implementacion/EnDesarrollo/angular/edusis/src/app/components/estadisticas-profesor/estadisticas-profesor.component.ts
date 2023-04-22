@@ -59,8 +59,8 @@ export class EstadisticasProfesorComponent implements OnInit {
 
     await this.dataApiService.getCurso(this.cursoId).then((res) => {
       this.nombreCurso = res.nombre;
-      this.urlImagenCurso = res.iconoURL;
-      this.imageToShow = res.iconoURL;
+      this.urlImagenCurso = res.imagen;
+      this.imageToShow = res.imagen;
     });
 
     await this.dataApiService.getAsignaturasByCreador(this.cursoId, this.id_profesor).then((asignaturas) => {

@@ -1,4 +1,4 @@
-<section id="curso" class="margin-top-60">
+<section id="curso" class="margin-top-60 margin-bottom-16">
   <div class="contenedorImagenCard margin-bottom-16">
     <img class="imagenCard" src="{{ imagen }}" alt="Card image cap">
     <div class="centered">{{ nombre }}</div>  
@@ -15,16 +15,18 @@
       <div *ngFor="let tarea of tareas" class="card mb-3">
         <div class="contenedorImagenCard" (click)="editarTarea(tarea.id)">
           <div
-            style="{{tarea.color}}"
+            [style.background-color]="tarea.color"
             class="card-img-top imagenCard"
             alt="Card image cap"
           ></div>
           <div class="centered" style="text-transform: uppercase;">{{ tarea.nombre }}</div>
         </div>
-        <div class="box">
+        <div class="box" style="margin-bottom: 5px;">
           <div class="cardText">
-            <p  style="padding: 5px;" class="card-text text-muted">Modifica y gestiona tu tarea: {{tarea.nombre}}</p>
-          </div>
+            <p style="padding: 5px; padding-top:7px;" class="card-text text-muted">
+              Opciones
+            </p>
+          </div>  
           <div class="actionButtons btn-group btn-group-sm" role="group">
             <button type="button" (click)="editarTarea(tarea.id)" class="btn btn-info"><i class="fa fa-edit"></i></button>
             <button type="button" (click)="eliminarTarea(tarea.id, tarea.nombre)" data-toggle="modal" data-target="#eliminar" class="btn btn-danger"><i class="fa fa-trash"></i></button>

@@ -66,6 +66,10 @@ img {
   box-shadow: 0 6px 0 #127f90
 }
 
+.without-shadow {
+  box-shadow: 0 0 0 0 !important;
+}
+
 .btn-danger {
   transition: transform 0.2s ease;
   box-shadow: 0 6px 0 #a92835
