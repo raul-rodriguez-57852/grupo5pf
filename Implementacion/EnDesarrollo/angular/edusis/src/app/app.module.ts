@@ -53,7 +53,7 @@ import { RealizacionCategoriasComponent } from './components/realizacion-categor
 import { CrearActividadVfComponent } from './components/crear-actividad-vf/crear-actividad-vf.component';
 import { VistaPreviaVfComponent } from './components/vista-previa-vf/vista-previa-vf.component';
 import { RealizacionVfComponent } from './components/realizacion-vf/realizacion-vf.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 
 @NgModule({
@@ -119,7 +119,8 @@ import { CommonModule } from '@angular/common';
     CommonModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [AppComponent],
 })

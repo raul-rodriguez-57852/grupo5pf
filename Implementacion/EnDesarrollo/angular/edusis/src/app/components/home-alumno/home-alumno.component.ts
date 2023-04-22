@@ -14,7 +14,7 @@ import Swal from 'sweetalert2';
 export class HomeAlumnoComponent implements OnInit {
 
     alumno: Alumno = { id: null, nombre: null, apellido: null, documento: null, tipoDocumento: null, fechaNacimiento: null, avatarUrl: null, passwordEmoji: null, tutorId: null, saldoEstrellas: null, recompensas: null, listRecompensasComprada: null, listRecompensasEquipada: null, isActive: true, mapRecompensas: null };
-    curso: Curso = { id: null, nombre: null, iconoURL: null, creadorId: null, codigo: null }
+    curso: Curso = { id: null, nombre: null, imagen: null, creadorId: null, codigo: null }
     cursos = [];
     mensaje: string = null;
     codigoCurso: string = null;

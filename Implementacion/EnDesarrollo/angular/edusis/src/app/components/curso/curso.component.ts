@@ -14,7 +14,7 @@ import { type } from 'os';
 })
 export class CursoComponent implements OnInit {
   nombre = null;
-  urlImagen = null;
+  imagen = null;
   cursoId = null;
   asignaturas = [];
   tareas = [];
@@ -43,7 +43,7 @@ export class CursoComponent implements OnInit {
   get() {
     this.dataApiService.getCurso(this.cursoId).then((res) => {
       this.nombre = res.nombre;
-      this.urlImagen = res.iconoURL;
+      this.imagen = res.imagen;
     });
   }
 

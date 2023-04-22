@@ -28,7 +28,7 @@
       </ng-container>
       <div class="login-content" style="justify-content: center">
         
-        <form name="formRegistro" #formRegistro="ngForm" (ngSubmit)="save(formRegistro)">
+        <form name="formRegistro" #formRegistro="ngForm" (ngSubmit)="save(formRegistro)" autocomplete="doNotAutocomplete">
         
           <div id="div-nombre" class="input-div one">
             <div class="i">
@@ -43,7 +43,7 @@
                 (keydown.Tab) = "checkAndGiveFocus('InputNombre', 'div-apellido')"
                 type="text"
                 class="input focus"
-                autocomplete="off"
+                autocomplete="doNotAutocomplete"
                 name="nombre"
                 [ngModel]="esCuentaTutor ? tutor.nombre : profesor.nombre"
                 (ngModelChange)="
@@ -65,7 +65,7 @@
                 (keydown.Tab) = "checkAndGiveFocus('inputApellido', 'div-documento')"
                 type="text"
                 class="input focus"
-                autocomplete="off"
+                autocomplete="doNotAutocomplete"
                 [ngModel]="esCuentaTutor ? tutor.apellido : profesor.apellido"
                 (ngModelChange)="
                 esCuentaTutor? (tutor.apellido = $event): (profesor.apellido = $event)"
@@ -115,7 +115,7 @@
                   (keydown.Tab) = "checkAndGiveFocus('inputDocumento', 'div-email')"
                   class="input focus"
                   required
-                  autocomplete="off"
+                  autocomplete="doNotAutocomplete"
                   name="documento"
                 />
                 </div>  
@@ -139,7 +139,7 @@
                 [ngModel]="esCuentaTutor ? tutor.email : profesor.email"
                 (ngModelChange)="esCuentaTutor? (tutor.email = $event): (profesor.email = $event)"
                 name="email"
-                autocomplete="off"
+                autocomplete="doNotAutocomplete"
               />
             </div>
           </div>
@@ -159,7 +159,7 @@
                 [ngModel]="esCuentaTutor ? tutor.password : profesor.password"
                 (ngModelChange)="esCuentaTutor? (tutor.password = $event): (profesor.password = $event)"
                 name="password"
-                autocomplete="off"
+                autocomplete="doNotAutocomplete"
               />
             </div>
           </div>

@@ -1,5 +1,5 @@
 <section id="cursos" class="margin-top-60">
-  <div class="contenedorImagenCard margin-bottom-16">
+  <div class="contenedorImagenTop margin-bottom-16">
     <img
       class="imagenCard"
       src="assets/img/empty-classroom-stock-image.jpg"
@@ -19,15 +19,15 @@
       <div class="contenedorImagenCard" (click)="irACurso(curso.id)">
         <img
           class="card-img-top imagenCard"
-          src="{{ curso.iconoURL }}"
+          src="{{ curso.imagen }}"
           alt="Card image cap"
         />
         <div class="centered">{{ curso.nombre }}</div>
       </div>
-      <div class="box">
+      <div class="box" style="margin-bottom: 5px;">
         <div class="cardText">
-          <p style="padding: 5px" class="card-text text-muted">
-            Accede y controla a {{ curso.nombre }}
+          <p style="padding: 5px; padding-top:7px;" class="card-text text-muted">
+            Opciones
           </p>
         </div>
         <div class="actionButtons btn-group btn-group-sm" role="group">

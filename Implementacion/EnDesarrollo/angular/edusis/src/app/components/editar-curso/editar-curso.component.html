@@ -6,11 +6,11 @@
         <input [(ngModel)]="curso.nombre" type="text" name="nombre" class="form-control" placeholder="Nombre" required autocomplete="off" value="curso.nombre">
       </div>
       <div class="form-group">
-        <label for="iconoURL">Icono URL</label>
-        <input [(ngModel)]="curso.iconoURL" type="text" name="iconoURL" class="form-control" placeholder="Icono URL" required autocomplete="off" value="curso.iconoURL">
+        <label for="imagen">Imagen</label>
+        <input type="file" accept="image/*" name="imagen" id="imagen" (change)="onFileChanged($event)" />
       </div>
       <div id="divCodigoGeneracion" *ngIf="mostrarcodigo" class="form-group">
-        <label for="iconoURL">Generar Codigo Invitacion</label>
+        <label>Generar Codigo Invitacion</label>
         <div class="row">
           <div class="col-8">
             <input id="contenedor-codigo" readonly [(ngModel)]="curso.codigo" type="text" name="Codigo" class="form-control" required autocomplete="off" value="tienecodigo? curso.codigo : Codigo sin generar">

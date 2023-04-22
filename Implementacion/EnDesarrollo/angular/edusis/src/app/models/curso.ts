@@ -1,7 +1,7 @@
 export class Curso {
   id: number;
   nombre: string;
-  iconoURL: string;
+  imagen: string;
   creadorId: number;
   codigo: string;
 }

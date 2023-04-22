@@ -38,7 +38,6 @@ export class VistaPreviaGrillaComponent implements OnInit {
       this.nombre = res.nombre;
       this.dataApiService.getImagenGrilla(this.id).then(res => {
         this.imagen = res;
-        console.log(this.imagen);
       });
     });
   }

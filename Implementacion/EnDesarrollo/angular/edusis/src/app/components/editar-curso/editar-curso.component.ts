@@ -12,11 +12,13 @@ import Swal from 'sweetalert2';
 })
 export class EditarCursoComponent implements OnInit {
 
-  curso: Curso = { id: null, nombre: null, iconoURL: null, creadorId: null,codigo: null };
+  curso: Curso = { id: null, nombre: null, imagen: null, creadorId: null,codigo: null };
   mensaje: string = null;
   tienecodigo = false;
   mostrarcodigo = false;
   id_profesor = null;
+  files = null;
+  imagen = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -28,13 +30,13 @@ export class EditarCursoComponent implements OnInit {
     this.curso.id = this.route.snapshot.paramMap.get('id') != null ? Number(this.route.snapshot.paramMap.get('id')) : null;
     if (this.curso.id != null) {
       this.dataApiService.getCurso(this.curso.id.toString()).then(
-        (emoji) => 
+        (curso) => 
         {
           this.mostrarcodigo = true;
-          this.curso.nombre = emoji.nombre;
-          this.curso.iconoURL = emoji.iconoURL;
-          this.curso.codigo = emoji.codigo;
-            if(emoji.codigo == null)
+          this.curso.nombre = curso.nombre;
+          this.curso.imagen = curso.imagen;
+          this.curso.codigo = curso.codigo;
+            if(curso.codigo == null)
             {
               this.tienecodigo = false;
             }
@@ -55,7 +57,15 @@ export class EditarCursoComponent implements OnInit {
 
   }
 
-  
+  onFileChanged(event: any) {
+    this.files = event.target.files;
+    const reader = new FileReader();
+    reader.readAsDataURL(this.files[0]);
+    reader.onload = (e) => {
+      this.imagen = e.target.result;
+      this.curso.imagen = this.imagen;
+    }
+  }
 
   async save(formCurso: NgForm) {
     this.id_profesor = this.dataApiService.getUsuario();
@@ -115,10 +125,10 @@ export class EditarCursoComponent implements OnInit {
         }
         
         this.dataApiService.getCurso(this.curso.id.toString()).then(
-          (emoji) => {
-            this.curso.nombre = emoji.nombre;
-            this.curso.iconoURL = emoji.iconoURL;
-            this.curso.codigo = emoji.codigo;
+          (curso) => {
+            this.curso.nombre = curso.nombre;
+            this.curso.imagen = curso.imagen;
+            this.curso.codigo = curso.codigo;
           }
           
         ).catch(

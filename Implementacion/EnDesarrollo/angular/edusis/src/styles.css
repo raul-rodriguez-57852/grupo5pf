@@ -10,6 +10,19 @@
   src: url("assets/fonts/Space kids.otf") format("opentype");
 }
 
+* {
+  touch-action: manipulation;
+}
+
+img {  
+  user-drag: none;  
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+
 .centrado {
   display: flex;
   align-items: center;
@@ -48,6 +61,16 @@
   margin-bottom: 16px;
 }
 
+.btn-info {
+  transition: transform 0.2s ease;
+  box-shadow: 0 6px 0 #127f90
+}
+
+.btn-danger {
+  transition: transform 0.2s ease;
+  box-shadow: 0 6px 0 #a92835
+}
+
 .btn-personalizado {
   transition: transform 0.2s ease;
   background-color: #13334c  !important;
@@ -66,8 +89,10 @@
 }
 
 .btn-personalizado-txtblanco {
+  transition: transform 0.2s ease;
   background-color: #13334c  !important;
   color: #ffffff !important;
+  box-shadow: 0 6px 0 #061e31;
 }
 
 .btn-personalizado-txtblanco:hover {

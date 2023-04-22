@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵɵtrustConstantResourceUrl } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataApiService } from '../../services/data-api.service';
 import Swal from 'sweetalert2';
