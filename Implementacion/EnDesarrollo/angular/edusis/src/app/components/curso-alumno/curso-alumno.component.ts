@@ -10,7 +10,7 @@ import { DataTareaService } from "src/app/services/data-tarea.service";
 })
 export class CursoAlumnoComponent implements OnInit {
   nombre = null;
-  urlImagen = null;
+  imagen = null;
   cursoId = null;
   asignaturas = [];
   asignaturaFiltro = null;
@@ -42,42 +42,34 @@ export class CursoAlumnoComponent implements OnInit {
   get() {
     this.dataApiService.getCurso(this.cursoId).then((res) => {
       this.nombre = res.nombre;
-      this.urlImagen = res.iconoURL;
+      this.imagen = res.imagen;
     });
 
   }
 
   getAll() {
+    const colores = [
+      '#B5D5C5', '#B08BBB', '#ECA869', '#F5F5DC', '#579BB1', '#82AAE3', '#91D8E4',
+      '#FFF6BD', '#FF8E9E', '#ADA2FF', '#227C70', '#FAEAB1', '#FAAB78', '#FFCAC8']
     this.dataApiService.getAsignaturas(this.cursoId).then((asignaturas) => {
       this.asignaturas = asignaturas;
       console.log(this.asignaturas);
       this.dataTareaService.getTareas(this.cursoId).then((tareas) => {
         this.tareas = tareas;
-
-        console.log(this.tareas);
+        console.log(tareas);
         this.dataTareaService.getRealizaciones(this.cursoId, this.dataApiService.getUsuario()).then((realizaciones) => {
           realizaciones.forEach(element => {
             if (element.puntaje != null) {
               element.puntaje = parseInt(element.puntaje);
             }
+            const random = Math.floor(Math.random() * colores.length);
+            element['color'] = colores[random];
           });
           this.tareasPuntaje = realizaciones;
           this.tareasFiltradas = this.tareasPuntaje;
           this.collectionSize = this.tareasPuntaje.length;
           console.log(this.tareasPuntaje);
-          this.imagenAAsignatura();
         });
-      });
-    });
-  }
-
-  // método provisorio luego cambiar
-  imagenAAsignatura() {
-    this.tareasPuntaje.forEach(tar => {
-      this.asignaturas.forEach(asi => {
-        if (tar.asignatura === asi.nombre) {
-          tar.iconoURL = asi.iconoURL;
-        }
       });
     });
   }

@@ -1,7 +1,7 @@
 <section id="curso" class="margin-top-60 margin-bottom-16">
   <div class="fondo position-fixed"></div>
   <div class="foto-principal margin-bottom-16">
-    <img class="imagenCard" src="{{ urlImagen }}" alt="Card image cap" />
+    <img class="imagenCard" src="{{ imagen }}" alt="Card image cap" />
     <div class="centered">{{ nombre }}</div>
   </div>
 
@@ -27,12 +27,12 @@
     >
       <!--| callback: filterMateria -->
       <div class="card mb-3" (click)="irATarea(tarea.id)">
-        <div class="contenedorImagenCard" *ngIf="tarea.iconoURL !== undefined">
-          <img
+        <div class="contenedorImagenCard">
+          <div
+            [style.background-color]="tarea.color"
             class="card-img-top imagenCard"
-            src="{{ tarea.iconoURL }}"
             alt="Card image cap"
-          />
+          ></div>
           <div class="centered">{{ tarea.asignatura }}</div>
         </div>
         <div
