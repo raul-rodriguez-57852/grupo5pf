@@ -54,6 +54,8 @@ import { CrearActividadVfComponent } from './components/crear-actividad-vf/crear
 import { VistaPreviaVfComponent } from './components/vista-previa-vf/vista-previa-vf.component';
 import { RealizacionVfComponent } from './components/realizacion-vf/realizacion-vf.component';
 import { CommonModule, HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -116,7 +118,13 @@ import { CommonModule, HashLocationStrategy, LocationStrategy } from '@angular/c
     MDBBootstrapModule.forRoot(),
     ReactiveFormsModule,
     NgDragDropModule.forRoot(),
-    CommonModule
+    CommonModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
