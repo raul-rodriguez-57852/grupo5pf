@@ -32,6 +32,7 @@ export class RealizacionCategoriasComponent {
 
   onInit(id: number) {
     this.id = id;
+    this.final = false;
     this.mapAciertos = new Map<Categoria, number>();
     this.categorias = new Array();
     this.dataApiService.getActividad(this.id).then(res => {

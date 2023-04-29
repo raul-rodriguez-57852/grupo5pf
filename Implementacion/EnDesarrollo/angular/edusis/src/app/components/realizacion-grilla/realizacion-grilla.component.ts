@@ -32,6 +32,7 @@ export class RealizacionGrillaComponent {
     /* this.id = this.route.snapshot.paramMap.get('id') != null ? Number(this.route.snapshot.paramMap.get('id')) : null; */
 
     this.id = id;
+    this.final = false;
     this.dataApiService.getActividad(this.id).then(res => {
       console.log(res);
       this.filas = Array.from({ length: res.cantidadFilas }, (_, i) => i + 1);
