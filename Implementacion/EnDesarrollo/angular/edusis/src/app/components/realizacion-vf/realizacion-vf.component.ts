@@ -36,6 +36,7 @@ export class RealizacionVfComponent {
 
   onInit(id: number) {
     this.id = id;
+    this.final = false;
     this.dataApiService.getActividad(this.id).then(res => {
       console.log(res);
       this.segundos = res.segundos;

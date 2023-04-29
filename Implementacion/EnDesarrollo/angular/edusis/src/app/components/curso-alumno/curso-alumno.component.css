@@ -24,7 +24,7 @@
 .contenedorImagenCard {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  height: 150px;
+  height: 80px;
   overflow: hidden;
   position: relative;
   text-align: center;
@@ -35,7 +35,7 @@
   object-fit: cover;
   height: 100%;
   width: 100%;
-  filter: brightness(50%);
+  filter: brightness(70%);
 }
 
 .centered {
@@ -45,6 +45,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.card-img-top {
+  height: 100%;
 }
 
 .realizada {

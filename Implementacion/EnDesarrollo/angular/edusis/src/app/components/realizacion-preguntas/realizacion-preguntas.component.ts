@@ -31,10 +31,11 @@ export class RealizacionPreguntasComponent {
     private router: Router,
     private route: ActivatedRoute,
     private dataApiService: DataApiService
-  ) {}
+  ) { }
 
   onInit(id: number) {
     this.id = id;
+    this.final = false;
     this.preguntaActualNumero = 0;
     this.respuestasCorrectas = 0;
     this.dataApiService.getActividad(this.id).then((res) => {

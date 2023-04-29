@@ -28,10 +28,11 @@ export class RealizacionPasapalabraComponent {
     private router: Router,
     private route: ActivatedRoute,
     private dataApiService: DataApiService
-  ) {}
+  ) { }
 
   onInit(id: number) {
     this.id = id;
+    this.final = false;
     this.dataApiService.getActividad(this.id).then(res => {
       console.log(res);
       //this.segundos = res.segundos;
@@ -58,7 +59,7 @@ export class RealizacionPasapalabraComponent {
       element.classList.remove('item--actual');
       element.classList.add('item--failure');
     }
-    this.preguntasRespondidas ++;
+    this.preguntasRespondidas++;
     this.encontrarSiguientePregunta();
   }
 
@@ -73,7 +74,7 @@ export class RealizacionPasapalabraComponent {
       this.terminar();
       return;
     }
-    this.preguntaActualNumero ++;
+    this.preguntaActualNumero++;
     this.respuestaActual = '';
     if (this.preguntaActualNumero < this.cantidadPreguntas) {
       this.preguntaActual = this.preguntas[this.preguntaActualNumero];
