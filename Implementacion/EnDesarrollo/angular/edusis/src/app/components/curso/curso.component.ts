@@ -21,22 +21,23 @@ export class CursoComponent implements OnInit {
   id: number;
   codigo: string;
   asignaturaSelected = false;
+  asignatura: Asignatura = null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private dataApiService: DataApiService,
     private dataTareaService: DataTareaService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.cursoId =
       this.route.snapshot.paramMap.get('id') != null
         ? Number(this.route.snapshot.paramMap.get('id'))
         : null;
-        
+
     this.get();
-    
+
     this.getAllAsignaturas();
   }
 
@@ -56,7 +57,7 @@ export class CursoComponent implements OnInit {
   async getAllTareas(asignaturaid: number) {
     const colores = [
       '#B5D5C5', '#B08BBB', '#ECA869', '#F5F5DC', '#579BB1', '#82AAE3', '#91D8E4',
-    '#FFF6BD', '#FF8E9E', '#ADA2FF' , '#227C70', '#FAEAB1', '#FAAB78', '#FFCAC8']
+      '#FFF6BD', '#FF8E9E', '#ADA2FF', '#227C70', '#FAEAB1', '#FAAB78', '#FFCAC8']
     await this.dataTareaService.getTareaByAsignatura(asignaturaid).then((tareas) => {
       tareas.forEach(tarea => {
         const random = Math.floor(Math.random() * colores.length);
@@ -83,11 +84,12 @@ export class CursoComponent implements OnInit {
   }
 
   crearTarea() {
-    this.router.navigate(['editar-tarea', { cursoId: this.cursoId }]);
+    this.router.navigate(['editar-tarea', { cursoId: this.cursoId, asignaturaId: this.asignatura.id }]);
   }
 
-  async seleccionarAsignatura(asignatura : Asignatura) {
+  async seleccionarAsignatura(asignatura: Asignatura) {
     this.asignaturaSelected = true;
+    this.asignatura = asignatura;
     await this.getAllTareas(asignatura.id)
   }
 

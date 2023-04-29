@@ -3,34 +3,34 @@ import { Tarea } from "src/app/models/tarea";
 import { DataApiService } from "src/app/services/data-api.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { DataTareaService } from "src/app/services/data-tarea.service";
-import { NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from "@angular/forms";
 import Swal from 'sweetalert2';
 
 /**
  * This Service handles how the date is rendered and parsed from keyboard i.e. in the bound input field.
  */
- @Injectable()
- export class CustomDateParserFormatter extends NgbDateParserFormatter {
- 
-   readonly DELIMITER = '/';
- 
-   parse(value: string): NgbDateStruct | null {
-     if (value) {
-       let date = value.split(this.DELIMITER);
-       return {
-         day : parseInt(date[0], 10),
-         month : parseInt(date[1], 10),
-         year : parseInt(date[2], 10)
-       };
-     }
-     return null;
-   }
- 
-   format(date: NgbDateStruct | null): string {
-     return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
-   }
- }
+@Injectable()
+export class CustomDateParserFormatter extends NgbDateParserFormatter {
+
+  readonly DELIMITER = '/';
+
+  parse(value: string): NgbDateStruct | null {
+    if (value) {
+      let date = value.split(this.DELIMITER);
+      return {
+        day: parseInt(date[0], 10),
+        month: parseInt(date[1], 10),
+        year: parseInt(date[2], 10)
+      };
+    }
+    return null;
+  }
+
+  format(date: NgbDateStruct | null): string {
+    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
+  }
+}
 
 
 @Component({
@@ -38,7 +38,7 @@ import Swal from 'sweetalert2';
   templateUrl: "./editar-tarea.component.html",
   styleUrls: ["./editar-tarea.component.css"],
   providers: [
-    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
+    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }
   ]
 })
 
@@ -61,7 +61,7 @@ export class EditarTareaComponent implements OnInit {
     private router: Router,
     private dataApiService: DataApiService,
     private dataTareaService: DataTareaService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     // tslint:disable-next-line: max-line-length
@@ -73,6 +73,10 @@ export class EditarTareaComponent implements OnInit {
       this.route.snapshot.paramMap.get("id") != null
         ? Number(this.route.snapshot.paramMap.get("id"))
         : null;
+    this.tarea.asignaturaId =
+      this.route.snapshot.paramMap.get("asignaturaId") != null
+        ? Number(this.route.snapshot.paramMap.get("asignaturaId"))
+        : null;
     if (this.tarea.id != null) {
       this.dataTareaService.getTarea(this.tarea.id.toString()).then((tarea) => {
         this.tarea.nombre = tarea.nombre;
@@ -81,7 +85,7 @@ export class EditarTareaComponent implements OnInit {
         this.tarea.puntajeMaximo = tarea.puntajeMaximo;
         this.model = this.fromModel(tarea.fechaLimite);
         this.select(this.model);
-        
+
       });
     }
     this.getAsignaturas();
@@ -121,17 +125,17 @@ export class EditarTareaComponent implements OnInit {
     ]);
   }
 
-  select(model){  
-    this.tarea.fechaLimite = new Date(model.year,model.month-1,model.day);
+  select(model) {
+    this.tarea.fechaLimite = new Date(model.year, model.month - 1, model.day);
   }
 
   fromModel(value: string | null): NgbDateStruct | null {
     if (value) {
       let date = value.split('-');
       return {
-        day : parseInt(date[2], 10),
-        month : parseInt(date[1], 10),
-        year : parseInt(date[0], 10)
+        day: parseInt(date[2], 10),
+        month: parseInt(date[1], 10),
+        year: parseInt(date[0], 10)
       };
     }
     return null;
