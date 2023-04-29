@@ -99,6 +99,8 @@ export class RecompensasComponent implements OnInit {
         });
       }
     )
+    // recargamos el alumno asi se actualiza el saldo de estrrellas
+    this.getAlumno(this.alumnoID);
   }
 
   isComprado(addon) {
