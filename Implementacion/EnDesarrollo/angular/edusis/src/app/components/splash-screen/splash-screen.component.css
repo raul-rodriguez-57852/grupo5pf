@@ -1,0 +1,32 @@
+.app-splash-screen {
+  background: #13334c;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  z-index: 1100;
+  opacity: 1;
+}
+
+.app-label {
+  padding-top: 10px;
+  width: 120px;
+}
+
+.app-logo {
+  width: 150px;
+  height: 150px;
+}
+
+.app-splash-screen-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

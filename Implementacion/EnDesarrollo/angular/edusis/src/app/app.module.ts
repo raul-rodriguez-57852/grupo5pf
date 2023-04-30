@@ -56,6 +56,7 @@ import { RealizacionVfComponent } from './components/realizacion-vf/realizacion-
 import { CommonModule, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { SplashScreenComponent } from './components/splash-screen/splash-screen.component';
 
 
 @NgModule({
@@ -103,7 +104,8 @@ import { environment } from '../environments/environment';
     RealizacionCategoriasComponent,
     CrearActividadVfComponent,
     VistaPreviaVfComponent,
-    RealizacionVfComponent
+    RealizacionVfComponent,
+    SplashScreenComponent
 
   ],
   imports: [
