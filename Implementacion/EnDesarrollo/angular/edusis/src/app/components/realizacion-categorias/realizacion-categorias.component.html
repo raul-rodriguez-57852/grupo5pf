@@ -13,9 +13,11 @@
           Palabras restantes: {{ palabras.length }}
         </h6>
       </div>
-      <div class="nube margin-bottom-16">
+      <div class="nube margin-bottom-16" style="overflow: visible;">
         <img class="imagenNube" src="assets/img/nube.png" />
-        <div draggable [dragData]="palabraActual" class="centered">
+        <div class="centered" style="overflow: visible; z-index: 50;"
+          cdkDrag
+          (cdkDragEnded)="onDragEnded($event, palabraActual)">
           {{ palabraActual }}
         </div>
       </div>
@@ -25,10 +27,8 @@
             [ngClass]="cantCategorias == 2 ? 'col-6' : 'col-4'"
             class="no-padding"
           >
-            <div
+            <div #divElement [id]="categoria.nombre"
               class="recuadro"
-              droppable
-              (onDrop)="onItemDrop($event, categoria)"
             >
               <img class="imagenNube" src="assets/img/canasta.png" />
               <div class="top">{{ categoria.nombre }}</div>

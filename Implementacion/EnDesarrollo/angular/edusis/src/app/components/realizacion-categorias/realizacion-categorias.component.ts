@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
+import { Component, ViewChildren, EventEmitter, OnInit, Output, QueryList, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Categoria } from 'src/app/models/categoria';
 import { DataApiService } from 'src/app/services/data-api.service';
@@ -9,6 +10,9 @@ import { DataApiService } from 'src/app/services/data-api.service';
   styleUrls: ['./realizacion-categorias.component.css']
 })
 export class RealizacionCategoriasComponent {
+
+  @ViewChildren('divElement') divElements: QueryList<ElementRef>;
+
   @Output() finalizado: EventEmitter<number> = new EventEmitter<number>();
 
   id = null;
@@ -57,7 +61,6 @@ export class RealizacionCategoriasComponent {
       });
       this.palabras = this.mezclar(this.palabras);
       this.palabraActual = this.palabras.pop();
-
       this.startTimer();
     });
   }
@@ -90,23 +93,33 @@ export class RealizacionCategoriasComponent {
     return array;
   }
 
-  onItemDrop(e: any, categoria: Categoria) {
-
-    console.log(e.dragData);
-    console.log(categoria);
-    if (categoria.respuestas.includes(e.dragData)) {
-      this.mapAciertos.set(categoria, this.mapAciertos.get(categoria) + 1);
-      this.cantAciertos++;
-    }
-
-
-    if (this.palabras.length > 0) {
-      this.palabraActual = this.palabras.pop();
-    } else {
-      this.terminar();
-    }
-
-  }
+  onDragEnded(event: CdkDragEnd, palabraActual: string): void {
+    event.source._dragRef.reset();
+    this.divElements.forEach(element => {
+      const div = element.nativeElement.getBoundingClientRect();
+      const xFinal = div.x + div.width;
+      const yFinal = div.y + div.height;
+      if (div.x < event.dropPoint.x &&
+        event.dropPoint.x < xFinal &&
+        div.y < event.dropPoint.y &&
+        event.dropPoint.y < yFinal) {
+          const nombreCategoria = element.nativeElement.id;
+          console.log('Tiró', palabraActual, 'en', nombreCategoria);
+          const categoria = this.categorias.find(cat => cat.nombre === nombreCategoria);
+          console.log(categoria);
+          if (categoria.respuestas.includes(palabraActual)) {
+            this.mapAciertos.set(categoria, this.mapAciertos.get(categoria) + 1);
+            // TODO VER SI PODEMOS PONER ALGO COMO QUE SE NOTE EL ACIERTO O EL ERROR
+            this.cantAciertos++;
+          }
+          if (this.palabras.length > 0) {
+            this.palabraActual = this.palabras.pop();
+          } else {
+            this.terminar();
+          }
+        }
+    });
+  }    
 
   finalizar() {
     this.final = true;
