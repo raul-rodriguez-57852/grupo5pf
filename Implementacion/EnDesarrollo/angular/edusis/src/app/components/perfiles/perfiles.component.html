@@ -1,38 +1,83 @@
 <section id="perfiles">
-  <div class="fondo position-fixed">
-  </div>
-  <div class="container" style="padding-top: 90px;" *ngIf="perfilSeleccionado == null">
+  <div class="fondo position-fixed"></div>
+  <div
+    class="container"
+    style="padding-top: 90px"
+    *ngIf="perfilSeleccionado == null"
+  >
     <div class="texto-principal">¿Quién va a aprender hoy?</div>
-<!--     <section id="emojis" class="margin-top-90 margin-bottom-16">
+    <!--     <section id="emojis" class="margin-top-90 margin-bottom-16">
       <div class="container">
         <button (click)="nuevoalumno()" class="btn btn-lg btn-block btn-personalizado">Nuevo Perfil</button>
       </div>
     </section>
--->    
-    <div class="row" style="padding-left: 15px; padding-right: 15px;">
-      <div *ngFor="let perfil of perfiles" class="col-6" style="margin-bottom: 10px;" >
-        <div (click)="seleccionarPerfil(perfil)" style="width:100%; padding-bottom: 100%; position:relative;">
-          <img class="imagen-avatar-perfiles" style="z-index: 10;" src="{{ perfil.avatarUrl }}">
-          <img class="imagen-avatar-perfiles-addons" [style.z-index]="addon.tipo.profundidad" *ngFor="let addon of perfil.listRecompensasEquipada" src="{{ addon.iconoURL }}"/>      
+-->
+    <div class="row" style="padding-left: 15px; padding-right: 15px">
+      <div
+        *ngFor="let perfil of perfiles"
+        class="col-6"
+        style="margin-bottom: 10px"
+      >
+        <div
+          (click)="seleccionarPerfil(perfil)"
+          style="width: 100%; padding-bottom: 100%; position: relative"
+        >
+          <img
+            class="imagen-avatar-perfiles"
+            style="z-index: 10"
+            src="{{ perfil.avatarUrl }}"
+          />
+          <img
+            class="imagen-avatar-perfiles-addons"
+            [style.z-index]="addon.tipo.profundidad"
+            *ngFor="let addon of perfil.listRecompensasEquipada"
+            src="{{ addon.iconoURL }}"
+          />
         </div>
-        <div class="nombre" style="padding-top: 10px;">{{ perfil.nombre }}</div>
+        <div class="nombre" style="padding-top: 10px">{{ perfil.nombre }}</div>
       </div>
     </div>
   </div>
-  <div class="container" style="padding-top: 90px;" *ngIf="perfilSeleccionado != null">
+  <div
+    class="container"
+    style="padding-top: 90px"
+    *ngIf="perfilSeleccionado != null"
+  >
     <div class="row">
-      <div class="col-sm-12 d-flex justify-content-center" style="height: 140px; margin-bottom: 10px" >
-        <img class="imagen-avatar" style="z-index: 10;" src="{{ perfilSeleccionado.avatarUrl }}" />
-        <img class="imagen-avatar-addons" [style.z-index]="addon.tipo.profundidad" *ngFor="let addon of perfilSeleccionado.listRecompensasEquipada" src="{{ addon.iconoURL }}"/>  
-        </div>
-      <div class="col-sm-12 d-flex justify-content-center" >
+      <div
+        class="col-sm-12 d-flex justify-content-center"
+        style="height: 140px; margin-bottom: 10px"
+      >
+        <img
+          class="imagen-avatar"
+          style="z-index: 10"
+          src="{{ perfilSeleccionado.avatarUrl }}"
+        />
+        <img
+          class="imagen-avatar-addons"
+          [style.z-index]="addon.tipo.profundidad"
+          *ngFor="let addon of perfilSeleccionado.listRecompensasEquipada"
+          src="{{ addon.iconoURL }}"
+        />
+      </div>
+      <div class="col-sm-12 d-flex justify-content-center">
         <div class="nombre">{{ perfilSeleccionado.nombre }}</div>
       </div>
     </div>
     <div class="form-group">
       <div class="input-password">
-        <img *ngFor="let emoji of emojisSeleccionados" src="{{ emoji.iconoURL }}" style="margin-left: 3px; margin-right: 3px;" class="imagen-emoji">
-        <button id="search-clear" class="btn bg-transparent"  (click)="clearEmoji()">
+        <img
+          *ngFor="let emoji of emojisSeleccionados"
+          src="{{ emoji.iconoURL }}"
+          style="margin-left: 3px; margin-right: 3px"
+          class="imagen-emoji"
+        />
+        <button
+          id="search-clear"
+          style="height: 100%"
+          class="btn bg-transparent"
+          (click)="clearEmoji()"
+        >
           <i class="fa fa-times"></i>
         </button>
       </div>
@@ -40,13 +85,33 @@
     <div class="form-group">
       <div class="container">
         <div class="row">
-          <div class="col-3 no-padding d-flex justify-content-center" style="margin-bottom: 15px;" *ngFor="let emoji of emojis">
-            <button type="button" (click)="addEmoji(emoji)" class="btn btn-lg btn-light"><img src="{{ emoji.iconoURL }}" class="imagen-emoji"></button>
+          <div
+            class="col-3 no-padding d-flex justify-content-center"
+            style="margin-bottom: 15px"
+            *ngFor="let emoji of emojis"
+          >
+            <button
+              type="button"
+              (click)="addEmoji(emoji)"
+              class="btn btn-lg btn-light"
+            >
+              <img src="{{ emoji.iconoURL }}" class="imagen-emoji" />
+            </button>
           </div>
         </div>
       </div>
     </div>
-    <button (click)="ingresoAlumno()" class="btn btn-lg btn-block btn-personalizado-inverso">Ingresar</button>
-    <button (click)="volverAPerfiles()" class="btn btn-lg btn-block btn-personalizado-txtblanco">Volver</button>
+    <button
+      (click)="ingresoAlumno()"
+      class="btn btn-lg btn-block btn-personalizado-inverso"
+    >
+      Ingresar
+    </button>
+    <button
+      (click)="volverAPerfiles()"
+      class="btn btn-lg btn-block btn-personalizado-txtblanco"
+    >
+      Volver
+    </button>
   </div>
 </section>

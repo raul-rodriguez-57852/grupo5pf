@@ -5,9 +5,18 @@
       class="col-sm-12 d-flex justify-content-center"
       style="height: 180px; margin-bottom: 10px"
     >
-    <img class="imagen-avatar" style="z-index: 10;" src="{{ alumno.avatarUrl }}" />
-    <img class="imagen-avatar-addons" [style.z-index]="addon.tipo.profundidad" *ngFor="let addon of alumno.listRecompensasEquipada" src="{{ addon.iconoURL }}"/>  
-</div>
+      <img
+        class="imagen-avatar"
+        style="z-index: 10"
+        src="{{ alumno.avatarUrl }}"
+      />
+      <img
+        class="imagen-avatar-addons"
+        [style.z-index]="addon.tipo.profundidad"
+        *ngFor="let addon of alumno.listRecompensasEquipada"
+        src="{{ addon.iconoURL }}"
+      />
+    </div>
     <div class="col-sm-12 d-flex justify-content-center">
       <div class="nombre">
         {{ alumno.nombre }}
@@ -37,10 +46,7 @@
         class="list-group-item d-flex justify-content-between align-items-center"
       >
         <div (click)="irACurso(curso.id)">
-          <img
-            style="height: 31px; margin-right: 10px"
-            src="{{ curso.imagen }}"
-          />{{ curso.nombre }}
+          {{ curso.nombre }}
         </div>
       </li>
     </div>
