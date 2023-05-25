@@ -3,6 +3,7 @@ import { Component, ViewChildren, EventEmitter, OnInit, Output, QueryList, Eleme
 import { ActivatedRoute, Router } from '@angular/router';
 import { Categoria } from 'src/app/models/categoria';
 import { DataApiService } from 'src/app/services/data-api.service';
+import { ConfettiLauncher } from 'src/app/services/confettiLauncher';
 
 @Component({
   selector: 'app-realizacion-categorias',
@@ -109,7 +110,9 @@ export class RealizacionCategoriasComponent {
           console.log(categoria);
           if (categoria.respuestas.includes(palabraActual)) {
             this.mapAciertos.set(categoria, this.mapAciertos.get(categoria) + 1);
-            // TODO VER SI PODEMOS PONER ALGO COMO QUE SE NOTE EL ACIERTO O EL ERROR
+            let confettiShoulBeLaunchedAt = event.dropPoint.x / window.innerWidth;
+            const launcher = new ConfettiLauncher();
+            launcher.dispararConfetti(0.90, confettiShoulBeLaunchedAt);
             this.cantAciertos++;
           }
           if (this.palabras.length > 0) {

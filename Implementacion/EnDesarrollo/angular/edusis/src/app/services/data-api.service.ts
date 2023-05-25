@@ -314,7 +314,7 @@ export class DataApiService {
     date.setTime(date.getTime() + (-1 * 24 * 60 * 60 * 1000));
     //Seteo la coockie.
     document.cookie = name + "=; expires= " + date.toUTCString() + "; path=/";
-    if ( name == 'sessionCookie') {
+    if ( name == 'SessionCookie') {
       //ahora saco al user.
       this.setUser(null, null);
     }

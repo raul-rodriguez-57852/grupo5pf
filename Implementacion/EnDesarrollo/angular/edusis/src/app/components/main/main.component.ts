@@ -26,7 +26,6 @@ export class MainComponent implements OnInit {
 
     async findLoggedUser() {
         var userFound = await this.dataApiService.findUser();
-
         if (!userFound) {
             this.router.navigate(['login']);
             return;
@@ -41,7 +40,9 @@ export class MainComponent implements OnInit {
             return;
         }
 
-        this.router.navigate(['home-profesor']);
+        if (this.dataApiService.getUserType() == this.dataApiService.getProfesorType()) {
+            this.router.navigate(['home-profesor']);
+            return;
+        }
     }
-  
 }

@@ -286,3 +286,7 @@ button:active .sombre {
 button:focus:not(:focus-visible) {
 	outline: none;
 }
+
+#inputPassword {
+	-webkit-text-security: disc;
+}

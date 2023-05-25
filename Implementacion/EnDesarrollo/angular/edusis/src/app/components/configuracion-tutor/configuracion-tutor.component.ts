@@ -109,10 +109,10 @@ import { DataTareaService } from 'src/app/services/data-tarea.service';
       } 
       
       if (password) {
-        var result =  await this.validarTutor(password);
-        if(result) {
+        var tutorId =  await this.validarTutor(password);
+        if (tutorId) {
           this.dataApiService.deleteCookie(this.dataApiService.studentCookie);
-          
+          this.dataApiService.setUser(tutorId, this.dataApiService.getTutorType())
           return;
         } else {
             await Swal.fire({
@@ -297,7 +297,7 @@ import { DataTareaService } from 'src/app/services/data-tarea.service';
           answer = isValid;
         }
       );
-      return answer? true: false;
+      return answer? tutorId: false;
     }
 
     async getCursosAlumno(alumnoId: string) {

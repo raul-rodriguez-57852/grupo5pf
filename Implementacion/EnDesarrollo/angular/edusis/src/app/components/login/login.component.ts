@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit{
     elemnts = {
         'InputDocumento' : 'div-dni',
         'inputPassword' : 'div-password'
-      };
+    };
       
     constructor( private dataApiService: DataApiService,private elementRef: ElementRef,private router: Router,private route: ActivatedRoute) {}
 
@@ -128,9 +128,4 @@ export class LoginComponent implements OnInit{
             this.router.navigate(['home-profesor']);
         }
     }
-
-    
-
-
-
 }

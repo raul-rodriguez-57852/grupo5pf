@@ -106,12 +106,20 @@ export class CursosComponent implements OnInit {
   }
 
   copiarTexto(texto: string) {
-    this.clipboard.copy(texto);
-    Swal.fire(
-      "¡Código de invitación copiado!",
-      "Código: " + texto,
-      "success"
-    )
+    if (this.clipboard.copy(texto)) {
+      Swal.fire(
+        "¡Código de invitación copiado!",
+        "Código: " + texto,
+        "success"
+      )
+    } else {
+      Swal.fire(
+        "¡Código de invitación generado!",
+        "Código: " + texto,
+        "success"
+      )
+    }
+    
   }
 
 }

@@ -44,16 +44,24 @@ export class RecompensasComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('ALUMNO: ', this.alumnoID)
-    console.log('user: ', this.dataApiService.getUsuario())
-    if (this.alumnoID != null) {
-      this.getAlumno(this.alumnoID)
-    }
-    else {
-      console.log('Error, no Student ID found!')
-    }
+    if (this.isValidUser()) {
     this.getAddons();
     this.actualizarAddons();
+    }
+  }
+
+  isValidUser() {
+    if (this.dataApiService.getUserType() != this.dataApiService.getAlumnoType()) {
+      Swal.fire({
+        title: 'Solo los alumnos tienen recompenzas...',
+        icon: 'warning'
+      });
+      this.router.navigate(['/']);
+      return false;
+    } else {
+      this.getAlumno(this.alumnoID)
+      return true;
+    }
   }
 
   getAlumno(id: number) {
@@ -80,8 +88,6 @@ export class RecompensasComponent implements OnInit {
     this.dataApiService.getAddons().then((respuesta) => {
       this.addons = respuesta;
     });
-
-
   }
 
   actualizarAddons() {

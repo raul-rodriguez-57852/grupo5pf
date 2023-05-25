@@ -37,8 +37,10 @@
               id="inputPassword"
               (keydown.Tab) = "checkAndGiveFocus('inputPassword', '')"
               (click)="addFocus('div-password')"
-              type="password"
-              autocomplete="aus"
+              type="text"
+              autocomplete="off"
+              spellcheck="false"
+              autoCorrect="false"
               data-lpignore="true"
               class="input focus"
             />

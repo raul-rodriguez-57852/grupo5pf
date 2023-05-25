@@ -43,10 +43,8 @@
         >
       </li>
 
-      <!-- <*ngIf="esAlumno"> -->
-
       <li
-        *ngIf="esTutor"
+        *ngIf="esAlumno"
         class="nav-item"
         data-toggle="collapse"
         data-target=".navbar-collapse.show"
@@ -96,7 +94,7 @@
         >
       </li>
       <li
-        *ngIf="esProfesor || esTutor"
+        *ngIf="esProfesor || esTutor || esAlumno"
         class="nav-item"
         data-toggle="collapse"
         data-target=".navbar-collapse.show"
