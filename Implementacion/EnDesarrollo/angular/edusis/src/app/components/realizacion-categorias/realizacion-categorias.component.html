@@ -1,55 +1,47 @@
-<section id="categorias" class="margin-top-90 margin-bottom-16">
-  <script src="DragDropTouch.js"></script>
-  <div class="container">
-    <div *ngIf="!final">
-      <div class="text-right">
-        <h3 style="color: #13334c; margin-bottom: 0" *ngIf="timeLeft > 5">
-          {{ timeLeft }} <i class="fa fa-clock-o"></i>
-        </h3>
-        <h3 style="color: red; margin-bottom: 0" *ngIf="timeLeft <= 5">
-          {{ timeLeft }} <i class="fa fa-clock-o"></i>
-        </h3>
-        <h6 style="color: #13334c">
-          Palabras restantes: {{ palabras.length }}
-        </h6>
-      </div>
-      <div class="nube margin-bottom-16" style="overflow: visible;">
-        <img class="imagenNube" src="assets/img/nube.png" />
-        <div class="centered" style="overflow: visible; z-index: 50;"
-          cdkDrag
-          (cdkDragEnded)="onDragEnded($event, palabraActual)">
-          {{ palabraActual }}
+<div class="fondo position-fixed">
+  <section id="categorias" class="margin-top-90 margin-bottom-16">
+    <script src="DragDropTouch.js"></script>
+    <div class="container">
+      <div *ngIf="!final">
+        <div class="text-center" style="color:white;">
+          <h3 style="color: white; margin-bottom: 0" *ngIf="timeLeft > 5">
+            {{ timeLeft }} <i class="fa fa-clock-o"></i>
+          </h3>
+          <h3 style="color: red; margin-bottom: 0" *ngIf="timeLeft <= 5">
+            {{ timeLeft }} <i class="fa fa-clock-o"></i>
+          </h3>
+          <h6 style="color: white">
+            Palabras restantes: {{ palabras.length }}
+          </h6>
+        </div>
+        <div class="nube margin-bottom-16" style="overflow: visible;">
+          <img class="imagenNube" src="assets/img/nube.png" />
+          <div class="centered" style="overflow: visible; z-index: 50;" cdkDrag
+            (cdkDragEnded)="onDragEnded($event, palabraActual)">
+            {{ palabraActual }}
+          </div>
+        </div>
+        <div class="row lowRow">
+          <ng-container *ngFor="let categoria of categorias; let j = index">
+            <div [ngClass]="cantCategorias == 2 ? 'col-6' : 'col-4'" class="no-padding">
+              <div #divElement [id]="categoria.nombre" class="recuadro">
+                <img class="imagenNube  canvas-confetti-btn animate__animated" src="assets/img/canasta.png" />
+                <div class="top">{{ categoria.nombre }}</div>
+                <div class="centered">{{ mapAciertos.get(categoria) }}</div>
+              </div>
+            </div>
+          </ng-container>
         </div>
       </div>
-      <div class="row lowRow">
-        <ng-container *ngFor="let categoria of categorias; let j = index">
-          <div
-            [ngClass]="cantCategorias == 2 ? 'col-6' : 'col-4'"
-            class="no-padding"
-          >
-            <div #divElement [id]="categoria.nombre"
-              class="recuadro"
-            >
-              <img class="imagenNube  canvas-confetti-btn animate__animated" src="assets/img/canasta.png" />
-              <div class="top">{{ categoria.nombre }}</div>
-              <div class="centered">{{ mapAciertos.get(categoria) }}</div>
-            </div>
-          </div>
-        </ng-container>
+      <div *ngIf="final">
+        <div class="text-center">
+          <h3 style="color: white">Respuestas correctas:</h3>
+          <h3 style="color: white">{{ cantAciertos }} / {{ cantPreguntas }}</h3>
+        </div>
+        <button type="button" (click)="finalizar()" class="btn btn-lg btn-block btn-personalizado-inverso">
+          Finalizar
+        </button>
       </div>
     </div>
-    <div *ngIf="final">
-      <div class="text-center">
-        <h3 style="color: #13334c">Respuestas correctas:</h3>
-        <h3 style="color: #13334c">{{ cantAciertos }} / {{ cantPreguntas }}</h3>
-      </div>
-      <button
-        type="button"
-        (click)="finalizar()"
-        class="btn btn-lg btn-block btn-personalizado"
-      >
-        Finalizar
-      </button>
-    </div>
-  </div>
-</section>
+  </section>
+</div>

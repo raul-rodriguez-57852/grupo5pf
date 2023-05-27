@@ -45,3 +45,24 @@
     font-family: "SpaceKids";
     margin-bottom: 10px;
   }
+
+  .fondo {
+    z-index: -1;
+    background-color: #13334c;
+    height: 100%;
+    width: 100%;
+    clear: both;
+  }
+
+  .opcion {
+    height: 10vh;
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  .respuestasContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    column-gap: 5vh;
+  }

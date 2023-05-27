@@ -41,7 +41,6 @@ export class RealizacionCategoriasComponent {
     this.mapAciertos = new Map<Categoria, number>();
     this.categorias = new Array();
     this.dataApiService.getActividad(this.id).then(res => {
-      console.log(res);
       this.segundos = res.segundos;
       this.timeLeft = this.segundos;
       res.categorias.forEach(categoria => {
@@ -115,8 +114,11 @@ export class RealizacionCategoriasComponent {
             launcher.dispararConfetti(0.90, confettiShoulBeLaunchedAt);
             this.cantAciertos++;
           }
+          console.log(this.palabras);
           if (this.palabras.length > 0) {
+            console.log(this.palabraActual)
             this.palabraActual = this.palabras.pop();
+            console.log('La nueva palabra es: ', this.palabraActual)
           } else {
             this.terminar();
           }

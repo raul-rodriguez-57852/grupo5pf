@@ -6,40 +6,27 @@
   </div>
 
   <div class="container">
-    <select
-      [(ngModel)]="asignaturaFiltro"
-      (change)="onAsignaturaFilter()"
-      name="asignatura"
-      placeholder="Asignatura"
-      class="form-control margin-bottom-16"
-    >
+    <select [(ngModel)]="asignaturaFiltro" (change)="onAsignaturaFilter()" name="asignatura" placeholder="Asignatura"
+      class="form-control margin-bottom-16">
       <option [ngValue]="null">Todas las asignaturas</option>
       <option *ngFor="let asignatura of asignaturas" [ngValue]="asignatura">
         {{ asignatura.nombre }}
       </option>
     </select>
 
-    <div
-      *ngFor="
+    <div *ngFor="
         let tarea of tareasFiltradas
           | slice : (page - 1) * pageSize : page * pageSize
-      "
-    >
+      ">
       <!--| callback: filterMateria -->
       <div class="card mb-3" (click)="irATarea(tarea.id)">
         <div class="contenedorImagenCard">
-          <div
-            [style.background-color]="tarea.color"
-            class="card-img-top imagenCard"
-            alt="Card image cap"
-          ></div>
+          <div [style.background-color]="tarea.color" class="card-img-top imagenCard" alt="Card image cap"></div>
           <div class="centered">{{ tarea.asignatura }}</div>
         </div>
-        <div
-          [ngClass]="
+        <div [ngClass]="
             tarea.puntaje == null ? 'card-body' : 'card-body realizada'
-          "
-        >
+          ">
           <div class="flex-container">
             <div class="tareaNombre">
               <h5 class="card-title">{{ tarea.nombre }}</h5>
@@ -50,15 +37,8 @@
             </div>
           </div>
           <label class="rating-label">
-            <input
-              class="rating"
-              max="5"
-              readonly
-              step="0.01"
-              style="--value:{{ tarea.puntaje / 20 }}"
-              type="range"
-              value="{{ tarea.puntaje / 20 }}"
-            />
+            <input class="rating" max="5" readonly step="0.01" style="--value:{{ tarea.puntaje / 20 }}" type="range"
+              value="{{ tarea.puntaje / 20 }}" />
           </label>
           <div id="botonTareaYLabel">
             <div id="tareaSinRealizar" *ngIf="!tarea.puntaje">
@@ -69,9 +49,7 @@
                   </button>
                 </div>
                 <div class="tareaSinRealizar flex-container">
-                  <span
-                    >Vence: {{ tarea.fechaLimite | date : "dd/MM/yyyy" }}</span
-                  >
+                  <span>Vence: {{ tarea.fechaLimite | date : "dd/MM/yyyy" }}</span>
                   <i class="fa fa-calendar iconoCalendario"></i>
                 </div>
               </div>
@@ -99,69 +77,12 @@
       </div>
     </div>
 
-    <ngb-pagination
-      [(page)]="page"
-      [pageSize]="pageSize"
-      [collectionSize]="collectionSize"
-      [maxSize]="4"
-      [rotate]="true"
-      [ellipses]="false"
-      size="lg"
-      class="d-flex justify-content-center"
-    >
+    <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="collectionSize" [maxSize]="4"
+      [rotate]="true" [ellipses]="false" size="lg" class="d-flex justify-content-center">
     </ngb-pagination>
-    <button
-      (click)="volverACursos()"
-      class="btn btn-lg btn-block btn-personalizado-inverso"
-    >
+    <button (click)="volverACursos()" class="btn btn-lg btn-block btn-personalizado-inverso">
       Volver
     </button>
     <!--       </ul> -->
   </div>
 </section>
-
-<!-- Modal -->
-<button
-  id="open-modal"
-  [hidden]="true"
-  data-toggle="modal"
-  data-target="#informacion"
->
-  Open Modal
-</button>
-<div
-  class="modal fade"
-  id="informacion"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Ludikon</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        {{ mensaje }}
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          data-dismiss="modal"
-          class="btn btn-personalizado"
-        >
-          Aceptar
-        </button>
-      </div>
-    </div>
-  </div>
-</div>

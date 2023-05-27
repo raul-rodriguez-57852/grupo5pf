@@ -47,7 +47,7 @@ export class ConfettiLauncher {
     fire = (particleRatio, opts) => {
         const defaults = {
             particleCount: 300,
-            spread: 80,
+            spread: 200,
             angle: 90,
             scalar: 0.1
           };

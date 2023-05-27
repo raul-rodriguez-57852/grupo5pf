@@ -27,7 +27,7 @@ export class DataApiService {
   
 
   constructor(private http: HttpClient) {
-    this.urlBase = "http://192.168.0.253:8090/api/";
+    this.urlBase = "http://192.168.0.100:8090/api/";
     this.findUser();
   }
 

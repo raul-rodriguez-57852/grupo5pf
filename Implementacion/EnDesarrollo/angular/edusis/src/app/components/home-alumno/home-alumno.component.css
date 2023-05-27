@@ -42,3 +42,8 @@
   vertical-align: bottom;
   margin-top: 10px;
 }
+
+.nombreCurso {
+  display: block;
+  width: 100%;
+}

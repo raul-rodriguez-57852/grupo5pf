@@ -13,7 +13,7 @@ export class DataTareaService {
   usuario = null;
 
   constructor(private http: HttpClient) {
-    this.urlBase = "http://192.168.0.253:8090/tarea/";
+    this.urlBase = "http://192.168.0.100:8090/tarea/";
   }
 
   getTarea(id: string): Promise<any> {

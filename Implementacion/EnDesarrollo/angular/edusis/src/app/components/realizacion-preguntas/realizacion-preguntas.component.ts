@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { DataApiService } from "src/app/services/data-api.service";
+import { ConfettiLauncher } from 'src/app/services/confettiLauncher';
 
 @Component({
   selector: "app-realizacion-preguntas",
@@ -39,7 +40,6 @@ export class RealizacionPreguntasComponent {
     this.preguntaActualNumero = 0;
     this.respuestasCorrectas = 0;
     this.dataApiService.getActividad(this.id).then((res) => {
-      console.log(res);
       this.segundos = res.segundos;
       this.timeLeft = this.segundos;
       this.preguntas = res.preguntas;
@@ -104,6 +104,10 @@ export class RealizacionPreguntasComponent {
     this.revision = true;
     this.opcionElegida = elegida;
     this.opcionCorrecta = correcta;
+    if(this.opcionCorrecta.id == this.opcionElegida.id) {
+      let confettiLauncher = new ConfettiLauncher();
+      confettiLauncher.dispararConfetti(1, 0.5);
+    }
   }
 
   continuar() {

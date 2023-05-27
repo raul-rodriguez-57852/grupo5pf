@@ -84,10 +84,11 @@ export class RecompensasComponent implements OnInit {
 
   }
 
-  getAddons() {
-    this.dataApiService.getAddons().then((respuesta) => {
+  async getAddons() {
+    await this.dataApiService.getAddons().then((respuesta) => {
       this.addons = respuesta;
     });
+    this.addons.sort((item1, item2) => item1.costo - item2.costo);
   }
 
   actualizarAddons() {
@@ -162,11 +163,13 @@ export class RecompensasComponent implements OnInit {
           Swal.fire({
             icon: 'error',
             title: 'Estrellas insuficientes para comprar este item',
+            html: '<img src="' + addon.iconoURL + '"/>',
             text: '¡A realizar mas tareas!',
           })
         } else {
           const { value: respuesta } = await Swal.fire({
-            title: '¿Desea comprar el item seleccionado?',
+            title: '¿Desea comprar este item?',
+            html: '<img src="' + addon.iconoURL + '"/>',
             showCancelButton: true,
             confirmButtonText: 'Confirmar',
             cancelButtonText: "Cancelar",

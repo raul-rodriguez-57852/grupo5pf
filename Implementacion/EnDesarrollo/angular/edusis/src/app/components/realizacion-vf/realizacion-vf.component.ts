@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataApiService } from 'src/app/services/data-api.service';
+import { ConfettiLauncher } from 'src/app/services/confettiLauncher';
 
 @Component({
   selector: 'app-realizacion-vf',
@@ -38,7 +39,6 @@ export class RealizacionVfComponent {
     this.id = id;
     this.final = false;
     this.dataApiService.getActividad(this.id).then(res => {
-      console.log(res);
       this.segundos = res.segundos;
       this.timeLeft = this.segundos;
       this.preguntas = res.preguntas;
@@ -81,6 +81,10 @@ export class RealizacionVfComponent {
     this.revision = true;
     this.opcionElegida = elegida;
     this.opcionCorrecta = correcta;
+    if (this.opcionElegida && this.opcionCorrecta) {
+      let confettiLauncher = new ConfettiLauncher();
+      confettiLauncher.dispararConfetti(0.98, 0.5);
+    }
   }
 
   continuar() {

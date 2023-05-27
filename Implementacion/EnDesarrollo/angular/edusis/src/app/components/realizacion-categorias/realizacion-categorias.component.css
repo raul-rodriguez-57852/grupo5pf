@@ -3,7 +3,13 @@
     overflow: hidden;
     position: relative;
     text-align: center;
-    color: black;
+    color: white;
+    font-size: 28px;
+    font-weight: 600;
+  }
+
+  h6 {
+    margin-bottom: 1rem;
   }
   
   .recuadro {
@@ -11,7 +17,7 @@
     position: sticky;
     bottom: 20px;
     text-align: center;
-    color: black;
+    color: white;
   }
   
   .imagenNube {
@@ -21,11 +27,6 @@
   
   .centered {
     font-size: x-large;
-    text-shadow:
-      -1px -1px 0 #fff,
-      1px -1px 0 #fff,
-      -1px 1px 0 #fff,
-      1px 1px 0 #fff;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -34,11 +35,6 @@
 
   .top {
     font-size: x-large;
-    text-shadow:
-      -1px -1px 0 #fff,
-      1px -1px 0 #fff,
-      -1px 1px 0 #fff,
-      1px 1px 0 #fff;
     position: absolute;
     top: -20px;
     left: 50%;
@@ -52,6 +48,14 @@
     margin: calc(1vw + 1rem);
     bottom: 0;
     left: 0;
+  }
+
+  .fondo {
+    z-index: -1;
+    background-color: #13334c;
+    height: 100%;
+    width: 100%;
+    clear: both;
   }
 
   

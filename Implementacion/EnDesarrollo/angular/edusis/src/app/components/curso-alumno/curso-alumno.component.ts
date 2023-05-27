@@ -53,10 +53,9 @@ export class CursoAlumnoComponent implements OnInit {
       '#FFF6BD', '#FF8E9E', '#ADA2FF', '#227C70', '#FAEAB1', '#FAAB78', '#FFCAC8']
     this.dataApiService.getAsignaturas(this.cursoId).then((asignaturas) => {
       this.asignaturas = asignaturas;
-      console.log(this.asignaturas);
       this.dataTareaService.getTareas(this.cursoId).then((tareas) => {
         this.tareas = tareas;
-        console.log(tareas);
+        console.log(this.tareas);
         this.dataTareaService.getRealizaciones(this.cursoId, this.dataApiService.getUsuario()).then((realizaciones) => {
           realizaciones.forEach(element => {
             if (element.puntaje != null) {
@@ -66,9 +65,9 @@ export class CursoAlumnoComponent implements OnInit {
             element['color'] = colores[random];
           });
           this.tareasPuntaje = realizaciones;
+          console.log(realizaciones)
           this.tareasFiltradas = this.tareasPuntaje;
           this.collectionSize = this.tareasPuntaje.length;
-          console.log(this.tareasPuntaje);
         });
       });
     });
@@ -94,8 +93,6 @@ export class CursoAlumnoComponent implements OnInit {
     console.log(filtered);
     this.tareasFiltradas = filtered;
     this.collectionSize = this.tareasFiltradas.length;
-
-
   }
 
 }

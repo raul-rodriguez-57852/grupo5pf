@@ -70,7 +70,7 @@ export class RealizacionTareaComponent implements OnInit {
 
   ngOnInit() {
     const colores = [
-      '#B5D5C5', '#B08BBB', '#ECA869', '#F5F5DC', '#579BB1', '#82AAE3', '#91D8E4',
+      '#34b689', '#B08BBB', '#ECA869', '#F5F5DC', '#579BB1', '#82AAE3', '#91D8E4',
       '#FFF6BD', '#FF8E9E', '#ADA2FF', '#227C70', '#FAEAB1', '#FAAB78', '#FFCAC8']
     const random = Math.floor(Math.random() * colores.length);
     this.color = colores[random];
