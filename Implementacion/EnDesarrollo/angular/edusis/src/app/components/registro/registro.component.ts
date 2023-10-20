@@ -5,17 +5,20 @@ import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
 import { DataApiService } from "../../services/data-api.service";
 import Swal from "sweetalert2";
+import Swiper from 'swiper';
+import { register } from 'swiper/element/bundle';
 
 @Component({
   selector: "app-registro",
   templateUrl: "./registro.component.html",
-  styleUrls: ["./registro.component.css"],
+  styleUrls: ["./registro.component.css", '../../../../node_modules/swiper/swiper-bundle.css'],
 })
 
 export class RegistroComponent implements OnInit {
   profesor: Profesor = new Profesor();
   tutor: Tutor = new Tutor();
   esCuentaTutor = true;
+  swiper: Swiper;
   tiposDoc = [];
   registroExitoso = false;
   button = document.getElementById('button-container')
@@ -24,6 +27,7 @@ export class RegistroComponent implements OnInit {
   buttonTrack = (<HTMLDivElement>document.getElementById('my-button'))
   where = (<HTMLInputElement>document.getElementById('for-button'))
   buttonState = true;
+  tipoCuenta = 'tutor';
   elemnts = {
     'InputNombre' : 'div-nombre',
     'inputApellido' : 'div-apellido',
@@ -38,6 +42,7 @@ export class RegistroComponent implements OnInit {
   }
   ngOnInit() {
     this.getTiposDoc();
+    this.swiper = this.getSwipper();
   }
 
   getTiposDoc() {
@@ -68,40 +73,6 @@ export class RegistroComponent implements OnInit {
     this.registroExitoso ? this.irLogIn() : this.resetForm();
   }
 
-  changeAccount() {
-    this.tutorSwitch = (<HTMLParagraphElement>document.getElementById('Tutor'))
-    this.profeSwitch = (<HTMLParagraphElement>document.getElementById('Profesor'))
-    this.buttonTrack = (<HTMLDivElement>document.getElementById('my-button'))
-    this.where = (<HTMLInputElement>document.getElementById('for-button'))
-    if (this.buttonState) {
-      document.getElementById("my-button").style.transform = "translateX(100px)"; 
-      this.buttonState = false;
-      this.tutorSwitch.innerText = 'Profesor'
-      this.profeSwitch.innerText = 'Tutor'
-      this.profeSwitch.style.transform = "translateX(-100px)";
-      this.where.value = 'Profesor'
-      this.buttonTrack.style.borderRadius = "0px 20px 20px 0px";
-      
-    } else {
-      document.getElementById("my-button").style.transform = "translateX(0px)";
-      this.buttonState = true;
-      this.tutorSwitch.innerText = 'Tutor'
-      this.profeSwitch.innerText = 'Profesor'
-      this.profeSwitch.style.transform = "translateX(0px)";
-      this.where.value = 'Tutor'
-      this.buttonTrack.style.borderRadius = "20px 0px 0px 20px";
-    }
-    (this.where.value == 'Tutor') ? this.esCuentaTutor = true : this.esCuentaTutor = false;
-  }
-
-  cambiarTipoCuenta(tipo: string) {
-    if (tipo === this.dataApiService.getTutorType()) {
-      this.esCuentaTutor = true;
-    } else {
-      this.esCuentaTutor = false;
-    }
-  }
-
   recargar(id) {
     this.router.navigate(["registro"], { state: { id: id } });
   }
@@ -110,9 +81,18 @@ export class RegistroComponent implements OnInit {
     this.router.navigate(['']);
   }
   
-  addFocus(to: string, from: string = '') {
-      document.getElementById(to).classList.add('focus');
-      document.getElementById(to).click();
+  addFocus(to: string) {
+    let allFocusableElements = document.getElementsByClassName('focusable');
+    for (let i = 0; allFocusableElements.length > i; i++) {
+      if (allFocusableElements[i].classList.contains('focus')) {
+        let elementContent = allFocusableElements[i].querySelector('input').value;
+        if (elementContent == null || elementContent === '') {
+          allFocusableElements[i].classList.remove('focus');
+        }
+      }
+    }
+    document.getElementById(to).classList.add('focus');
+    document.getElementById(to).click();
   }
 
   checkAndGiveFocus(check: string, giveTo: string ) {  
@@ -125,7 +105,6 @@ export class RegistroComponent implements OnInit {
     if (giveTo == '') {
       return;
     }
-
     document.getElementById(giveTo).classList.add('focus');
     document.getElementById(giveTo).click();
   }
@@ -240,6 +219,30 @@ export class RegistroComponent implements OnInit {
     if (missingElements.length > 0) {
       throw missingElements;
     }
+  }
+
+  cambiate() {
+    this.swiper.slideNext(300);
+    const result = document.getElementsByClassName('swiper-slide swiper-slide-visible swiper-slide-active')[0].id;
+    if (result == 'profesor') {
+      this.tipoCuenta = 'profesor';
+      this.esCuentaTutor = false;
+    } else {
+      this.tipoCuenta = 'tutor';
+      this.esCuentaTutor = true;
+    }
+  }
+
+  getSwipper() {
+    register();
+    return new Swiper('.swiper', {
+      speed: 400,
+      loop: true,
+      effect: 'flip',
+      flipEffect: {
+      slideShadows: false,
+      },
+    });
   }
 
 }

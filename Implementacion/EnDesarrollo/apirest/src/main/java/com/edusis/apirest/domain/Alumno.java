@@ -7,10 +7,8 @@ package com.edusis.apirest.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
@@ -49,6 +47,9 @@ public class Alumno extends Persona {
 
     @OneToMany(mappedBy = "alumno")
     private List<RecompensaAlumno> recompensas;
+    
+    @OneToMany(mappedBy = "alumno")
+    private List<CursoBonusAlumno> cursoBonusAlumno;
 
     // CUSTOM
     
@@ -114,6 +115,14 @@ public class Alumno extends Persona {
 
     public void addRecompensa(RecompensaAlumno recompensa) {
         this.recompensas.add(recompensa);
+    }
+    
+    public List<CursoBonusAlumno> getCursoBonusAlumno() {
+        return cursoBonusAlumno;
+    }
+
+    public void setCursoBonusAlumno(List<CursoBonusAlumno> cursoBonusAlumno) {
+        this.cursoBonusAlumno = cursoBonusAlumno;
     }
 
     

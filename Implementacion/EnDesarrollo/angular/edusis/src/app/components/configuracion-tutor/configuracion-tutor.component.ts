@@ -15,10 +15,22 @@ import { DataTareaService } from 'src/app/services/data-tarea.service';
 
   export class ConfiguracionTutorComponent implements OnInit{
     alumno: Alumno = {
-      id: null, nombre: null, apellido: null, documento: null, tipoDocumento: null, fechaNacimiento: null, avatarUrl: null, passwordEmoji: null, tutorId: null, saldoEstrellas: null, mapRecompensas: null, isActive: true,
+      id: null, 
+      nombre: null, 
+      apellido: null, 
+      documento: null, 
+      tipoDocumento: null, 
+      fechaNacimiento: null, 
+      avatarUrl: null, 
+      passwordEmoji: null, 
+      tutorId: null, 
+      saldoEstrellas: null, 
+      mapRecompensas: null, 
+      isActive: true,
       recompensas: [],
       listRecompensasComprada: [],
-      listRecompensasEquipada: []
+      listRecompensasEquipada: [],
+      cursoBonusAlumno: []
     };
     urlImagen = "assets\\img\\empty-classroom-stock-image.jpg";
     tituloDePagina: string = 'Configuración';

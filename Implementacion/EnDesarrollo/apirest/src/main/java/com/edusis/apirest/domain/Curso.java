@@ -54,9 +54,16 @@ public class Curso extends SoftDeleteEntity {
     
     @JsonIgnoreProperties(value = {"Curso", "hibernateLazyInitializer"})
     private String codigo;
+    
+    @OneToMany(mappedBy = "curso")
+    private List<BonusCurso> bonusCurso;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy="curso")
+    private List<CursoBonusAlumno> cursoBonusAlumno;
+    
+    private Boolean comodinesActivados = Boolean.FALSE;
 
-    
-    
     public void validar(){
         AssertUtils.notNull(nombre, "El nombre no puede ser nulo");
         AssertUtils.notNull(creador, "El creador no puede ser nulo");
@@ -121,6 +128,34 @@ public class Curso extends SoftDeleteEntity {
         this.alumnos = alumnos;
     }
     
+    public List<CursoBonusAlumno> getCursoBonusAlumno() {
+        return cursoBonusAlumno;
+    }
+
+    public void setCursoBonusAlumno(List<CursoBonusAlumno> cursoBonusAlumno) {
+        this.cursoBonusAlumno = cursoBonusAlumno;
+    }
+    
+     public Boolean getComodinesActivados() {
+        return comodinesActivados;
+    }
+
+    public void setComodinesActivados(Boolean comodinesActivados) {
+        this.comodinesActivados = comodinesActivados;
+    }
+    
+    public List<BonusCurso> getBonusCurso() {
+        return bonusCurso;
+    }
+    
+    public void addBonusCurso(BonusCurso bonusCurso) {
+        this.bonusCurso.add(bonusCurso);
+    }
+
+    public void setBonusCurso(List<BonusCurso> bonusCurso) {
+        this.bonusCurso = bonusCurso;
+    }
+    
     /**
     * @param alumno an Alumno object that will be added to Curso
     * @return      the Curso object itself so it can ve saved by its Service
@@ -172,4 +207,20 @@ public class Curso extends SoftDeleteEntity {
         return this;
     }
     
+    /**
+    * @param bonusCurso an BonusCurso object that will be added to Curso
+    * @return      the Curso object itself so it can ve saved by its Service
+    */
+    public Curso agregarBonusAlCurso(BonusCurso bonusCurso) {
+        if(!this.getBonusCurso().isEmpty()) {
+            if(!this.getBonusCurso().contains(bonusCurso)) {
+                this.getBonusCurso().add(bonusCurso);
+            }
+        } else {
+            ArrayList<BonusCurso> bonusDelCurso = new ArrayList<BonusCurso>();
+            bonusDelCurso.add(bonusCurso);
+            this.setBonusCurso(bonusDelCurso);
+        }
+        return this;
+    }
 }

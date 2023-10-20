@@ -14,10 +14,22 @@ import Swal from 'sweetalert2';
 export class EditarAlumnoComponent implements OnInit {
 
   alumno: Alumno = {
-    id: null, nombre: null, apellido: null, documento: null, tipoDocumento: null, fechaNacimiento: null, avatarUrl: null, passwordEmoji: null, tutorId: null, saldoEstrellas: null, mapRecompensas: null, isActive: true,
+    id: null, 
+    nombre: null, 
+    apellido: null, 
+    documento: null, 
+    tipoDocumento: null, 
+    fechaNacimiento: null, 
+    avatarUrl: null, 
+    passwordEmoji: null, 
+    tutorId: null, 
+    saldoEstrellas: null, 
+    mapRecompensas: null, 
+    isActive: true,
     recompensas: [],
     listRecompensasComprada: [],
-    listRecompensasEquipada: []
+    listRecompensasEquipada: [],
+    cursoBonusAlumno: null
   };
   alumnoDoc = null;
   emojis = [];

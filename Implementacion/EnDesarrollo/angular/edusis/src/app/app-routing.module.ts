@@ -42,6 +42,8 @@ import { CrearActividadVfComponent } from './components/crear-actividad-vf/crear
 import { VistaPreviaVfComponent } from './components/vista-previa-vf/vista-previa-vf.component';
 import { RealizacionVfComponent } from './components/realizacion-vf/realizacion-vf.component';
 import { MainComponent } from './components/main/main.component';
+import { BonusesComponent } from './components/bonuses/bonuses.component';
+import { BonusCursoComponent } from './components/bonus-curso/bonus-curso.component';
 
 const routes: Routes = [
 
@@ -93,6 +95,8 @@ const routes: Routes = [
   { path: 'realizacion-vf', component: RealizacionVfComponent, canActivate: [TutorAuthGuard] },
   { path: 'configuracion-tutor', component: ConfiguracionTutorComponent, canActivate: [TutorAuthGuard] },
   { path: 'recompensas', component: RecompensasComponent, canActivate: [TutorAuthGuard] },
+  { path: 'bonuses', component: BonusesComponent, canActivate: [TutorAuthGuard] },
+  { path: 'bonus-curso', component: BonusCursoComponent, canActivate: [DocenteAuthGuard] }
 
 ];
 

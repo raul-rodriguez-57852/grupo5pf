@@ -28,7 +28,8 @@ export class RecompensasComponent implements OnInit {
     isActive: true,
     recompensas: [],
     listRecompensasComprada: [],
-    listRecompensasEquipada: []
+    listRecompensasEquipada: [],
+    cursoBonusAlumno: []
   };
   addons = [];
   listRecompensasComprada: Addon[] = [];
@@ -78,10 +79,9 @@ export class RecompensasComponent implements OnInit {
         this.alumno.tutorId = respuesta.tutorId;
         this.alumno.saldoEstrellas = respuesta.saldoEstrellas;
         this.alumno.recompensas = respuesta.recompensas;
-
+        this.alumno.cursoBonusAlumno = respuesta.cursoBonusAlumno;
       }
     )
-
   }
 
   async getAddons() {

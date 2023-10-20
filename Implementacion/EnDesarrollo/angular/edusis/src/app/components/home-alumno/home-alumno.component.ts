@@ -27,6 +27,7 @@ export class HomeAlumnoComponent implements OnInit {
     listRecompensasEquipada: null,
     isActive: true,
     mapRecompensas: null,
+    cursoBonusAlumno: []
   };
   curso: Curso = {
     id: null,
@@ -34,6 +35,7 @@ export class HomeAlumnoComponent implements OnInit {
     imagen: null,
     creadorId: null,
     codigo: null,
+    comodines_activados: null
   };
   cursos = [];
   mensaje: string = null;
@@ -70,6 +72,7 @@ export class HomeAlumnoComponent implements OnInit {
       this.alumno.passwordEmoji = respuesta.passwordEmoji;
       this.alumno.tutorId = respuesta.tutorId;
       this.alumno.saldoEstrellas = respuesta.saldoEstrellas;
+      this.alumno.cursoBonusAlumno = respuesta.cursoBonusAlumno;
       this.actualizarAddons(parseInt(id));
     });
   }
@@ -180,5 +183,9 @@ export class HomeAlumnoComponent implements OnInit {
     this.router.navigate(["home-alumno"], {
       state: { id: this.dataApiService.getUsuario() },
     });
+  }
+
+  bonusCurso(id: number) {
+    this.router.navigate(['bonuses', { id }]);
   }
 }

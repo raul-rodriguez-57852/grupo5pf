@@ -13,7 +13,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 })
 export class EditarCursoComponent implements OnInit {
 
-  curso: Curso = { id: null, nombre: null, imagen: null, creadorId: null,codigo: null };
+  curso: Curso = { id: null, nombre: null, imagen: null, creadorId: null,codigo: null, comodines_activados: null };
   mensaje: string = null;
   tienecodigo = false;
   mostrarcodigo = false;
@@ -38,14 +38,12 @@ export class EditarCursoComponent implements OnInit {
           this.curso.nombre = curso.nombre;
           this.curso.imagen = curso.imagen;
           this.curso.codigo = curso.codigo;
-            if(curso.codigo == null)
-            {
+          this.curso.comodines_activados = this.curso.comodines_activados;
+            if(curso.codigo == null) {
               this.tienecodigo = false;
-            }
-            else{
+            } else {
               this.tienecodigo = true;
             }
-          
         }
       );
     }

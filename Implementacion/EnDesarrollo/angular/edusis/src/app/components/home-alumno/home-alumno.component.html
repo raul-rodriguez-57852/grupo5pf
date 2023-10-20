@@ -48,6 +48,13 @@
         <div  class="nombreCurso" (click)="irACurso(curso.id)">
           {{ curso.nombre }}
         </div>
+        <button
+            type="button"
+            (click)="bonusCurso(curso.id)"
+            class="btn btn-special"
+          >
+          <i class="fa fa-magic"></i>
+          </button>
       </li>
     </div>
 

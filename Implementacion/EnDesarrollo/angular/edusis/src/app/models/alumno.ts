@@ -16,5 +16,6 @@ export class Alumno {
   listRecompensasComprada: any[];
   listRecompensasEquipada: any[];
   mapRecompensas: Map<Addon, Boolean>;
+  cursoBonusAlumno: any[];
   isActive: boolean;
 }

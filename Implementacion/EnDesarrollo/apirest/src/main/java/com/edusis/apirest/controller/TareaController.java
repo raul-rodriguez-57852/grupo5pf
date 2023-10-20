@@ -66,7 +66,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -286,12 +285,10 @@ public class TareaController {
     }
     
     @GetMapping("alumnosPorCurso")
-    public List<Alumno> getAlumnosPorCurso(@RequestParam Long cursoId) {
-        
+    public List<Alumno> getAlumnosPorCurso(@RequestParam Long cursoId) {        
         Curso curso = cursoService.get(cursoId);
         List<Alumno> alumnos = alumnoService.getAll(AlumnoSpecs.isActive().and(AlumnoSpecs.byCurso(curso)));
         return alumnos;
-    
     }
     
     @GetMapping("cantidadPorRangoTarea")

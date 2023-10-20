@@ -1,14 +1,13 @@
 /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package com.edusis.apirest.service.dto;
 
-import com.edusis.apirest.domain.Curso;
 import com.edusis.apirest.domain.TipoDocumento;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  *
@@ -27,6 +26,7 @@ public class AlumnoDto {
     private Long tutorId;
     private Integer saldoEstrellas;
     private String mapRecompensas;
+    private String cursoBonusAlumno;
     
     public Long getId() {
         return id;
@@ -114,6 +114,14 @@ public class AlumnoDto {
 
     public void setMapRecompensas(String mapRecompensas) {
         this.mapRecompensas = mapRecompensas;
+    }
+    
+    public String getCursoBonusAlumno() {
+        return cursoBonusAlumno;
+    }
+
+    public void setCursoBonusAlumno(String cursoBonusAlumno) {
+        this.cursoBonusAlumno = cursoBonusAlumno;
     }
 
 }

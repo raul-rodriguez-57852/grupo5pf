@@ -4,4 +4,5 @@ export class Curso {
   imagen: string;
   creadorId: number;
   codigo: string;
+  comodines_activados: Boolean
 }

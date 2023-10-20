@@ -16,6 +16,7 @@ public class CursoDto {
     private String imagen;
     private Long creadorId;
     private String codigo;
+    private Boolean comodines_activados;
 
     public String getCodigo() {
         return codigo;
@@ -55,6 +56,14 @@ public class CursoDto {
 
     public void setCreadorId(Long creadorId) {
         this.creadorId = creadorId;
+    }
+    
+    public Boolean getComodines_activados() {
+        return comodines_activados;
+    }
+
+    public void setComodines_activados(Boolean comodines_activados) {
+        this.comodines_activados = comodines_activados;
     }
 
 }

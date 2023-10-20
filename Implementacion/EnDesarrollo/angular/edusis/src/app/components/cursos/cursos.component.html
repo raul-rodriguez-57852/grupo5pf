@@ -33,6 +33,13 @@
         <div class="actionButtons btn-group btn-group-sm" role="group">
           <button
             type="button"
+            (click)="bonusCurso(curso.id)"
+            class="btn btn-special"
+          >
+          <i class="fa fa-magic"></i>
+          </button>
+          <button
+            type="button"
             (click)="generarCodigoCurso(curso.id)"
             class="btn btn-personalizado-txtblanco"
           >

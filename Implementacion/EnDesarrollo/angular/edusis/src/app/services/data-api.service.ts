@@ -225,6 +225,40 @@ export class DataApiService {
     return this.http.post(this.urlBase + 'agregarAlumnoACurso', postData).toPromise();
   }
 
+  activarDesactivarComodin(cursoId: string): Promise<any> {
+    return this.http.get(this.urlBase + 'activarDesactivarComodin', { params: { cursoId } }).toPromise();
+  }
+
+  getBonusDelCurso(idCurso: string): Promise<any> {
+    return this.http.get(this.urlBase + 'bonusDelCurso', { params: { idCurso } }).toPromise();
+  }
+
+  activarDesactivarBonusAlCurso(idCurso: string, idBonus: string): Promise<any> {
+    const postData = new FormData();
+    postData.append('idCurso', idCurso);
+    postData.append('idBonus', idBonus);
+    return this.http.post(this.urlBase + 'activarDesactivarBonusAlCurso', postData).toPromise();
+  }
+
+  agregarBonusAlAlumno(idAlumno: string, idBonus: string, idCurso: string) {
+    const postData = new FormData();
+    postData.append('idAlumno', idAlumno);
+    postData.append('idBonus', idBonus);
+    postData.append('idCurso', idCurso);
+    return this.http.post(this.urlBase + 'agregarBonusAlAlumno', postData).toPromise();
+  }
+
+  descontarEstrellasPorBonus(idAlumno: string, bonusPrice: string) {
+    const postData = new FormData();
+    postData.append('idAlumno', idAlumno);
+    postData.append('bonusPrice', bonusPrice);
+    return this.http.post(this.urlBase + 'descontarEstrellasPorBonus', postData).toPromise();
+  }
+
+  eliminarComodinAlumno(idCursoBonusAlumno: string) {
+    return this.http.get(this.urlBase + 'eliminarComodinAlumno', { params: { idCursoBonusAlumno } }).toPromise();
+  }
+
   //#######     ASIGNATURA      ######### 
   guardarAsignatura(asignatura: Asignatura): Promise<any> {
     return this.http
@@ -279,6 +313,14 @@ export class DataApiService {
     return this.http.get(this.urlBase + 'isProfesor', { params: { id } }).toPromise();
   }
 
+  //####### COMODINES    //#######
+  getAllBonuses(): Promise<any> {
+    return this.http.get(this.urlBase + 'bonus').toPromise();
+  }
+
+  getBonusAlumnoByCurso(cursoId: string): Promise<any> {
+    return this.http.get(this.urlBase + 'getBonusAlumnoByCurso', { params: { cursoId } }).toPromise();
+  }
 
   //#######     COOKIES      ######### 
   setCookie(name: String, val: String) {

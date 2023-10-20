@@ -1,0 +1,67 @@
+<div class="fondo position-fixed"></div>
+<section id="alumnoProfile">
+  <div class="container" style="padding-top: 90px">
+    <div class="col-sm-12 d-flex justify-content-center" style="margin-bottom: 10px; height: 150px">
+      <img class="imagen-avatar" style="z-index: 10" src="{{ alumno.avatarUrl }}" />
+      <img class="imagen-avatar-addons" [style.z-index]="addon.tipo.profundidad"
+        *ngFor="let addon of alumno.listRecompensasEquipada" src="{{ addon.iconoURL }}" />
+    </div>
+    <div class="nombre-div">
+      <div class="nombre">
+        {{ alumno.nombre }}
+      </div>
+    </div>
+    <div class="saldo-div" style="margin-bottom: 10px;">
+      <div class="saldo">
+        {{ alumno.saldoEstrellas }}
+      </div>
+      <img src="/assets/img/star.png" class="star" />
+    </div>
+  </div>
+</section>
+
+<section>
+  <div id="bonuese-alumno">
+    <div class="mis-bonuese">Mis Comodines</div>
+    <div *ngIf="!tieneComodines" class="no-bonuses-text">Ups!... parece que todavia no has obtenido ningun comodin..</div>
+    <div *ngIf="tieneComodines" class="comodines-container">
+      <div *ngFor="let comodines of comodinesAlumno">
+        <div [ngClass]="curso.comodines_activados ? 'bonus-alumno': 'bonus-alumno desactivado'" (click)="curso.comodines_activados ? showActiveBonus(comodines) : showNoActiveBonus(comodines)">
+          <img class="bonus-alumno-img" src="{{comodines.imagen}}">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="buy-bonuses">
+  <button id="buyBonus" (click)="canjearBonus()" style="width: 50%;"
+    class="btn btn-personalizado-inverso margin-bottom-16">Canjear Bonus!
+    <span class="bonus-price">{{bonusPrice}}</span>
+    <img src="/assets/img/star.png" class="star-price" />
+  </button>
+</section>
+
+<div class="bonus-container" id="bonus-container">
+  <div class="bonus canvas-confetti-btn animate__animated" id="bonus">
+    <div id="close-modal">
+      <span (click)="hideModal()" class="close">&times;</span>
+    </div>
+    <div class="swiper" id="swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" id="{{comodinesDelCurso[0]?.id}}">
+          <div class="bonus-title">{{comodinesDelCurso[0]?.nombre}}</div>
+          <img class="bonus-img" src="{{comodinesDelCurso[0]?.imagen}}">
+          <div class="bonus-desc">{{comodinesDelCurso[0]?.descripcion}}</div>
+        </div>
+        <div *ngFor="let bonus of comodinesDelCurso | slice:1" class="swiper-slide" id="{{bonus?.id}}">
+          <div class="bonus-title">{{bonus?.nombre}}</div>
+          <img class="bonus-img" src="{{bonus.imagen}}">
+          <div class="bonus-desc">{{bonus?.descripcion}}</div>
+        </div>
+      </div>
+    </div>
+    <button *ngIf="runningBonuses" id="canjear" class="bonus-button btn btn-personalizado-inverso margin-bottom-16" (click)="purhcaseBonus()">Canjear Comodin {{bonusPrice}}</button>
+    <button *ngIf="!runningBonuses" id="canjear" (click)="hideModal()" class="bonus-button btn btn-personalizado-inverso margin-bottom-16">Volver</button>
+  </div>
+</div>

@@ -1,73 +1,61 @@
-.wave{
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	height: 100%;
-	z-index: -1;
-}
-
-.img{
+.img {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
 }
 
-.login-content{
+.login-content {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
 	text-align: center;
 }
 
-.img img{
-	width: 500px;
-}
-
-form{
+form {
 	width: auto;
 }
 
-.login-content img{
-    height: 100px;
+.login-content img {
+	height: 100px;
 }
 
-.login-content h2{
+.login-content h2 {
 	margin: 15px 0;
 	color: #fff;
 	text-transform: uppercase;
 	font-size: 2.9rem;
 }
 
-.login-content .input-div{
+.login-content .input-div {
 	position: relative;
-    display: grid;
-    grid-template-columns: 7% 93%;
-    margin: 25px 0;
-    padding: 5px 0;
-    border-bottom: 2px solid #fff;
+	display: grid;
+	grid-template-columns: 7% 93%;
+	margin: 25px 0;
+	padding: 5px 0;
+	border-bottom: 2px solid #fff;
 }
 
-.login-content .input-div.one{
+.login-content .input-div.one {
 	margin-top: 0;
 }
 
-.i{
+.i {
 	color: #fff;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 
-.i i{
+.i i {
 	transition: .3s;
 }
 
-.input-div > div{
-    position: relative;
+.input-div>div {
+	position: relative;
 	height: 45px;
 }
 
-.input-div > div > h5{
+.input-div>div>h5 {
 	position: absolute;
 	left: 10px;
 	top: 50%;
@@ -77,7 +65,8 @@ form{
 	transition: .3s;
 }
 
-.input-div:before, .input-div:after{
+.input-div:before,
+.input-div:after {
 	content: '';
 	position: absolute;
 	bottom: -2px;
@@ -87,29 +76,30 @@ form{
 	transition: .4s;
 }
 
-.input-div:before{
+.input-div:before {
 	right: 50%;
 }
 
-.input-div:after{
+.input-div:after {
 	left: 50%;
 }
 
-.input-div.focus:before, .input-div.focus:after{
+.input-div.focus:before,
+.input-div.focus:after {
 	width: 50%;
 }
 
-.input-div.focus > div > h5{
+.input-div.focus>div>h5 {
 	top: -5px;
-  font-size: 15px;
-  color: #478fca;
-}
-
-.input-div.focus > .i > i{
+	font-size: 15px;
 	color: #478fca;
 }
 
-.input-div > div > input{
+.input-div.focus>.i>i {
+	color: #478fca;
+}
+
+.input-div>div>input {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -124,11 +114,11 @@ form{
 	font-family: 'poppins', sans-serif;
 }
 
-.input-div.pass{
+.input-div.pass {
 	margin-bottom: 4px;
 }
 
-a{
+a {
 	display: block;
 	text-align: center;
 	text-decoration: none;
@@ -137,11 +127,11 @@ a{
 	transition: .3s;
 }
 
-a:hover{
+a:hover {
 	color: #fff;
 }
 
-.btn{
+.btn {
 	display: block;
 	width: 100%;
 	height: 50px;
@@ -157,137 +147,108 @@ a:hover{
 	cursor: pointer;
 	transition: .5s;
 }
-.btn:hover{
+
+.btn:hover {
 	background-position: right;
 }
 
 
-@media screen and (max-width: 1050px){
-	.container{
+@media screen and (max-width: 1050px) {
+	.container {
 		grid-gap: 5rem;
 	}
 }
 
-@media screen and (max-width: 1000px){
-	form{
+@media screen and (max-width: 1000px) {
+	form {
 		width: 290px;
 	}
 
-	.login-content h2{
-        font-size: 2.4rem;
-        margin: 8px 0;
+	.login-content h2 {
+		font-size: 2.4rem;
+		margin: 8px 0;
 	}
 
-	.img img{
+	.img img {
 		width: 400px;
 	}
 }
 
-@media screen and (max-width: 900px){
-	.container{
+@media screen and (max-width: 900px) {
+
+	.login-content {
+		margin: 0px;
+		padding: 0px;
+	}
+
+	.container {
 		grid-template-columns: 1fr;
 	}
 
-	.img{
+	.img {
 		display: none;
 	}
 
-	.wave{
+	.wave {
 		display: none;
 	}
 
-	.login-content{
+	.login-content {
 		justify-content: center;
 	}
 }
 
 .fondo {
-  z-index: -1;
-  background-color: #13334c;
-  height: 100%;
-  width: 100%;
+	z-index: -1;
+	background-color: #13334c;
+	height: 100%;
+	width: 100%;
 }
 
-.img__wrap {
-	position: relative;
-	height: 290px;
-	width: 625px;
-  }
-  
-  .img__description {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	background: rgba(29, 106, 154, 0.72);
-	color: #fff;
-	visibility: hidden;
-	opacity: 0;
-  
-	/* transition effect. not necessary */
-	transition: opacity .2s, visibility .2s;
-  }
-  
-  .img__wrap:hover .img__description {
-	visibility: visible;
-	opacity: 1;
-  }
-
-  .button {
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	width: 200px;
-  	height: 39px;
-  	background: #B3728C;
-  	border-radius: 20px;
-  }
-  
-  .button-element {
-	width: 100px;
-  	height: 39px;
-  	background: #40BFC1;
-  	box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.14);
-  	border-radius: 20px 0px 0px 20px;
-	display: flex;
-	justify-content: center;
-	align-items: center; 
-	transition: all 0.3s;
-  }
-  
-  #Tutor {
-  padding-top:15px;
-	font-size: 14px;
-	font-weight: normal;
-	font-style: normal;
-	letter-spacing: 0.2px;
-	color: #fff;
-  }
-  
-  #Profesor {
-  padding-top:15px;
-  font-size: 14px;
-	font-weight: normal;
-	font-style: normal;
-	letter-spacing: 0.2px;
-	color: #723E53;
-	padding-left: 22px;
-  }
-
-  .tipoCuenta {
-	display: flex;
-	padding-bottom: 15px;
-	max-height: 100px;
-	justify-content: center;
-  }
-
-  label {
+label {
 	display: none;
-  }
+}
 
-  img {
+img {
 	max-width: 100%;
-	max-height: 250px;
+	max-height: 200px;
 	padding-top: 20px;
-  }
+}
+
+.swiper-slide img {
+	margin-top: 10%;
+}
+
+.container-slide {
+	position: relative;
+	text-align: center;
+}
+
+.tap-to-change-account {
+	flex-direction: row;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+	color: rgba(255, 255, 255, 0.9);
+	gap: 4%;
+	position: relative;
+	bottom: 1rem;
+}
+
+i {
+	padding-bottom: 4.5%;
+}
+
+.tap-to-change-account.profesor {
+	bottom: 20px;
+}
+
+select {
+	background-color: #13334c;
+	color: white;
+}
+
+#div-email {
+	margin-top: -15px;
+}

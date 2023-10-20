@@ -62,6 +62,8 @@ import { ServiceWorkerModule } from "@angular/service-worker";
 import { environment } from "../environments/environment";
 import { SplashScreenComponent } from "./components/splash-screen/splash-screen.component";
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import { BonusesComponent } from "./components/bonuses/bonuses.component";
+import { BonusCursoComponent } from './components/bonus-curso/bonus-curso.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +111,9 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
     CrearActividadVfComponent,
     VistaPreviaVfComponent,
     RealizacionVfComponent,
-    SplashScreenComponent
+    SplashScreenComponent,
+    BonusesComponent,
+    BonusCursoComponent
   ],
   imports: [
     BrowserModule,

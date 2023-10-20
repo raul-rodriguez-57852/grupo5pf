@@ -6,10 +6,14 @@
 package com.edusis.apirest.utils;
 
 import com.edusis.apirest.domain.Addon;
+import com.edusis.apirest.domain.Bonus;
 import com.edusis.apirest.domain.Emoji;
 import com.edusis.apirest.domain.TipoAddon;
 import com.edusis.apirest.service.AddonService;
+import com.edusis.apirest.service.BonusService;
 import com.edusis.apirest.service.EmojiService;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
@@ -26,6 +30,8 @@ public class CargaInicialUtils implements ApplicationListener<ApplicationReadyEv
     private AddonService addonService;
     @Autowired
     private EmojiService emojiService;
+    @Autowired
+    private BonusService bonusService;
 
     @Override
     public void onApplicationEvent(final ApplicationReadyEvent event) {
@@ -70,6 +76,37 @@ public class CargaInicialUtils implements ApplicationListener<ApplicationReadyEv
                 emoji.setIconoURL("assets/img/emojis/" + i + ".png");
                 emojiService.save(emoji);
             }
+        }
+        
+        if (bonusService.getAll().size() < 1) {
+            
+            List<String> nombres = new ArrayList<>();
+            
+            nombres.add("");
+            nombres.add("El Jefe");
+            nombres.add("Profesxr, Eres tu?");
+            nombres.add("Tiempo Extra");
+            nombres.add("Como en tu casa");
+            
+            
+            List<String> descripciones = new ArrayList<>();
+            
+            descripciones.add("");
+            descripciones.add("Podra elejir donde te quieres sentar!");
+            descripciones.add("Te podes sentar en el asiento de la profe");
+            descripciones.add("Tenes 5 minutos extra de recreo!");
+            descripciones.add("Podras ir al baño sin pedir permiso");
+            
+            
+            for (int i = 1; i < 5; i++) {
+                Bonus bonus = new Bonus();
+                bonus.setNombre(nombres.get(i));
+                bonus.setImagen("assets/img/bonus/bonus-" + i + ".png");
+                bonus.setDescripcion(descripciones.get(i));
+                bonus.setIsBonusPreset(Boolean.TRUE);
+                bonusService.save(bonus);          
+            }
+            
         }
 
     }

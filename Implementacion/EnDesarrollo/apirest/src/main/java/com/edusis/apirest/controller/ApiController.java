@@ -41,6 +41,7 @@ import com.edusis.apirest.service.dto.TutorDto;
 import com.edusis.apirest.specs.AlumnoSpecs;
 import com.edusis.apirest.specs.CursoSpecs;
 import com.edusis.apirest.specs.AsignaturaSpecs;
+import com.edusis.apirest.specs.BonusSpecs;
 import com.edusis.apirest.specs.PlantillaSpecs;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.JsonArray;
@@ -54,6 +55,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.Set;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,6 +125,15 @@ public class ApiController {
 
     @Autowired
     private RecompensaAlumnoService recompensaAlumnoService;
+    
+    @Autowired
+    private BonusService bonusService;
+    
+    @Autowired
+    private CursoBonusAlumnoService cursoBonusAlumnoService;
+    
+    @Autowired
+    private BonusCursoService bonusCursoService;
 
     @PostMapping("guardarEmoji")
     public ResponseEntity<Long> guardarEmoji(@RequestBody EmojiDto emojiDto) {
@@ -142,6 +153,11 @@ public class ApiController {
     public Emoji getEmoji(@RequestParam Long id) {
         return emojiService.get(id);
     }
+    
+    @GetMapping("bonus")
+    public List<Bonus> getAllBonuses() {
+        return bonusService.getAll();
+    }
 
     @GetMapping("curso")
     public CursoDto getCurso(@RequestParam Long id) {
@@ -152,6 +168,7 @@ public class ApiController {
         cursoDto.setCreadorId(curso.getCreador().getId());
         cursoDto.setImagen(new String(curso.getImagen(), StandardCharsets.UTF_8));
         cursoDto.setCodigo(curso.getCodigo());
+        cursoDto.setComodines_activados(curso.getComodinesActivados());
         return cursoDto;
     }
 
@@ -301,7 +318,7 @@ public class ApiController {
             pwd.setEmoji3(emoji3);
             alumno.setPasswordEmoji(pwd);
         }
-
+        
         alumno.setSaldoEstrellas(alumnoDto.getSaldoEstrellas());
 
         Long tutor = alumnoDto.getTutorId();
@@ -356,8 +373,22 @@ public class ApiController {
         curso.setImagen(cursoDto.getImagen().getBytes());
         Profesor profe = profesorService.get(cursoDto.getCreadorId());
         curso.setCreador(profe);
-        curso.setCodigo(null);
+        curso.setCodigo(cursoDto.getCodigo());
         curso.validar();
+        
+        // AGREGO TODOS LOS COMODINES POR DEFECTO
+        List<Bonus> allBonus =  bonusService.getAll(BonusSpecs.isPreset());
+        ArrayList<BonusCurso> defaultBonus = new ArrayList<BonusCurso>();
+        for(Bonus bonus: allBonus) {
+            BonusCurso bonusCurso = new BonusCurso();
+            bonusCurso.setBonus(bonus);
+            bonusCurso.setCurso(curso);
+            bonusCurso.setEquipado(Boolean.FALSE);
+            defaultBonus.add(bonusCurso);
+        }
+        
+        curso.setBonusCurso(defaultBonus);
+  
         //Hay que guardar el curso en el lado del profesor tambien.
         if (profe.getCursos().size() != 0) {
             //Ya tiene cursos agregados.
@@ -372,6 +403,9 @@ public class ApiController {
         }
         cursoService.save(curso);
         profesorService.save(profe);
+        for(BonusCurso bonusCurso: defaultBonus) {
+            bonusCursoService.save(bonusCurso);
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -388,6 +422,18 @@ public class ApiController {
         curso.setCodigo(codigo);
         cursoService.save(curso);
         return curso;
+    }
+    
+    @GetMapping("activarDesactivarComodin")
+    public ResponseEntity<Long> activarDesactivarComodin(@RequestParam Long cursoId) {
+        Curso curso = cursoService.get(cursoId);
+        if (curso.getComodinesActivados()) {
+            curso.setComodinesActivados(Boolean.FALSE);
+        } else {
+            curso.setComodinesActivados(Boolean.TRUE);
+        }
+        cursoService.save(curso);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     
     private String getRandomHexNumber(int cantidadNumeros) {
@@ -959,5 +1005,116 @@ public class ApiController {
                 .findFirst()
                 .ifPresent(r -> r.setEquipado(false));
     }
-
+    
+    @GetMapping("bonusDelCurso")
+    @ResponseBody
+    public ResponseEntity<?> getBonusDelCurso(@RequestParam Long idCurso) {
+        Curso curso = Hibernate.unproxy(cursoService.get(idCurso), Curso.class);
+        return new ResponseEntity<>(curso.getBonusCurso(), HttpStatus.OK);
+    }
+    
+    @PostMapping("descontarEstrellasPorBonus")
+     public ResponseEntity<?> descontarEstrellasPorBonus(@RequestParam Long idAlumno, @RequestParam Long bonusPrice){
+        Alumno alumno = Hibernate.unproxy(alumnoService.get(idAlumno), Alumno.class);
+         
+        if(alumno.getSaldoEstrellas() < Math.toIntExact(bonusPrice)) {
+            throw new Error("Saldo insuficiente para comprar el bonus");
+        }
+        
+        alumno.setSaldoEstrellas(alumno.getSaldoEstrellas() - Math.toIntExact(bonusPrice));
+        alumnoService.save(alumno);
+        return new ResponseEntity<>(HttpStatus.OK);
+     }
+    
+    @PostMapping("agregarBonusAlAlumno")
+    public ResponseEntity<?> agregarBonusAlCurso(@RequestParam Long idAlumno, @RequestParam Long idBonus, @RequestParam Long idCurso) {
+        Curso curso = Hibernate.unproxy(cursoService.get(idCurso), Curso.class);
+        Bonus bonus = Hibernate.unproxy(bonusService.get(idBonus), Bonus.class);
+        Alumno alumno = Hibernate.unproxy(alumnoService.get(idAlumno), Alumno.class);
+        
+        CursoBonusAlumno cursoBonusAlumno = new CursoBonusAlumno();
+        cursoBonusAlumno.setBonus(bonus);
+        cursoBonusAlumno.setCurso(curso);
+        cursoBonusAlumno.setAlumno(alumno);
+        cursoBonusAlumno.setEquipado(Boolean.TRUE);
+        cursoBonusAlumno.setBonus_reference(idBonus);
+        cursoBonusAlumno.setCurso_reference(idCurso);
+        cursoBonusAlumnoService.save(cursoBonusAlumno);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping("agregarBonusAlCurso")
+    public ResponseEntity<?> agregarBonusAlCurso(@RequestParam Long idCurso, @RequestParam Long idBonus) {
+        
+        Curso curso = Hibernate.unproxy(cursoService.get(idCurso), Curso.class);
+        Bonus bonus = Hibernate.unproxy(bonusService.get(idBonus), Bonus.class);
+        
+        // Save BonusCurso object
+        BonusCurso bonusCurso = new BonusCurso();
+        bonusCurso.setBonus(bonus);
+        bonusCurso.setCurso(curso);
+        bonusCurso.setEquipado(Boolean.TRUE);
+        bonusCursoService.save(bonusCurso);
+        // Save BonusCurso object to Curso
+        curso.addBonusCurso(bonusCurso);
+        cursoService.save(curso);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping("activarDesactivarBonusAlCurso")
+    public ResponseEntity<?> activarDesactivarBonusAlCurso(@RequestParam Long idCurso, @RequestParam Long idBonus) {
+        
+        Curso curso = Hibernate.unproxy(cursoService.get(idCurso), Curso.class);
+        Bonus bonus = Hibernate.unproxy(bonusService.get(idBonus), Bonus.class);
+        
+        if (curso.getBonusCurso() == null) {
+            throw new Error("El bonus no ha sido agreagado al curso aún");
+        }
+        
+        BonusCurso bonusDelCurso = curso.getBonusCurso()
+                .stream()
+                .filter(b -> b.getBonus().getId().equals(bonus.getId()))
+                .findFirst()
+                .orElseThrow(() -> new Error("El bonus no se ha agregado aún"));
+        
+        bonusDelCurso.setEquipado(!bonusDelCurso.getEquipado());
+        bonusCursoService.save(bonusDelCurso);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @GetMapping("eliminarComodinAlumno")
+    public ResponseEntity<?> eliminarComodinAlumno(@RequestParam Long idCursoBonusAlumno) {
+        cursoBonusAlumnoService.deleteById(idCursoBonusAlumno);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @GetMapping("getBonusAlumnoByCurso")
+    public String getBonusAlumnoByCurso(@RequestParam Long cursoId) {
+        Curso curso = cursoService.get(cursoId);
+        List<Alumno> alumnos = alumnoService.getAll(AlumnoSpecs.isActive().and(AlumnoSpecs.byCurso(curso)));
+        JsonArray bonusDeAlumnosDelCurso = new JsonArray();
+        for (Alumno alumno: alumnos) {
+            JsonObject alumnoData = new JsonObject();
+            alumnoData.addProperty("alumno_id", alumno.getId());
+            alumnoData.addProperty("alumno_nombre", alumno.getNombre());
+            alumnoData.addProperty("alumno_apellido", alumno.getApellido());
+            alumnoData.addProperty("alumno_avatarUrl", alumno.getAvatarUrl());
+            JsonArray bonusDelAlumno = new JsonArray();
+            for (CursoBonusAlumno bonus_del_alumno: alumno.getCursoBonusAlumno()) {
+                if (bonus_del_alumno.getCurso_reference().equals(cursoId)) {
+                    JsonObject specificBonus = new JsonObject();
+                    specificBonus.addProperty("bonus_id", bonus_del_alumno.getBonus_reference());
+                    Bonus bonus = bonusService.get(bonus_del_alumno.getBonus_reference());
+                    specificBonus.addProperty("bonus_nombre", bonus.getNombre());
+                    specificBonus.addProperty("bonus_imagen", bonus.getImagen());
+                    specificBonus.addProperty("CursoBonusAlumno_id", bonus_del_alumno.getId());
+                    bonusDelAlumno.add(specificBonus);
+                }
+            }
+            alumnoData.add("bonuses", bonusDelAlumno);
+            bonusDeAlumnosDelCurso.add(alumnoData);
+        }
+        return bonusDeAlumnosDelCurso.size() != 0 ? bonusDeAlumnosDelCurso.toString(): "";
+    }
+    
 }

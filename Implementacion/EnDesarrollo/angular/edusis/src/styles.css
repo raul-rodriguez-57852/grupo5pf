@@ -66,6 +66,23 @@ img {
   box-shadow: 0 6px 0 #127f90
 }
 
+.btn-special {
+  transition: transform 0.2s ease;
+  color: white;
+  background-color: #9F2B68;
+  box-shadow: 0 6px 0 #4f1534;
+}
+
+.btn-special:hover {
+  color: white;
+  background-color: rgba(155, 96, 127, 0.9);
+}
+
+.btn-special:active {
+  box-shadow: none;
+  transform: translateY(6px);
+}
+
 .without-shadow {
   box-shadow: 0 0 0 0 !important;
 }
@@ -73,6 +90,11 @@ img {
 .btn-danger {
   transition: transform 0.2s ease;
   box-shadow: 0 6px 0 #a92835
+}
+
+.btn-success {
+  transition: transform 0.2s ease;
+  box-shadow: 0 6px 0 #1b732f
 }
 
 .btn-personalizado {
@@ -123,7 +145,7 @@ img {
 
 
 .swal2-styled.swal2-confirm {
-  background-color: #13334c !important;
+  background-color: #13334c;
 }
 
 .modal {

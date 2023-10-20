@@ -55,7 +55,6 @@ export class CursoAlumnoComponent implements OnInit {
       this.asignaturas = asignaturas;
       this.dataTareaService.getTareas(this.cursoId).then((tareas) => {
         this.tareas = tareas;
-        console.log(this.tareas);
         this.dataTareaService.getRealizaciones(this.cursoId, this.dataApiService.getUsuario()).then((realizaciones) => {
           realizaciones.forEach(element => {
             if (element.puntaje != null) {
@@ -65,7 +64,6 @@ export class CursoAlumnoComponent implements OnInit {
             element['color'] = colores[random];
           });
           this.tareasPuntaje = realizaciones;
-          console.log(realizaciones)
           this.tareasFiltradas = this.tareasPuntaje;
           this.collectionSize = this.tareasPuntaje.length;
         });
@@ -90,7 +88,6 @@ export class CursoAlumnoComponent implements OnInit {
     }
 
     let filtered = this.tareasPuntaje.filter(t => t.asignatura == this.asignaturaFiltro.nombre);
-    console.log(filtered);
     this.tareasFiltradas = filtered;
     this.collectionSize = this.tareasFiltradas.length;
   }

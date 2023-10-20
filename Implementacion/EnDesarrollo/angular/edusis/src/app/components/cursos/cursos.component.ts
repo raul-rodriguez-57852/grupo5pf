@@ -52,22 +52,18 @@ export class CursosComponent implements OnInit {
   }
 
   generarCodigoCurso(id: number) {
-    console.log(id);
     this.cursos.forEach(async curso => {
       if (curso.id == id) {
         this.curso = curso;
-        console.log(curso);
         if (curso.codigo === null) {
           await this.dataApiService.generarCodigoCurso(this.curso).then(
             (respuesta) => {
               //obtengo el curso actualizaco ya con el codigo.
               this.curso = respuesta;
-              console.log(this.curso);
             }
           );
         }
-        console.log(this.curso.codigo);
-        this.copiarTexto(this.curso.codigo);    
+        this.copiarTexto(this.curso.codigo);
       }
     });
   }
@@ -119,7 +115,11 @@ export class CursosComponent implements OnInit {
         "success"
       )
     }
-    
+
+  }
+
+  bonusCurso(id: number) {
+    this.router.navigate(['bonus-curso', { id }]);
   }
 
 }

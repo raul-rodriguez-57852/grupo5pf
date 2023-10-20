@@ -1,0 +1,106 @@
+<div class="fondo position-fixed"></div>
+<section class="margin-top-60 margin-bottom-16">
+    <div class="contenedorImagenCard">
+        <img class="imagenCard" src="assets\img\magic-cards-small.jpg" alt="Card image cap">
+        <div class="centered">Comodines</div>
+    </div>
+</section>
+<section class="configure-bonus">
+    <span class="comoding-toggle-text">Permitir el uso de comodines para este curso?</span>
+    <button *ngIf="!cursoHasComodines" class="comodin-toggle btn btn-success" (click)="activarComodines()">Activar
+        Comodines</button>
+    <button *ngIf="cursoHasComodines" class="comodin-toggle btn btn-danger" (click)="activarComodines()">Desactivar
+        Comodines?</button>
+</section>
+<section *ngIf="!cursoHasComodines">
+    <h4 class="no-bonuses-title">¿Que son los Comodines?</h4>
+    <h6 class="no-bonuses-text">Los comodines son una herramienta excelente para fomentar el aprendisaje y la gamificación en tu curso</h6>
+    <h5 class="no-bonuses-title">¿En que consiste?</h5>
+    <h6 class="no-bonuses-text">Una vez activados los comodines, podras optar por una selección de comodines existentes para utilizar en tu curso.</h6>
+    <h6 class="no-bonuses-text">Tus alumnos podran adquirir estos comodines a cambio de estrellas que hayan ganado haciendo actividades!</h6>
+</section>
+<section *ngIf="cursoHasComodines" class="comodines-curso">
+    <div class="bonus-container">
+        <div *ngFor="let comodin of listaComodinesCurso"
+            [ngClass]="!comodin.equipado ? 'lista-comodin desactivado' : 'lista-comodin'">
+            <div [ngClass]="!comodin.equipado ? 'comodin desactivado' : 'comodin'" (click)="visualizarComodin(comodin)">
+                <div>
+                    <img class="comodin-imagen"
+                        src="{{ comodin.imagen }}">
+                </div>
+                <span class="comodin-nombre">
+                    {{ comodin.nombre }}
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="estadisticas-modal" id="estadisticas-modal">
+    <div class="modal-stats canvas-confetti-btn animate__animated" id="modal-stats">
+        <div id="close-modal">
+            <span (click)="hideModal()" class="close">&times;</span>
+        </div>
+        <div>
+            <ul class="list-group list-group-flush margin-bottom-16">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>Alumnos con comodines</strong>
+                    <strong>Comodines</strong>
+                </li>
+                <li *ngFor="let alumno of dataAlumnos"
+                    class="list-group-item d-flex justify-content-between align-items-center">
+                    <div style="width: 20%;" class="listAlumnos">
+                        <div>
+                            <img style="height: 51px; margin-left: 0px;" src="{{ alumno.alumno_avatarUrl }}">
+                        </div>
+                        <span>
+                            {{ alumno.alumno_nombre }}
+                        </span>
+                    </div>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-special" (click)="showModalAlumno(alumno)">
+                            <i class="fa fa-magic"></i>
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<section class="comodines-botones">
+    <div class="botones-acciones">
+        <button (click)="volver()" class="bonus-button btn btn-personalizado-inverso">Volver</button>
+        <button *ngIf="cursoHasComodines" (click)="mostrarEstadisticas()"
+            class="bonus-button btn btn-success margin-bottom-16">Estadisticas de comodines</button>
+    </div>
+</section>
+<div class="bonus-alumno-modal-container" id="bonus-alumno-modal-container">
+    <div class="bonus-alumno-modal-stats canvas-confetti-btn animate__animated" id="bonus-alumno-modal-stats">
+        <div id="close-modal-bonus-alumno">
+            <span (click)="hideModalAlumno()" class="close">&times;</span>
+        </div>
+        <div>
+            <ul class="list-group list-group-flush margin-bottom-16">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>Comodines</strong>
+                    <strong>Acciones</strong>
+                </li>
+                <li *ngFor="let comodinAlumno of currentAlumnoComodines"
+                    class="list-group-item d-flex justify-content-between align-items-center">
+                    <div style="width: 70%;" class="listComodinesAlumnos">
+                        <div>
+                            <img style="height: 51px; margin-left: 0px;" src="{{ comodinAlumno.bonus_imagen }}">
+                        </div>
+                        <span>
+                            {{ comodinAlumno.bonus_nombre }}
+                        </span>
+                    </div>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-danger" (click)="eliminarComodinDelAlumno(comodinAlumno)">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

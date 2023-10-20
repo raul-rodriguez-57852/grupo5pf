@@ -1,173 +1,124 @@
 <section id="registro">
-    <div class="fondo position-fixed">
+  <div class="fondo position-fixed">
+  </div>
+
+  <div class="container text-center">
+    <div class="swiper" id="swiper">
+      <div class="swiper-wrapper" (click)="cambiate()">
+        <div class="swiper-slide" id="tutor">
+          <div class="container-slide">
+            <img src="/assets/img/tutorConChicos.png" loading="lazy">
+            <div class="tap-to-change-account">
+              <p>Cambiar a cuenta Profesor</p>
+              <i class="fa fa-repeat"></i>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-slide" id="profesor">
+          <div class="container-slide">
+            <img src="/assets/img/profesor.png" loading="lazy">
+            <div class="tap-to-change-account">
+              <p>Cambiar a cuenta Tutor</p>
+              <i class="fa fa-repeat"></i>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    
-    <div class="container text-center" style="padding-top: 30px;">      
-      <ng-container style="height:250px" >
-        <div style="height:250px">
-          <img *ngIf="!esCuentaTutor"
-          src="/assets/img/profesor.png"
-        />
-        <img *ngIf="esCuentaTutor"
-          src="/assets/img/tutorConChicos.png"
-        />
+
+    <div class="login-content" style="justify-content: center">
+
+      <form name="formRegistro" #formRegistro="ngForm" (ngSubmit)="save(formRegistro)" autocomplete="new-password">
+        <input autocomplete="false" name="hidden" type="text" style="display:none;">
+
+        <div id="div-nombre" class="input-div one focusable">
+          <div class="i">
+            <i class="fa fa-address-card-o"></i>
+          </div>
+          <div class="div">
+            <h5>Nombre del {{tipoCuenta}}</h5>
+            <input tabindex="1" id="InputNombre" (click)="addFocus('div-nombre')"
+              (keydown.Tab)="checkAndGiveFocus('InputNombre', 'div-apellido')" type="search" class="input focus"
+              autocomplete="off" name="nombre" [ngModel]="esCuentaTutor ? tutor.nombre : profesor.nombre"
+              (ngModelChange)="
+                esCuentaTutor? (tutor.nombre = $event): (profesor.nombre = $event)" />
+          </div>
         </div>
-      </ng-container>
-      <ng-container>
-        <div class="tipoCuenta">
-          <div class="button" id='button-container'>
-            <div id='my-button' class="button-element">
-              <p id='Tutor' (click) = "changeAccount()">Tutor</p>
-            </div>
-          <p id='Profesor' (click) = "changeAccount()">Profesor</p>
+
+        <div id="div-apellido" class="input-div pass focusable">
+          <div class="i">
+            <i class="fa fa-address-card-o"></i>
           </div>
-          <label>Preffered Contact method: <input id='for-button' type="text" name="method" value='Tutor' /></label>
+          <div class="div">
+            <h5>Apellido del {{tipoCuenta}}</h5>
+            <input tabindex="2" id="inputApellido" (click)="addFocus('div-apellido')"
+              (keydown.Tab)="checkAndGiveFocus('inputApellido', 'div-documento')" type="text" class="input focus"
+              autocomplete="off" [ngModel]="esCuentaTutor ? tutor.apellido : profesor.apellido" (ngModelChange)="
+                esCuentaTutor? (tutor.apellido = $event): (profesor.apellido = $event)" name="apellido" />
+          </div>
         </div>
-      </ng-container>
-      <div class="login-content" style="justify-content: center">
-        
-        <form name="formRegistro" #formRegistro="ngForm" (ngSubmit)="save(formRegistro)" autocomplete="doNotAutocomplete">
-        
-          <div id="div-nombre" class="input-div one">
-            <div class="i">
-              <i class="fa fa-address-card-o"></i>
-            </div>
-            <div class="div">
-              <h5>Nombre</h5>
-              <input
-                tabindex="1"
-                id="InputNombre"
-                (click)="addFocus('div-nombre')"
-                (keydown.Tab) = "checkAndGiveFocus('InputNombre', 'div-apellido')"
-                type="text"
-                class="input focus"
-                autocomplete="doNotAutocomplete"
-                name="nombre"
-                [ngModel]="esCuentaTutor ? tutor.nombre : profesor.nombre"
-                (ngModelChange)="
-                esCuentaTutor? (tutor.nombre = $event): (profesor.nombre = $event)"
-              />
-            </div>
-          </div>
-          
-          <div id="div-apellido" class="input-div pass">
-            <div class="i">
-              <i class="fa fa-address-card-o"></i>
-            </div>
-            <div class="div">
-              <h5>Apellido</h5>
-              <input
-                tabindex="2"
-                id="inputApellido"
-                (click)="addFocus('div-apellido')"
-                (keydown.Tab) = "checkAndGiveFocus('inputApellido', 'div-documento')"
-                type="text"
-                class="input focus"
-                autocomplete="doNotAutocomplete"
-                [ngModel]="esCuentaTutor ? tutor.apellido : profesor.apellido"
-                (ngModelChange)="
-                esCuentaTutor? (tutor.apellido = $event): (profesor.apellido = $event)"
-                name="apellido"
-              />
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="row" >
-              <div class="col-4" style="margin-top: 35px;">
-                <select
-                  class="form-control"
-                  [ngModel]="
+        <div class="form-group">
+          <div class="row">
+            <div class="col-4" style="margin-top: 20px;">
+              <select class="form-control" [ngModel]="
                     esCuentaTutor ? tutor.tipoDocumento : profesor.tipoDocumento
-                  "
-                  (ngModelChange)="
+                  " (ngModelChange)="
                     esCuentaTutor
                       ? (tutor.tipoDocumento = $event)
                       : (profesor.tipoDocumento = $event)
-                  "
-                  name="tipoDoc"
-                  placeholder="Tipo"
-                >
-                  <option [ngValue]="null" hidden>Tipo</option>
-                  <option *ngFor="let tipo of tiposDoc" [ngValue]="tipo">{{
-                    tipo
+                  " name="tipoDoc" placeholder="Tipo">
+                <option [ngValue]="null" hidden>Tipo</option>
+                <option *ngFor="let tipo of tiposDoc" [ngValue]="tipo">{{
+                  tipo
                   }}</option>
-                </select>
+              </select>
+            </div>
+            <div id="div-documento" class="col-8 input-div pass focusable" style="margin-top: 15px;">
+              <div class="i">
+                <i class=" fa fa-address-card-o"></i>
               </div>
-              <div id="div-documento" class="col-8 input-div pass">
-                <div class="i">
-                  <i class=" fa fa-address-card-o"></i>
-                </div>
-                <div class="div">
-                  <h5>Documento</h5>
-                  <input
-                  tabindex="3"
-                  [ngModel]="esCuentaTutor ? tutor.documento : profesor.documento"
-                  (ngModelChange)="
+              <div class="div">
+                <h5>Documento</h5>
+                <input tabindex="3" [ngModel]="esCuentaTutor ? tutor.documento : profesor.documento" (ngModelChange)="
                     esCuentaTutor
                       ? (tutor.documento = $event)
                       : (profesor.documento = $event)
-                  "
-                  type="tel"
-                  id="inputDocumento"
-                  (click)="addFocus('div-documento')"
-                  (keydown.Tab) = "checkAndGiveFocus('inputDocumento', 'div-email')"
-                  class="input focus"
-                  required
-                  autocomplete="doNotAutocomplete"
-                  name="documento"
-                />
-                </div>  
+                  " type="tel" id="inputDocumento" (click)="addFocus('div-documento')"
+                  (keydown.Tab)="checkAndGiveFocus('inputDocumento', 'div-email')" class="input focus" required
+                  autocomplete="off" name="documento" />
               </div>
             </div>
           </div>
-       
-          <div id="div-email" class="input-div pass">
-            <div class="i">
-              <i class="fa fa-envelope-o"></i>
-            </div>
-            <div class="div">
-              <h5>Email</h5>
-              <input
-                tabindex="4"
-                (click)="addFocus('div-email')"
-                (keydown.Tab) = "checkAndGiveFocus('inputEmail', 'div-password')"
-                id="inputEmail"
-                type="text"
-                class="input focus"
-                [ngModel]="esCuentaTutor ? tutor.email : profesor.email"
-                (ngModelChange)="esCuentaTutor? (tutor.email = $event): (profesor.email = $event)"
-                name="email"
-                autocomplete="doNotAutocomplete"
-              />
-            </div>
+        </div>
+
+        <div id="div-email" class="input-div pass focusable">
+          <div class="i">
+            <i class="fa fa-envelope-o"></i>
           </div>
-          <div id="div-password" class="input-div pass">
-            <div class="i">
-              <i class="fa fa-lock"></i>
-            </div>
-            <div class="div">
-              <h5>Contraseña</h5>
-              <input
-                tabindex="5"
-                id="inputPassword"
-                (click)="addFocus('div-password')"
-                (keydown.Tab) = "checkAndGiveFocus('inputPassword', '')"
-                type="password"
-                class="input focus"
-                [ngModel]="esCuentaTutor ? tutor.password : profesor.password"
-                (ngModelChange)="esCuentaTutor? (tutor.password = $event): (profesor.password = $event)"
-                name="password"
-                autocomplete="doNotAutocomplete"
-              />
-            </div>
+          <div class="div">
+            <h5>Email</h5>
+            <input tabindex="4" (click)="addFocus('div-email')"
+              (keydown.Tab)="checkAndGiveFocus('inputEmail', 'div-password')" id="inputEmail" type="text"
+              class="input focus" [ngModel]="esCuentaTutor ? tutor.email : profesor.email"
+              (ngModelChange)="esCuentaTutor? (tutor.email = $event): (profesor.email = $event)" name="email"
+              autocomplete="off" />
           </div>
-          <input
-          tabindex="6"
-          type="submit"
-          class="btn btn-personalizado-inverso"
-          value="Registrarme"
-        />
-        </form>
-      </div>
+        </div>
+        <div id="div-password" class="input-div pass focusable">
+          <div class="i">
+            <i class="fa fa-lock"></i>
+          </div>
+          <div class="div">
+            <h5>Contraseña</h5>
+            <input tabindex="5" id="inputPassword" (click)="addFocus('div-password')"
+              (keydown.Tab)="checkAndGiveFocus('inputPassword', '')" type="search" class="input focus"
+              [ngModel]="esCuentaTutor ? tutor.password : profesor.password"
+              (ngModelChange)="esCuentaTutor? (tutor.password = $event): (profesor.password = $event)" name="password"
+              autocomplete="off" style="-webkit-text-security: disc;" />
+          </div>
+        </div>
+        <input tabindex="6" type="submit" class="btn btn-personalizado-inverso" value="Registrarme" />
+      </form>
     </div>
-  </section>
+  </div>
+</section>
