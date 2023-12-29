@@ -44,8 +44,10 @@
 
 <div class="bonus-container" id="bonus-container">
   <div class="bonus canvas-confetti-btn animate__animated" id="bonus">
-    <div id="close-modal">
-      <span (click)="hideModal()" class="close">&times;</span>
+    <div class="close-modal" (click)="hideModal()">
+      <button class="close">
+        <i id="closeModal" class="fa fa-times" style="height: 30px; width: 30px; color: #13334c;"></i>
+      </button>
     </div>
     <div class="swiper" id="swiper">
       <div class="swiper-wrapper">

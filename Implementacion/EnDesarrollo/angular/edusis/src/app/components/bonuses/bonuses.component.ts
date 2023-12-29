@@ -45,6 +45,7 @@ export class BonusesComponent implements OnInit {
   comodinesDelCurso = [];
   listaComodines = [];
   curso;
+  autoPlayInterval;
 
   constructor(
     private router: Router,
@@ -160,7 +161,9 @@ export class BonusesComponent implements OnInit {
   }
 
   startSpinner() {
-    this.swiper.autoplay.start();
+    setTimeout(() => {
+      this.swiper.autoplay.start();
+    }, 100);
     this.runningBonuses = true;
   }
 
@@ -169,8 +172,6 @@ export class BonusesComponent implements OnInit {
     this.swiper.autoplay.stop();
     const result = document.getElementsByClassName('swiper-slide swiper-slide-visible swiper-slide-active')[0].id;
     this.spinnerResult = result;
-    let confettiLauncher = new ConfettiLauncher();
-    confettiLauncher.dispararConfetti(0.5, 0.5);
     const comodinObtenido = this.comodinesDelCurso.find((bonus) => bonus.id == result);
     this.registrarBonusComoAdquirido(comodinObtenido);
   }
@@ -199,6 +200,8 @@ export class BonusesComponent implements OnInit {
       this.refreshAlumnoBonuses();
       this.hideModal();
     } else {
+      let confettiLauncher = new ConfettiLauncher();
+      confettiLauncher.dispararConfetti(0.5, 0.5);
       await this.dataApiService.agregarBonusAlAlumno(
         this.dataApiService.getUsuario(),
         comodin.id,
@@ -211,9 +214,33 @@ export class BonusesComponent implements OnInit {
 
   showModal() {
     const bonusContainer = document.getElementById('bonus-container');
+    const rect = document.getElementById("canjear").getBoundingClientRect();
+    let cordenadasCerrar = document.getElementById("closeModal").getBoundingClientRect();
+    bonusContainer.addEventListener('touchstart', (event) => {
+      if (event.touches.length > 0) {
+        var touchX = event.touches[0].clientX;
+        var touchY = event.touches[0].clientY;
+      }
+      if ((touchX <= rect.right) && (touchY <= rect.bottom) && (touchY >= rect.top)) {
+        if (this.runningBonuses) {
+          this.purhcaseBonus();
+        }
+      } else {
+        let puntoMedioBotonCerrar = cordenadasCerrar.left + (cordenadasCerrar.right - cordenadasCerrar.left)
+        if (touchY >= cordenadasCerrar.top && touchY <= cordenadasCerrar.bottom && Math.abs(touchX - puntoMedioBotonCerrar) <= 50 ) {
+          this.hideModal();
+        }
+      }
+    });
     bonusContainer.classList.add('show');
     this.runningBonuses = true;
     this.startSpinner();
+  }
+
+  startCustomAutoPlay() {
+    this.autoPlayInterval = setInterval(() => {
+      this.swiper.slideNext();
+    }, 20);
   }
 
   refreshAlumnoBonuses() {
@@ -230,9 +257,13 @@ export class BonusesComponent implements OnInit {
   getSwipper() {
     register();
     return new Swiper('.swiper', {
+      touchEventsTarget: 'container',
+      preventInteractionOnTransition: false,
       spaceBetween: 100,
       loop: true,
       allowTouchMove: false,
+      preventClicks: false,
+      simulateTouch: false,
       autoplay: { delay: 0 },
       effect: 'fade',
       fadeEffect: { crossFade: true },

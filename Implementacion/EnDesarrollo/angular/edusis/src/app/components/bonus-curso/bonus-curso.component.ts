@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { DataApiService } from "src/app/services/data-api.service";
 import Swal from 'sweetalert2';
 import { DataTareaService } from 'src/app/services/data-tarea.service';
+import { empty } from "rxjs";
 
 
 @Component({
@@ -89,7 +90,7 @@ export class BonusCursoComponent implements OnInit {
     } else {
       return {
         title: 'Activar comodines',
-        description: 'Enhorabuena! Los comodines pueden resultar muy util para mejorar la dinamica de aprendisaje y fomentar el esfuerzo por aprender!.',
+        description: 'Enhorabuena! Los comodines pueden resultar muy util para mejorar la dinamica de aprendisaje y fomentar el esfuerzo por aprender!',
         buttonText: 'Si, activar',
         buttonColor: '#28a745'
       }
@@ -123,7 +124,9 @@ export class BonusCursoComponent implements OnInit {
 
   async mostrarEstadisticas() {
     await this.dataApiService.getBonusAlumnoByCurso(this.cursoId).then((response) => {
-      this.dataAlumnos = response.filter((bonuses) => bonuses.bonuses.length != 0);
+      if (response) {
+        this.dataAlumnos = response.filter((bonuses) => bonuses.bonuses.length != 0);
+      }
     })
     if (this.dataAlumnos.length == 0) {
       Swal.fire({
