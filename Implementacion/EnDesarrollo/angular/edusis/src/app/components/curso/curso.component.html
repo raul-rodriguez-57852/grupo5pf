@@ -41,7 +41,19 @@
         class="btn btn-personalizado btn-lg btn-block margin-bottom-16"
       >
         Nueva asignatura
+        <i class="fa fa-book icon"></i>
       </button>
+      <button
+        type="button"
+        (click)="showListadoDeAlumnos()"
+        class="btn btn-personalizado btn-lg btn-block margin-bottom-16"
+      >
+        Listado de Alumnos
+        <i class="fa fa-child icon"></i>
+      </button>
+      <div *ngIf="todaviaNoHayAsignaturas" class="noAsignaturasAun">
+        <h6>No se han registrado asignaturas aun</h6>
+      </div>
       <div *ngFor="let asignatura of asignaturas" class="card mb-3">
         <div class="contenedorImagenCard" (click)="seleccionarAsignatura(asignatura)">
           <img
@@ -71,4 +83,44 @@
       Volver
     </button>
   </div>
+</section>
+<section>
+  <div class="listado-alumnos-modal" id="listado-alumnos-modal">
+    <div class="modal-stats" id="modal-stats">
+        <div id="close-modal">
+            <span (click)="hideModal()" class="close">&times;</span>
+        </div>
+        <div>
+            <ul class="list-group list-group-flush margin-bottom-16">
+                <div *ngIf="todaviaNoHayAlumnos" class="noAlumnosEnElCurso">
+                  <img src="assets\img\noSeEncontraronAlumnosEnElCurso.jpg" id="noAlumnosEnElCursoItem">
+                  <h6 id="noAlumnosEnElCursoItem">Ups, no se encontraron alumnos en este curso</h6>
+                </div>
+                <li *ngIf="!todaviaNoHayAlumnos" class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>Alumnos</strong>
+                    <strong>Opciones</strong>
+                </li>
+                <li *ngFor="let alumno of listadoDeAlumnos"
+                    class="list-group-item d-flex justify-content-between align-items-center">
+                    <div style="width: 20%;" class="listAlumnos">
+                        <div>
+                            <img style="height: 51px; margin-left: 0px;" src="{{ alumno.avatarUrl }}">
+                        </div>
+                        <span>
+                            {{ alumno.nombre }}
+                        </span>
+                    </div>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-success" (click)="mostrarEstadisticasDelAlumno(alumno.nombre, alumno.id)">
+                            <i class="fa fa-bar-chart"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger" (click)="eliminarAlumno(alumno.nombre, alumno.id)">
+                          <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                </li>                
+            </ul>
+        </div>
+    </div>
+</div>
 </section>

@@ -197,6 +197,10 @@ export class DataApiService {
     return this.http.get(this.urlBase + 'cursos').toPromise();
   }
 
+  alumnosByCurso(idCurso: string): Promise<any> {
+    return this.http.get(this.urlBase + 'alumnosByCurso', { params: { idCurso } }).toPromise();
+  }
+
   getCursosByProfesor(id: string): Promise<any> {
     return this.http.get(this.urlBase + 'getCursosByProfesor', { params: { id } }).toPromise();
   }
@@ -223,6 +227,10 @@ export class DataApiService {
     postData.append('idAlumno', idAlumno);
     postData.append('idCurso', idCurso)
     return this.http.post(this.urlBase + 'agregarAlumnoACurso', postData).toPromise();
+  }
+
+  eliminarAlumnoDelCurso(idCurso: string, idAlumno: string): Promise<any> {
+    return this.http.delete(this.urlBase + 'eliminarAlumnoDelCurso', {params: {idCurso, idAlumno}}).toPromise();
   }
 
   activarDesactivarComodin(cursoId: string): Promise<any> {

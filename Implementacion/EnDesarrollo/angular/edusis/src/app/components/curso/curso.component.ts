@@ -3,9 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DataApiService } from '../../services/data-api.service';
 import { DataTareaService } from 'src/app/services/data-tarea.service';
 import Swal from 'sweetalert2';
-import { Tarea } from 'src/app/models/tarea';
 import { Asignatura } from 'src/app/models/asignatura';
-import { type } from 'os';
 
 @Component({
   selector: 'app-curso',
@@ -22,6 +20,9 @@ export class CursoComponent implements OnInit {
   codigo: string;
   asignaturaSelected = false;
   asignatura: Asignatura = null;
+  listadoDeAlumnos = [];
+  todaviaNoHayAlumnos = false;
+  todaviaNoHayAsignaturas = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,10 +36,10 @@ export class CursoComponent implements OnInit {
       this.route.snapshot.paramMap.get('id') != null
         ? Number(this.route.snapshot.paramMap.get('id'))
         : null;
-
     this.get();
 
     this.getAllAsignaturas();
+    this.getAlumnosDelCurso();
   }
 
   get() {
@@ -48,10 +49,24 @@ export class CursoComponent implements OnInit {
     });
   }
 
-  getAllAsignaturas() {
-    this.dataApiService.getAsignaturas(this.cursoId).then((asignaturas) => {
+  async getAlumnosDelCurso() {
+    await this.dataApiService.alumnosByCurso(this.cursoId).then((res) => {
+      this.listadoDeAlumnos = res;
+      this.todaviaNoHayAlumnos = false;
+    })
+    if (this.listadoDeAlumnos.length == 0) {
+      this.todaviaNoHayAlumnos = true;
+    }
+  }
+
+  async getAllAsignaturas() {
+    await this.dataApiService.getAsignaturas(this.cursoId).then((asignaturas) => {
       this.asignaturas = asignaturas;
+      this.todaviaNoHayAsignaturas = false;
     });
+    if (this.asignaturas.length == 0) {
+      this.todaviaNoHayAsignaturas = true;
+    }
   }
 
   async getAllTareas(asignaturaid: number) {
@@ -147,6 +162,49 @@ export class CursoComponent implements OnInit {
 
   recargar() {
     // window.location.reload();
+  }
+
+  showModal() {
+    const bonusContainer = document.getElementById('listado-alumnos-modal');
+    bonusContainer.classList.add('show');
+  }
+
+  hideModal() {
+    const bonusContainer = document.getElementById('listado-alumnos-modal');
+    bonusContainer.classList.remove('show');
+  }
+
+  showListadoDeAlumnos() {
+    this.showModal();
+  }
+
+  eliminarAlumno(alumnoNombre: string, alumnoId: string) {
+    Swal.fire({
+      title: 'Desea eliminar a  ' + alumnoNombre +  ' del curso?',
+      text: "No podras volver atras si deseas eliminar a " + alumnoNombre,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await this.dataApiService.eliminarAlumnoDelCurso(this.cursoId, alumnoId);
+        Swal.fire(
+          'Se ha eliminado exitosamente!',
+          alumnoNombre + ' ha sido eliminad@',
+          'success'
+        );
+        this.listadoDeAlumnos = [];
+        this.getAlumnosDelCurso();
+        this.hideModal();
+        this.showModal();
+      }
+    })
+  }
+
+  mostrarEstadisticasDelAlumno(alumnoNombre: string, alumnoId: number) {
+    this.router.navigate(['estadisticas-curso-alumno', { cursoId: this.cursoId, alumnoId: alumnoId, name: alumnoNombre }])
   }
 
 }

@@ -68,7 +68,6 @@ export class RecompensasComponent implements OnInit {
   getAlumno(id: number) {
     this.dataApiService.getAlumno(id.toString()).then(
       (respuesta) => {
-        //console.log(respuesta);
         this.alumno.nombre = respuesta.nombre;
         this.alumno.apellido = respuesta.apellido;
         this.alumno.documento = respuesta.documento;
@@ -152,8 +151,6 @@ export class RecompensasComponent implements OnInit {
         if (respuesta) {
           await this.dataApiService.equiparDesequiparAddon(this.alumnoID.toString(), addon.id).then(
             (respuesta) => {
-              console.log(respuesta);
-
             });
         }
 

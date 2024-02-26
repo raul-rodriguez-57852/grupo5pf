@@ -50,13 +50,11 @@ export class EditarDetalleMultimediaComponent implements OnInit {
   }
 
   get() {
-    console.log("idTareaRoute: " + this.idTareaRoute)
     this.dataTareaService
       .getDetalleMultimediaTarea(this.idTareaRoute)
       .then((res) => {
         if (res !== null) {
           this.detalle = res;
-          console.log(res)
           this.cursoId = res["tarea"]["asignatura"]["curso"].id;
           this.dataTareaService
             .getImagenDetalle(this.detalle.id.toString())

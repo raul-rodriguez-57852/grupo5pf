@@ -52,7 +52,7 @@
           align-items-center
         "
       >
-        <div (click)="selectAlumno(alumno.id)">
+        <div (click)="selectAlumno(alumno.id, alumno.nombreCompleto)">
           {{ alumno.nombreCompleto }}
         </div>
       </li>
@@ -79,6 +79,7 @@
   </div>
 
   <div class="container" *ngIf="alumnoSelected">
+    <h4 class="nombreAlumnoSeleccionado">Estadisticas de {{ nombreAlumnoSelected }}</h4>
     <div style="display: block">
       <canvas
         mdbChart

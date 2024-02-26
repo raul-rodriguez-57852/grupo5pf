@@ -299,6 +299,17 @@ public class ApiController {
         cursoService.save(curso);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    
+    @DeleteMapping("eliminarAlumnoDelCurso")
+    public ResponseEntity<Long> eliminarAlumnoDelCurso(@RequestParam Long idCurso, @RequestParam Long idAlumno) {
+        Curso curso = cursoService.get(idCurso);
+        Alumno alumno = alumnoService.get(idAlumno);
+        if (!curso.eliminarAlumnoDelCurso(alumno)) {
+           throw new Error("Alumno a eliminar no encontrado en dicho curso."); 
+        }
+        cursoService.save(curso);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     @PostMapping("guardarAlumno")
     public ResponseEntity<Long> guardarAlumno(@RequestBody AlumnoDto alumnoDto) throws JsonProcessingException {
@@ -344,7 +355,13 @@ public class ApiController {
     public List<Alumno> alumnosByTutor(@RequestParam Long idTutor) {
         Tutor tutor = tutorService.get(idTutor);
         return alumnoService.getAll(AlumnoSpecs.byTutor(tutor));
-
+    }
+    
+    @GetMapping("alumnosByCurso")
+    public List<Alumno> alumnosByCurso(@RequestParam Long idCurso) {
+        Curso curso = cursoService.get(idCurso);
+        List<Alumno> alumnoByCurso = alumnoService.getAll(AlumnoSpecs.byCurso(curso));
+        return alumnoByCurso;
     }
 
     @PostMapping("ingresoAlumno")
@@ -369,6 +386,9 @@ public class ApiController {
     @PostMapping("guardarCurso")
     public ResponseEntity<Long> guardarCurso(@RequestBody CursoDto cursoDto) {
         Curso curso = cursoDto.getId() != null ? cursoService.get(cursoDto.getId()) : new Curso();
+        if (cursoDto.getNombre() == null || cursoDto.getImagen() == null) {
+            throw new Error("El nombre del curso y la imagen son campos obligatorios.");
+        }
         curso.setNombre(cursoDto.getNombre());
         curso.setImagen(cursoDto.getImagen().getBytes());
         Profesor profe = profesorService.get(cursoDto.getCreadorId());

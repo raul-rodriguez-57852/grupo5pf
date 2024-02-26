@@ -50,7 +50,6 @@ export class EditarCursoComponent implements OnInit {
     else
     {
       //no existe codigo.
-      console.log('no existe ')
       this.mostrarcodigo = false;
 
     }
@@ -88,7 +87,7 @@ export class EditarCursoComponent implements OnInit {
         (respuesta) => {
           Swal.fire(
             'Ups!',
-            'Se produjo un error al guardar el curso :(',
+            respuesta.error.message,
             'error'
           );
         }
@@ -104,7 +103,6 @@ export class EditarCursoComponent implements OnInit {
   generarCodigoCurso()
   {
       if(this.curso.codigo === null){
-          console.log('Codigo Null');
           this.dataApiService.generarCodigoCurso(this.curso).then(
             (respuesta) => {
               Swal.fire(

@@ -29,6 +29,9 @@ export class EstadisticasCursoAlumnoComponent implements OnInit {
   id_profesor = null;
 
   alumnoSelected = false;
+  nombreAlumnoSelected = null;
+
+  esRedirectFromCurso = false;
 
   public chartDatasets = [{ data: [], label: "" }];
   public chartLabels: Array<any> = [];
@@ -72,6 +75,11 @@ export class EstadisticasCursoAlumnoComponent implements OnInit {
     if (this.route.snapshot.paramMap.get("cursoId") != null) {
       this.selectCurso(Number(this.route.snapshot.paramMap.get("cursoId")));
     }
+    if (this.route.snapshot.paramMap.get("alumnoId") != null && this.route.snapshot.paramMap.get("name") != null) {
+      this.nombreAlumnoSelected = this.route.snapshot.paramMap.get("name");
+      this.selectAlumno(Number(this.route.snapshot.paramMap.get("alumnoId")), this.nombreAlumnoSelected);
+      this.esRedirectFromCurso = true;
+    }
   }
 
   selectCurso(id: number) {
@@ -98,8 +106,9 @@ export class EstadisticasCursoAlumnoComponent implements OnInit {
 
   }
 
-  selectAlumno(id: number) {
+  selectAlumno(id: number, nombreAlumno: string) {
     this.alumnoSelected = true;
+    this.nombreAlumnoSelected = nombreAlumno;
 
     let asignaturaId = null;
     if (this.asignaturaSelected != null) {
@@ -140,6 +149,10 @@ export class EstadisticasCursoAlumnoComponent implements OnInit {
 
   volverALista() {
     this.alumnoSelected = false;
+    if (this.esRedirectFromCurso) {
+      let id = Number(this.cursoId);
+      this.router.navigate(['curso', { id }]);
+    }
   }
 
 }

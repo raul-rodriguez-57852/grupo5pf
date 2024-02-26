@@ -124,7 +124,7 @@ public class Curso extends SoftDeleteEntity {
         return alumnos;
     }
 
-    private void setAlumnos(List<Alumno> alumnos) {
+    public void setAlumnos(List<Alumno> alumnos) {
         this.alumnos = alumnos;
     }
     
@@ -222,5 +222,15 @@ public class Curso extends SoftDeleteEntity {
             this.setBonusCurso(bonusDelCurso);
         }
         return this;
+    }
+    
+    public Boolean eliminarAlumnoDelCurso(Alumno alumno) {
+        if(!this.alumnos.isEmpty()) {
+            if (this.getAlumnos().contains(alumno)) {
+                this.alumnos.remove(alumno);
+                return true;
+            }
+        }
+        return false;
     }
 }
